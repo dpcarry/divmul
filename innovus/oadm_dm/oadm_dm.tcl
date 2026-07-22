@@ -16,17 +16,18 @@ setMultiCpuUsage -localCpu max -acquireLicense 8
 # Initialize a design using the Tcl globals listed in the Related Global section
 # Notes: At this script, all the settings are included in the file 'config.globals'
 init_design
-set has_clock_port [expr {[llength [dbGet top.terms.name clk]] > 0}]
+set has_clock_port [expr {[llength [dbGet -e top.terms.name clk]] > 0}]
 
 ##################################################
 # Set parameters for the floorplan
 ##################################################
 
-# Need modification
 set std_cell_height 1.8
 # core_height should be a multiple of the std_cell_height
-set core_width 200
-set core_height [expr 25*$std_cell_height]
+# A narrow, taller core shortens west-input to east-output datapaths while
+# keeping enough whitespace for timing optimization and detailed routing.
+set core_width 110
+set core_height [expr 180*$std_cell_height]
 set ring_left_width 1
 set ring_right_width 1
 set ring_top_width 1
@@ -100,7 +101,7 @@ addStripe -block_ring_top_layer_limit M6 \
   -max_same_layer_jog_length 6 \
   -merge_stripes_value 4 \
   -layer M6 \
-  -set_to_set_distance 4 \
+  -set_to_set_distance 12 \
   -direction vertical \
   -nets {VDD VSS} \
   -width 1 \
@@ -143,7 +144,7 @@ setMaxRouteLayer 5
 setPlaceMode -timingDriven true -congEffort high
 
 # Set global parameters for timing optimization
-setOptMode -fixFanoutLoad true -effort high -moveInst true -reclaimArea true
+setOptMode -fixFanoutLoad true -effort high -moveInst true -reclaimArea false
 
 # Place stanard cells based on the global settings for placement, RC extraction, and timing analysis
 place_design -noPrePlaceOpt
@@ -173,9 +174,8 @@ setOptMode -yieldEffort none ; # Default is none
 setOptMode -effort high ; # man setOptMode and see the effort table
 setOptMode -maxDensity 0.95 ; # Default is 0.95 (netlist won't grow above this value)
 setOptMode -drcMargin 0.0 ; # Default is 0
-#setOptMode -holdTargetSlack 0.0 
-setOptMode -holdTargetSlack 0.2
-setOptMode -setupTargetSlack 0.0
+setOptMode -holdTargetSlack 0.03
+setOptMode -setupTargetSlack 0.10
 setOptMode -SimplifyNetlist false ; # When true, simplifies the netlist to decrease congestion, area, and improve runtime
 clearClockDomains
 setOptMode -usefulSkew false
@@ -333,12 +333,12 @@ setAnalysisMode -analysisType onChipVariation
 setOptMode -yieldEffort none
 setOptMode -effort high
 setOptMode -drcMargin 0.0
-setOptMode -holdTargetSlack 0.2 -setupTargetSlack 0.0
+setOptMode -holdTargetSlack 0.03 -setupTargetSlack 0.10
 setOptMode -holdFixingEffort high
 setOptMode -simplifyNetlist false
 setOptMode -usefulSkew false
 setOptMode -moveInst true
-setOptMode -reclaimArea true
+setOptMode -reclaimArea false
 setOptMode -fixDRC true
 setOptMode -fixCap true
 
@@ -346,6 +346,7 @@ setOptMode -fixCap true
 # Notes: '-hold' option corrects hold violations
 #        '-postRoute' option performs timing optimization on a design whose routing is complete
 optDesign -postRoute -setup -hold
+optDesign -postRoute -setup
 
 # Connect all new cells to VDD/GND
 #globalNetConnect VDD -type pgpin -pin {VDD} -override
@@ -379,7 +380,9 @@ verify_drc
 #addFiller -cell FILL1 FILL2 FILL4 FILL8 FILL16 FILL32 FILL64 FILL1_LL FILL_NW_FA_LL FILL_NW_HH FILL_NW_LL -fillBoundary
 #addDeCap -cell DCAP64 DCAP32 DCAP16 DCAP8 DCAP4
 addFiller -cell DCAP64 DCAP32 DCAP16 DCAP8 DCAP4 FILL64 FILL32 FILL16 FILL8 FILL4 FILL2 FILL1 -prefix FILLER
-verifyGeometry
+# Filler insertion changes the post-route database. Repair affected routes before
+# final DRC and export, as recommended by Innovus for post-route addFiller.
+ecoRoute -target
 verify_drc
 redraw
 
@@ -428,7 +431,7 @@ defOut -floorplan -netlist -routing "$design_name.final.def"
 # Create a GDSII file of the current database
 # Notes: '-mapFile' option specifies the file used for layer mapping
 #        '-libName' option specifies the library to convert to GDSII Stream format
-streamOut "$design_name.gds" -mapFile "../layermap/tsmc65_6350_spring24.layermap" -libName tcbn65gplus -structureName $design_name -units 1000 -mode ALL 
+streamOut "$design_name.gds" -mapFile "/user/stud/fall25/pd2827/ee6321/innovus/layermap/tsmc65_6350_spring24.layermap" -libName tcbn65gplus -structureName $design_name -units 1000 -mode ALL 
 
 # Write a netlist file of the design
 # Notes: '-phys' option writes out physical cell instances, and inserts power and ground nets in the netlist

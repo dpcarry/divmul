@@ -33,7 +33,7 @@ module oadm_core (
     reg y_direction;
     integer stage;
 
-    wire [23:0] reciprocal_square;
+    wire [7:0] reciprocal_square;
     wire signed [CORE_WIDTH-1:0] divided_plane;
     wire signed [CORE_WIDTH-1:0] selected_delta_1;
     wire signed [CORE_WIDTH-1:0] selected_delta_2;
@@ -81,7 +81,7 @@ module oadm_core (
 
     sa_scale #(
         .VALUE_WIDTH(CORE_WIDTH),
-        .COEFF_WIDTH(24)
+        .COEFF_WIDTH(8)
     ) division_scale (
         .value(shared_plane),
         .coefficient(reciprocal_square),

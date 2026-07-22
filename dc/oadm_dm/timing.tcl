@@ -10,7 +10,9 @@ set fo4 0.02
 set clk_period 2
 
 # Used as setup/hold check pessimism margin, please adjust as needed
-set clk_uncertainty [expr 5*$fo4]
+# This is a combinational macro with a virtual clock. Report nominal TT delay;
+# any publication guardband should be stated separately from the block delay.
+set clk_uncertainty 0.0
 set clk_transition  [expr 3*$fo4]
 
 # Pessimistic setting for hold time, please adjust as needed
@@ -46,9 +48,11 @@ if {[sizeof_collection [get_ports $clk_port]] > 0} {
   set_clock_transition $clk_transition [get_clocks $clk_name]
 }
 
+# Fix minimum-delay paths for both real and virtual clocks.
+set_fix_hold [get_clocks $clk_name]
+
 # Configure the clock network
 if {[sizeof_collection [get_ports $clk_port]] > 0} {
-  set_fix_hold [all_clocks]
   set_dont_touch_network $clk_port
   set_ideal_network $clk_port
 }

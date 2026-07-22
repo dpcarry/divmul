@@ -44,8 +44,22 @@ source -verbose "./timing.tcl"
 current_design $top_level
 link
 
+# Reserve post-route margin while keeping the virtual clock at 2 ns. This
+# exception is removed before reports and SDC export.
+set compile_max_delay 1.70
+set_max_delay $compile_max_delay -from [all_inputs] -to [all_outputs]
+
 # Ultra compile (better QoR than plain compile)
 compile_ultra -no_autoungroup
+
+# Preserve minimum delay on the direct sign path in the combinational block.
+set sign_hold_buffer_0 [insert_buffer [get_ports {result[31]}] BUFFD0]
+set sign_hold_buffer_1 [insert_buffer [get_ports {result[31]}] BUFFD0]
+set_dont_touch $sign_hold_buffer_0
+set_dont_touch $sign_hold_buffer_1
+
+reset_path -from [all_inputs] -to [all_outputs]
+update_timing
 
 #########################################
 # Write outputs                         #

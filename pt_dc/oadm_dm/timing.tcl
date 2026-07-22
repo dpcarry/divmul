@@ -9,7 +9,9 @@ set fo4 0.02
 set clk_period 2
 
 # Used as setup/hold check pessimism margin, please adjust as needed
-set clk_uncertainty [expr 5*$fo4] 
+# This is a combinational macro with a virtual clock. Report nominal TT delay;
+# any publication guardband should be stated separately from the block delay.
+set clk_uncertainty 0.0
 set clk_transition [expr 3*$fo4]
 
 # Pessimistic setting for hold time, please adjust as needed 
