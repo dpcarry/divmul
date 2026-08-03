@@ -66,6 +66,9 @@ if {[sizeof_collection $rst_ports] > 0} {
   set_false_path -from $rst_ports
 }
 if {[sizeof_collection $data_inputs] > 0} {
+  # Match the INVD0 source model used by DC and Innovus so extracted
+  # input-net delay is analyzed with the same realistic input slew.
+  set_driving_cell -lib_cell INVD0 $data_inputs
   set_input_delay $typical_input_delay $data_inputs -clock $clk_name
 }
 if {[sizeof_collection [all_outputs]] > 0} {

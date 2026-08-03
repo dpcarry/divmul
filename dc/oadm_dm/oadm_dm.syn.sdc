@@ -1,6 +1,6 @@
 ###################################################################
 
-# Created by write_sdc on Wed Jul 22 03:38:10 2026
+# Created by write_sdc on Fri Jul 31 21:26:32 2026
 
 ###################################################################
 set sdc_version 2.1
@@ -241,7 +241,7 @@ set_max_fanout 4 [get_ports {level[1]}]
 set_max_fanout 4 [get_ports {level[0]}]
 set_max_fanout 4 [get_ports divide_mode]
 create_clock -name vclk  -period 2  -waveform {0 1}
-set_clock_uncertainty 0.0  [get_clocks vclk]
+set_clock_uncertainty 0  [get_clocks vclk]
 set_input_delay -clock vclk  0.02  [get_ports {x[31]}]
 set_input_delay -clock vclk  0.02  [get_ports {x[30]}]
 set_input_delay -clock vclk  0.02  [get_ports {x[29]}]

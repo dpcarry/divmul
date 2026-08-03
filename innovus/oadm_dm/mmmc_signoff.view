@@ -1,0 +1,183 @@
+# Version:1.0 MMMC View Definition File
+# Do Not Remove Above Line
+
+# TSMC 65GP CCS PVT libraries and 1P9M+AlRDL top2 extraction tables.
+# TT is retained as a reporting view. Slow views drive setup optimization and
+# fast views drive minimum-delay/hold optimization.
+
+create_library_set -name lib_tt_1v00_25c \
+    -timing {/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gplustc_ccs.lib}
+create_library_set -name lib_ss_0v90_125c \
+    -timing {/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gpluswc_ccs.lib}
+create_library_set -name lib_ss_0v90_0c \
+    -timing {/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gpluswcz_ccs.lib}
+create_library_set -name lib_ss_0v90_m40c \
+    -timing {/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gpluswcl_ccs.lib}
+create_library_set -name lib_ff_1v10_0c \
+    -timing {/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gplusbc_ccs.lib}
+create_library_set -name lib_ff_1v10_m40c \
+    -timing {/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gpluslt_ccs.lib}
+create_library_set -name lib_ff_1v10_125c \
+    -timing {/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gplusml_ccs.lib}
+
+set cap_dir /courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Back_End/lef/tcbn65gplus_200a/techfiles/captable
+
+create_rc_corner -name rc_typical_25 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_typical_top2.captable \
+    -T 25 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+create_rc_corner -name rc_cworst_125 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_cworst_top2.captable \
+    -T 125 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+create_rc_corner -name rc_rcworst_125 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_rcworst_top2.captable \
+    -T 125 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+create_rc_corner -name rc_cbest_0 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_cbest_top2.captable \
+    -T 0 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+create_rc_corner -name rc_rcbest_0 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_rcbest_top2.captable \
+    -T 0 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+
+# Separate RC corners keep interconnect resistance at the same temperature as
+# each cell library, even when the process cap-table file is shared.
+create_rc_corner -name rc_cworst_0 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_cworst_top2.captable \
+    -T 0 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+create_rc_corner -name rc_rcworst_0 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_rcworst_top2.captable \
+    -T 0 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+create_rc_corner -name rc_cworst_m40 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_cworst_top2.captable \
+    -T -40 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+create_rc_corner -name rc_rcworst_m40 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_rcworst_top2.captable \
+    -T -40 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+create_rc_corner -name rc_cbest_m40 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_cbest_top2.captable \
+    -T -40 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+create_rc_corner -name rc_rcbest_m40 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_rcbest_top2.captable \
+    -T -40 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+create_rc_corner -name rc_cbest_125 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_cbest_top2.captable \
+    -T 125 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+create_rc_corner -name rc_rcbest_125 \
+    -cap_table $cap_dir/cln65g+_1p09m+alrdl_rcbest_top2.captable \
+    -T 125 \
+    -preRoute_res 1.0 -preRoute_cap 1.0 \
+    -preRoute_clkres 0.0 -preRoute_clkcap 0.0 \
+    -postRoute_res 1.0 -postRoute_cap 1.0 -postRoute_xcap 1.0 \
+    -postRoute_clkres 0.0 -postRoute_clkcap 0.0
+
+create_constraint_mode -name functional_2ns \
+    -sdc_files {./apr_timing.sdc}
+
+create_delay_corner -name dc_tt_typical \
+    -library_set lib_tt_1v00_25c -rc_corner rc_typical_25
+
+create_delay_corner -name dc_ss125_cworst \
+    -library_set lib_ss_0v90_125c -rc_corner rc_cworst_125
+create_delay_corner -name dc_ss125_rcworst \
+    -library_set lib_ss_0v90_125c -rc_corner rc_rcworst_125
+create_delay_corner -name dc_ss0_cworst \
+    -library_set lib_ss_0v90_0c -rc_corner rc_cworst_0
+create_delay_corner -name dc_ss0_rcworst \
+    -library_set lib_ss_0v90_0c -rc_corner rc_rcworst_0
+create_delay_corner -name dc_ssm40_cworst \
+    -library_set lib_ss_0v90_m40c -rc_corner rc_cworst_m40
+create_delay_corner -name dc_ssm40_rcworst \
+    -library_set lib_ss_0v90_m40c -rc_corner rc_rcworst_m40
+
+create_delay_corner -name dc_ff0_cbest \
+    -library_set lib_ff_1v10_0c -rc_corner rc_cbest_0
+create_delay_corner -name dc_ff0_rcbest \
+    -library_set lib_ff_1v10_0c -rc_corner rc_rcbest_0
+create_delay_corner -name dc_ffm40_cbest \
+    -library_set lib_ff_1v10_m40c -rc_corner rc_cbest_m40
+create_delay_corner -name dc_ffm40_rcbest \
+    -library_set lib_ff_1v10_m40c -rc_corner rc_rcbest_m40
+create_delay_corner -name dc_ff125_cbest \
+    -library_set lib_ff_1v10_125c -rc_corner rc_cbest_125
+create_delay_corner -name dc_ff125_rcbest \
+    -library_set lib_ff_1v10_125c -rc_corner rc_rcbest_125
+
+create_analysis_view -name tt25_typical \
+    -constraint_mode functional_2ns -delay_corner dc_tt_typical
+
+create_analysis_view -name ss125_cworst \
+    -constraint_mode functional_2ns -delay_corner dc_ss125_cworst
+create_analysis_view -name ss125_rcworst \
+    -constraint_mode functional_2ns -delay_corner dc_ss125_rcworst
+create_analysis_view -name ss0_cworst \
+    -constraint_mode functional_2ns -delay_corner dc_ss0_cworst
+create_analysis_view -name ss0_rcworst \
+    -constraint_mode functional_2ns -delay_corner dc_ss0_rcworst
+create_analysis_view -name ssm40_cworst \
+    -constraint_mode functional_2ns -delay_corner dc_ssm40_cworst
+create_analysis_view -name ssm40_rcworst \
+    -constraint_mode functional_2ns -delay_corner dc_ssm40_rcworst
+
+create_analysis_view -name ff0_cbest \
+    -constraint_mode functional_2ns -delay_corner dc_ff0_cbest
+create_analysis_view -name ff0_rcbest \
+    -constraint_mode functional_2ns -delay_corner dc_ff0_rcbest
+create_analysis_view -name ffm40_cbest \
+    -constraint_mode functional_2ns -delay_corner dc_ffm40_cbest
+create_analysis_view -name ffm40_rcbest \
+    -constraint_mode functional_2ns -delay_corner dc_ffm40_rcbest
+create_analysis_view -name ff125_cbest \
+    -constraint_mode functional_2ns -delay_corner dc_ff125_cbest
+create_analysis_view -name ff125_rcbest \
+    -constraint_mode functional_2ns -delay_corner dc_ff125_rcbest
+
+set_analysis_view \
+    -setup {tt25_typical ss125_cworst ss125_rcworst ss0_cworst ss0_rcworst ssm40_cworst ssm40_rcworst} \
+    -hold {tt25_typical ff0_cbest ff0_rcbest ffm40_cbest ffm40_rcbest ff125_cbest ff125_rcbest}

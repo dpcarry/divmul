@@ -20,7 +20,11 @@ set init_lef_file {/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Back_End
 # Set the name of your "muli-mode-multi-corner data file
 # You don't need to change this unless you're using a 
 # different mmmc.tcl file. 
-set init_mmmc_file {./mmmc.view}
+if {[info exists ::env(MMMC_FILE)]} {
+    set init_mmmc_file $::env(MMMC_FILE)
+} else {
+    set init_mmmc_file {./mmmc.view}
+}
 
 # Some helpful input mode settings.
 set init_import_mode {-treatUndefinedCellAsBbox 0 -keepEmptyModule 1}

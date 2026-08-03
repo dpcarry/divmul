@@ -46,7 +46,7 @@ link
 
 # Reserve post-route margin while keeping the virtual clock at 2 ns. This
 # exception is removed before reports and SDC export.
-set compile_max_delay 1.70
+set compile_max_delay 1.65
 set_max_delay $compile_max_delay -from [all_inputs] -to [all_outputs]
 
 # Ultra compile (better QoR than plain compile)
