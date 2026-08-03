@@ -1,4 +1,6 @@
-set -e
+#!/bin/bash
+
+set -euo pipefail
 
 MODULE_NAME=oadm_dm
 
