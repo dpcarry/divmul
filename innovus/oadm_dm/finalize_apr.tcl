@@ -1,5 +1,6 @@
 set design_name oadm_dm
 set_message -no_limit
+set_message -id {TECHLIB-1467} -limit 10
 setMultiCpuUsage -localCpu max -acquireLicense 8
 
 # Resume from the clean routed checkpoint, then insert fillers and repair any

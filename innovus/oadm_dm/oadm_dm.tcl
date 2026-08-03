@@ -419,6 +419,9 @@ verifyConnectivity -type regular -error 1000 -warning 50
 # Verify process antenna effect (PAE) and maximum floating area violations
 verifyProcessAntenna
 
+# Preserve the exact filler-complete, verified database used for final exports.
+saveDesign "$design_name.final.enc"
+
 ##################################################
 # Produce outputs
 ##################################################

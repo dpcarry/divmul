@@ -7,9 +7,9 @@ catch { setAnalysisMode -clkSrcPath true }
 catch { setAnalysisMode -clockPropagation sdcControl }
 catch { setAnalysisMode -cppr both }
 catch { setAnalysisMode -virtualIPO false }
-catch { setOptMode -activeSetupViews { typical } }
-catch { setOptMode -autoSetupViews { typical} }
-catch { setOptMode -autoTDGRSetupViews { typical} }
+catch { setOptMode -activeHoldViews { tt25_typical ff0_cbest ff0_rcbest ffm40_cbest ffm40_rcbest ff125_cbest ff125_rcbest } }
+catch { setOptMode -activeSetupViews { tt25_typical ss125_cworst ss125_rcworst ss0_cworst ss0_rcworst ssm40_cworst ssm40_rcworst } }
+catch { setOptMode -autoSetupViews {ssm40_cworst tt25_typical} }
 catch { setOptMode -deleteInst true }
 catch { setOptMode -drcMargin 0 }
 catch { setOptMode -effort high }
@@ -36,7 +36,7 @@ catch {setNanoRouteMode -quiet -drouteStartIteration 0}
 catch {setNanoRouteMode -quiet -drouteUseMinSpacingForBlockage auto}
 catch {setNanoRouteMode -quiet -drouteUseMultiCutViaEffort "low"}
 catch {setNanoRouteMode -quiet -extractThirdPartyCompatible false}
-catch {setNanoRouteMode -quiet -grouteExpTdStdDelay 10.200000}
+catch {setNanoRouteMode -quiet -grouteExpTdStdDelay 16.400000}
 catch {setNanoRouteMode -quiet -routeBottomRoutingLayer 1}
 catch {setNanoRouteMode -quiet -routeSiEffort "high"}
 catch {setNanoRouteMode -quiet -routeSiLengthLimit 200.000000}
