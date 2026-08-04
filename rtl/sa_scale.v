@@ -2,6 +2,7 @@ module sa_scale #(
     parameter VALUE_WIDTH = 29,
     parameter COEFF_WIDTH = 8
 ) (
+    input  wire                          clk,
     input  wire signed [VALUE_WIDTH-1:0] value,
     input  wire        [COEFF_WIDTH-1:0] coefficient,
     output wire signed [VALUE_WIDTH-1:0] scaled_value
@@ -11,6 +12,7 @@ module sa_scale #(
     wire signed [PRODUCT_WIDTH-1:0] extended_value;
     wire signed [PRODUCT_WIDTH-1:0] partial_0 [0:7];
     wire signed [PRODUCT_WIDTH-1:0] partial_1 [0:3];
+    reg  signed [PRODUCT_WIDTH-1:0] partial_1_stage [0:3];
     wire signed [PRODUCT_WIDTH-1:0] partial_2 [0:1];
     wire signed [PRODUCT_WIDTH-1:0] product;
 
@@ -31,9 +33,18 @@ module sa_scale #(
         end
         for (pair_index = 0; pair_index < 2; pair_index = pair_index + 1) begin : gen_level_2
             assign partial_2[pair_index] =
-                partial_1[2*pair_index] + partial_1[2*pair_index+1];
+                partial_1_stage[2*pair_index]
+                + partial_1_stage[2*pair_index+1];
         end
     endgenerate
+
+    // Register the first balanced-tree level to bound divider scale delay.
+    always @(posedge clk) begin
+        partial_1_stage[0] <= partial_1[0];
+        partial_1_stage[1] <= partial_1[1];
+        partial_1_stage[2] <= partial_1[2];
+        partial_1_stage[3] <= partial_1[3];
+    end
 
     assign product = partial_2[0] + partial_2[1];
     assign scaled_value = product >>> COEFF_WIDTH;

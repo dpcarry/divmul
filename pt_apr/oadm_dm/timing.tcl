@@ -9,8 +9,7 @@ set fo4 0.02
 set clk_period 2
 
 # Used as setup/hold check pessimism margin, please adjust as needed
-# This is a combinational macro with a virtual clock. Report nominal TT delay;
-# any publication guardband should be stated separately from the block delay.
+# The pipelined block uses the propagated post-CTS clock for signoff.
 set clk_uncertainty 0.0
 set clk_transition [expr 3*$fo4]
 

@@ -1,4 +1,5 @@
 module oadm_dm (
+    input  wire        clk,
     input  wire [31:0] x,
     input  wire [31:0] y,
     input  wire [1:0]  level,
@@ -27,6 +28,36 @@ module oadm_dm (
     reg invalid_operation;
     reg infinity_result;
     reg zero_result;
+    reg sign_stage1;
+    reg invalid_stage1;
+    reg infinity_stage1;
+    reg zero_stage1;
+    reg signed [11:0] exponent_stage1;
+    reg sign_stage2;
+    reg invalid_stage2;
+    reg infinity_stage2;
+    reg zero_stage2;
+    reg signed [11:0] exponent_stage2;
+    reg sign_stage3;
+    reg invalid_stage3;
+    reg infinity_stage3;
+    reg zero_stage3;
+    reg signed [11:0] exponent_stage3;
+    reg sign_stage4;
+    reg invalid_stage4;
+    reg infinity_stage4;
+    reg zero_stage4;
+    reg signed [11:0] exponent_stage4;
+    reg sign_stage5;
+    reg invalid_stage5;
+    reg infinity_stage5;
+    reg zero_stage5;
+    reg signed [11:0] exponent_stage5;
+    reg sign_stage6;
+    reg invalid_stage6;
+    reg infinity_stage6;
+    reg zero_stage6;
+    reg signed [11:0] exponent_stage6;
     reg signed [28:0] normalized_value;
     reg signed [11:0] result_exponent;
     reg [31:0] finite_result;
@@ -49,6 +80,7 @@ module oadm_dm (
     assign y_mantissa = {1'b1, y_fraction};
 
     oadm_core mantissa_core (
+        .clk(clk),
         .x_mantissa(x_mantissa),
         .y_mantissa(y_mantissa),
         .level(level),
@@ -76,16 +108,50 @@ module oadm_dm (
         end
     end
 
+    // Keep the FP metadata aligned with the registered mantissa plane.
+    always @(posedge clk) begin
+        sign_stage1 <= sign_out;
+        invalid_stage1 <= invalid_operation;
+        infinity_stage1 <= infinity_result;
+        zero_stage1 <= zero_result;
+        if (divide_mode) begin
+            exponent_stage1 <= $signed({1'b0, x_exponent})
+                             - $signed({1'b0, y_exponent}) + 12'sd127;
+        end else begin
+            exponent_stage1 <= $signed({1'b0, x_exponent})
+                             + $signed({1'b0, y_exponent}) - 12'sd127;
+        end
+        sign_stage2 <= sign_stage1;
+        invalid_stage2 <= invalid_stage1;
+        infinity_stage2 <= infinity_stage1;
+        zero_stage2 <= zero_stage1;
+        exponent_stage2 <= exponent_stage1;
+        sign_stage3 <= sign_stage2;
+        invalid_stage3 <= invalid_stage2;
+        infinity_stage3 <= infinity_stage2;
+        zero_stage3 <= zero_stage2;
+        exponent_stage3 <= exponent_stage2;
+        sign_stage4 <= sign_stage3;
+        invalid_stage4 <= invalid_stage3;
+        infinity_stage4 <= infinity_stage3;
+        zero_stage4 <= zero_stage3;
+        exponent_stage4 <= exponent_stage3;
+        sign_stage5 <= sign_stage4;
+        invalid_stage5 <= invalid_stage4;
+        infinity_stage5 <= infinity_stage4;
+        zero_stage5 <= zero_stage4;
+        exponent_stage5 <= exponent_stage4;
+        sign_stage6 <= sign_stage5;
+        invalid_stage6 <= invalid_stage5;
+        infinity_stage6 <= infinity_stage5;
+        zero_stage6 <= zero_stage5;
+        exponent_stage6 <= exponent_stage5;
+    end
+
     // Normalize the Q5.23 signed core result and form a truncated single-precision result.
     always @* begin
         normalized_value = core_value;
-        if (divide_mode) begin
-            result_exponent = $signed({1'b0, x_exponent})
-                            - $signed({1'b0, y_exponent}) + 12'sd127;
-        end else begin
-            result_exponent = $signed({1'b0, x_exponent})
-                            + $signed({1'b0, y_exponent}) - 12'sd127;
-        end
+        result_exponent = exponent_stage6;
 
         if (core_value >= TWO_Q) begin
             normalized_value = core_value >>> 1;
@@ -104,24 +170,25 @@ module oadm_dm (
         end
 
         if ((core_value <= 0) || (result_exponent <= 0)) begin
-            finite_result = {sign_out, 31'b0};
+            finite_result = {sign_stage6, 31'b0};
         end else if (result_exponent >= 255) begin
-            finite_result = {sign_out, 8'hff, 23'b0};
+            finite_result = {sign_stage6, 8'hff, 23'b0};
         end else begin
-            finite_result = {sign_out, result_exponent[7:0],
+            finite_result = {sign_stage6, result_exponent[7:0],
                              normalized_value[22:0]};
         end
     end
 
-    always @* begin
-        if (invalid_operation) begin
-            result = QUIET_NAN;
-        end else if (infinity_result) begin
-            result = {sign_out, 8'hff, 23'b0};
-        end else if (zero_result) begin
-            result = {sign_out, 31'b0};
+    // Pipeline stage 7 registers the normalized FP32 result.
+    always @(posedge clk) begin
+        if (invalid_stage6) begin
+            result <= QUIET_NAN;
+        end else if (infinity_stage6) begin
+            result <= {sign_stage6, 8'hff, 23'b0};
+        end else if (zero_stage6) begin
+            result <= {sign_stage6, 31'b0};
         end else begin
-            result = finite_result;
+            result <= finite_result;
         end
     end
 endmodule

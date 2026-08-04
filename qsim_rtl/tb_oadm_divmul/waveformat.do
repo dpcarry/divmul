@@ -1,6 +1,7 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
 
+add wave -noupdate /tb_oadm_divmul/clk
 add wave -noupdate -radix hexadecimal /tb_oadm_divmul/x
 add wave -noupdate -radix hexadecimal /tb_oadm_divmul/y
 add wave -noupdate -radix unsigned /tb_oadm_divmul/level

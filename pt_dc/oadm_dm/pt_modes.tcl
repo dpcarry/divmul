@@ -30,8 +30,12 @@ proc report_mode_timing {mode_value mode_name} {
 
   report_timing -significant_digits 4 -delay_type max -nworst 1 -path full \
     > "${top_level}.pt.${mode_name}.critical_path.rpt"
+  report_timing -significant_digits 4 -delay_type min -nworst 1 -path full \
+    > "${top_level}.pt.${mode_name}.hold.rpt"
   report_constraint -all_violators -max_delay \
     > "${top_level}.pt.${mode_name}.setup.violations.rpt"
+  report_constraint -all_violators -min_delay \
+    > "${top_level}.pt.${mode_name}.hold.violations.rpt"
 
   remove_design -all
 }

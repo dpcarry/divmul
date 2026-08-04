@@ -9,8 +9,8 @@ source "./$design_name.routed.enc"
 
 # Reload the APR guardband in case this checkpoint was created with an older
 # constraint value. PrimeTime still signs off against the nominal 2 ns SDC.
-set_interactive_constraint_modes {typical_constraint}
-set_clock_uncertainty 0.08 [get_clocks vclk]
+set_interactive_constraint_modes {functional_2ns}
+set_clock_uncertainty 0.08 [get_clocks clk]
 
 # Physical-only cells block post-route movement and resizing. Reinsert them after
 # timing closure, then repair any routes affected by filler placement.

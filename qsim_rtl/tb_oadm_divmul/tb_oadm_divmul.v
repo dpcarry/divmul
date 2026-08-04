@@ -1,6 +1,7 @@
 `timescale 1ns/1ps
 
 module tb_oadm_divmul;
+    reg        clk;
     reg [31:0] x;
     reg [31:0] y;
     reg [1:0]  level;
@@ -34,12 +35,18 @@ module tb_oadm_divmul;
     integer case_count [0:7];
 
     oadm_dm dut (
+        .clk(clk),
         .x(x),
         .y(y),
         .level(level),
         .divide_mode(divide_mode),
         .result(result)
     );
+
+    initial begin
+        clk = 1'b0;
+        forever #1 clk = ~clk;
+    end
 
     function real abs_real;
         input real value;
@@ -151,11 +158,13 @@ module tb_oadm_divmul;
         input integer requested_level;
         input requested_divide_mode;
         begin
+            @(negedge clk);
             x = fp32_from_unit_interval(x_real);
             y = fp32_from_unit_interval(y_real);
             level = requested_level[1:0];
             divide_mode = requested_divide_mode;
-            #1;
+            repeat (7) @(posedge clk);
+            #0.4;
 
             if (^result === 1'bx) begin
                 $display("FAIL_XZ mode=%s level=%0d x=%f y=%f result=%h",

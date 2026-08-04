@@ -205,10 +205,8 @@ if {$has_clock_port} {
     # Set global analysis modes for timing analysis
     setAnalysisMode -analysisType bcwc
 
-    update_constraint_mode -name typical_constraint -sdc_file "../../dc/$design_name/$design_name.syn.mod.sdc"
-
-    # Declare the analysis views to be used during ccopt_design
-    set_analysis_view -setup {typical} -hold {typical}
+    # The active setup/hold views were selected by the loaded MMMC file. Keep
+    # them active during CTS instead of collapsing signoff to the TT-only view.
     create_route_type -name leaf_rule -top_preferred_layer M5 -bottom_preferred_layer M4
     create_route_type -name trunk_rule -top_preferred_layer M5 -bottom_preferred_layer M4
     create_route_type -name top_rule -top_preferred_layer M5 -bottom_preferred_layer M4

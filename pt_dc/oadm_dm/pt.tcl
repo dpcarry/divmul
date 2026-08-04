@@ -34,6 +34,14 @@ check_timing
 # Critical path (setup worst path)
 report_timing -significant_digits 4 -delay_type max -nworst 1 -path full \
   > "${top_level}.pt.critical_path.rpt"
+report_timing -significant_digits 4 -delay_type max -nworst 10 -path full \
+  > "${top_level}.pt.setup.rpt"
+report_timing -significant_digits 4 -delay_type min -nworst 10 -path full \
+  > "${top_level}.pt.hold.rpt"
+report_constraint -all_violators -max_delay \
+  > "${top_level}.pt.setup.violations.rpt"
+report_constraint -all_violators -min_delay \
+  > "${top_level}.pt.hold.violations.rpt"
 
 # PrimeTime reports area through QoR; report_reference adds cell-count detail.
 report_qor > "${top_level}.pt.area.rpt"

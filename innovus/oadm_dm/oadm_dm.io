@@ -6,6 +6,7 @@ Spacing: 2
 Pin: divide_mode N 3 0.1800 0.6000
 Pin: level[0] N 3 0.1800 0.6000
 Pin: level[1] N 3 0.1800 0.6000
+Pin: clk N 3 0.1800 0.6000
 
 Offset: 1
 Spacing: 1
