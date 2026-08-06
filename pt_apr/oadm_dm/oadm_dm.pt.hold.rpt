@@ -8,309 +8,377 @@ Report : timing
 	-sort_by slack
 Design : oadm_dm
 Version: U-2022.12-SP5
-Date   : Fri Jul 31 23:46:15 2026
+Date   : Mon Aug  3 22:00:00 2026
 ****************************************
 
 
-  Startpoint: x[31] (input port clocked by vclk)
-  Endpoint: result[31] (output port clocked by vclk)
-  Path Group: vclk
+  Startpoint: divide_mode
+               (input port clocked by clk)
+  Endpoint: mantissa_core/divide_mode_stage1_reg
+               (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
   Path Type: min
 
-  Point                                    Incr       Path
-  ---------------------------------------------------------------
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  input external delay                 0.020000   0.020000 r
-  x[31] (in)                           0.018680 & 0.038680 r
-  U471/ZN (AOI21D0)                    0.078624 & 0.117304 f
-  U0/Z (BUFFD0)                        0.073431 & 0.190735 f
-  result[31] (out)                     0.000228 & 0.190963 f
-  data arrival time                               0.190963
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.000000   0.000000
+  input external delay                                0.020000   0.020000 f
+  divide_mode (in)                                    0.005693 & 0.025693 f
+  FE_PHC1555_divide_mode/Z (CKBD0)                    0.035864 & 0.061557 f
+  FE_OFC56_divide_mode/ZN (INVD2)                     0.038258 & 0.099815 r
+  FE_OFC57_divide_mode/ZN (INVD8)                     0.025398 & 0.125213 f
+  mantissa_core/U40/ZN (INVD8)                        0.014818 & 0.140031 r
+  mantissa_core/FE_PHC1635_n1442/Z (BUFFD2)           0.041758 & 0.181789 r
+  mantissa_core/U9/Z (BUFFD4)                         0.033161 & 0.214950 r
+  mantissa_core/U1768/ZN (INVD4)                      0.012849 & 0.227799 f
+  mantissa_core/U1769/Z (BUFFD4)                      0.029559 & 0.257358 f
+  mantissa_core/FE_PHC1649_n919/Z (CKBD0)             0.034122 & 0.291480 f
+  mantissa_core/divide_mode_stage1_reg/D (DFQD2)      0.000009 & 0.291489 f
+  data arrival time                                              0.291489
 
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  clock reconvergence pessimism        0.000000   0.000000
-  output external delay                -0.020000  -0.020000
-  data required time                              -0.020000
-  ---------------------------------------------------------------
-  data required time                              -0.020000
-  data arrival time                               -0.190963
-  ---------------------------------------------------------------
-  slack (MET)                                     0.210963
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.120566   0.120566
+  clock reconvergence pessimism                       0.000000   0.120566
+  clock uncertainty                                   0.080000   0.200566
+  mantissa_core/divide_mode_stage1_reg/CP (DFQD2)                0.200566 r
+  library hold time                                   0.023529   0.224095
+  data required time                                             0.224095
+  ------------------------------------------------------------------------------
+  data required time                                             0.224095
+  data arrival time                                              -0.291489
+  ------------------------------------------------------------------------------
+  slack (MET)                                                    0.067394
 
 
-  Startpoint: x[31] (input port clocked by vclk)
-  Endpoint: result[31] (output port clocked by vclk)
-  Path Group: vclk
+  Startpoint: y[19] (input port clocked by clk)
+  Endpoint: mantissa_core/y_stage1_reg_19_
+               (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
   Path Type: min
 
-  Point                                    Incr       Path
-  ---------------------------------------------------------------
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  input external delay                 0.020000   0.020000 f
-  x[31] (in)                           0.012117 & 0.032117 f
-  U691/ZN (OAI21D0)                    0.043051 & 0.075168 r
-  U471/ZN (AOI21D0)                    0.052027 & 0.127196 f
-  U0/Z (BUFFD0)                        0.073431 & 0.200626 f
-  result[31] (out)                     0.000228 & 0.200854 f
-  data arrival time                               0.200854
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.000000   0.000000
+  input external delay                                0.020000   0.020000 f
+  y[19] (in)                                          0.006998 & 0.026998 f
+  FE_OFC482_y_19/ZN (INVD1)                           0.014111 & 0.041110 r
+  FE_PHC1547_n221/Z (DEL01)                           0.118930 & 0.160039 r
+  mantissa_core/FE_PHC1589_n221/Z (DEL01)             0.108538 & 0.268577 r
+  mantissa_core/FE_OFC196_y_19/ZN (CKND1)             0.027932 & 0.296510 f
+  mantissa_core/y_stage1_reg_19_/D (DFQD1)            0.000150 & 0.296660 f
+  data arrival time                                              0.296660
 
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  clock reconvergence pessimism        0.000000   0.000000
-  output external delay                -0.020000  -0.020000
-  data required time                              -0.020000
-  ---------------------------------------------------------------
-  data required time                              -0.020000
-  data arrival time                               -0.200854
-  ---------------------------------------------------------------
-  slack (MET)                                     0.220854
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.119328   0.119328
+  clock reconvergence pessimism                       0.000000   0.119328
+  clock uncertainty                                   0.080000   0.199328
+  mantissa_core/y_stage1_reg_19_/CP (DFQD1)                      0.199328 r
+  library hold time                                   0.019414   0.218742
+  data required time                                             0.218742
+  ------------------------------------------------------------------------------
+  data required time                                             0.218742
+  data arrival time                                              -0.296660
+  ------------------------------------------------------------------------------
+  slack (MET)                                                    0.077919
 
 
-  Startpoint: x[31] (input port clocked by vclk)
-  Endpoint: result[31] (output port clocked by vclk)
-  Path Group: vclk
+  Startpoint: y[20] (input port clocked by clk)
+  Endpoint: mantissa_core/y_stage1_reg_20_
+               (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
   Path Type: min
 
-  Point                                    Incr       Path
-  ---------------------------------------------------------------
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  input external delay                 0.020000   0.020000 f
-  x[31] (in)                           0.012117 & 0.032117 f
-  U471/ZN (AOI21D0)                    0.116486 & 0.148603 r
-  U0/Z (BUFFD0)                        0.088538 & 0.237141 r
-  result[31] (out)                     0.000228 & 0.237369 r
-  data arrival time                               0.237369
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.000000   0.000000
+  input external delay                                0.020000   0.020000 f
+  y[20] (in)                                          0.009405 & 0.029405 f
+  FE_PHC1542_y_20/Z (DEL01)                           0.100226 & 0.129631 f
+  FE_OFC146_y_20/Z (CKBD1)                            0.041690 & 0.171321 f
+  mantissa_core/FE_OFC147_y_20/ZN (CKND1)             0.027171 & 0.198493 r
+  mantissa_core/FE_PHC1620_n45/Z (DEL005)             0.040472 & 0.238965 r
+  mantissa_core/FE_PHC1651_n45/Z (CKBD1)              0.022305 & 0.261270 r
+  mantissa_core/FE_OFC149_y_20/ZN (CKND1)             0.034324 & 0.295595 f
+  mantissa_core/y_stage1_reg_20_/D (DFQD1)            0.000110 & 0.295705 f
+  data arrival time                                              0.295705
 
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  clock reconvergence pessimism        0.000000   0.000000
-  output external delay                -0.020000  -0.020000
-  data required time                              -0.020000
-  ---------------------------------------------------------------
-  data required time                              -0.020000
-  data arrival time                               -0.237369
-  ---------------------------------------------------------------
-  slack (MET)                                     0.257369
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.119369   0.119369
+  clock reconvergence pessimism                       0.000000   0.119369
+  clock uncertainty                                   0.080000   0.199369
+  mantissa_core/y_stage1_reg_20_/CP (DFQD1)                      0.199369 r
+  library hold time                                   0.016978   0.216347
+  data required time                                             0.216347
+  ------------------------------------------------------------------------------
+  data required time                                             0.216347
+  data arrival time                                              -0.295705
+  ------------------------------------------------------------------------------
+  slack (MET)                                                    0.079358
 
 
-  Startpoint: y[31] (input port clocked by vclk)
-  Endpoint: result[31] (output port clocked by vclk)
-  Path Group: vclk
+  Startpoint: mantissa_core/coefficient_stage4_reg_4_
+               (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: mantissa_core/division_scale/partial_1_stage_reg_2__4_
+               (rising edge-triggered flip-flop clocked by clk)
+  Last common pin: clk
+  Path Group: clk
   Path Type: min
 
-  Point                                    Incr       Path
-  ---------------------------------------------------------------
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  input external delay                 0.020000   0.020000 r
-  y[31] (in)                           0.007447 & 0.027447 r
-  FE_OFC27_y_31/Z (CKBD0)              0.062275 & 0.089722 r
-  U471/ZN (AOI21D0)                    0.086566 & 0.176288 f
-  U0/Z (BUFFD0)                        0.073431 & 0.249719 f
-  result[31] (out)                     0.000228 & 0.249947 f
-  data arrival time                               0.249947
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.122452   0.122452
+  mantissa_core/coefficient_stage4_reg_4_/CP (DFQD4)  0.000000   0.122452 r
+  mantissa_core/coefficient_stage4_reg_4_/Q (DFQD4)   0.088110 & 0.210562 f
+  mantissa_core/division_scale/U488/ZN (CKND4)        0.017461 & 0.228023 r
+  mantissa_core/division_scale/U502/Z (BUFFD2)        0.030838 & 0.258862 r
+  mantissa_core/division_scale/U595/ZN (NR2D0)        0.017740 & 0.276601 f
+  mantissa_core/division_scale/FE_PHC1571_partial_1_2__4/Z (BUFFD1)
+                                                      0.030258 & 0.306860 f
+  mantissa_core/division_scale/partial_1_stage_reg_2__4_/D (DFQD1)
+                                                      0.000006 & 0.306866 f
+  data arrival time                                              0.306866
 
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  clock reconvergence pessimism        0.000000   0.000000
-  output external delay                -0.020000  -0.020000
-  data required time                              -0.020000
-  ---------------------------------------------------------------
-  data required time                              -0.020000
-  data arrival time                               -0.249947
-  ---------------------------------------------------------------
-  slack (MET)                                     0.269947
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.121602   0.121602
+  clock reconvergence pessimism                       0.000000   0.121602
+  clock uncertainty                                   0.080000   0.201602
+  mantissa_core/division_scale/partial_1_stage_reg_2__4_/CP (DFQD1)
+                                                                 0.201602 r
+  library hold time                                   0.024577   0.226179
+  data required time                                             0.226179
+  ------------------------------------------------------------------------------
+  data required time                                             0.226179
+  data arrival time                                              -0.306866
+  ------------------------------------------------------------------------------
+  slack (MET)                                                    0.080686
 
 
-  Startpoint: y[31] (input port clocked by vclk)
-  Endpoint: result[31] (output port clocked by vclk)
-  Path Group: vclk
+  Startpoint: divide_mode
+               (input port clocked by clk)
+  Endpoint: mantissa_core/divide_mode_stage1_reg
+               (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
   Path Type: min
 
-  Point                                    Incr       Path
-  ---------------------------------------------------------------
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  input external delay                 0.020000   0.020000 f
-  y[31] (in)                           0.004728 & 0.024728 f
-  FE_OFC27_y_31/Z (CKBD0)              0.056610 & 0.081337 f
-  U691/ZN (OAI21D0)                    0.053313 & 0.134650 r
-  U471/ZN (AOI21D0)                    0.052027 & 0.186677 f
-  U0/Z (BUFFD0)                        0.073431 & 0.260108 f
-  result[31] (out)                     0.000228 & 0.260336 f
-  data arrival time                               0.260336
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.000000   0.000000
+  input external delay                                0.020000   0.020000 r
+  divide_mode (in)                                    0.008924 & 0.028924 r
+  FE_PHC1555_divide_mode/Z (CKBD0)                    0.037930 & 0.066854 r
+  FE_OFC56_divide_mode/ZN (INVD2)                     0.029156 & 0.096010 f
+  FE_OFC57_divide_mode/ZN (INVD8)                     0.028909 & 0.124919 r
+  mantissa_core/U40/ZN (INVD8)                        0.012220 & 0.137139 f
+  mantissa_core/FE_PHC1635_n1442/Z (BUFFD2)           0.039253 & 0.176393 f
+  mantissa_core/U9/Z (BUFFD4)                         0.032782 & 0.209174 f
+  mantissa_core/U1768/ZN (INVD4)                      0.015738 & 0.224913 r
+  mantissa_core/U1769/Z (BUFFD4)                      0.029449 & 0.254362 r
+  mantissa_core/FE_PHC1649_n919/Z (CKBD0)             0.034661 & 0.289023 r
+  mantissa_core/divide_mode_stage1_reg/D (DFQD2)      0.000009 & 0.289031 r
+  data arrival time                                              0.289031
 
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  clock reconvergence pessimism        0.000000   0.000000
-  output external delay                -0.020000  -0.020000
-  data required time                              -0.020000
-  ---------------------------------------------------------------
-  data required time                              -0.020000
-  data arrival time                               -0.260336
-  ---------------------------------------------------------------
-  slack (MET)                                     0.280336
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.120566   0.120566
+  clock reconvergence pessimism                       0.000000   0.120566
+  clock uncertainty                                   0.080000   0.200566
+  mantissa_core/divide_mode_stage1_reg/CP (DFQD2)                0.200566 r
+  library hold time                                   0.005144   0.205710
+  data required time                                             0.205710
+  ------------------------------------------------------------------------------
+  data required time                                             0.205710
+  data arrival time                                              -0.289031
+  ------------------------------------------------------------------------------
+  slack (MET)                                                    0.083322
 
 
-  Startpoint: x[31] (input port clocked by vclk)
-  Endpoint: result[31] (output port clocked by vclk)
-  Path Group: vclk
+  Startpoint: y[19] (input port clocked by clk)
+  Endpoint: mantissa_core/y_stage1_reg_19_
+               (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
   Path Type: min
 
-  Point                                    Incr       Path
-  ---------------------------------------------------------------
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  input external delay                 0.020000   0.020000 r
-  x[31] (in)                           0.018680 & 0.038680 r
-  U691/ZN (OAI21D0)                    0.031782 & 0.070462 f
-  U471/ZN (AOI21D0)                    0.102816 & 0.173279 r
-  U0/Z (BUFFD0)                        0.088538 & 0.261816 r
-  result[31] (out)                     0.000228 & 0.262044 r
-  data arrival time                               0.262044
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.000000   0.000000
+  input external delay                                0.020000   0.020000 r
+  y[19] (in)                                          0.010877 & 0.030877 r
+  FE_OFC482_y_19/ZN (INVD1)                           0.012648 & 0.043525 f
+  FE_PHC1547_n221/Z (DEL01)                           0.111386 & 0.154911 f
+  mantissa_core/FE_PHC1589_n221/Z (DEL01)             0.103987 & 0.258898 f
+  mantissa_core/FE_OFC196_y_19/ZN (CKND1)             0.032011 & 0.290909 r
+  mantissa_core/y_stage1_reg_19_/D (DFQD1)            0.000154 & 0.291063 r
+  data arrival time                                              0.291063
 
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  clock reconvergence pessimism        0.000000   0.000000
-  output external delay                -0.020000  -0.020000
-  data required time                              -0.020000
-  ---------------------------------------------------------------
-  data required time                              -0.020000
-  data arrival time                               -0.262044
-  ---------------------------------------------------------------
-  slack (MET)                                     0.282045
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.119328   0.119328
+  clock reconvergence pessimism                       0.000000   0.119328
+  clock uncertainty                                   0.080000   0.199328
+  mantissa_core/y_stage1_reg_19_/CP (DFQD1)                      0.199328 r
+  library hold time                                   0.001563   0.200891
+  data required time                                             0.200891
+  ------------------------------------------------------------------------------
+  data required time                                             0.200891
+  data arrival time                                              -0.291063
+  ------------------------------------------------------------------------------
+  slack (MET)                                                    0.090173
 
 
-  Startpoint: y[31] (input port clocked by vclk)
-  Endpoint: result[31] (output port clocked by vclk)
-  Path Group: vclk
+  Startpoint: mantissa_core/coefficient_stage4_reg_4_
+               (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: mantissa_core/division_scale/partial_1_stage_reg_2__4_
+               (rising edge-triggered flip-flop clocked by clk)
+  Last common pin: clk
+  Path Group: clk
   Path Type: min
 
-  Point                                    Incr       Path
-  ---------------------------------------------------------------
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  input external delay                 0.020000   0.020000 f
-  y[31] (in)                           0.004728 & 0.024728 f
-  FE_OFC27_y_31/Z (CKBD0)              0.056610 & 0.081337 f
-  U471/ZN (AOI21D0)                    0.131006 & 0.212343 r
-  U0/Z (BUFFD0)                        0.088538 & 0.300881 r
-  result[31] (out)                     0.000228 & 0.301109 r
-  data arrival time                               0.301109
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.122452   0.122452
+  mantissa_core/coefficient_stage4_reg_4_/CP (DFQD4)  0.000000   0.122452 r
+  mantissa_core/coefficient_stage4_reg_4_/Q (DFQD4)   0.081562 & 0.204014 r
+  mantissa_core/division_scale/U488/ZN (CKND4)        0.015154 & 0.219168 f
+  mantissa_core/division_scale/U502/Z (BUFFD2)        0.031472 & 0.250640 f
+  mantissa_core/division_scale/U595/ZN (NR2D0)        0.036434 & 0.287074 r
+  mantissa_core/division_scale/FE_PHC1571_partial_1_2__4/Z (BUFFD1)
+                                                      0.032725 & 0.319799 r
+  mantissa_core/division_scale/partial_1_stage_reg_2__4_/D (DFQD1)
+                                                      0.000006 & 0.319805 r
+  data arrival time                                              0.319805
 
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  clock reconvergence pessimism        0.000000   0.000000
-  output external delay                -0.020000  -0.020000
-  data required time                              -0.020000
-  ---------------------------------------------------------------
-  data required time                              -0.020000
-  data arrival time                               -0.301109
-  ---------------------------------------------------------------
-  slack (MET)                                     0.321109
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.121602   0.121602
+  clock reconvergence pessimism                       0.000000   0.121602
+  clock uncertainty                                   0.080000   0.201602
+  mantissa_core/division_scale/partial_1_stage_reg_2__4_/CP (DFQD1)
+                                                                 0.201602 r
+  library hold time                                   0.006522   0.208124
+  data required time                                             0.208124
+  ------------------------------------------------------------------------------
+  data required time                                             0.208124
+  data arrival time                                              -0.319805
+  ------------------------------------------------------------------------------
+  slack (MET)                                                    0.111681
 
 
-  Startpoint: y[31] (input port clocked by vclk)
-  Endpoint: result[31] (output port clocked by vclk)
-  Path Group: vclk
+  Startpoint: mantissa_core/shared_plane_stage4_reg_0_
+               (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: mantissa_core/division_scale/partial_1_stage_reg_2__4_
+               (rising edge-triggered flip-flop clocked by clk)
+  Last common pin: clk
+  Path Group: clk
   Path Type: min
 
-  Point                                    Incr       Path
-  ---------------------------------------------------------------
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  input external delay                 0.020000   0.020000 r
-  y[31] (in)                           0.007447 & 0.027447 r
-  FE_OFC27_y_31/Z (CKBD0)              0.062275 & 0.089722 r
-  U691/ZN (OAI21D0)                    0.041140 & 0.130862 f
-  U471/ZN (AOI21D0)                    0.102816 & 0.233678 r
-  U0/Z (BUFFD0)                        0.088538 & 0.322216 r
-  result[31] (out)                     0.000228 & 0.322444 r
-  data arrival time                               0.322444
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.120029   0.120029
+  mantissa_core/shared_plane_stage4_reg_0_/CP (DFQD4) 0.000000   0.120029 r
+  mantissa_core/shared_plane_stage4_reg_0_/Q (DFQD4)  0.086325 & 0.206355 f
+  mantissa_core/FE_PHC1525_shared_plane_stage4_0/Z (BUFFD3)
+                                                      0.040987 & 0.247342 f
+  mantissa_core/division_scale/U257/ZN (INVD0)        0.040567 & 0.287909 r
+  mantissa_core/division_scale/U595/ZN (NR2D0)        0.022718 & 0.310627 f
+  mantissa_core/division_scale/FE_PHC1571_partial_1_2__4/Z (BUFFD1)
+                                                      0.030258 & 0.340885 f
+  mantissa_core/division_scale/partial_1_stage_reg_2__4_/D (DFQD1)
+                                                      0.000006 & 0.340891 f
+  data arrival time                                              0.340891
 
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  clock reconvergence pessimism        0.000000   0.000000
-  output external delay                -0.020000  -0.020000
-  data required time                              -0.020000
-  ---------------------------------------------------------------
-  data required time                              -0.020000
-  data arrival time                               -0.322444
-  ---------------------------------------------------------------
-  slack (MET)                                     0.342444
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.121602   0.121602
+  clock reconvergence pessimism                       0.000000   0.121602
+  clock uncertainty                                   0.080000   0.201602
+  mantissa_core/division_scale/partial_1_stage_reg_2__4_/CP (DFQD1)
+                                                                 0.201602 r
+  library hold time                                   0.024577   0.226179
+  data required time                                             0.226179
+  ------------------------------------------------------------------------------
+  data required time                                             0.226179
+  data arrival time                                              -0.340891
+  ------------------------------------------------------------------------------
+  slack (MET)                                                    0.114712
 
 
-  Startpoint: x[17] (input port clocked by vclk)
-  Endpoint: result[31] (output port clocked by vclk)
-  Path Group: vclk
+  Startpoint: y[20] (input port clocked by clk)
+  Endpoint: mantissa_core/y_stage1_reg_20_
+               (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
   Path Type: min
 
-  Point                                    Incr       Path
-  ---------------------------------------------------------------
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  input external delay                 0.020000   0.020000 r
-  x[17] (in)                           0.010039 & 0.030039 r
-  FE_OFC1138_x_17/Z (BUFFD2)           0.031135 & 0.061175 r
-  U680/ZN (NR4D0)                      0.022580 & 0.083755 f
-  U683/ZN (ND3D0)                      0.023524 & 0.107279 r
-  U684/Z (OA31D0)                      0.047084 & 0.154363 r
-  U474/ZN (NR2D1)                      0.043331 & 0.197694 f
-  U691/ZN (OAI21D0)                    0.040022 & 0.237716 r
-  U471/ZN (AOI21D0)                    0.052027 & 0.289743 f
-  U0/Z (BUFFD0)                        0.073431 & 0.363173 f
-  result[31] (out)                     0.000228 & 0.363402 f
-  data arrival time                               0.363402
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.000000   0.000000
+  input external delay                                0.020000   0.020000 r
+  y[20] (in)                                          0.014552 & 0.034552 r
+  FE_PHC1542_y_20/Z (DEL01)                           0.105768 & 0.140321 r
+  FE_OFC146_y_20/Z (CKBD1)                            0.044538 & 0.184859 r
+  mantissa_core/FE_OFC147_y_20/ZN (CKND1)             0.025621 & 0.210481 f
+  mantissa_core/FE_PHC1620_n45/Z (DEL005)             0.047988 & 0.258469 f
+  mantissa_core/FE_PHC1651_n45/Z (CKBD1)              0.022937 & 0.281406 f
+  mantissa_core/FE_OFC149_y_20/ZN (CKND1)             0.040594 & 0.322000 r
+  mantissa_core/y_stage1_reg_20_/D (DFQD1)            0.000112 & 0.322112 r
+  data arrival time                                              0.322112
 
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  clock reconvergence pessimism        0.000000   0.000000
-  output external delay                -0.020000  -0.020000
-  data required time                              -0.020000
-  ---------------------------------------------------------------
-  data required time                              -0.020000
-  data arrival time                               -0.363402
-  ---------------------------------------------------------------
-  slack (MET)                                     0.383402
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.119369   0.119369
+  clock reconvergence pessimism                       0.000000   0.119369
+  clock uncertainty                                   0.080000   0.199369
+  mantissa_core/y_stage1_reg_20_/CP (DFQD1)                      0.199369 r
+  library hold time                                   0.000972   0.200341
+  data required time                                             0.200341
+  ------------------------------------------------------------------------------
+  data required time                                             0.200341
+  data arrival time                                              -0.322112
+  ------------------------------------------------------------------------------
+  slack (MET)                                                    0.121770
 
 
-  Startpoint: x[15] (input port clocked by vclk)
-  Endpoint: result[31] (output port clocked by vclk)
-  Path Group: vclk
+  Startpoint: mantissa_core/shared_plane_stage4_reg_0_
+               (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: mantissa_core/division_scale/partial_1_stage_reg_2__4_
+               (rising edge-triggered flip-flop clocked by clk)
+  Last common pin: clk
+  Path Group: clk
   Path Type: min
 
-  Point                                    Incr       Path
-  ---------------------------------------------------------------
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  input external delay                 0.020000   0.020000 r
-  x[15] (in)                           0.014764 & 0.034764 r
-  FE_OFC1140_x_15/Z (BUFFD4)           0.030379 & 0.065143 r
-  U682/ZN (NR4D0)                      0.019099 & 0.084243 f
-  U683/ZN (ND3D0)                      0.026120 & 0.110363 r
-  U684/Z (OA31D0)                      0.047084 & 0.157447 r
-  U474/ZN (NR2D1)                      0.043331 & 0.200778 f
-  U691/ZN (OAI21D0)                    0.040022 & 0.240800 r
-  U471/ZN (AOI21D0)                    0.052027 & 0.292827 f
-  U0/Z (BUFFD0)                        0.073431 & 0.366258 f
-  result[31] (out)                     0.000228 & 0.366486 f
-  data arrival time                               0.366486
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.120029   0.120029
+  mantissa_core/shared_plane_stage4_reg_0_/CP (DFQD4) 0.000000   0.120029 r
+  mantissa_core/shared_plane_stage4_reg_0_/Q (DFQD4)  0.079576 & 0.199606 r
+  mantissa_core/FE_PHC1525_shared_plane_stage4_0/Z (BUFFD3)
+                                                      0.038187 & 0.237793 r
+  mantissa_core/division_scale/U257/ZN (INVD0)        0.031632 & 0.269424 f
+  mantissa_core/division_scale/U595/ZN (NR2D0)        0.039749 & 0.309173 r
+  mantissa_core/division_scale/FE_PHC1571_partial_1_2__4/Z (BUFFD1)
+                                                      0.032725 & 0.341898 r
+  mantissa_core/division_scale/partial_1_stage_reg_2__4_/D (DFQD1)
+                                                      0.000006 & 0.341904 r
+  data arrival time                                              0.341904
 
-  clock vclk (rise edge)               0.000000   0.000000
-  clock network delay (ideal)          0.000000   0.000000
-  clock reconvergence pessimism        0.000000   0.000000
-  output external delay                -0.020000  -0.020000
-  data required time                              -0.020000
-  ---------------------------------------------------------------
-  data required time                              -0.020000
-  data arrival time                               -0.366486
-  ---------------------------------------------------------------
-  slack (MET)                                     0.386486
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (propagated)                    0.121602   0.121602
+  clock reconvergence pessimism                       0.000000   0.121602
+  clock uncertainty                                   0.080000   0.201602
+  mantissa_core/division_scale/partial_1_stage_reg_2__4_/CP (DFQD1)
+                                                                 0.201602 r
+  library hold time                                   0.006522   0.208124
+  data required time                                             0.208124
+  ------------------------------------------------------------------------------
+  data required time                                             0.208124
+  data arrival time                                              -0.341904
+  ------------------------------------------------------------------------------
+  slack (MET)                                                    0.133780
 
-Warning: report_timing has satisfied the max_paths criteria. There are 31 further endpoints which have paths of interest with slack less than 1000.000000 that were not considered when generating this report. (UITE-502)
+Warning: report_timing has satisfied the max_paths criteria. There are 733 further endpoints which have paths of interest with slack less than 1000.000000 that were not considered when generating this report. (UITE-502)
 
 1

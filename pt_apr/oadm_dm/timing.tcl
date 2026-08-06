@@ -10,7 +10,7 @@ set clk_period 2
 
 # Used as setup/hold check pessimism margin, please adjust as needed
 # The pipelined block uses the propagated post-CTS clock for signoff.
-set clk_uncertainty 0.0
+set clk_uncertainty 0.08
 set clk_transition [expr 3*$fo4]
 
 # Pessimistic setting for hold time, please adjust as needed 

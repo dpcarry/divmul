@@ -9,7 +9,7 @@ catch { setAnalysisMode -cppr both }
 catch { setAnalysisMode -virtualIPO false }
 catch { setOptMode -activeHoldViews { tt25_typical ff0_cbest ff0_rcbest ffm40_cbest ffm40_rcbest ff125_cbest ff125_rcbest } }
 catch { setOptMode -activeSetupViews { tt25_typical ss125_cworst ss125_rcworst ss0_cworst ss0_rcworst ssm40_cworst ssm40_rcworst } }
-catch { setOptMode -autoSetupViews {ssm40_cworst tt25_typical} }
+catch { setOptMode -autoSetupViews {ssm40_cworst ss125_cworst tt25_typical} }
 catch { setOptMode -deleteInst true }
 catch { setOptMode -drcMargin 0 }
 catch { setOptMode -effort high }
@@ -20,12 +20,15 @@ catch { setOptMode -holdTargetSlack 0.03 }
 catch { setOptMode -maxDensity 0.95 }
 catch { setOptMode -moveInst true }
 catch { setOptMode -optimizeFF true }
+catch { setOptMode -preserveAllSequential false }
 catch { setOptMode -reclaimArea true }
 catch { setOptMode -setupTargetSlack 0.08 }
 catch { setOptMode -simplifyNetlist false }
 catch { setOptMode -usefulSkew false }
 catch { setOptMode -yieldEffort none }
-catch { setPathGroupOptions in2out -late -slackAdjustment -0 }
+catch { setPathGroupOptions reg2reg -effortLevel high -weight 2 }
+catch { setPathGroupOptions reg2reg -late -slackAdjustment -0 }
+catch { setPathGroupOptions default -late -slackAdjustment -0 }
 catch { setExtractRCMode  -effortLevel low -engine postRoute -total_c_th 0 -relative_c_th 1 -coupling_c_th 0.1 -minNetTermNrToBeInMem 50 }
 catch {setNanoRouteMode -quiet -drouteAntennaFactor 1.000000}
 catch {setNanoRouteMode -quiet -drouteElapsedTimeLimit 0}
@@ -52,7 +55,6 @@ catch {setNanoRouteMode -quiet -routeWithViaOnlyForStandardCellPin "false"}
 catch { setPlaceMode -place_global_cong_effort high }
 catch { setPlaceMode -timingDriven true }
 catch { setIlmMode -keepHighFanoutPorts true -keepLoopBack false -keepInstInSdc false -keepFlatten true }
-catch { setActiveLogicViewMode -keepHighFanoutCriticalInsts false }
 catch { setDelayCalMode -enable_high_fanout true }
 catch { setDelayCalMode -engine aae }
 catch { setDelayCalMode -ignoreNetLoad false }
@@ -62,12 +64,12 @@ catch { setPinAssignMode -maxLayer 5 }
 catch { setHierMode -disableArt false }
 catch { setHierMode -reportPostRouteArtTiming false }
 catch { setHierMode -trialRouteHonorReadOnly false }
-catch { setImportMode -config true }
 catch { setImportMode -discardFloatingVNets false }
 catch { setImportMode -keepEmptyModule true }
 catch { setImportMode -treatUndefinedCellAsBbox false }
 catch { setSIMode -separate_delta_delay_on_data true }
 catch { setRouteMode -earlyGlobalMaxRouteLayer 5 }
+catch { setRouteMode -earlyGlobalMinRouteLayer 2 }
 catch { setRouteMode -earlyGlobalRouteSecondPG false }
 catch { setFPlanMode -cellsForExtraSites {} }
 catch { setFPlanMode -defaultTechSite core }

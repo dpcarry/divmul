@@ -37,10 +37,13 @@ report_qor > "${top_level}.pt.qor.rpt"
 
 # Setup and hold worst paths
 report_timing -significant_digits 4 -delay_type max -nworst 1 -path full \
+  -slack_lesser_than 1000 \
   > "${top_level}.pt.critical_path.rpt"
 report_timing -significant_digits 4 -delay_type max -nworst 10 -path full \
+  -slack_lesser_than 1000 \
   > "${top_level}.pt.setup.rpt"
 report_timing -significant_digits 4 -delay_type min -nworst 10 -path full \
+  -slack_lesser_than 1000 \
   > "${top_level}.pt.hold.rpt"
 report_constraint -all_violators -max_delay > "${top_level}.pt.setup.violations.rpt"
 report_constraint -all_violators -min_delay > "${top_level}.pt.hold.violations.rpt"

@@ -1,1 +1,0 @@
-/homes/user/stud/fall25/pd2827/ee6321/research/dc/oadm_dm/oadm_dm.syn.mod.sdc

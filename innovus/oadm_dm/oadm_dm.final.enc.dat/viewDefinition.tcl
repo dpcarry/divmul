@@ -194,18 +194,18 @@ create_delay_corner -name dc_ss125_rcworst\
    -rc_corner rc_rcworst_125
 create_constraint_mode -name functional_2ns\
    -sdc_files\
-    [list ${::IMEX::libVar}/mmmc/apr_timing.sdc]
-create_analysis_view -name ff0_cbest -constraint_mode functional_2ns -delay_corner dc_ff0_cbest
-create_analysis_view -name ff125_cbest -constraint_mode functional_2ns -delay_corner dc_ff125_cbest
-create_analysis_view -name ff0_rcbest -constraint_mode functional_2ns -delay_corner dc_ff0_rcbest
-create_analysis_view -name ss0_rcworst -constraint_mode functional_2ns -delay_corner dc_ss0_rcworst
-create_analysis_view -name ffm40_cbest -constraint_mode functional_2ns -delay_corner dc_ffm40_cbest
-create_analysis_view -name ssm40_cworst -constraint_mode functional_2ns -delay_corner dc_ssm40_cworst
-create_analysis_view -name ss125_cworst -constraint_mode functional_2ns -delay_corner dc_ss125_cworst
-create_analysis_view -name tt25_typical -constraint_mode functional_2ns -delay_corner dc_tt_typical
-create_analysis_view -name ffm40_rcbest -constraint_mode functional_2ns -delay_corner dc_ffm40_rcbest
-create_analysis_view -name ss0_cworst -constraint_mode functional_2ns -delay_corner dc_ss0_cworst
-create_analysis_view -name ssm40_rcworst -constraint_mode functional_2ns -delay_corner dc_ssm40_rcworst
-create_analysis_view -name ff125_rcbest -constraint_mode functional_2ns -delay_corner dc_ff125_rcbest
-create_analysis_view -name ss125_rcworst -constraint_mode functional_2ns -delay_corner dc_ss125_rcworst
+    [list ${::IMEX::dataVar}/mmmc/modes/functional_2ns/functional_2ns.sdc]
+create_analysis_view -name ff0_cbest -constraint_mode functional_2ns -delay_corner dc_ff0_cbest -latency_file ${::IMEX::dataVar}/mmmc/views/ff0_cbest/latency.sdc
+create_analysis_view -name ff125_cbest -constraint_mode functional_2ns -delay_corner dc_ff125_cbest -latency_file ${::IMEX::dataVar}/mmmc/views/ff125_cbest/latency.sdc
+create_analysis_view -name ff0_rcbest -constraint_mode functional_2ns -delay_corner dc_ff0_rcbest -latency_file ${::IMEX::dataVar}/mmmc/views/ff0_rcbest/latency.sdc
+create_analysis_view -name ss0_rcworst -constraint_mode functional_2ns -delay_corner dc_ss0_rcworst -latency_file ${::IMEX::dataVar}/mmmc/views/ss0_rcworst/latency.sdc
+create_analysis_view -name ffm40_cbest -constraint_mode functional_2ns -delay_corner dc_ffm40_cbest -latency_file ${::IMEX::dataVar}/mmmc/views/ffm40_cbest/latency.sdc
+create_analysis_view -name ssm40_cworst -constraint_mode functional_2ns -delay_corner dc_ssm40_cworst -latency_file ${::IMEX::dataVar}/mmmc/views/ssm40_cworst/latency.sdc
+create_analysis_view -name ss125_cworst -constraint_mode functional_2ns -delay_corner dc_ss125_cworst -latency_file ${::IMEX::dataVar}/mmmc/views/ss125_cworst/latency.sdc
+create_analysis_view -name tt25_typical -constraint_mode functional_2ns -delay_corner dc_tt_typical -latency_file ${::IMEX::dataVar}/mmmc/views/tt25_typical/latency.sdc
+create_analysis_view -name ffm40_rcbest -constraint_mode functional_2ns -delay_corner dc_ffm40_rcbest -latency_file ${::IMEX::dataVar}/mmmc/views/ffm40_rcbest/latency.sdc
+create_analysis_view -name ss0_cworst -constraint_mode functional_2ns -delay_corner dc_ss0_cworst -latency_file ${::IMEX::dataVar}/mmmc/views/ss0_cworst/latency.sdc
+create_analysis_view -name ssm40_rcworst -constraint_mode functional_2ns -delay_corner dc_ssm40_rcworst -latency_file ${::IMEX::dataVar}/mmmc/views/ssm40_rcworst/latency.sdc
+create_analysis_view -name ff125_rcbest -constraint_mode functional_2ns -delay_corner dc_ff125_rcbest -latency_file ${::IMEX::dataVar}/mmmc/views/ff125_rcbest/latency.sdc
+create_analysis_view -name ss125_rcworst -constraint_mode functional_2ns -delay_corner dc_ss125_rcworst -latency_file ${::IMEX::dataVar}/mmmc/views/ss125_rcworst/latency.sdc
 set_analysis_view -setup [list tt25_typical ss125_cworst ss125_rcworst ss0_cworst ss0_rcworst ssm40_cworst ssm40_rcworst] -hold [list tt25_typical ff0_cbest ff0_rcbest ffm40_cbest ffm40_rcbest ff125_cbest ff125_rcbest]

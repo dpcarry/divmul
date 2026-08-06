@@ -6,110 +6,95 @@ Report : timing
 	-sort_by slack
 Design : oadm_dm
 Version: U-2022.12-SP5
-Date   : Fri Jul 31 23:41:47 2026
+Date   : Mon Aug  3 21:53:51 2026
 ****************************************
 
 
-  Startpoint: y[1] (input port clocked by vclk)
-  Endpoint: result[1] (output port clocked by vclk)
-  Path Group: vclk
+  Startpoint: mantissa_core/shared_plane_stage4_reg_1_
+               (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: mantissa_core/division_scale/partial_1_stage_reg_2__33_
+               (rising edge-triggered flip-flop clocked by clk)
+  Last common pin: clk
+  Path Group: clk
   Path Type: max
 
   Point                                                   Incr       Path
   ------------------------------------------------------------------------------
-  clock vclk (rise edge)                                0.0000     0.0000
-  clock network delay (ideal)                           0.0000     0.0000
-  input external delay                                  0.0200     0.0200 f
-  y[1] (in)                                             0.0120 &   0.0320 f
-  FE_OCPC1189_y_1/Z (BUFFD6)                            0.0389 &   0.0709 f
-  mantissa_core/FE_OCPC1259_FE_OFN50_y_1/ZN (INVD6)     0.0118 &   0.0827 r
-  mantissa_core/U1416/Z (AN2D8)                         0.0445 &   0.1272 r
-  mantissa_core/U1231/ZN (CKND2D8)                      0.0265 &   0.1537 f
-  mantissa_core/U630/ZN (ND2D8)                         0.0179 &   0.1716 r
-  mantissa_core/FE_RC_98_0/ZN (ND3D8)                   0.0297 &   0.2012 f
-  mantissa_core/U1411/ZN (CKND2D4)                      0.0210 &   0.2222 r
-  mantissa_core/FE_RC_84_0/ZN (IND2D4)                  0.0159 &   0.2381 f
-  mantissa_core/U2637/ZN (CKND2D4)                      0.0209 &   0.2590 r
-  mantissa_core/U2635/ZN (ND2D4)                        0.0197 &   0.2787 f
-  mantissa_core/U2629/ZN (INVD4)                        0.0139 &   0.2926 r
-  mantissa_core/FE_RC_26_0/ZN (AOI21D4)                 0.0146 &   0.3072 f
-  mantissa_core/U2902/ZN (OAI21D4)                      0.0409 &   0.3481 r
-  mantissa_core/U2899_dup/ZN (AOI21D4)                  0.0371 &   0.3852 f
-  mantissa_core/U3681/ZN (OAI21D4)                      0.0375 &   0.4226 r
-  mantissa_core/U3521/ZN (XNR2D1)                       0.0653 &   0.4879 r
-  mantissa_core/FE_RC_1514_0/Z (AN2D4)                  0.0395 &   0.5275 r
-  mantissa_core/csa_level_0/FE_RC_907_0/ZN (XNR3D4)     0.0966 &   0.6241 r
-  mantissa_core/csa_level_0/FE_RC_908_0/ZN (INVD4)      0.0159 &   0.6400 f
-  mantissa_core/csa_level_1/U25/ZN (IOA21D2)            0.0172 &   0.6572 r
-  mantissa_core/csa_level_1/FE_RC_218_0/ZN (CKND2D4)    0.0219 &   0.6791 f
-  mantissa_core/U726/ZN (NR2XD4)                        0.0220 &   0.7011 r
-  mantissa_core/FE_RC_28_0/ZN (OAI21D4)                 0.0219 &   0.7230 f
-  mantissa_core/U2488/ZN (AOI21D4)                      0.0428 &   0.7658 r
-  mantissa_core/U3214/ZN (OAI21D4)                      0.0337 &   0.7995 f
-  mantissa_core/U1154/ZN (AOI21D4)                      0.0379 &   0.8374 r
-  mantissa_core/U728/ZN (OAI211D4)                      0.0394 &   0.8768 f
-  mantissa_core/FE_OCPC1358_n3393/ZN (INVD6)            0.0241 &   0.9009 r
-  mantissa_core/FE_OCPC1360_n3393/ZN (INVD4)            0.0112 &   0.9121 f
-  mantissa_core/U1180/ZN (AOI21D4)                      0.0221 &   0.9343 r
-  mantissa_core/U3515/Z (CKXOR2D4)                      0.0712 &   1.0055 f
-  mantissa_core/division_scale/FE_RC_632_0/Z (BUFFD4)   0.0376 &   1.0431 f
-  mantissa_core/division_scale/U790/ZN (ND2D4)          0.0154 &   1.0585 r
-  mantissa_core/division_scale/U619/ZN (INVD4)          0.0103 &   1.0688 f
-  mantissa_core/division_scale/U985/S (FA1D2)           0.0729 &   1.1417 r
-  mantissa_core/division_scale/FE_RC_741_0/ZN (CKND2D2)
-                                                        0.0213 &   1.1630 f
-  mantissa_core/division_scale/FE_RC_740_0/ZN (ND2D3)   0.0249 &   1.1878 r
-  mantissa_core/division_scale/U744/Z (XOR3D2)          0.1057 &   1.2935 r
-  mantissa_core/division_scale/FE_RC_1323_0/ZN (ND2D3)
-                                                        0.0216 &   1.3151 f
-  mantissa_core/division_scale/FE_RC_1318_0/ZN (OAI21D4)
-                                                        0.0249 &   1.3400 r
-  mantissa_core/division_scale/U452/ZN (ND2D4)          0.0223 &   1.3623 f
-  mantissa_core/division_scale/FE_RC_1641_0/ZN (OAI21D4)
-                                                        0.0304 &   1.3927 r
-  mantissa_core/division_scale/U838/ZN (AOI21D4)        0.0196 &   1.4124 f
-  mantissa_core/division_scale/FE_RC_1994_0/ZN (OAI21D4)
-                                                        0.0251 &   1.4375 r
-  mantissa_core/division_scale/FE_RC_1971_0_dup/ZN (AOI21D4)
-                                                        0.0309 &   1.4684 f
-  mantissa_core/division_scale/U669/ZN (OAI21D4)        0.0364 &   1.5048 r
-  mantissa_core/division_scale/FE_RC_600_0/ZN (AOI21D4)
-                                                        0.0252 &   1.5300 f
-  mantissa_core/division_scale/U238/ZN (NR2D2)          0.0238 &   1.5538 r
-  mantissa_core/division_scale/U187/ZN (CKND2)          0.0161 &   1.5699 f
-  mantissa_core/division_scale/U257/ZN (CKND2D4)        0.0168 &   1.5868 r
-  mantissa_core/U3082/ZN (ND2D4)                        0.0182 &   1.6050 f
-  mantissa_core/U1051/ZN (CKND2D8)                      0.0264 &   1.6313 r
-  U585/ZN (NR2XD8)                                      0.0230 &   1.6543 f
-  FE_OCPC1309_n347/ZN (INVD16)                          0.0190 &   1.6733 r
-  FE_OCPC1310_n347/ZN (INVD16)                          0.0177 &   1.6910 f
-  U583/ZN (ND2D8)                                       0.0206 &   1.7116 r
-  FE_OCPC1211_n346/ZN (INVD12)                          0.0140 &   1.7256 f
-  FE_OCPC1213_n346/ZN (INVD12)                          0.0147 &   1.7402 r
-  U261_dup/ZN (INR2D4)                                  0.0103 &   1.7506 f
-  U270/ZN (CKND4)                                       0.0123 &   1.7629 r
-  U265/ZN (ND4D4)                                       0.0361 &   1.7990 f
-  FE_RC_1187_0/ZN (INVD4)                               0.0187 &   1.8176 r
-  FE_RC_1186_0/ZN (ND2D4)                               0.0165 &   1.8341 f
-  FE_RC_35_0/ZN (NR3D4)                                 0.0225 &   1.8567 r
-  FE_RC_408_0/ZN (ND3D4)                                0.0252 &   1.8819 f
-  U587_dup/Z (AN2D4)                                    0.0349 &   1.9168 f
-  U302/ZN (ND2D4)                                       0.0178 &   1.9346 r
-  FE_OFC581_n325/Z (BUFFD12)                            0.0297 &   1.9643 r
-  U499/ZN (INR2D4)                                      0.0113 &   1.9755 f
-  result[1] (out)                                       0.0000 &   1.9756 f
-  data arrival time                                                1.9756
+  clock clk (rise edge)                                 0.0000     0.0000
+  clock network delay (propagated)                      0.1212     0.1212
+  mantissa_core/shared_plane_stage4_reg_1_/CP (DFQD4)   0.0000     0.1212 r
+  mantissa_core/shared_plane_stage4_reg_1_/Q (DFQD4)    0.0792 &   0.2004 r
+  mantissa_core/FE_PHC1541_shared_plane_stage4_1/Z (BUFFD3)
+                                                        0.0381 &   0.2385 r
+  mantissa_core/division_scale/FE_OFC101_shared_plane_stage4_1/ZN (INVD2)
+                                                        0.0206 &   0.2591 f
+  mantissa_core/division_scale/U509/ZN (NR2D1)          0.0342 &   0.2933 r
+  mantissa_core/division_scale/U11/CO (HA1D0)           0.0603 &   0.3536 r
+  mantissa_core/division_scale/U534/CO (FA1D1)          0.0461 &   0.3997 r
+  mantissa_core/division_scale/U533/CO (FA1D1)          0.0428 &   0.4425 r
+  mantissa_core/division_scale/U301/CO (FA1D1)          0.0413 &   0.4838 r
+  mantissa_core/division_scale/U532/CO (FA1D1)          0.0632 &   0.5470 r
+  mantissa_core/division_scale/FE_RC_1137_0/ZN (OAI211D4)
+                                                        0.0314 &   0.5785 f
+  mantissa_core/division_scale/FE_RC_860_0/ZN (CKND2D2)
+                                                        0.0289 &   0.6073 r
+  mantissa_core/division_scale/FE_RC_858_0/ZN (IND2D4)
+                                                        0.0190 &   0.6264 f
+  mantissa_core/division_scale/FE_RC_491_0/ZN (CKND2D4)
+                                                        0.0219 &   0.6482 r
+  mantissa_core/division_scale/FE_RC_214_0/ZN (IND2D4)
+                                                        0.0177 &   0.6659 f
+  mantissa_core/division_scale/FE_RC_213_0/ZN (CKND2D4)
+                                                        0.0197 &   0.6856 r
+  mantissa_core/division_scale/FE_RC_444_0/ZN (IND2D4)
+                                                        0.0180 &   0.7036 f
+  mantissa_core/division_scale/FE_RC_443_0/ZN (CKND2D4)
+                                                        0.0230 &   0.7266 r
+  mantissa_core/division_scale/FE_RC_2113_0/ZN (IND2D4)
+                                                        0.0247 &   0.7513 f
+  mantissa_core/division_scale/FE_RC_2112_0/ZN (ND3D8)
+                                                        0.0175 &   0.7688 r
+  mantissa_core/division_scale/FE_RC_94_0/ZN (IND2D4)   0.0205 &   0.7893 f
+  mantissa_core/division_scale/FE_RC_786_0/ZN (IND2D4)
+                                                        0.0157 &   0.8050 r
+  mantissa_core/division_scale/FE_RC_785_0/ZN (ND2D4)   0.0177 &   0.8227 f
+  mantissa_core/division_scale/FE_RC_1175_0/ZN (OAI21D4)
+                                                        0.0305 &   0.8532 r
+  mantissa_core/division_scale/FE_RC_317_0/ZN (IND2D4)
+                                                        0.0191 &   0.8722 f
+  mantissa_core/division_scale/FE_RC_316_0/ZN (CKND2D4)
+                                                        0.0197 &   0.8919 r
+  mantissa_core/division_scale/FE_RC_1039_0/ZN (ND2D3)
+                                                        0.0228 &   0.9148 f
+  mantissa_core/division_scale/FE_RC_1388_0/ZN (IND2D4)
+                                                        0.0173 &   0.9321 r
+  mantissa_core/division_scale/FE_RC_1438_0/ZN (IND2D4)
+                                                        0.0190 &   0.9511 f
+  mantissa_core/division_scale/FE_RC_2407_0/ZN (OAI211D4)
+                                                        0.0239 &   0.9750 r
+  mantissa_core/division_scale/U514/CO (FA1D1)          0.0442 &   1.0192 r
+  mantissa_core/division_scale/U513/CO (FA1D1)          0.0436 &   1.0628 r
+  mantissa_core/division_scale/U512/CO (FA1D1)          0.0461 &   1.1089 r
+  mantissa_core/division_scale/U511/CO (FA1D1)          0.0439 &   1.1529 r
+  mantissa_core/division_scale/U535/CO (FA1D1)          0.0432 &   1.1960 r
+  mantissa_core/division_scale/U536/S (FA1D1)           0.0586 &   1.2546 r
+  mantissa_core/division_scale/partial_1_stage_reg_2__33_/D (DFQD1)
+                                                        0.0000 &   1.2546 r
+  data arrival time                                                1.2546
 
-  clock vclk (rise edge)                                2.0000     2.0000
-  clock network delay (ideal)                           0.0000     2.0000
-  clock reconvergence pessimism                         0.0000     2.0000
-  output external delay                                -0.0200     1.9800
-  data required time                                               1.9800
+  clock clk (rise edge)                                 2.0000     2.0000
+  clock network delay (propagated)                      0.1216     2.1216
+  clock reconvergence pessimism                         0.0000     2.1216
+  clock uncertainty                                    -0.0800     2.0416
+  mantissa_core/division_scale/partial_1_stage_reg_2__33_/CP (DFQD1)
+                                                                   2.0416 r
+  library setup time                                   -0.0055     2.0361
+  data required time                                               2.0361
   ------------------------------------------------------------------------------
-  data required time                                               1.9800
-  data arrival time                                               -1.9756
+  data required time                                               2.0361
+  data arrival time                                               -1.2546
   ------------------------------------------------------------------------------
-  slack (MET)                                                      0.0044
+  slack (MET)                                                      0.7814
 
 
 1
