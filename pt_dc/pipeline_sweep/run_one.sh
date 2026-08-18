@@ -2,14 +2,14 @@
 set -euo pipefail
 
 if [[ $# -ne 2 ]]; then
-    echo "Usage: $0 <runtime|fixed_l4> <np|p2|...|p7>" >&2
+    echo "Usage: $0 <runtime|fixed_l0|...|fixed_l4> <np|p2|...|p7>" >&2
     exit 2
 fi
 
 config=$1
 depth=$2
 case "$config" in
-    runtime|fixed_l4) ;;
+    runtime|fixed_l[0-4]) ;;
     *) echo "ERROR: unsupported config $config" >&2; exit 2 ;;
 esac
 case "$depth" in

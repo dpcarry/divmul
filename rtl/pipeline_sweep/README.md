@@ -5,8 +5,8 @@ published seven-cycle baseline in `rtl/fixed`. The arithmetic equations and
 Q5.23/Q0.8 truncation are unchanged.
 
 `oadm_dm_pipe` supports runtime `divide_mode` and runtime levels L0--L4.
-`oadm_dm_fixed_pipe` ties the level at elaboration so the same source can also
-produce per-level minimum-PPA implementations.
+`oadm_dm_fixed_pipe` ties L0--L4 at elaboration so the same source produces
+per-level pipeline-depth sweeps without duplicating the arithmetic RTL.
 
 ## Logical segments
 

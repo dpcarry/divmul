@@ -1,11 +1,12 @@
 # RAPID-style pipeline-depth synthesis sweep
 
-This flow compares NP and balanced P2--P7 partitions for both the runtime L0--L4
-implementation and the constant-tied fixed-L4 implementation. Both are generated
+This flow compares NP and balanced P2--P7 partitions for the runtime L0--L4
+implementation and constant-tied fixed L0--L4 implementations. All are generated
 from `rtl/pipeline_sweep/oadm_dm_pipe.v`.
 
 ```bash
 make nominal
+make fixed-levels
 ./run_one.sh runtime p5 1.7
 ```
 

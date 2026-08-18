@@ -21,6 +21,7 @@ DEPTHS = {
     "p6": (6, 1.5),
     "p7": (7, 1.5),
 }
+CONFIGS = ("runtime", "fixed_l0", "fixed_l1", "fixed_l2", "fixed_l3", "fixed_l4")
 
 
 def read(path):
@@ -53,7 +54,7 @@ def fmt(value, digits=4):
 
 
 rows = []
-for config in ("runtime", "fixed_l4"):
+for config in CONFIGS:
     for depth, (stages, period) in DEPTHS.items():
         top = f"oadm_{config}_{depth}"
         dc_dir = DC_ROOT / config / depth
@@ -101,7 +102,7 @@ for row in rows:
     )
 
 with OUT_CSV.open("w", newline="") as output:
-    writer = csv.DictWriter(output, fieldnames=rows[0].keys())
+    writer = csv.DictWriter(output, fieldnames=rows[0].keys(), lineterminator="\n")
     writer.writeheader()
     writer.writerows(rows)
 
@@ -109,12 +110,12 @@ lines = [
     "# Pipeline-depth results",
     "",
     "All configurations implement the same FP32 approximation family. Runtime",
-    "designs accept L0--L4 and MUL/DIV selections every cycle; fixed-L4 designs",
-    "tie only the level input. Power is vectorless and intended for relative",
+    "designs accept L0--L4 and MUL/DIV selections every cycle; fixed-level designs",
+    "tie the level input at elaboration. Power is vectorless and intended for relative",
     "comparison, not workload-specific signoff.",
     "",
 ]
-for config in ("runtime", "fixed_l4"):
+for config in CONFIGS:
     lines.extend(
         [
             f"## {config}",
@@ -146,6 +147,30 @@ lines.extend(
         "is not rounded into a pass in this summary.",
     ]
 )
+
+lines.extend(
+    [
+        "",
+        "## Fixed-level 1.5 ns comparison",
+        "",
+        "| Level | P6 area (um^2) | P7 area (um^2) | P6 power (mW) | P7 power (mW) | P6/P7 latency (ns) |",
+        "|---|---:|---:|---:|---:|---:|",
+    ]
+)
+for level in range(5):
+    level_rows = {
+        row["depth"]: row
+        for row in rows
+        if row["configuration"] == f"fixed_l{level}"
+    }
+    level_p6 = level_rows["P6"]
+    level_p7 = level_rows["P7"]
+    lines.append(
+        f"| L{level} | {level_p6['dc_area_um2']:.2f} | "
+        f"{level_p7['dc_area_um2']:.2f} | {level_p6['pt_power_mw']:.4f} | "
+        f"{level_p7['pt_power_mw']:.4f} | "
+        f"{level_p6['latency_ns']:.2f} / {level_p7['latency_ns']:.2f} |"
+    )
 
 runtime_rows = {row["depth"]: row for row in rows if row["configuration"] == "runtime"}
 fixed_rows = {row["depth"]: row for row in rows if row["configuration"] == "fixed_l4"}

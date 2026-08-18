@@ -12,8 +12,8 @@ set config $::env(CONFIG)
 set depth $::env(DEPTH)
 if {$config eq "runtime"} {
     set top_level "oadm_runtime_${depth}"
-} elseif {$config eq "fixed_l4"} {
-    set top_level "oadm_fixed_l4_${depth}"
+} elseif {[regexp {^fixed_l[0-4]$} $config]} {
+    set top_level "oadm_${config}_${depth}"
 } else {
     puts "ERROR: unsupported CONFIG=$config"
     exit 2
