@@ -239,10 +239,12 @@ baseline, fused, shared, and separate comparisons.
 \section{Verification and Experimental Methodology}
 \subsection{Functional and Numerical Verification}
 RTL simulation was performed in ModelSim 2024.2. The numerical testbench
-compared each approximate output against real-valued $xy$ or $x/y$ over 1007
-finite normalized cases per operation and level. Metrics include mean relative
-error distance (MRED), relative root-mean-square error (R-RMSE), and maximum
-relative error.
+compared each approximate output against real-valued $xy$ or $x/y$ over 10,007
+finite normalized cases per operation and level. The campaign used 10,000
+deterministic random mantissa pairs with seed 6321 and seven directed boundary
+cases. Metrics include mean absolute error (MAE), mean relative error distance
+(MRED), absolute root-mean-square error (RMSE), relative RMSE (R-RMSE), and
+maximum relative error.
 
 To validate the fused scaler, the original and optimized scalers were compared
 over 100,000 deterministic value/index vectors for all levels. A second
@@ -270,33 +272,38 @@ PPA tables therefore report cell area and post-synthesis power.
 
 \section{Results}
 \subsection{Approximation Accuracy}
-Table~\ref{tab:accuracy} reports actual RTL simulation results. Each additional
-level sharply reduces error in both modes. At L3, multiplication and division
-R-RMSE are 0.0666\% and 0.1741\%, respectively.
+Table~\ref{tab:accuracy} reports actual P6 RTL simulation results. Correction
+depth reduces multiplication error monotonically. Division improves through
+L3, where R-RMSE reaches 0.1750\%, but regresses at L4 because the Q0.8
+reciprocal-square coefficient quantization exceeds the remaining plane error.
+The ideal-coefficient model remains monotonic at L4, isolating this effect from
+the fourth tangent-plane correction.
 
-\begin{table}[t]
-  \caption{RTL numerical error on normalized finite inputs (\%)}
+\begin{table*}[t]
+  \caption{P6 RTL numerical error on normalized finite inputs}
   \label{tab:accuracy}
   \centering
   \small
-  \begin{tabular}{ccrrr}
+  \begin{tabular}{ccrrrrr}
     \toprule
-    Mode & Level & MRED & R-RMSE & Max rel. \\
+    Mode & Level & MAE & MRED (\%) & RMSE & R-RMSE (\%) & Max rel. (\%) \\
     \midrule
-    \multirow{4}{*}{Mul}
-      & L0 & 3.0629 & 4.5431 & 25.0000 \\
-      & L1 & 0.7645 & 1.0762 & 6.2500 \\
-      & L2 & 0.1971 & 0.2751 & 1.5625 \\
-      & L3 & 0.0478 & 0.0666 & 0.3906 \\
+    \multirow{5}{*}{Mul}
+      & L0 & 0.061635 & 3.0610 & 0.082564 & 4.4693 & 25.0000 \\
+      & L1 & 0.015834 & 0.7667 & 0.021065 & 1.0761 & 6.2500 \\
+      & L2 & 0.003928 & 0.1881 & 0.005223 & 0.2609 & 1.5625 \\
+      & L3 & 0.000982 & 0.0471 & 0.001309 & 0.0654 & 0.3906 \\
+      & L4 & 0.000245 & 0.0117 & 0.000328 & 0.0163 & 0.0977 \\
     \midrule
-    \multirow{4}{*}{Div}
-      & L0 & 4.0541 & 6.3678 & 33.2030 \\
-      & L1 & 1.0590 & 1.6228 & 8.3808 \\
-      & L2 & 0.3985 & 0.5516 & 1.9979 \\
-      & L3 & 0.1423 & 0.1741 & 0.5982 \\
+    \multirow{5}{*}{Div}
+      & L0 & 0.044130 & 4.2984 & 0.069258 & 6.6082 & 33.2030 \\
+      & L1 & 0.012074 & 1.1211 & 0.019647 & 1.7039 & 9.4788 \\
+      & L2 & 0.004371 & 0.3924 & 0.006552 & 0.5445 & 2.7229 \\
+      & L3 & 0.001446 & 0.1425 & 0.001788 & 0.1750 & 0.5982 \\
+      & L4 & 0.002445 & 0.2540 & 0.002850 & 0.3021 & 0.7017 \\
     \bottomrule
   \end{tabular}
-\end{table}
+\end{table*}
 
 \placeholderfigure{1.42in}{Relative RMSE versus approximation level for
 multiplication and division, preferably using a logarithmic vertical axis.}
@@ -405,8 +412,8 @@ registers, and complete FP handling can dominate a minimal base approximation.
 Several limitations define the scope of the current claims. Power for the
 fixed-level designs is vectorless and should be replaced by workload-derived
 SAIF activity for final energy claims. The OAM multiplier comparison is not
-latency- or special-case-equivalent. L4 has been verified against the baseline
-L4 RTL but has not yet been included in the real-valued accuracy campaign.
+latency- or special-case-equivalent. The Q0.8 coefficient LUT also prevents
+division accuracy from improving monotonically at L4.
 Finally, fixed-level APR, extracted multi-corner signoff, and Calibre LVS/DRC
 results are not yet available for the fused variants.
 

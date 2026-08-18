@@ -23,7 +23,7 @@ delta_w_n = -delta_z_n + 2*x*sign(y[n]) / 2^(n+1)
 ```
 
 The script checks this result against the direct divider equation for every
-generated operand and level.
+generated operand and level. The campaign covers L0--L4.
 
 ## Ideal paper model
 

@@ -29,7 +29,6 @@ figures are available.
 ## Remaining publication checks
 
 - Fill in authors, affiliation, and the working-manuscript citation.
-- Add L4 real-valued accuracy measurements before claiming L4 accuracy.
 - Use workload-derived SAIF for final fixed-level power claims.
 - Run fixed-level APR and extracted multi-corner signoff if post-layout PPA is
   required by the target venue.

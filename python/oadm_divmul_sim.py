@@ -27,7 +27,7 @@ import sys
 from pathlib import Path
 
 
-LEVEL_COUNT = 4
+LEVEL_COUNT = 5
 MAX_FP32_MANTISSA = struct.unpack("!f", bytes.fromhex("3fffffff"))[0]
 
 
@@ -102,7 +102,7 @@ def quantize_unsigned_fraction(value, bits):
 def approximate_mantissa(x_mantissa, y_mantissa, level, divide_mode,
                          coefficient_bits=0):
     if not 0 <= level < LEVEL_COUNT:
-        raise ValueError("level must be in [0, 3]")
+        raise ValueError("level must be in [0, 4]")
 
     if not divide_mode:
         return multiplier_plane(x_mantissa, y_mantissa, level)
@@ -253,7 +253,7 @@ def verify_eq10_eq11(operands):
 def run_accuracy(operands, coefficient_bits, samples_path):
     stats = {}
     with samples_path.open("w", newline="") as sample_file:
-        writer = csv.writer(sample_file)
+        writer = csv.writer(sample_file, lineterminator="\n")
         writer.writerow([
             "case",
             "mode",
@@ -312,7 +312,9 @@ def write_summary(stats, csv_path, text_path, coefficient_bits,
     ]
 
     with csv_path.open("w", newline="") as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=SUMMARY_FIELDS)
+        writer = csv.DictWriter(
+            csv_file, fieldnames=SUMMARY_FIELDS, lineterminator="\n"
+        )
         writer.writeheader()
         for row in rows:
             writer.writerow(row)
@@ -403,6 +405,10 @@ def write_plot_data(rows, stats_path, sweep_path, coefficient_bits, sweep_y):
 def write_gnuplot_script(path, out_dir, stats_data, sweep_data, sweep_y):
     accuracy_png = out_dir / "accuracy_by_level.png"
     function_png = out_dir / "function_sweep.png"
+    mul_last_column = 2 + LEVEL_COUNT
+    div_exact_column = 3 + LEVEL_COUNT
+    div_first_column = 4 + LEVEL_COUNT
+    div_last_column = 3 + 2 * LEVEL_COUNT
     with path.open("w") as script:
         script.write("set terminal png size 1280,900\n")
         script.write("set grid\n")
@@ -439,14 +445,17 @@ def write_gnuplot_script(path, out_dir, stats_data, sweep_data, sweep_y):
         script.write("set ylabel 'x*y approximation'\n")
         script.write(
             "plot '%s' using 1:2 with lines lw 3 title 'exact', "
-            "for [column=3:6] '' using 1:column with lines "
-            "title sprintf('level %%d', column-3)\n" % sweep_data
+            "for [column=3:%d] '' using 1:column with lines "
+            "title sprintf('level %%d', column-3)\n" %
+            (sweep_data, mul_last_column)
         )
         script.write("set ylabel 'x/y approximation'\n")
         script.write(
-            "plot '%s' using 1:7 with lines lw 3 title 'exact', "
-            "for [column=8:11] '' using 1:column with lines "
-            "title sprintf('level %%d', column-8)\n" % sweep_data
+            "plot '%s' using 1:%d with lines lw 3 title 'exact', "
+            "for [column=%d:%d] '' using 1:column with lines "
+            "title sprintf('level %%d', column-%d)\n" %
+            (sweep_data, div_exact_column, div_first_column,
+             div_last_column, div_first_column)
         )
         script.write("unset multiplot\n")
     return accuracy_png, function_png
