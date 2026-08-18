@@ -17,12 +17,7 @@ module oadm_core_fixed #(
         $signed({{(CORE_WIDTH-INPUT_WIDTH){1'b0}}, x_mantissa});
     wire signed [CORE_WIDTH-1:0] y_input =
         $signed({{(CORE_WIDTH-INPUT_WIDTH){1'b0}}, y_mantissa});
-    wire [7:0] coefficient_input;
-
-    recip_lut_fixed #(.APPROX_LEVEL(APPROX_LEVEL)) reciprocal_lut (
-        .y_fraction_msb(y_mantissa[22:19]),
-        .reciprocal_square(coefficient_input)
-    );
+    wire [3:0] y_index_input = y_mantissa[22:19];
 
     reg signed [CORE_WIDTH-1:0] base_c1;
     reg signed [CORE_WIDTH-1:0] d1_c1;
@@ -40,7 +35,7 @@ module oadm_core_fixed #(
     reg signed [CORE_WIDTH-1:0] my_s1;
     reg signed [CORE_WIDTH-1:0] x_s1;
     reg signed [CORE_WIDTH-1:0] y_s1;
-    reg [7:0] coefficient_s1;
+    reg [3:0] y_index_s1;
     reg divide_s1;
 
     always @* begin
@@ -75,7 +70,7 @@ module oadm_core_fixed #(
         my_s1 <= my_c1;
         x_s1 <= x_input;
         y_s1 <= y_input;
-        coefficient_s1 <= coefficient_input;
+        y_index_s1 <= y_index_input;
         divide_s1 <= divide_mode;
     end
 
@@ -95,7 +90,7 @@ module oadm_core_fixed #(
     reg signed [CORE_WIDTH-1:0] my_s2;
     reg signed [CORE_WIDTH-1:0] x_s2;
     reg signed [CORE_WIDTH-1:0] y_s2;
-    reg [7:0] coefficient_s2;
+    reg [3:0] y_index_s2;
     reg divide_s2;
 
     always @* begin
@@ -125,7 +120,7 @@ module oadm_core_fixed #(
         my_s2 <= my_c2;
         x_s2 <= x_s1;
         y_s2 <= y_s1;
-        coefficient_s2 <= coefficient_s1;
+        y_index_s2 <= y_index_s1;
         divide_s2 <= divide_s1;
     end
 
@@ -149,7 +144,7 @@ module oadm_core_fixed #(
     reg signed [CORE_WIDTH-1:0] d2_s3;
     reg signed [CORE_WIDTH-1:0] d3_s3;
     reg signed [CORE_WIDTH-1:0] d4_s3;
-    reg [7:0] coefficient_s3;
+    reg [3:0] y_index_s3;
     reg divide_s3;
 
     always @* begin
@@ -188,7 +183,7 @@ module oadm_core_fixed #(
         d2_s3 <= d2_s2;
         d3_s3 <= d3_c3;
         d4_s3 <= d4_c3;
-        coefficient_s3 <= coefficient_s2;
+        y_index_s3 <= y_index_s2;
         divide_s3 <= divide_s2;
     end
 
@@ -219,19 +214,21 @@ module oadm_core_fixed #(
     assign shared_comb = sum2 + carry2;
 
     reg signed [CORE_WIDTH-1:0] shared_s4;
-    reg [7:0] coefficient_s4;
+    reg [3:0] y_index_s4;
     reg divide_s4;
     always @(posedge clk) begin
         shared_s4 <= shared_comb;
-        coefficient_s4 <= coefficient_s3;
+        y_index_s4 <= y_index_s3;
         divide_s4 <= divide_s3;
     end
 
     wire signed [CORE_WIDTH-1:0] divided_s5;
     reg signed [CORE_WIDTH-1:0] shared_s5;
     reg divide_s5;
-    sa_scale #(.VALUE_WIDTH(CORE_WIDTH), .COEFF_WIDTH(8)) division_scale (
-        .clk(clk), .value(shared_s4), .coefficient(coefficient_s4),
+    recip_scale_fixed #(
+        .APPROX_LEVEL(APPROX_LEVEL), .VALUE_WIDTH(CORE_WIDTH)
+    ) division_scale (
+        .clk(clk), .value(shared_s4), .y_fraction_msb(y_index_s4),
         .scaled_value(divided_s5)
     );
     always @(posedge clk) begin

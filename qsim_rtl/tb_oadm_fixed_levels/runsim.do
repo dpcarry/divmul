@@ -7,6 +7,7 @@ vlog +acc -incr ../../rtl/recip_lut.v
 vlog +acc -incr ../../rtl/oadm_core.v
 vlog +acc -incr ../../rtl/oadm_dm.v
 vlog +acc -incr ../../rtl/fixed/recip_lut_fixed.v
+vlog +acc -incr ../../rtl/fixed/recip_scale_fixed.v
 vlog +acc -incr ../../rtl/fixed/oadm_core_fixed.v
 vlog +acc -incr ../../rtl/fixed/oadm_dm_fixed.v
 vlog +acc -incr ../../rtl/L0/oadm_dm_l0.v
