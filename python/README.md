@@ -53,3 +53,21 @@ shift/truncation detail in the RTL.
 
 Only the Python standard library and `gnuplot` are required. Use `--no-plots`
 if gnuplot is unavailable.
+
+## PACE-style exhaustive grid
+
+The RTL-matched NumPy model evaluates the full Cartesian product of 10,000
+uniform FP32 mantissas for x and y. It processes the 100,000,000 pairs per
+mode/level in chunks and reproduces the current Q5.23 corrections, Q0.8 LUT,
+product truncation, normalization, and FP32 packing.
+
+```bash
+cd research
+.venv/bin/python python/pace_grid_accuracy.py \
+  --points 10000 --chunk-size 128 \
+  --out-dir python/results_pace_grid
+```
+
+Before using the exhaustive results, run `make crosscheck` from
+`qsim_rtl/tb_pipeline_accuracy`. The checked-in campaign matched all 1,000
+software predictions against the P6 RTL bit-for-bit.

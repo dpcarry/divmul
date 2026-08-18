@@ -12,6 +12,10 @@ make run
 The run writes `accuracy_summary.csv` and prints the same MAE, MRED, absolute
 RMSE, relative RMSE, and maximum relative error values to the transcript.
 
+`make crosscheck` generates 1,000 predictions from the chunked NumPy grid model
+and checks every output bit against the P6 RTL before the exhaustive software
+campaign is used.
+
 L4 improves multiplier accuracy over L3, but Q0.8 reciprocal-square
 quantization makes L4 division less accurate than L3. The independent Python
 ideal-coefficient model continues to improve at L4, isolating the regression
