@@ -10,7 +10,7 @@ module oadm_dm_fixed_nopipe #(
         .clk(1'b0),
         .x(x),
         .y(y),
-        .level(APPROX_LEVEL[2:0]),
+        .level(APPROX_LEVEL[1:0]),
         .divide_mode(divide_mode),
         .result(result)
     );
@@ -42,11 +42,4 @@ module oadm_fixed_l3_nopipe (
     input wire divide_mode, output wire [31:0] result
 );
     oadm_dm_fixed_nopipe #(.APPROX_LEVEL(3)) impl (x, y, divide_mode, result);
-endmodule
-
-module oadm_fixed_l4_nopipe (
-    input wire [31:0] x, input wire [31:0] y,
-    input wire divide_mode, output wire [31:0] result
-);
-    oadm_dm_fixed_nopipe #(.APPROX_LEVEL(4)) impl (x, y, divide_mode, result);
 endmodule

@@ -23,7 +23,7 @@ delta_w_n = -delta_z_n + 2*x*sign(y[n]) / 2^(n+1)
 ```
 
 The script checks this result against the direct divider equation for every
-generated operand and level. The campaign covers L0--L4.
+generated operand and level. The current hardware campaign covers L0--L3.
 
 ## Ideal paper model
 
@@ -32,15 +32,15 @@ cd research/python
 python3 oadm_divmul_sim.py
 ```
 
-## RTL-like 9-bit reciprocal coefficient
+## Current RTL-like 7-bit reciprocal coefficient
 
 ```bash
 python3 oadm_divmul_sim.py \
-  --coefficient-bits 9 \
+  --coefficient-bits 7 \
   --out-dir results_rtl
 ```
 
-The Q0.8 mode only quantizes `1/b_n^2`. It does not reproduce every Q5.23
+This option only quantizes `1/b_n^2`. It does not reproduce every Q5.23
 shift/truncation detail in the RTL.
 
 ## Outputs
@@ -58,7 +58,7 @@ if gnuplot is unavailable.
 
 The RTL-matched NumPy model evaluates the full Cartesian product of 10,000
 uniform FP32 mantissas for x and y. It processes the 100,000,000 pairs per
-mode/level in chunks and reproduces the current Q5.23 corrections, Q0.9 LUT,
+mode/level in chunks and reproduces the current Q5.23 corrections, Q0.7 LUT,
 product truncation, normalization, and FP32 packing.
 
 ```bash
@@ -69,5 +69,5 @@ cd research
 ```
 
 Before using the exhaustive results, run `make crosscheck` from
-`qsim_rtl/tb_pipeline_accuracy`. The checked-in campaign matched all 1,000
+`qsim_rtl/tb_pipeline_accuracy`. The checked-in campaign matched all 800
 software predictions against the P6 RTL bit-for-bit.

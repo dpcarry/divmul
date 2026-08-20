@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 
 module tb_pipeline_accuracy;
-    localparam LEVEL_COUNT = 5;
+    localparam LEVEL_COUNT = 4;
     localparam RANDOM_CASES = 10000;
     localparam DIRECTED_CASES = 7;
     localparam TOTAL_CASES = RANDOM_CASES + DIRECTED_CASES;
@@ -10,7 +10,7 @@ module tb_pipeline_accuracy;
     reg clk;
     reg [31:0] x;
     reg [31:0] y;
-    reg [2:0] level;
+    reg [1:0] level;
     reg divide_mode;
     wire [31:0] result;
 
@@ -131,7 +131,7 @@ module tb_pipeline_accuracy;
             @(negedge clk);
             x = fp32_from_mantissa(requested_x);
             y = fp32_from_mantissa(requested_y);
-            level = requested_level[2:0];
+            level = requested_level[1:0];
             divide_mode = requested_mode[0];
             represented_x = fp32_mantissa_to_real(x);
             represented_y = fp32_mantissa_to_real(y);
@@ -252,7 +252,7 @@ module tb_pipeline_accuracy;
 
         print_summary();
         if (failures == 0)
-            $display("PASS: P6 RTL L0-L4 accuracy campaign completed");
+            $display("PASS: P6 RTL L0-L3 accuracy campaign completed");
         else
             $display("FAIL: %0d X/Z results", failures);
         $finish;

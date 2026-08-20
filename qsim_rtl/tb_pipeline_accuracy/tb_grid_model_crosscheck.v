@@ -6,7 +6,7 @@ module tb_grid_model_crosscheck;
     reg clk;
     reg [31:0] x;
     reg [31:0] y;
-    reg [2:0] level;
+    reg [1:0] level;
     reg divide_mode;
     wire [31:0] result;
 

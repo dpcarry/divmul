@@ -1,7 +1,7 @@
 module oadm_dm_nopipe (
     input  wire [31:0] x,
     input  wire [31:0] y,
-    input  wire [2:0]  level,
+    input  wire [1:0]  level,
     input  wire        divide_mode,
     output wire [31:0] result
 );

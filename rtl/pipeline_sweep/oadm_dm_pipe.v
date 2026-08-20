@@ -5,7 +5,7 @@ module oadm_dm_pipe #(
     input  wire        clk,
     input  wire [31:0] x,
     input  wire [31:0] y,
-    input  wire [2:0]  level,
+    input  wire [1:0]  level,
     input  wire        divide_mode,
     output wire [31:0] result
 );
@@ -96,15 +96,15 @@ module oadm_dm_pipe #(
               ? MIDPOINT_Q + (ONE_Q >>> 2) : MIDPOINT_Q - (ONE_Q >>> 2);
     end
 
-    wire [173:0] cut0_in = {
+    wire [172:0] cut0_in = {
         base_c1[PIPE_VALUE_WIDTH-1:0], d1_c1[PIPE_VALUE_WIDTH-1:0],
         mx_c1[PIPE_MANTISSA_WIDTH-1:0], my_c1[PIPE_MANTISSA_WIDTH-1:0],
         x_input[PIPE_MANTISSA_WIDTH-1:0], y_input[PIPE_MANTISSA_WIDTH-1:0],
         y_mantissa[22:19], level, divide_mode, exponent_input,
         sign_input, invalid_input, infinity_input, zero_input
     };
-    wire [173:0] cut0_out;
-    oadm_pipe_cut #(.WIDTH(174), .REGISTERED(PIPE_MASK[0])) cut0 (
+    wire [172:0] cut0_out;
+    oadm_pipe_cut #(.WIDTH(173), .REGISTERED(PIPE_MASK[0])) cut0 (
         .clk(clk), .data_in(cut0_in), .data_out(cut0_out)
     );
     wire signed [CORE_WIDTH-1:0] base_1;
@@ -120,7 +120,7 @@ module oadm_dm_pipe #(
     wire [PIPE_MANTISSA_WIDTH-1:0] x_1_pipe;
     wire [PIPE_MANTISSA_WIDTH-1:0] y_1_pipe;
     wire [3:0] y_index_1;
-    wire [2:0] level_1;
+    wire [1:0] level_1;
     wire divide_1;
     wire signed [11:0] exponent_1;
     wire sign_1, invalid_1, infinity_1, zero_1;
@@ -163,7 +163,7 @@ module oadm_dm_pipe #(
         my_c2 = y_1[21] ? my_1 + (ONE_Q >>> 3) : my_1 - (ONE_Q >>> 3);
     end
 
-    wire [200:0] cut1_in = {
+    wire [199:0] cut1_in = {
         base_1[PIPE_VALUE_WIDTH-1:0], d1_1[PIPE_VALUE_WIDTH-1:0],
         d2_c2[PIPE_VALUE_WIDTH-1:0],
         mx_c2[PIPE_MANTISSA_WIDTH-1:0], my_c2[PIPE_MANTISSA_WIDTH-1:0],
@@ -171,8 +171,8 @@ module oadm_dm_pipe #(
         y_index_1, level_1, divide_1, exponent_1,
         sign_1, invalid_1, infinity_1, zero_1
     };
-    wire [200:0] cut1_out;
-    oadm_pipe_cut #(.WIDTH(201), .REGISTERED(PIPE_MASK[1])) cut1 (
+    wire [199:0] cut1_out;
+    oadm_pipe_cut #(.WIDTH(200), .REGISTERED(PIPE_MASK[1])) cut1 (
         .clk(clk), .data_in(cut1_in), .data_out(cut1_out)
     );
     wire signed [CORE_WIDTH-1:0] base_2;
@@ -190,7 +190,7 @@ module oadm_dm_pipe #(
     wire [PIPE_MANTISSA_WIDTH-1:0] x_2_pipe;
     wire [PIPE_MANTISSA_WIDTH-1:0] y_2_pipe;
     wire [3:0] y_index_2;
-    wire [2:0] level_2;
+    wire [1:0] level_2;
     wire divide_2;
     wire signed [11:0] exponent_2;
     wire sign_2, invalid_2, infinity_2, zero_2;
@@ -206,21 +206,15 @@ module oadm_dm_pipe #(
     assign x_2 = {{(CORE_WIDTH-PIPE_MANTISSA_WIDTH){1'b0}}, x_2_pipe};
     assign y_2 = {{(CORE_WIDTH-PIPE_MANTISSA_WIDTH){1'b0}}, y_2_pipe};
 
-    // Segment 2: third and fourth corrections, computed in parallel.
+    // Segment 2: third correction and midpoint refinement.
     reg signed [CORE_WIDTH-1:0] d3_c3;
-    reg signed [CORE_WIDTH-1:0] d4_c3;
     reg signed [CORE_WIDTH-1:0] mx_c3;
     reg signed [CORE_WIDTH-1:0] my_c3;
     reg signed [CORE_WIDTH-1:0] raw1_c3;
     reg signed [CORE_WIDTH-1:0] raw2_c3;
-    reg signed [CORE_WIDTH-1:0] raw1_c4;
-    reg signed [CORE_WIDTH-1:0] raw2_c4;
     reg signed [CORE_WIDTH-1:0] term1_c3;
     reg signed [CORE_WIDTH-1:0] term2_c3;
     reg signed [CORE_WIDTH-1:0] term3_c3;
-    reg signed [CORE_WIDTH-1:0] term1_c4;
-    reg signed [CORE_WIDTH-1:0] term2_c4;
-    reg signed [CORE_WIDTH-1:0] term3_c4;
     always @* begin
         mx_c3 = x_2[20] ? mx_2 + (ONE_Q >>> 4) : mx_2 - (ONE_Q >>> 4);
         my_c3 = y_2[20] ? my_2 + (ONE_Q >>> 4) : my_2 - (ONE_Q >>> 4);
@@ -229,71 +223,54 @@ module oadm_dm_pipe #(
             raw2_c3 = my_2 - y_2;
             term3_c3 = (x_2[20] == y_2[20])
                      ? (ONE_Q >>> 8) : -(ONE_Q >>> 8);
-            raw1_c4 = x_2 + mx_c3;
-            raw2_c4 = my_c3 - y_2;
-            term3_c4 = (x_2[19] == y_2[19])
-                     ? (ONE_Q >>> 10) : -(ONE_Q >>> 10);
         end else begin
             raw1_c3 = x_2 - mx_2;
             raw2_c3 = y_2 - my_2;
             term3_c3 = (x_2[20] != y_2[20])
                      ? (ONE_Q >>> 8) : -(ONE_Q >>> 8);
-            raw1_c4 = x_2 - mx_c3;
-            raw2_c4 = y_2 - my_c3;
-            term3_c4 = (x_2[19] != y_2[19])
-                     ? (ONE_Q >>> 10) : -(ONE_Q >>> 10);
         end
         term1_c3 = (y_2[20] ? raw1_c3 : -raw1_c3) >>> 4;
         term2_c3 = (x_2[20] ? raw2_c3 : -raw2_c3) >>> 4;
         d3_c3 = term1_c3 + term2_c3 + term3_c3;
-        term1_c4 = (y_2[19] ? raw1_c4 : -raw1_c4) >>> 5;
-        term2_c4 = (x_2[19] ? raw2_c4 : -raw2_c4) >>> 5;
-        d4_c3 = term1_c4 + term2_c4 + term3_c4;
     end
 
-    wire [158:0] cut2_in = {
+    wire [130:0] cut2_in = {
         base_2[PIPE_VALUE_WIDTH-1:0], d1_2[PIPE_VALUE_WIDTH-1:0],
         d2_2[PIPE_VALUE_WIDTH-1:0], d3_c3[PIPE_VALUE_WIDTH-1:0],
-        d4_c3[PIPE_VALUE_WIDTH-1:0], y_index_2, level_2,
-        divide_2, exponent_2, sign_2, invalid_2, infinity_2, zero_2
+        y_index_2, level_2, divide_2, exponent_2, sign_2,
+        invalid_2, infinity_2, zero_2
     };
-    wire [158:0] cut2_out;
-    oadm_pipe_cut #(.WIDTH(159), .REGISTERED(PIPE_MASK[2])) cut2 (
+    wire [130:0] cut2_out;
+    oadm_pipe_cut #(.WIDTH(131), .REGISTERED(PIPE_MASK[2])) cut2 (
         .clk(clk), .data_in(cut2_in), .data_out(cut2_out)
     );
     wire signed [CORE_WIDTH-1:0] base_3;
     wire signed [CORE_WIDTH-1:0] d1_3;
     wire signed [CORE_WIDTH-1:0] d2_3;
     wire signed [CORE_WIDTH-1:0] d3_3;
-    wire signed [CORE_WIDTH-1:0] d4_3;
     wire signed [PIPE_VALUE_WIDTH-1:0] base_3_pipe;
     wire signed [PIPE_VALUE_WIDTH-1:0] d1_3_pipe;
     wire signed [PIPE_VALUE_WIDTH-1:0] d2_3_pipe;
     wire signed [PIPE_VALUE_WIDTH-1:0] d3_3_pipe;
-    wire signed [PIPE_VALUE_WIDTH-1:0] d4_3_pipe;
     wire [3:0] y_index_3;
-    wire [2:0] level_3;
+    wire [1:0] level_3;
     wire divide_3;
     wire signed [11:0] exponent_3;
     wire sign_3, invalid_3, infinity_3, zero_3;
     assign {base_3_pipe, d1_3_pipe, d2_3_pipe, d3_3_pipe,
-            d4_3_pipe, y_index_3,
-            level_3, divide_3, exponent_3, sign_3, invalid_3,
-            infinity_3, zero_3} = cut2_out;
+            y_index_3, level_3, divide_3, exponent_3, sign_3,
+            invalid_3, infinity_3, zero_3} = cut2_out;
     assign base_3 = {{(CORE_WIDTH-PIPE_VALUE_WIDTH){base_3_pipe[PIPE_VALUE_WIDTH-1]}}, base_3_pipe};
     assign d1_3 = {{(CORE_WIDTH-PIPE_VALUE_WIDTH){d1_3_pipe[PIPE_VALUE_WIDTH-1]}}, d1_3_pipe};
     assign d2_3 = {{(CORE_WIDTH-PIPE_VALUE_WIDTH){d2_3_pipe[PIPE_VALUE_WIDTH-1]}}, d2_3_pipe};
     assign d3_3 = {{(CORE_WIDTH-PIPE_VALUE_WIDTH){d3_3_pipe[PIPE_VALUE_WIDTH-1]}}, d3_3_pipe};
-    assign d4_3 = {{(CORE_WIDTH-PIPE_VALUE_WIDTH){d4_3_pipe[PIPE_VALUE_WIDTH-1]}}, d4_3_pipe};
 
     // Segment 3: shared correction accumulation.
     wire signed [CORE_WIDTH-1:0] use_d1 = level_3 >= 1 ? d1_3 : 0;
     wire signed [CORE_WIDTH-1:0] use_d2 = level_3 >= 2 ? d2_3 : 0;
     wire signed [CORE_WIDTH-1:0] use_d3 = level_3 >= 3 ? d3_3 : 0;
-    wire signed [CORE_WIDTH-1:0] use_d4 = level_3 >= 4 ? d4_3 : 0;
     wire signed [CORE_WIDTH-1:0] sum0, carry0;
     wire signed [CORE_WIDTH-1:0] sum1, carry1;
-    wire signed [CORE_WIDTH-1:0] sum2, carry2;
     wire signed [CORE_WIDTH-1:0] shared_c4;
     csa3 #(.WIDTH(CORE_WIDTH)) csa0 (
         .input_a(base_3), .input_b(use_d1), .input_c(use_d2),
@@ -303,25 +280,21 @@ module oadm_dm_pipe #(
         .input_a(sum0), .input_b(carry0), .input_c(use_d3),
         .sum(sum1), .carry(carry1)
     );
-    csa3 #(.WIDTH(CORE_WIDTH)) csa2 (
-        .input_a(sum1), .input_b(carry1), .input_c(use_d4),
-        .sum(sum2), .carry(carry2)
-    );
-    assign shared_c4 = sum2 + carry2;
+    assign shared_c4 = sum1 + carry1;
 
-    wire [50:0] cut3_in = {
+    wire [49:0] cut3_in = {
         shared_c4[PIPE_VALUE_WIDTH-1:0], y_index_3, level_3,
         divide_3, exponent_3,
         sign_3, invalid_3, infinity_3, zero_3
     };
-    wire [50:0] cut3_out;
-    oadm_pipe_cut #(.WIDTH(51), .REGISTERED(PIPE_MASK[3])) cut3 (
+    wire [49:0] cut3_out;
+    oadm_pipe_cut #(.WIDTH(50), .REGISTERED(PIPE_MASK[3])) cut3 (
         .clk(clk), .data_in(cut3_in), .data_out(cut3_out)
     );
     wire signed [CORE_WIDTH-1:0] shared_4;
     wire signed [PIPE_VALUE_WIDTH-1:0] shared_4_pipe;
     wire [3:0] y_index_4;
-    wire [2:0] level_4;
+    wire [1:0] level_4;
     wire divide_4;
     wire signed [11:0] exponent_4;
     wire sign_4, invalid_4, infinity_4, zero_4;
@@ -330,58 +303,38 @@ module oadm_dm_pipe #(
     assign shared_4 = {{(CORE_WIDTH-PIPE_VALUE_WIDTH){shared_4_pipe[PIPE_VALUE_WIDTH-1]}}, shared_4_pipe};
 
     // Segment 4: runtime LUT selection and reciprocal-square scaling.
-    reg [8:0] coefficient_c5;
-    reg signed [38:0] product_c5;
+    reg [6:0] coefficient_c5;
+    reg signed [35:0] product_c5;
     reg signed [CORE_WIDTH-1:0] divided_c5;
-    wire signed [38:0] shared_extended = {{10{shared_4[28]}}, shared_4};
+    wire signed [35:0] shared_extended = {{7{shared_4[28]}}, shared_4};
     always @* begin
-        coefficient_c5 = 9'h0e4;
+        coefficient_c5 = 7'h39;
         case (level_4)
-            3'd0: coefficient_c5 = 9'h0e4;
-            3'd1: coefficient_c5 = y_index_4[3] ? 9'h0a8 : 9'h148;
-            3'd2: begin
+            2'd0: coefficient_c5 = 7'h39;
+            2'd1: coefficient_c5 = y_index_4[3] ? 7'h2a : 7'h52;
+            2'd2: begin
                 case (y_index_4[3:2])
-                    2'b00: coefficient_c5 = 9'h194;
-                    2'b01: coefficient_c5 = 9'h10e;
-                    2'b10: coefficient_c5 = 9'h0c2;
-                    default: coefficient_c5 = 9'h092;
-                endcase
-            end
-            3'd3: begin
-                case (y_index_4[3:1])
-                    3'b000: coefficient_c5 = 9'h1c6;
-                    3'b001: coefficient_c5 = 9'h16c;
-                    3'b010: coefficient_c5 = 9'h12a;
-                    3'b011: coefficient_c5 = 9'h0f8;
-                    3'b100: coefficient_c5 = 9'h0d2;
-                    3'b101: coefficient_c5 = 9'h0b4;
-                    3'b110: coefficient_c5 = 9'h09c;
-                    default: coefficient_c5 = 9'h088;
+                    2'b00: coefficient_c5 = 7'h65;
+                    2'b01: coefficient_c5 = 7'h44;
+                    2'b10: coefficient_c5 = 7'h30;
+                    default: coefficient_c5 = 7'h24;
                 endcase
             end
             default: begin
-                case (y_index_4)
-                    4'h0: coefficient_c5 = 9'h1e1;
-                    4'h1: coefficient_c5 = 9'h1ac;
-                    4'h2: coefficient_c5 = 9'h17f;
-                    4'h3: coefficient_c5 = 9'h159;
-                    4'h4: coefficient_c5 = 9'h138;
-                    4'h5: coefficient_c5 = 9'h11c;
-                    4'h6: coefficient_c5 = 9'h103;
-                    4'h7: coefficient_c5 = 9'h0ed;
-                    4'h8: coefficient_c5 = 9'h0da;
-                    4'h9: coefficient_c5 = 9'h0ca;
-                    4'ha: coefficient_c5 = 9'h0bb;
-                    4'hb: coefficient_c5 = 9'h0ad;
-                    4'hc: coefficient_c5 = 9'h0a1;
-                    4'hd: coefficient_c5 = 9'h097;
-                    4'he: coefficient_c5 = 9'h08d;
-                    default: coefficient_c5 = 9'h084;
+                case (y_index_4[3:1])
+                    3'b000: coefficient_c5 = 7'h71;
+                    3'b001: coefficient_c5 = 7'h5b;
+                    3'b010: coefficient_c5 = 7'h4a;
+                    3'b011: coefficient_c5 = 7'h3e;
+                    3'b100: coefficient_c5 = 7'h34;
+                    3'b101: coefficient_c5 = 7'h2d;
+                    3'b110: coefficient_c5 = 7'h27;
+                    default: coefficient_c5 = 7'h22;
                 endcase
             end
         endcase
         product_c5 = shared_extended * coefficient_c5;
-        divided_c5 = product_c5[37:9];
+        divided_c5 = product_c5[35:7];
     end
 
     wire [70:0] cut4_in = {

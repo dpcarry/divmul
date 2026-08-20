@@ -1,7 +1,7 @@
 # RAPID-style pipeline-depth synthesis sweep
 
-This flow compares NP and balanced P2--P7 partitions for the runtime L0--L4
-implementation and constant-tied fixed L0--L4 implementations. All are generated
+This flow compares NP and balanced P2--P7 partitions for the runtime L0--L3
+implementation and constant-tied fixed L0--L3 implementations. All are generated
 from `rtl/pipeline_sweep/oadm_dm_pipe.v`.
 
 ```bash
@@ -19,7 +19,7 @@ The NP top retains a clock port for common I/O-delay constraints but contains no
 pipeline state after constant propagation. Its input-to-output delay is the
 non-pipelined reference; P2--P7 register their final outputs.
 
-For runtime P5--P7, the flow inserts `BUFFD0` only on the three direct
-`level[2:0]` capture branches at cut0. DC's automatic hold fix otherwise leaves
+For runtime P5--P7, the flow inserts `BUFFD0` only on the two direct
+`level[1:0]` capture branches at cut0. DC's automatic hold fix otherwise leaves
 these paths about 1 ps short in PT. The coefficient and correction fanout stays
 unbuffered, and PrimeTime checks the original interface constraints.

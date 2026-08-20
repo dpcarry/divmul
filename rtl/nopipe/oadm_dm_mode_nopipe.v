@@ -1,7 +1,7 @@
 module oadm_runtime_div_nopipe (
     input  wire [31:0] x,
     input  wire [31:0] y,
-    input  wire [2:0]  level,
+    input  wire [1:0]  level,
     output wire [31:0] result
 );
     oadm_dm_pipe #(.PIPE_MASK(7'h00)) datapath (
@@ -13,7 +13,7 @@ endmodule
 module oadm_runtime_mul_nopipe (
     input  wire [31:0] x,
     input  wire [31:0] y,
-    input  wire [2:0]  level,
+    input  wire [1:0]  level,
     output wire [31:0] result
 );
     oadm_dm_pipe #(.PIPE_MASK(7'h00)) datapath (

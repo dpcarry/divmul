@@ -1,7 +1,7 @@
 `define OADM_RUNTIME_WRAPPER(NAME, MASK) \
 module NAME ( \
     input wire clk, input wire [31:0] x, input wire [31:0] y, \
-    input wire [2:0] level, input wire divide_mode, output wire [31:0] result \
+    input wire [1:0] level, input wire divide_mode, output wire [31:0] result \
 ); \
     oadm_dm_pipe #(.PIPE_MASK(MASK)) impl ( \
         .clk(clk), .x(x), .y(y), .level(level), \
@@ -58,14 +58,6 @@ endmodule
 `OADM_FIXED_WRAPPER(oadm_fixed_l3_p5, 3, 7'h5d)
 `OADM_FIXED_WRAPPER(oadm_fixed_l3_p6, 3, 7'h5f)
 `OADM_FIXED_WRAPPER(oadm_fixed_l3_p7, 3, 7'h7f)
-
-`OADM_FIXED_WRAPPER(oadm_fixed_l4_np, 4, 7'h00)
-`OADM_FIXED_WRAPPER(oadm_fixed_l4_p2, 4, 7'h44)
-`OADM_FIXED_WRAPPER(oadm_fixed_l4_p3, 4, 7'h4a)
-`OADM_FIXED_WRAPPER(oadm_fixed_l4_p4, 4, 7'h56)
-`OADM_FIXED_WRAPPER(oadm_fixed_l4_p5, 4, 7'h5d)
-`OADM_FIXED_WRAPPER(oadm_fixed_l4_p6, 4, 7'h5f)
-`OADM_FIXED_WRAPPER(oadm_fixed_l4_p7, 4, 7'h7f)
 
 `undef OADM_RUNTIME_WRAPPER
 `undef OADM_FIXED_WRAPPER

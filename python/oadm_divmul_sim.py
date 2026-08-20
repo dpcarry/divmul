@@ -27,7 +27,7 @@ import sys
 from pathlib import Path
 
 
-LEVEL_COUNT = 5
+LEVEL_COUNT = 4
 MAX_FP32_MANTISSA = struct.unpack("!f", bytes.fromhex("3fffffff"))[0]
 
 
@@ -476,7 +476,7 @@ def parse_args():
         "--coefficient-bits",
         type=int,
         default=0,
-        help="0 uses ideal paper constants; 9 models the current RTL Q0.9 LUT.",
+        help="0 uses ideal paper constants; 7 models the current RTL Q0.7 LUT.",
     )
     parser.add_argument(
         "--out-dir",

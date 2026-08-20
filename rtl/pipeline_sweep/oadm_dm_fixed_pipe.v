@@ -9,7 +9,7 @@ module oadm_dm_fixed_pipe #(
     output wire [31:0] result
 );
     oadm_dm_pipe #(.PIPE_MASK(PIPE_MASK)) impl (
-        .clk(clk), .x(x), .y(y), .level(APPROX_LEVEL[2:0]),
+        .clk(clk), .x(x), .y(y), .level(APPROX_LEVEL[1:0]),
         .divide_mode(divide_mode), .result(result)
     );
 endmodule

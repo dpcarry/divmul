@@ -13,23 +13,18 @@ ONE_Q = 1 << 23
 MIDPOINT_Q = 3 << 22
 TWO_Q = 1 << 24
 TWO_POINT_TWO_FIVE_Q = 9 << 21
-LEVEL_COUNT = 5
-COEFFICIENT_BITS = 9
+LEVEL_COUNT = 4
+COEFFICIENT_BITS = 7
 
 COEFFICIENTS = (
-    np.full(16, 0x0E4, dtype=np.int64),
-    np.array([0x148] * 8 + [0x0A8] * 8, dtype=np.int64),
-    np.repeat(np.array([0x194, 0x10E, 0x0C2, 0x092], dtype=np.int64), 4),
+    np.full(16, 0x39, dtype=np.int64),
+    np.array([0x52] * 8 + [0x2A] * 8, dtype=np.int64),
+    np.repeat(np.array([0x65, 0x44, 0x30, 0x24], dtype=np.int64), 4),
     np.repeat(
-        np.array([0x1C6, 0x16C, 0x12A, 0x0F8,
-                  0x0D2, 0x0B4, 0x09C, 0x088],
+        np.array([0x71, 0x5B, 0x4A, 0x3E,
+                  0x34, 0x2D, 0x27, 0x22],
                  dtype=np.int64),
         2,
-    ),
-    np.array(
-        [0x1E1, 0x1AC, 0x17F, 0x159, 0x138, 0x11C, 0x103, 0x0ED,
-         0x0DA, 0x0CA, 0x0BB, 0x0AD, 0x0A1, 0x097, 0x08D, 0x084],
-        dtype=np.int64,
     ),
 )
 
