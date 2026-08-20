@@ -22,3 +22,37 @@ the pipeline reduces area from 11961.17 to 7707.25 um^2 (35.56%) but changes
 the initiation interval from 1.5 ns to at least the 5.1732 ns combinational
 delay. Compared with the earlier Q0.9 L0-L4 no-pipeline runtime design, Q0.7
 L0-L3 reduces area by 20.93%, delay by 4.43%, and vectorless power by 26.98%.
+
+## DIV/MUL sharing ablation
+
+The mode-tied netlists allow DC to remove logic used exclusively by the other
+operation. Inclusion-exclusion estimates the shared area as
+`A_div + A_mul - A_fused`.
+
+| Configuration | Fused (um^2) | DIV-only (um^2) | MUL-only (um^2) | Shared (um^2) | Fusion saving vs separate sum |
+|---|---:|---:|---:|---:|---:|
+| Runtime L0-L3 | 7707.25 | 5171.76 | 3728.51 | 1193.02 | 13.40% |
+| Fixed L3 | 7691.04 | 5177.52 | 3873.59 | 1360.07 | 15.03% |
+
+For runtime L0-L3, the fused area decomposes into 3978.74 um^2 DIV-exclusive,
+2535.49 um^2 MUL-exclusive, and 1193.02 um^2 shared. For fixed L3, the
+corresponding values are 3817.45, 2513.52, and 1360.07 um^2. These values are
+synthesis-level inclusion-exclusion estimates: independently optimized
+netlists need not map logically identical functions to identical cells.
+
+## PACE L4 comparison
+
+The fairer functional comparison uses fixed-L3 DIV-only OADM, not the fused
+DIV/MUL block. Both rows below are combinational FP32 wrappers synthesized and
+analyzed with the same TSMC 65 nm typical library.
+
+| Design | Area (um^2) | Critical path (ns) | Power (mW) | Vectorless energy/op (pJ) |
+|---|---:|---:|---:|---:|
+| PACE L4 | 3196.43 | 3.6584 | 0.37390 at 10 ns | 3.7390 |
+| OADM Q0.7 fixed-L3 DIV-only | 5177.52 | 5.2463 | 0.42385 at 7 ns | 2.9670 |
+
+OADM is 61.98% larger and 43.41% slower, but its vectorless energy estimate is
+20.65% lower. The raw average-power values are not directly comparable because
+the vectorless toggle periods differ; energy/op removes the dominant activity-
+frequency mismatch. On the available accuracy runs, OADM fixed-L3 Q0.7 also
+has lower MAE, MRED, and RMSE than the locally reproduced PACE L4.

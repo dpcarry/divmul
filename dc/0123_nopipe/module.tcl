@@ -12,7 +12,8 @@ analyze -format verilog [list \
     ../../rtl/pipeline_sweep/oadm_pipe_cut.v \
     ../../rtl/pipeline_sweep/oadm_dm_pipe.v \
     ../../rtl/nopipe/oadm_dm_nopipe.v \
-    ../../rtl/nopipe/oadm_dm_fixed_nopipe.v]
+    ../../rtl/nopipe/oadm_dm_fixed_nopipe.v \
+    ../../rtl/nopipe/oadm_dm_mode_nopipe.v]
 elaborate $top_level
 if {[check_error -v] == 1} { exit 1 }
 link

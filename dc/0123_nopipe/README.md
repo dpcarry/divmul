@@ -4,3 +4,6 @@
 through L3 designs without pipeline registers. A common 7 ns virtual clock
 constrains the combinational input-to-output path; the measured critical path,
 not 7 ns, is the reported operation delay.
+
+`./run_mode_ablation.sh` additionally synthesizes runtime and fixed-L3
+DIV-only/MUL-only tops for the sharing study in `pt_dc/0123_nopipe`.
