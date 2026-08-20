@@ -12,3 +12,6 @@ are unchanged.
 ModelSim verification is in `qsim_rtl/tb_pipeline_accuracy`. Dedicated DC and
 PrimeTime results are written under `dc/0123` and `pt_dc/0123`; these paths keep
 the branch experiment separate from the earlier Q0.9 L0-L4 reports.
+
+The corresponding no-pipeline runtime and fixed-level experiment is under
+`dc/0123_nopipe` and `pt_dc/0123_nopipe`.
