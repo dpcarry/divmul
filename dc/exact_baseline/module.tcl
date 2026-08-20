@@ -32,6 +32,13 @@ link
 current_design $top_level
 check_design
 
+# Preserve the explicit minimum-size input buffers used to make the standalone
+# pre-layout baseline hold-clean.  Their area and power remain in all reports.
+set hold_fix_cells [get_cells -hierarchical -quiet *holdfix*]
+if {[sizeof_collection $hold_fix_cells] > 0} {
+    set_dont_touch $hold_fix_cells
+}
+
 set_max_capacitance 0.005 [all_inputs]
 set_max_fanout 4 [all_inputs]
 set_max_fanout 4 $top_level

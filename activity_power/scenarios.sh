@@ -10,6 +10,8 @@ fixed_sdf="../dc/pipeline_sweep/outputs/fixed_l4/p6/oadm_fixed_l4_p6.syn.sdf"
 fixed_sdc="../dc/pipeline_sweep/outputs/fixed_l4/p6/oadm_fixed_l4_p6.syn.sdc"
 fixed_area_report="../dc/pipeline_sweep/outputs/fixed_l4/p6/oadm_fixed_l4_p6.dc.rpt"
 
+exact_output_root="../dc/exact_baseline/outputs_1p5_holdclean"
+
 scenario_fields() {
     local scenario=$1
     local family mode level kind
@@ -23,14 +25,14 @@ scenario_fields() {
         echo "fixed_l4|$mode|4|oadm_fixed_l4_p6|$fixed_netlist|$fixed_sdf|$fixed_sdc|$fixed_area_report|1.5|0|1"
     elif [[ $scenario == exact_mul ]]; then
         kind=mul
-        echo "exact_standalone|mul|exact|exact_fp32_mul_7stage|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.nl.v|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.syn.sdf|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.syn.sdc|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.dc.rpt|2.0|0|0"
+        echo "exact_standalone|mul|exact|exact_fp32_mul_7stage|$exact_output_root/$kind/exact_fp32_${kind}_7stage.nl.v|$exact_output_root/$kind/exact_fp32_${kind}_7stage.syn.sdf|$exact_output_root/$kind/exact_fp32_${kind}_7stage.syn.sdc|$exact_output_root/$kind/exact_fp32_${kind}_7stage.dc.rpt|1.5|0|0"
     elif [[ $scenario == exact_div ]]; then
         kind=div
-        echo "exact_standalone|div|exact|exact_fp32_div_7stage|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.nl.v|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.syn.sdf|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.syn.sdc|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.dc.rpt|2.0|0|0"
+        echo "exact_standalone|div|exact|exact_fp32_div_7stage|$exact_output_root/$kind/exact_fp32_${kind}_7stage.nl.v|$exact_output_root/$kind/exact_fp32_${kind}_7stage.syn.sdf|$exact_output_root/$kind/exact_fp32_${kind}_7stage.syn.sdc|$exact_output_root/$kind/exact_fp32_${kind}_7stage.dc.rpt|1.5|0|0"
     elif [[ $scenario =~ ^exact_divmul_(mul|div)$ ]]; then
         mode=${BASH_REMATCH[1]}
         kind=divmul
-        echo "exact_combined|$mode|exact|exact_fp32_divmul_7stage|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.nl.v|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.syn.sdf|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.syn.sdc|../dc/exact_baseline/outputs/$kind/exact_fp32_${kind}_7stage.dc.rpt|2.0|0|1"
+        echo "exact_combined|$mode|exact|exact_fp32_divmul_7stage|$exact_output_root/$kind/exact_fp32_${kind}_7stage.nl.v|$exact_output_root/$kind/exact_fp32_${kind}_7stage.syn.sdf|$exact_output_root/$kind/exact_fp32_${kind}_7stage.syn.sdc|$exact_output_root/$kind/exact_fp32_${kind}_7stage.dc.rpt|1.5|0|1"
     else
         echo "ERROR: unsupported scenario $scenario" >&2
         return 2

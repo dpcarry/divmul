@@ -6,7 +6,7 @@ PrimeTime PX. It does not modify or overwrite the existing vectorless reports.
 Primary experiment: runtime-configurable P6 at 1.5 ns, measured independently
 for MUL/DIV and L0-L4. Fixed-L4 P6 is included to quantify configuration
 overhead. Exact standalone and combined DesignWare baselines are also included;
-their existing timing-clean PrimeTime period is 2.0 ns.
+all designs use a common 1.5 ns period for equal-throughput comparison.
 
 The testbench supplies one deterministic, normalized FP32 operation per cycle.
 It excludes zero, subnormal, Inf, and NaN so all designs see the same finite

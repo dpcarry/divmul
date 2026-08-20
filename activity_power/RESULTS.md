@@ -2,10 +2,9 @@
 
 Power comes from gate-level VCD activity over 10,000 continuously issued
 operations after 20 warm-up cycles. All runs use the same deterministic
-uniform-random normalized FP32 encoding sequence. Runtime P6 and fixed-L4
-operate at 1.5 ns; legacy exact baselines are reported at their timing-clean
-2.0 ns PrimeTime period. Compare energy/op across unequal periods rather than
-treating their average mW as an equal-throughput comparison.
+uniform-random normalized FP32 encoding sequence. Runtime P6, fixed-L4, and
+the exact DesignWare baselines all operate at a common 1.5 ns period, or
+666.7 million accepted operations per second after pipeline fill.
 
 | Family | Mode | Level | Period (ns) | Area (um2) | Dynamic (mW) | Leakage (mW) | Total (mW) | Energy/op (pJ) |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
@@ -21,16 +20,16 @@ treating their average mW as an equal-throughput comparison.
 | runtime | DIV | L4 | 1.50 | 15053.76 | 11.240921 | 0.072134 | 11.313060 | 16.969590 |
 | fixed_l4 | MUL | L4 | 1.50 | 14513.76 | 11.403788 | 0.070406 | 11.474190 | 17.211285 |
 | fixed_l4 | DIV | L4 | 1.50 | 14513.76 | 10.990455 | 0.070568 | 11.061020 | 16.591530 |
-| exact_standalone | MUL | Exact | 2.00 | 7615.44 | 5.394875 | 0.039448 | 5.434323 | 10.868646 |
-| exact_standalone | DIV | Exact | 2.00 | 29730.24 | 20.972375 | 0.138008 | 21.110380 | 42.220760 |
-| exact_combined | MUL | Exact | 2.00 | 37401.12 | 26.085834 | 0.176597 | 26.262430 | 52.524860 |
-| exact_combined | DIV | Exact | 2.00 | 37401.12 | 26.088963 | 0.176575 | 26.265540 | 52.531080 |
+| exact_standalone | MUL | Exact | 1.50 | 7707.24 | 7.245551 | 0.039844 | 7.285394 | 10.928091 |
+| exact_standalone | DIV | Exact | 1.50 | 29797.20 | 27.774749 | 0.138166 | 27.912920 | 41.869380 |
+| exact_combined | MUL | Exact | 1.50 | 37568.16 | 34.913433 | 0.177368 | 35.090800 | 52.636200 |
+| exact_combined | DIV | Exact | 1.50 | 37568.16 | 34.919774 | 0.177303 | 35.097070 | 52.645605 |
 
 ## Key comparisons
 
-- Runtime OADM occupies 15053.76 um2, 59.75% less than exact combined divmul and 59.69% less than the sum of standalone exact MUL and DIV.
-- Runtime L4 MUL energy is +60.86% versus standalone exact MUL and -66.71% versus exact combined MUL mode.
-- Runtime L4 DIV energy is -59.81% versus standalone exact DIV and -67.70% versus exact combined DIV mode.
+- Runtime OADM occupies 15053.76 um2, 59.93% less than exact combined divmul and 59.86% less than the sum of standalone exact MUL and DIV.
+- Runtime L4 MUL energy is +59.98% versus standalone exact MUL and -66.79% versus exact combined MUL mode.
+- Runtime L4 DIV energy is -59.47% versus standalone exact DIV and -67.77% versus exact combined DIV mode.
 - Runtime configurability adds 3.72% area, 1.58% L4 MUL energy, and 2.28% L4 DIV energy over fixed L4.
 - Selecting L4 instead of L0 raises runtime energy/op by 11.66% for MUL and 11.43% for DIV.
 

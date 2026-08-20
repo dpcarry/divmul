@@ -33,13 +33,15 @@ read_db [list "tcbn65gplustc_ccs.db"]
 set svr_enable_vpp true
 read_verilog "../../dc/exact_baseline/${dc_output_root}/${baseline_kind}/${top_level}.nl.v"
 link_design $top_level
-source "../oadm_dm/timing.tcl"
+read_sdc "../../dc/exact_baseline/${dc_output_root}/${baseline_kind}/${top_level}.syn.sdc"
 update_timing
 
 check_timing > "${report_dir}/${top_level}.pt.check_timing.rpt"
 report_timing -significant_digits 4 -delay_type max -nworst 10 -path full \
+  -slack_lesser_than 1000.0 \
   > "${report_dir}/${top_level}.pt.setup.rpt"
 report_timing -significant_digits 4 -delay_type min -nworst 10 -path full \
+  -slack_lesser_than 1000.0 \
   > "${report_dir}/${top_level}.pt.hold.rpt"
 report_constraint -all_violators -max_delay \
   > "${report_dir}/${top_level}.pt.setup.violations.rpt"

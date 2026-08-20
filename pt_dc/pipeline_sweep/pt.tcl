@@ -19,8 +19,16 @@ if {$config eq "runtime"} {
     exit 2
 }
 
-set dc_dir "../../dc/pipeline_sweep/outputs/${config}/${depth}"
-set report_dir "reports/${config}/${depth}"
+set dc_output_root "outputs"
+if {[info exists ::env(PIPELINE_DC_OUTPUT_ROOT)]} {
+    set dc_output_root $::env(PIPELINE_DC_OUTPUT_ROOT)
+}
+set report_root "reports"
+if {[info exists ::env(PIPELINE_REPORT_ROOT)]} {
+    set report_root $::env(PIPELINE_REPORT_ROOT)
+}
+set dc_dir "../../dc/pipeline_sweep/${dc_output_root}/${config}/${depth}"
+set report_dir "${report_root}/${config}/${depth}"
 file mkdir $report_dir
 
 set search_path [list "." \

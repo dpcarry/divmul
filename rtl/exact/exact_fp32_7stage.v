@@ -4,6 +4,8 @@ module exact_fp32_mul_7stage (
     input  wire [31:0] y,
     output wire [31:0] result
 );
+    wire [31:0] x_holdfix;
+    wire [31:0] y_holdfix;
     wire [7:0] status_unused;
     wire pipe_full_unused;
     wire pipe_ovf_unused;
@@ -11,6 +13,15 @@ module exact_fp32_mul_7stage (
     wire arrive_id_unused;
     wire push_out_n_unused;
     wire [2:0] pipe_census_unused;
+    genvar holdfix_bit;
+
+    generate
+        for (holdfix_bit = 0; holdfix_bit < 32;
+             holdfix_bit = holdfix_bit + 1) begin : holdfix_inputs
+            BUFFD0 u_x_buf (.I(x[holdfix_bit]), .Z(x_holdfix[holdfix_bit]));
+            BUFFD0 u_y_buf (.I(y[holdfix_bit]), .Z(y_holdfix[holdfix_bit]));
+        end
+    endgenerate
 
     // Seven register levels, round toward zero, and flush denormals to zero.
     DW_lp_piped_fp_mult #(
@@ -27,8 +38,8 @@ module exact_fp32_mul_7stage (
     ) u_exact_mul (
         .clk(clk),
         .rst_n(1'b1),
-        .a(x),
-        .b(y),
+        .a(x_holdfix),
+        .b(y_holdfix),
         .rnd(3'b001),
         .z(result),
         .status(status_unused),
@@ -50,6 +61,8 @@ module exact_fp32_div_7stage (
     input  wire [31:0] y,
     output wire [31:0] result
 );
+    wire [31:0] x_holdfix;
+    wire [31:0] y_holdfix;
     wire [7:0] status_unused;
     wire pipe_full_unused;
     wire pipe_ovf_unused;
@@ -57,6 +70,15 @@ module exact_fp32_div_7stage (
     wire arrive_id_unused;
     wire push_out_n_unused;
     wire [2:0] pipe_census_unused;
+    genvar holdfix_bit;
+
+    generate
+        for (holdfix_bit = 0; holdfix_bit < 32;
+             holdfix_bit = holdfix_bit + 1) begin : holdfix_inputs
+            BUFFD0 u_x_buf (.I(x[holdfix_bit]), .Z(x_holdfix[holdfix_bit]));
+            BUFFD0 u_y_buf (.I(y[holdfix_bit]), .Z(y_holdfix[holdfix_bit]));
+        end
+    endgenerate
 
     // Seven register levels, round toward zero, and flush denormals to zero.
     DW_lp_piped_fp_div #(
@@ -74,8 +96,8 @@ module exact_fp32_div_7stage (
     ) u_exact_div (
         .clk(clk),
         .rst_n(1'b1),
-        .a(x),
-        .b(y),
+        .a(x_holdfix),
+        .b(y_holdfix),
         .rnd(3'b001),
         .z(result),
         .status(status_unused),
@@ -100,6 +122,7 @@ module exact_fp32_divmul_7stage (
 );
     wire [31:0] mul_result;
     wire [31:0] div_result;
+    wire divide_mode_holdfix;
     reg mode_s1;
     reg mode_s2;
     reg mode_s3;
@@ -107,6 +130,11 @@ module exact_fp32_divmul_7stage (
     reg mode_s5;
     reg mode_s6;
     reg mode_s7;
+
+    BUFFD0 holdfix_mode_buf (
+        .I(divide_mode),
+        .Z(divide_mode_holdfix)
+    );
 
     exact_fp32_mul_7stage u_mul (
         .clk(clk),
@@ -123,7 +151,7 @@ module exact_fp32_divmul_7stage (
     );
 
     always @(posedge clk) begin
-        mode_s1 <= divide_mode;
+        mode_s1 <= divide_mode_holdfix;
         mode_s2 <= mode_s1;
         mode_s3 <= mode_s2;
         mode_s4 <= mode_s3;

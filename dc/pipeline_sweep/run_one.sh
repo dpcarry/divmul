@@ -15,7 +15,8 @@ case "$config" in
     *) echo "ERROR: unsupported config $config" >&2; exit 2 ;;
 esac
 
-output_dir="outputs/${config}/${depth}"
+output_root=${PIPELINE_OUTPUT_ROOT:-outputs}
+output_dir="${output_root}/${config}/${depth}"
 mkdir -p "$output_dir"
 TOP_LEVEL="$top_level" OUTPUT_DIR="$output_dir" CLOCK_PERIOD="$period" \
     dc_shell -f module.tcl | tee "$output_dir/dc_console.txt"

@@ -17,6 +17,11 @@ case "$depth" in
     *) echo "ERROR: unsupported depth $depth" >&2; exit 2 ;;
 esac
 
-mkdir -p "reports/$config/$depth"
-CONFIG="$config" DEPTH="$depth" pt_shell -file pt.tcl \
-    | tee "reports/$config/$depth/pt_console.txt"
+dc_output_root=${PIPELINE_DC_OUTPUT_ROOT:-outputs}
+report_root=${PIPELINE_REPORT_ROOT:-reports}
+report_dir="${report_root}/${config}/${depth}"
+mkdir -p "$report_dir"
+CONFIG="$config" DEPTH="$depth" \
+    PIPELINE_DC_OUTPUT_ROOT="$dc_output_root" \
+    PIPELINE_REPORT_ROOT="$report_root" \
+    pt_shell -file pt.tcl | tee "$report_dir/pt_console.txt"
