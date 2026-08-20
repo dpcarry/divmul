@@ -14,7 +14,7 @@ comparison, not workload-specific signoff.
 | P3 | 2.80 | 3 | 8.40 | 11657.52 | 0.0069 | 0.0271 | 2.2512 | 6.303 |
 | P4 | 2.20 | 4 | 8.80 | 13000.32 | 0.0069 | 0.0271 | 3.7033 | 8.147 |
 | P5 | 1.80 | 5 | 9.00 | 14448.24 | 0.0055 | 0.0271 | 4.6411 | 8.354 |
-| P6 | 1.50 | 6 | 9.00 | 15053.76 | 0.0054 | 0.0271 | 6.6065 | 9.910 |
+| P6 | 1.50 | 6 | 9.00 | 14490.36 | 0.0026 | 0.0271 | 6.6107 | 9.916 |
 | P7 | 1.50 | 7 | 10.50 | 15240.24 | 0.0047 | 0.0271 | 6.9452 | 10.418 |
 
 ## fixed_l0
@@ -96,8 +96,8 @@ is not rounded into a pass in this summary.
 
 - Runtime P3 is the area/energy knee: 357.1 Mops/s, 11657.52 um^2, and 6.303 pJ/op.
 - Runtime P6 is the best 1.5 ns point: 666.7 Mops/s with 9.00 ns fill latency and positive setup/hold slack.
-- P6 dominates P7 at the same throughput, reducing area by 1.22%, power by 4.88%, and latency by 14.29%.
-- At P6, runtime L0--L4 selection costs 3.72% area and 1.36% power relative to fixed L4.
+- P6 dominates P7 at the same throughput, reducing area by 4.92%, power by 4.82%, and latency by 14.29%.
+- At P6, runtime L0--L4 selection costs -0.16% area and 1.43% power relative to fixed L4.
 
 These are pre-layout typical-corner results. Vectorless power is appropriate
 for this controlled architectural sweep, while workload-specific publication

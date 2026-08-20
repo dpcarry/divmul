@@ -16,7 +16,8 @@ RMSE, relative RMSE, and maximum relative error values to the transcript.
 and checks every output bit against the P6 RTL before the exhaustive software
 campaign is used.
 
-L4 improves multiplier accuracy over L3, but Q0.8 reciprocal-square
-quantization makes L4 division less accurate than L3. The independent Python
-ideal-coefficient model continues to improve at L4, isolating the regression
-to coefficient quantization rather than the fourth tangent-plane correction.
+The reciprocal-square coefficient is Q0.9. L0-L3 preserve the earlier Q0.8
+outputs by left-shifting their constants, while L4 uses newly rounded Q0.9
+constants. This removes the former L4 division regression without changing the
+correction equations: L4 now improves MAE, MRED, RMSE, and maximum relative
+error over L3.

@@ -32,11 +32,11 @@ cd research/python
 python3 oadm_divmul_sim.py
 ```
 
-## RTL-like 8-bit reciprocal coefficient
+## RTL-like 9-bit reciprocal coefficient
 
 ```bash
 python3 oadm_divmul_sim.py \
-  --coefficient-bits 8 \
+  --coefficient-bits 9 \
   --out-dir results_rtl
 ```
 
@@ -58,7 +58,7 @@ if gnuplot is unavailable.
 
 The RTL-matched NumPy model evaluates the full Cartesian product of 10,000
 uniform FP32 mantissas for x and y. It processes the 100,000,000 pairs per
-mode/level in chunks and reproduces the current Q5.23 corrections, Q0.8 LUT,
+mode/level in chunks and reproduces the current Q5.23 corrections, Q0.9 LUT,
 product truncation, normalization, and FP32 packing.
 
 ```bash

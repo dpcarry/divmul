@@ -330,58 +330,58 @@ module oadm_dm_pipe #(
     assign shared_4 = {{(CORE_WIDTH-PIPE_VALUE_WIDTH){shared_4_pipe[PIPE_VALUE_WIDTH-1]}}, shared_4_pipe};
 
     // Segment 4: runtime LUT selection and reciprocal-square scaling.
-    reg [7:0] coefficient_c5;
-    reg signed [37:0] product_c5;
+    reg [8:0] coefficient_c5;
+    reg signed [38:0] product_c5;
     reg signed [CORE_WIDTH-1:0] divided_c5;
-    wire signed [37:0] shared_extended = {{9{shared_4[28]}}, shared_4};
+    wire signed [38:0] shared_extended = {{10{shared_4[28]}}, shared_4};
     always @* begin
-        coefficient_c5 = 8'h72;
+        coefficient_c5 = 9'h0e4;
         case (level_4)
-            3'd0: coefficient_c5 = 8'h72;
-            3'd1: coefficient_c5 = y_index_4[3] ? 8'h54 : 8'ha4;
+            3'd0: coefficient_c5 = 9'h0e4;
+            3'd1: coefficient_c5 = y_index_4[3] ? 9'h0a8 : 9'h148;
             3'd2: begin
                 case (y_index_4[3:2])
-                    2'b00: coefficient_c5 = 8'hca;
-                    2'b01: coefficient_c5 = 8'h87;
-                    2'b10: coefficient_c5 = 8'h61;
-                    default: coefficient_c5 = 8'h49;
+                    2'b00: coefficient_c5 = 9'h194;
+                    2'b01: coefficient_c5 = 9'h10e;
+                    2'b10: coefficient_c5 = 9'h0c2;
+                    default: coefficient_c5 = 9'h092;
                 endcase
             end
             3'd3: begin
                 case (y_index_4[3:1])
-                    3'b000: coefficient_c5 = 8'he3;
-                    3'b001: coefficient_c5 = 8'hb6;
-                    3'b010: coefficient_c5 = 8'h95;
-                    3'b011: coefficient_c5 = 8'h7c;
-                    3'b100: coefficient_c5 = 8'h69;
-                    3'b101: coefficient_c5 = 8'h5a;
-                    3'b110: coefficient_c5 = 8'h4e;
-                    default: coefficient_c5 = 8'h44;
+                    3'b000: coefficient_c5 = 9'h1c6;
+                    3'b001: coefficient_c5 = 9'h16c;
+                    3'b010: coefficient_c5 = 9'h12a;
+                    3'b011: coefficient_c5 = 9'h0f8;
+                    3'b100: coefficient_c5 = 9'h0d2;
+                    3'b101: coefficient_c5 = 9'h0b4;
+                    3'b110: coefficient_c5 = 9'h09c;
+                    default: coefficient_c5 = 9'h088;
                 endcase
             end
             default: begin
                 case (y_index_4)
-                    4'h0: coefficient_c5 = 8'hf1;
-                    4'h1: coefficient_c5 = 8'hd6;
-                    4'h2: coefficient_c5 = 8'hbf;
-                    4'h3: coefficient_c5 = 8'hac;
-                    4'h4: coefficient_c5 = 8'h9c;
-                    4'h5: coefficient_c5 = 8'h8e;
-                    4'h6: coefficient_c5 = 8'h81;
-                    4'h7: coefficient_c5 = 8'h77;
-                    4'h8: coefficient_c5 = 8'h6d;
-                    4'h9: coefficient_c5 = 8'h65;
-                    4'ha: coefficient_c5 = 8'h5d;
-                    4'hb: coefficient_c5 = 8'h57;
-                    4'hc: coefficient_c5 = 8'h51;
-                    4'hd: coefficient_c5 = 8'h4b;
-                    4'he: coefficient_c5 = 8'h46;
-                    default: coefficient_c5 = 8'h42;
+                    4'h0: coefficient_c5 = 9'h1e1;
+                    4'h1: coefficient_c5 = 9'h1ac;
+                    4'h2: coefficient_c5 = 9'h17f;
+                    4'h3: coefficient_c5 = 9'h159;
+                    4'h4: coefficient_c5 = 9'h138;
+                    4'h5: coefficient_c5 = 9'h11c;
+                    4'h6: coefficient_c5 = 9'h103;
+                    4'h7: coefficient_c5 = 9'h0ed;
+                    4'h8: coefficient_c5 = 9'h0da;
+                    4'h9: coefficient_c5 = 9'h0ca;
+                    4'ha: coefficient_c5 = 9'h0bb;
+                    4'hb: coefficient_c5 = 9'h0ad;
+                    4'hc: coefficient_c5 = 9'h0a1;
+                    4'hd: coefficient_c5 = 9'h097;
+                    4'he: coefficient_c5 = 9'h08d;
+                    default: coefficient_c5 = 9'h084;
                 endcase
             end
         endcase
         product_c5 = shared_extended * coefficient_c5;
-        divided_c5 = product_c5[36:8];
+        divided_c5 = product_c5[37:9];
     end
 
     wire [70:0] cut4_in = {

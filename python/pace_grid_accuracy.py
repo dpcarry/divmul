@@ -14,19 +14,21 @@ MIDPOINT_Q = 3 << 22
 TWO_Q = 1 << 24
 TWO_POINT_TWO_FIVE_Q = 9 << 21
 LEVEL_COUNT = 5
+COEFFICIENT_BITS = 9
 
 COEFFICIENTS = (
-    np.full(16, 0x72, dtype=np.int64),
-    np.array([0xA4] * 8 + [0x54] * 8, dtype=np.int64),
-    np.repeat(np.array([0xCA, 0x87, 0x61, 0x49], dtype=np.int64), 4),
+    np.full(16, 0x0E4, dtype=np.int64),
+    np.array([0x148] * 8 + [0x0A8] * 8, dtype=np.int64),
+    np.repeat(np.array([0x194, 0x10E, 0x0C2, 0x092], dtype=np.int64), 4),
     np.repeat(
-        np.array([0xE3, 0xB6, 0x95, 0x7C, 0x69, 0x5A, 0x4E, 0x44],
+        np.array([0x1C6, 0x16C, 0x12A, 0x0F8,
+                  0x0D2, 0x0B4, 0x09C, 0x088],
                  dtype=np.int64),
         2,
     ),
     np.array(
-        [0xF1, 0xD6, 0xBF, 0xAC, 0x9C, 0x8E, 0x81, 0x77,
-         0x6D, 0x65, 0x5D, 0x57, 0x51, 0x4B, 0x46, 0x42],
+        [0x1E1, 0x1AC, 0x17F, 0x159, 0x138, 0x11C, 0x103, 0x0ED,
+         0x0DA, 0x0CA, 0x0BB, 0x0AD, 0x0A1, 0x097, 0x08D, 0x084],
         dtype=np.int64,
     ),
 )
@@ -143,7 +145,7 @@ def evaluate_all_levels(x_mantissa, y_mantissa, divide_mode):
             shared = shared + terms[level]
         if divide_mode:
             coefficient = COEFFICIENTS[level][y_index]
-            core = np.right_shift(shared * coefficient, 8)
+            core = np.right_shift(shared * coefficient, COEFFICIENT_BITS)
         else:
             core = shared
         outputs.append(pack_fp32(core))
@@ -303,7 +305,8 @@ def write_results(rows, out_dir, points, chunk_size, elapsed):
             f"in `[1,2)` for both x and y, forming {points * points:,} pairs "
             "per mode and level. The endpoint 2.0 is excluded.\n\n"
             "The chunked NumPy model reproduces the current RTL integer "
-            "corrections, Q0.8 LUT constants, product truncation, and FP32 "
+            f"corrections, Q0.{COEFFICIENT_BITS} LUT constants, product "
+            "truncation, and FP32 "
             "normalization. It accumulates statistics without storing the full "
             "output matrix.\n\n"
             f"Chunk size: {chunk_size}; elapsed time: {elapsed:.1f} seconds.\n\n"

@@ -2,9 +2,9 @@
 
 This campaign evaluates 10000 uniformly spaced FP32 mantissas in `[1,2)` for both x and y, forming 100,000,000 pairs per mode and level. The endpoint 2.0 is excluded.
 
-The chunked NumPy model reproduces the current RTL integer corrections, Q0.8 LUT constants, product truncation, and FP32 normalization. It accumulates statistics without storing the full output matrix.
+The chunked NumPy model reproduces the current RTL integer corrections, Q0.9 LUT constants, product truncation, and FP32 normalization. It accumulates statistics without storing the full output matrix.
 
-Chunk size: 128; elapsed time: 89.0 seconds.
+Chunk size: 128; elapsed time: 90.9 seconds.
 
 `pace_comparison.csv` transcribes the PACE Table II MAE, MRED, and RMSE values. PACE reports MRED as a ratio, not a percentage.
 
@@ -23,7 +23,7 @@ The model was checked bit-for-bit against the P6 RTL on 1,000 vectors spanning b
 | DIV | L1 | 0.011849005 | 1.104058 | 0.019347039 | 1.680536 | 9.906101 |
 | DIV | L2 | 0.004343612 | 0.391751 | 0.006480436 | 0.542320 | 2.905008 |
 | DIV | L3 | 0.001444896 | 0.142578 | 0.001790518 | 0.175131 | 0.632052 |
-| DIV | L4 | 0.002437372 | 0.253635 | 0.002844356 | 0.301913 | 0.716695 |
+| DIV | L4 | 0.001193850 | 0.123175 | 0.001417327 | 0.146566 | 0.314704 |
 
 ## DIV comparison with PACE
 
@@ -32,4 +32,4 @@ The model was checked bit-for-bit against the P6 RTL on 1,000 vectors spanning b
 | L1 | 0.011849 | 0.028 | 0.011041 | 0.026 | 0.019347 | 0.045 |
 | L2 | 0.004344 | 0.015 | 0.003918 | 0.014 | 0.006480 | 0.022 |
 | L3 | 0.001445 | 0.011 | 0.001426 | 0.011 | 0.001791 | 0.014 |
-| L4 | 0.002437 | 0.005 | 0.002536 | 0.005 | 0.002844 | 0.007 |
+| L4 | 0.001194 | 0.005 | 0.001232 | 0.005 | 0.001417 | 0.007 |

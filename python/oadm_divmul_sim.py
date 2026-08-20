@@ -476,7 +476,7 @@ def parse_args():
         "--coefficient-bits",
         type=int,
         default=0,
-        help="0 uses ideal paper constants; 8 models the RTL Q0.8 LUT.",
+        help="0 uses ideal paper constants; 9 models the current RTL Q0.9 LUT.",
     )
     parser.add_argument(
         "--out-dir",
