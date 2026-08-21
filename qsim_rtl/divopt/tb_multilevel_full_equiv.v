@@ -1,0 +1,96 @@
+`timescale 1ns/1ps
+
+module tb_multilevel_full_equiv;
+    reg [31:0] x;
+    reg [31:0] y;
+    reg [1:0] level;
+    reg divide_mode;
+    wire [31:0] reference_result;
+    wire [31:0] optimized_result;
+    wire [31:0] fixed_l0_result;
+    wire [31:0] fixed_l1_result;
+    wire [31:0] fixed_l2_result;
+    integer i;
+    integer mode_index;
+    integer level_index;
+    integer failures;
+
+    oadm_dm_pipe #(.PIPE_MASK(7'h00)) reference_dut (
+        .clk(1'b0), .x(x), .y(y), .level(level),
+        .divide_mode(divide_mode), .result(reference_result)
+    );
+    oadm_runtime_opt optimized_dut (
+        .x(x), .y(y), .level(level),
+        .divide_mode(divide_mode), .result(optimized_result)
+    );
+    oadm_fixed_l0_opt fixed_l0 (
+        .x(x), .y(y), .divide_mode(divide_mode), .result(fixed_l0_result)
+    );
+    oadm_fixed_l1_opt fixed_l1 (
+        .x(x), .y(y), .divide_mode(divide_mode), .result(fixed_l1_result)
+    );
+    oadm_fixed_l2_opt fixed_l2 (
+        .x(x), .y(y), .divide_mode(divide_mode), .result(fixed_l2_result)
+    );
+
+    task check_outputs;
+        begin
+            #1;
+            if (optimized_result !== reference_result) begin
+                failures = failures + 1;
+                if (failures <= 10) begin
+                    $display("RUNTIME FAIL mode=%0d level=%0d x=%h y=%h ref=%h opt=%h",
+                             divide_mode, level, x, y,
+                             reference_result, optimized_result);
+                end
+            end
+            if ((level == 0) && (fixed_l0_result !== reference_result)) begin
+                failures = failures + 1;
+                $display("FIXED L0 FAIL mode=%0d x=%h y=%h ref=%h opt=%h",
+                         divide_mode, x, y, reference_result, fixed_l0_result);
+            end
+            if ((level == 1) && (fixed_l1_result !== reference_result)) begin
+                failures = failures + 1;
+                $display("FIXED L1 FAIL mode=%0d x=%h y=%h ref=%h opt=%h",
+                         divide_mode, x, y, reference_result, fixed_l1_result);
+            end
+            if ((level == 2) && (fixed_l2_result !== reference_result)) begin
+                failures = failures + 1;
+                $display("FIXED L2 FAIL mode=%0d x=%h y=%h ref=%h opt=%h",
+                         divide_mode, x, y, reference_result, fixed_l2_result);
+            end
+        end
+    endtask
+
+    initial begin
+        failures = 0;
+        level = 0;
+        divide_mode = 0;
+
+        x = 32'h3f800000; y = 32'h3f800000; check_outputs;
+        x = 32'h00000000; y = 32'h00000000; check_outputs;
+        x = 32'h7f800000; y = 32'h3f800000; check_outputs;
+        x = 32'h3f800000; y = 32'h7f800000; check_outputs;
+        x = 32'h7fc01234; y = 32'h3f800000; check_outputs;
+        x = 32'h3f800000; y = 32'h7fc05678; check_outputs;
+
+        for (mode_index = 0; mode_index < 2; mode_index = mode_index + 1) begin
+            for (level_index = 0; level_index < 4; level_index = level_index + 1) begin
+                divide_mode = mode_index;
+                level = level_index;
+                for (i = 0; i < 25000; i = i + 1) begin
+                    x = $random;
+                    y = $random;
+                    check_outputs;
+                end
+            end
+        end
+
+        if (failures == 0) begin
+            $display("PASS: full FP32 runtime/fixed equivalence");
+        end else begin
+            $display("FAIL: %0d full FP32 mismatches", failures);
+        end
+        $finish;
+    end
+endmodule

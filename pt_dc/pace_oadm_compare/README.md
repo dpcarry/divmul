@@ -1,0 +1,46 @@
+# OADM versus PACE comparison
+
+This directory contains a reproducible, same-flow comparison between the
+fixed-level OADM divider and the locally reproduced PACE divider.
+
+## Main results
+
+The canonical machine-readable table is `comparison.csv`. A positive delta
+means that OADM is larger, slower, more power hungry, or less accurate than
+PACE. A negative error delta means that OADM has lower error.
+
+| OADM / PACE | OADM area (um^2) | PACE area (um^2) | OADM power (mW) | PACE power (mW) | OADM delay (ns) | PACE delay (ns) | OADM MRED | PACE MRED |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| L0 / L1 | 1287.72 | 956.88 | 0.07604 | 0.03913 | 3.1519 | 2.4213 | 0.042928 | 0.026218 |
+| L1 / L2 | 2755.80 | 1532.16 | 0.13963 | 0.06333 | 4.0166 | 3.1580 | 0.011202 | 0.014993 |
+| L2 / L3 | 2941.92 | 2175.12 | 0.16454 | 0.10655 | 4.3844 | 3.5374 | 0.008365 | 0.005652 |
+| L3 / L4 | 3626.64 | 3196.43 | 0.21021 | 0.15422 | 4.4036 | 3.6584 | 0.003205 | 0.003834 |
+
+OADM L1 and L3 have lower MAE, MRED, and RMSE than their mapped PACE levels.
+OADM L0 and L2 have higher error; L2 RMSE is close to PACE L3 (+1.46%). PACE
+has lower area, power, and critical delay at every mapped level in this run.
+
+## Methodology
+
+- Level mapping is OADM L0/L1/L2/L3 to PACE L1/L2/L3/L4 because OADM counts
+  the baseline plane as level zero.
+- PPA compares combinational, fixed-level, DIV-only FP32 wrappers. The OADM
+  wrappers use PACE-compatible normalized finite FP32 I/O; neither side is
+  credited with pipeline registers or runtime-level selection hardware.
+- Both designs use the same TSMC 65 nm typical CCS library and a 10 ns virtual
+  clock. All reported setup paths pass.
+- PrimeTime power is vectorless with static probability 0.5 and toggle rate
+  0.1 per 10 ns on both designs. These values are comparable estimates, not
+  VCD/SAIF activity-based signoff power.
+- Error uses the exact same 10,000 normalized positive FP32 operand pairs and
+  fixed seed 6321. MRED is a fraction; multiply it by 100 for percent.
+- `qsim_rtl/pace_oadm_compare/error_comparison.csv` is the raw error output.
+  PrimeTime reports are under `reports/oadm_l*` and `reports/pace_l*`.
+
+## Full shared DIV+MUL context
+
+The complete fixed-level OADM blocks also support multiplication through the
+same interface and shared datapath. Their optimized areas are 2137.68 um^2
+(L0), 3452.40 um^2 (L1), and 3954.96 um^2 (L2). The runtime-configurable L0-L3
+block is 5164.20 um^2. These numbers must not be placed directly against the
+PACE DIV-only area as an apples-to-apples divider comparison.
