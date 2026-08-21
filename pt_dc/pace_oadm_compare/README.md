@@ -20,6 +20,21 @@ OADM L1 and L3 have lower MAE, MRED, and RMSE than their mapped PACE levels.
 OADM L0 and L2 have higher error; L2 RMSE is close to PACE L3 (+1.46%). PACE
 has lower area, power, and critical delay at every mapped level in this run.
 
+## L3 implementation Pareto improvement
+
+`optimization_results.csv` compares the original area winner with a bit-exact
+L3 implementation that factors the midpoint product
+`(17 + 2a)(17 + 2b)` into `289 + 34(a + b) + 4ab`. Under the same explicit
+10 ns virtual clock and aligned PrimeTime activity assumptions, the factored
+version reduces critical delay by 9.79% and total power by 2.13%, at a 1.42%
+cell-area cost. Both implementations pass setup, and a 100,008-vector RTL
+crosscheck produced zero output mismatches.
+
+| Implementation | Area (um^2) | PT delay (ns) | PT power (mW) |
+|---|---:|---:|---:|
+| Original L3 area winner | 3626.64 | 4.39051 | 0.210208 |
+| Factored midpoint L3 | 3678.12 | 3.96043 | 0.205722 |
+
 ## Methodology
 
 - Level mapping is OADM L0/L1/L2/L3 to PACE L1/L2/L3/L4 because OADM counts
@@ -36,6 +51,8 @@ has lower area, power, and critical delay at every mapped level in this run.
   fixed seed 6321. MRED is a fraction; multiply it by 100 for percent.
 - `qsim_rtl/pace_oadm_compare/error_comparison.csv` is the raw error output.
   PrimeTime reports are under `reports/oadm_l*` and `reports/pace_l*`.
+- Factored-midpoint reports are under
+  `reports/oadm_l3_reduced_midpoint_period10`.
 
 ## Full shared DIV+MUL context
 
