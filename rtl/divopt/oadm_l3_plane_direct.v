@@ -4,7 +4,8 @@ module oadm_l3_plane_direct (
     output wire signed [28:0] plane_separate_shift,
     output wire signed [28:0] plane_combined_shift,
     output wire signed [28:0] plane_exact,
-    output wire        [2:0] rounding_correction
+    output wire        [2:0] rounding_correction,
+    output wire signed [28:0] plane_exact_reduced_midpoint
 );
     wire [2:0] x_index = x_mantissa[22:20];
     wire [2:0] y_index = y_mantissa[22:20];
@@ -35,4 +36,15 @@ module oadm_l3_plane_direct (
     assign rounding_correction = x_rounding_error + y_rounding_error;
 
     assign plane_exact = plane_separate_shift - rounding_correction;
+
+    wire [3:0] midpoint_index_sum = {1'b0, x_index} + {1'b0, y_index};
+    wire [5:0] midpoint_index_product = x_index * y_index;
+    wire [10:0] midpoint_product_reduced = 11'd289
+        + ({7'b0, midpoint_index_sum} << 5)
+        + ({7'b0, midpoint_index_sum} << 1)
+        + ({5'b0, midpoint_index_product} << 2);
+    wire signed [28:0] constant_term_reduced =
+        $signed({4'b0, midpoint_product_reduced[9:0], 15'b0});
+    assign plane_exact_reduced_midpoint = constant_term_reduced
+        + (x_term >>> 4) - (y_term >>> 4) - rounding_correction;
 endmodule
