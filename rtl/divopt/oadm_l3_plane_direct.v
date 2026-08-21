@@ -3,7 +3,8 @@ module oadm_l3_plane_direct (
     input  wire [23:0] y_mantissa,
     output wire signed [28:0] plane_separate_shift,
     output wire signed [28:0] plane_combined_shift,
-    output wire signed [28:0] plane_exact
+    output wire signed [28:0] plane_exact,
+    output wire        [2:0] rounding_correction
 );
     wire [2:0] x_index = x_mantissa[22:20];
     wire [2:0] y_index = y_mantissa[22:20];
@@ -31,7 +32,7 @@ module oadm_l3_plane_direct (
         .index(x_index), .value_low(y_mantissa[3:0]),
         .x_error(unused_x_error), .y_error(y_rounding_error)
     );
-    wire [2:0] lut_rounding_error = x_rounding_error + y_rounding_error;
+    assign rounding_correction = x_rounding_error + y_rounding_error;
 
-    assign plane_exact = plane_separate_shift - lut_rounding_error;
+    assign plane_exact = plane_separate_shift - rounding_correction;
 endmodule

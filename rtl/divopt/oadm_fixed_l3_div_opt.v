@@ -126,12 +126,14 @@ module oadm_fixed_l3_div_opt #(
     wire signed [CORE_WIDTH-1:0] unused_combined_plane;
     wire signed [CORE_WIDTH-1:0] exact_direct_plane;
     wire signed [CORE_WIDTH-1:0] factored_exact_plane;
+    wire [2:0] direct_rounding_correction;
     oadm_l3_plane_direct direct_plane_impl (
         .x_mantissa(x_mantissa),
         .y_mantissa(y_mantissa),
         .plane_separate_shift(direct_plane),
         .plane_combined_shift(unused_combined_plane),
-        .plane_exact(exact_direct_plane)
+        .plane_exact(exact_direct_plane),
+        .rounding_correction(direct_rounding_correction)
     );
     oadm_l3_plane_factored factored_plane_impl (
         .x_mantissa(x_mantissa),
@@ -189,12 +191,25 @@ module oadm_fixed_l3_div_opt #(
                                    + (shared_extended <<< 1);
         endcase
     end
+
+    // Move the small LUT correction after scaling.  Splitting the low seven
+    // product bits into quotient and borrow preserves floor((w-c)*k/128)
+    // exactly while removing the correction subtract from the multiplier input.
+    wire signed [35:0] direct_extended = {{7{direct_plane[28]}}, direct_plane};
+    wire signed [35:0] direct_product = direct_extended * coefficient;
+    wire [9:0] correction_product = direct_rounding_correction * coefficient;
+    wire correction_borrow = direct_product[6:0] < correction_product[6:0];
+    wire signed [28:0] corrected_product_high =
+        $signed(direct_product[35:7])
+        - $signed({26'b0, correction_product[9:7]})
+        - correction_borrow;
+
     wire signed [35:0] product = (SCALE_STYLE == 1)
                                ? product_csd : product_mul;
     wire signed [CORE_WIDTH-1:0] core_value = (SCALE_STYLE == 2)
         ? $signed({2'b00, product_unsigned[33:7]})
         : ((SCALE_STYLE == 3) ? $signed({1'b0, product_truncated})
-                              : product[35:7]);
+          : ((SCALE_STYLE == 5) ? corrected_product_high : product[35:7]));
 
     reg signed [CORE_WIDTH-1:0] normalized_value;
     reg [22:0] normalized_fraction;
@@ -382,6 +397,30 @@ module oadm_fixed_l3_div_opt_paceio (
 );
     oadm_fixed_l3_div_opt #(
         .PLANE_STYLE(2), .NORM_STYLE(2), .FP_STYLE(1)
+    ) impl (
+        .x(x), .y(y), .result(result)
+    );
+endmodule
+
+module oadm_fixed_l3_div_opt_postcorr (
+    input  wire [31:0] x,
+    input  wire [31:0] y,
+    output wire [31:0] result
+);
+    oadm_fixed_l3_div_opt #(
+        .SCALE_STYLE(5), .PLANE_STYLE(2), .NORM_STYLE(2)
+    ) impl (
+        .x(x), .y(y), .result(result)
+    );
+endmodule
+
+module oadm_fixed_l3_div_opt_postcorr_paceio (
+    input  wire [31:0] x,
+    input  wire [31:0] y,
+    output wire [31:0] result
+);
+    oadm_fixed_l3_div_opt #(
+        .SCALE_STYLE(5), .PLANE_STYLE(2), .NORM_STYLE(2), .FP_STYLE(1)
     ) impl (
         .x(x), .y(y), .result(result)
     );
