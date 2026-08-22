@@ -19,14 +19,14 @@ module oadm_fixed_plane_centered #(
     wire [4:0] x_midpoint = BASE + (x_index << STEP_SHIFT);
     wire [4:0] y_midpoint = BASE + (y_index << STEP_SHIFT);
 
-    wire signed [24:0] x_residual_wide = $signed({1'b0, x_mantissa})
-        - $signed({1'b0, x_midpoint, 19'b0});
-    wire signed [24:0] y_residual_wide = $signed({1'b0, y_mantissa})
-        - $signed({1'b0, y_midpoint, 19'b0});
-    wire signed [RESIDUAL_WIDTH-1:0] x_residual =
-        x_residual_wide[RESIDUAL_WIDTH-1:0];
-    wire signed [RESIDUAL_WIDTH-1:0] y_residual =
-        y_residual_wide[RESIDUAL_WIDTH-1:0];
+    // Within each interval, subtracting its midpoint is exactly an
+    // offset-binary-to-two's-complement conversion: invert the residual MSB.
+    wire signed [RESIDUAL_WIDTH-1:0] x_residual = {
+        ~x_mantissa[22-LEVEL], x_mantissa[21-LEVEL:0]
+    };
+    wire signed [RESIDUAL_WIDTH-1:0] y_residual = {
+        ~y_mantissa[22-LEVEL], y_mantissa[21-LEVEL:0]
+    };
 
     wire signed [PRODUCT_WIDTH-1:0] x_residual_product =
         x_residual * $signed({1'b0, y_midpoint});

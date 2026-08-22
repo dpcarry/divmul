@@ -261,6 +261,9 @@ accuracy evaluation；FairQuantize/application-level 工作不包含在这里。
   `289 + 34(a + b) + 4ab`，减少 L3 critical-path multiplication complexity。
 - **Centered residual plane**：把 mantissa 表示为 interval midpoint 加 signed residual，
   将两个 24x5 products bit-exact 地缩小为两个 20x5 products。
+- **Subtractor-free residual recentering**：识别出 interval 内的 midpoint subtraction
+  等价于 offset-binary residual 的 MSB inversion，以纯 wiring 替代显式减法；该改写
+  对 L3 的时序有收益，并保持所有 tested outputs bit-exact。
 - **Centered index factorization**：进一步利用 `midpoint = 17 + 2*index`，得到介于
   delay winner 与 area/power winner 之间的 Pareto point。
 - **Post-scale correction relocation**：在保持 tested output bit-exact 的前提下调整
@@ -273,6 +276,33 @@ accuracy evaluation；FairQuantize/application-level 工作不包含在这里。
 这些优化均要求经过 RTL bit-exact regression、同一 TSMC65 DC synthesis 和 PrimeTime
 检查后才被记为正向结果。当前 L3 Pareto 数据及对应报告见
 [`pt_dc/pace_oadm_compare/README.md`](pt_dc/pace_oadm_compare/README.md)。
+
+## 11. Bit-Width-Aware Datapath Optimization
+
+**References**
+
+- J. Cong et al., “Bitwidth-Aware Scheduling and Binding in High-Level
+  Synthesis,” ASP-DAC, 2005. DOI:
+  [10.1109/ASPDAC.2005.1466476](https://doi.org/10.1109/ASPDAC.2005.1466476)
+- A. C. I. Malerba et al., “Automatic Datapath Optimization using E-Graphs,”
+  arXiv:2204.11478, 2022. [Preprint](https://arxiv.org/abs/2204.11478)
+- Status: **Applied methodology; project-original RTL identity**
+
+**Used in this project**
+
+- 这些工作支持按真实消费位宽和 arithmetic identity 探索等价 datapath，而不是统一
+  使用最宽 operator；每个候选仍由当前 DC/PT library mapping 决定是否保留。
+- 基于该原则测试了 23-bit normalization mux 和 exact split high-product。前者被 DC
+  自动优化成相同网表，后者面积增加 4.58%，因此都未进入最终 RTL。
+- 最终保留的是 subtractor-free residual recentering：它不降低位宽精度，而是把
+  midpoint subtraction 识别为一位编码转换。
+
+**Effect**
+
+- Fixed L3 PT delay 从 4.98826 ns 降至 4.82341 ns；面积从 4767.48 增至
+  4773.24 um^2，vectorless power 从 0.229574 增至 0.230443 mW。
+- Fixed L0-L2 与 runtime-configurable mapping 不变，完整 200,000-vector regression
+  bit-exact PASS。详细记录见 `optimization_branches/final-opt/`。
 
 ## Citation and Claiming Rules
 
