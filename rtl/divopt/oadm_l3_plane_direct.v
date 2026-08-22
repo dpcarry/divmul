@@ -6,7 +6,8 @@ module oadm_l3_plane_direct (
     output wire signed [28:0] plane_exact,
     output wire        [2:0] rounding_correction,
     output wire signed [28:0] plane_exact_reduced_midpoint,
-    output wire signed [28:0] plane_exact_centered
+    output wire signed [28:0] plane_exact_centered,
+    output wire signed [28:0] plane_exact_centered_index
 );
     wire [2:0] x_index = x_mantissa[22:20];
     wire [2:0] y_index = y_mantissa[22:20];
@@ -65,4 +66,23 @@ module oadm_l3_plane_direct (
     assign plane_exact_centered = constant_term_reduced
         + x_residual_scaled - y_residual_scaled
         - rounding_correction;
+
+    wire signed [25:0] x_residual_extended = {{6{x_residual[19]}}, x_residual};
+    wire signed [25:0] y_residual_extended = {{6{y_residual[19]}}, y_residual};
+    wire signed [23:0] x_index_product = x_residual * $signed({1'b0, y_index});
+    wire signed [23:0] y_index_product = y_residual * $signed({1'b0, x_index});
+    wire signed [25:0] x_term_index = (x_residual_extended <<< 4)
+                                      + x_residual_extended
+                                      + ($signed({{2{x_index_product[23]}},
+                                                   x_index_product}) <<< 1);
+    wire signed [25:0] y_term_index = (y_residual_extended <<< 4)
+                                      + y_residual_extended
+                                      + ($signed({{2{y_index_product[23]}},
+                                                   y_index_product}) <<< 1);
+    wire signed [28:0] x_index_scaled =
+        $signed({{3{x_term_index[25]}}, x_term_index}) >>> 4;
+    wire signed [28:0] y_index_scaled =
+        $signed({{3{y_term_index[25]}}, y_term_index}) >>> 4;
+    assign plane_exact_centered_index = constant_term_reduced
+        + x_index_scaled - y_index_scaled - rounding_correction;
 endmodule

@@ -22,7 +22,7 @@ has lower area, power, and critical delay at every mapped level in this run.
 
 ## L3 implementation Pareto improvement
 
-`optimization_results.csv` compares the original area winner with two bit-exact
+`optimization_results.csv` compares the original area winner with three bit-exact
 L3 Pareto implementations. The delay-oriented implementation factors the midpoint product
 `(17 + 2a)(17 + 2b)` into `289 + 34(a + b) + 4ab`. Under the same explicit
 10 ns virtual clock and aligned PrimeTime activity assumptions, the factored
@@ -32,12 +32,16 @@ its interval midpoint, replacing two 24x5-bit products with bit-exact 20x5-bit
 residual products. Relative to the original, it reduces area by 6.99%, delay by
 7.07%, and power by 7.03%. All implementations pass setup, and each optimized
 implementation passed a 100,008-vector RTL crosscheck with zero mismatches.
+An intermediate implementation further factors each residual product using
+`midpoint = 17 + 2*index`; it trades some of the centered version's area and
+power savings for a shorter delay while remaining smaller than the delay winner.
 
 | Implementation | Area (um^2) | PT delay (ns) | PT power (mW) |
 |---|---:|---:|---:|
 | Original L3 area winner | 3626.64 | 4.39051 | 0.210208 |
 | Factored midpoint L3 | 3678.12 | 3.96043 | 0.205722 |
 | Centered residual L3 | 3373.20 | 4.07998 | 0.195428 |
+| Centered index-factored L3 | 3594.96 | 4.01110 | 0.202143 |
 
 ## Methodology
 
@@ -58,6 +62,8 @@ implementation passed a 100,008-vector RTL crosscheck with zero mismatches.
 - Factored-midpoint reports are under
   `reports/oadm_l3_reduced_midpoint_period10`.
 - Centered-residual reports are under `reports/oadm_l3_centered_period10`.
+- Centered index-factored reports are under
+  `reports/oadm_l3_centered_index_period10`.
 
 ## Full shared DIV+MUL context
 

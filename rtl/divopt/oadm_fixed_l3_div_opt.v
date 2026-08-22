@@ -128,6 +128,7 @@ module oadm_fixed_l3_div_opt #(
     wire signed [CORE_WIDTH-1:0] factored_exact_plane;
     wire signed [CORE_WIDTH-1:0] reduced_midpoint_plane;
     wire signed [CORE_WIDTH-1:0] centered_plane;
+    wire signed [CORE_WIDTH-1:0] centered_index_plane;
     wire [2:0] direct_rounding_correction;
     oadm_l3_plane_direct direct_plane_impl (
         .x_mantissa(x_mantissa),
@@ -137,7 +138,8 @@ module oadm_fixed_l3_div_opt #(
         .plane_exact(exact_direct_plane),
         .rounding_correction(direct_rounding_correction),
         .plane_exact_reduced_midpoint(reduced_midpoint_plane),
-        .plane_exact_centered(centered_plane)
+        .plane_exact_centered(centered_plane),
+        .plane_exact_centered_index(centered_index_plane)
     );
     oadm_l3_plane_factored factored_plane_impl (
         .x_mantissa(x_mantissa),
@@ -149,7 +151,8 @@ module oadm_fixed_l3_div_opt #(
                           : ((PLANE_STYLE == 3) ? factored_exact_plane
                           : ((PLANE_STYLE == 4) ? reduced_midpoint_plane
                           : ((PLANE_STYLE == 5) ? centered_plane
-                                                : shared_recursive))));
+                          : ((PLANE_STYLE == 6) ? centered_index_plane
+                                                : shared_recursive)))));
 
     reg [6:0] coefficient;
     always @* begin
@@ -427,6 +430,18 @@ module oadm_fixed_l3_div_opt_centered_paceio (
 );
     oadm_fixed_l3_div_opt #(
         .PLANE_STYLE(5), .NORM_STYLE(2), .FP_STYLE(1)
+    ) impl (
+        .x(x), .y(y), .result(result)
+    );
+endmodule
+
+module oadm_fixed_l3_div_opt_centered_index_paceio (
+    input  wire [31:0] x,
+    input  wire [31:0] y,
+    output wire [31:0] result
+);
+    oadm_fixed_l3_div_opt #(
+        .PLANE_STYLE(6), .NORM_STYLE(2), .FP_STYLE(1)
     ) impl (
         .x(x), .y(y), .result(result)
     );

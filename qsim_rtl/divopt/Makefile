@@ -1,4 +1,4 @@
-.PHONY: run best4 postcorr reduced-midpoint centered paceio plane multilevel-plane multilevel-full clean
+.PHONY: run best4 postcorr reduced-midpoint centered centered-index paceio plane multilevel-plane multilevel-full clean
 
 run:
 	vlib work
@@ -64,6 +64,19 @@ centered:
 	      ../../rtl/divopt/oadm_fixed_l3_div_opt.v \
 	      tb_centered_equiv.v
 	vsim -c -do "run -all; quit -f" tb_centered_equiv
+
+centered-index:
+	vlib work
+	vlog ../../rtl/csa3.v \
+	      ../../rtl/pipeline_sweep/oadm_pipe_cut.v \
+	      ../../rtl/pipeline_sweep/oadm_dm_pipe.v \
+	      ../../rtl/nopipe/oadm_dm_mode_nopipe.v \
+	      ../../rtl/divopt/oadm_rounding_error_lut.v \
+	      ../../rtl/divopt/oadm_l3_plane_direct.v \
+	      ../../rtl/divopt/oadm_l3_plane_factored.v \
+	      ../../rtl/divopt/oadm_fixed_l3_div_opt.v \
+	      tb_centered_index_equiv.v
+	vsim -c -do "run -all; quit -f" tb_centered_index_equiv
 
 paceio:
 	vlib work
