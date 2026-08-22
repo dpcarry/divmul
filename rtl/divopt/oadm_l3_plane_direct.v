@@ -5,7 +5,8 @@ module oadm_l3_plane_direct (
     output wire signed [28:0] plane_combined_shift,
     output wire signed [28:0] plane_exact,
     output wire        [2:0] rounding_correction,
-    output wire signed [28:0] plane_exact_reduced_midpoint
+    output wire signed [28:0] plane_exact_reduced_midpoint,
+    output wire signed [28:0] plane_exact_centered
 );
     wire [2:0] x_index = x_mantissa[22:20];
     wire [2:0] y_index = y_mantissa[22:20];
@@ -47,4 +48,21 @@ module oadm_l3_plane_direct (
         $signed({4'b0, midpoint_product_reduced[9:0], 15'b0});
     assign plane_exact_reduced_midpoint = constant_term_reduced
         + (x_term >>> 4) - (y_term >>> 4) - rounding_correction;
+
+    // Center each mantissa on its interval midpoint before multiplication.
+    // The midpoint products in the two linear terms cancel algebraically,
+    // leaving two 20x5-bit residual products instead of two 24x5-bit products.
+    wire signed [19:0] x_residual = $signed({1'b0, x_mantissa})
+                                  - $signed({x_midpoint, 19'b0});
+    wire signed [19:0] y_residual = $signed({1'b0, y_mantissa})
+                                  - $signed({y_midpoint, 19'b0});
+    wire signed [25:0] x_residual_term = x_residual * y_midpoint;
+    wire signed [25:0] y_residual_term = y_residual * x_midpoint;
+    wire signed [28:0] x_residual_scaled =
+        $signed({{3{x_residual_term[25]}}, x_residual_term}) >>> 4;
+    wire signed [28:0] y_residual_scaled =
+        $signed({{3{y_residual_term[25]}}, y_residual_term}) >>> 4;
+    assign plane_exact_centered = constant_term_reduced
+        + x_residual_scaled - y_residual_scaled
+        - rounding_correction;
 endmodule
