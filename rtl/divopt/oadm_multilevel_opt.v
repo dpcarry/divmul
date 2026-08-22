@@ -70,7 +70,9 @@ module oadm_multilevel_opt #(
                 .divide_mode(divide_mode), .plane_exact(plane_full)
             );
         end else begin : multilevel_plane
-            oadm_multilevel_plane_direct plane (
+            oadm_multilevel_plane_direct #(
+                .FACTORED_MIDPOINT(FIXED_LEVEL >= 0)
+            ) plane (
                 .x_mantissa(x_mantissa), .y_mantissa(y_mantissa),
                 .level(active_level), .divide_mode(divide_mode),
                 .plane_exact(plane_full)

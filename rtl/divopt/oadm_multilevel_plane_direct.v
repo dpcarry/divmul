@@ -1,4 +1,6 @@
-module oadm_multilevel_plane_direct (
+module oadm_multilevel_plane_direct #(
+    parameter integer FACTORED_MIDPOINT = 0
+) (
     input  wire [23:0] x_mantissa,
     input  wire [23:0] y_mantissa,
     input  wire [1:0]  level,
@@ -30,7 +32,37 @@ module oadm_multilevel_plane_direct (
 
     wire [28:0] x_product = x_mantissa * y_midpoint;
     wire [28:0] y_product = y_mantissa * x_midpoint;
-    wire [9:0] midpoint_product = x_midpoint * y_midpoint;
+    wire [2:0] x_index = x_mantissa[22:20] >> (3 - level);
+    wire [2:0] y_index = y_mantissa[22:20] >> (3 - level);
+    wire [3:0] midpoint_index_sum = {1'b0, x_index}
+                                          + {1'b0, y_index};
+    wire [5:0] midpoint_index_product = x_index * y_index;
+    wire [9:0] midpoint_product;
+    generate
+        if (FACTORED_MIDPOINT != 0) begin : factored_midpoint
+            reg [9:0] midpoint_product_factored;
+            always @* begin
+                case (level)
+                    2'd0: midpoint_product_factored = 10'd576;
+                    2'd1: midpoint_product_factored = 10'd400
+                        + ({6'b0, midpoint_index_sum} << 7)
+                        + ({6'b0, midpoint_index_sum} << 5)
+                        + ({4'b0, midpoint_index_product} << 6);
+                    2'd2: midpoint_product_factored = 10'd324
+                        + ({6'b0, midpoint_index_sum} << 6)
+                        + ({6'b0, midpoint_index_sum} << 3)
+                        + ({4'b0, midpoint_index_product} << 4);
+                    default: midpoint_product_factored = 10'd289
+                        + ({6'b0, midpoint_index_sum} << 5)
+                        + ({6'b0, midpoint_index_sum} << 1)
+                        + ({4'b0, midpoint_index_product} << 2);
+                endcase
+            end
+            assign midpoint_product = midpoint_product_factored;
+        end else begin : direct_midpoint
+            assign midpoint_product = x_midpoint * y_midpoint;
+        end
+    endgenerate
     wire signed [28:0] x_term = $signed({1'b0, x_product[28:4]});
     wire signed [28:0] y_term = $signed({1'b0, y_product[28:4]});
     wire signed [28:0] constant_term = $signed({4'b0, midpoint_product, 15'b0});
