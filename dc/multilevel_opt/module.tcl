@@ -20,6 +20,7 @@ analyze -format verilog [list \
     ../../rtl/divopt/oadm_multilevel_rounding_lut.v \
     ../../rtl/divopt/oadm_lowlevel_plane_direct.v \
     ../../rtl/divopt/oadm_multilevel_plane_direct.v \
+    ../../rtl/divopt/oadm_fixed_plane_centered.v \
     ../../rtl/divopt/oadm_multilevel_opt.v]
 elaborate $top_level
 if {[check_error -v] == 1} { exit 1 }

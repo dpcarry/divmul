@@ -59,13 +59,8 @@ module oadm_multilevel_opt #(
         ? FIXED_LEVEL_VALUE : level;
     wire signed [CORE_WIDTH-1:0] plane_full;
     generate
-        if (FIXED_LEVEL == 0) begin : fixed_l0_plane
-            oadm_l0_plane_direct plane (
-                .x_mantissa(x_mantissa), .y_mantissa(y_mantissa),
-                .divide_mode(divide_mode), .plane_exact(plane_full)
-            );
-        end else if (FIXED_LEVEL == 1) begin : fixed_l1_plane
-            oadm_l1_plane_direct plane (
+        if (FIXED_LEVEL >= 0) begin : fixed_centered_plane
+            oadm_fixed_plane_centered #(.LEVEL(FIXED_LEVEL)) plane (
                 .x_mantissa(x_mantissa), .y_mantissa(y_mantissa),
                 .divide_mode(divide_mode), .plane_exact(plane_full)
             );

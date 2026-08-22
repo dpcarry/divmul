@@ -122,6 +122,7 @@ multilevel-full:
 	      ../../rtl/divopt/oadm_multilevel_rounding_lut.v \
 	      ../../rtl/divopt/oadm_lowlevel_plane_direct.v \
 	      ../../rtl/divopt/oadm_multilevel_plane_direct.v \
+	      ../../rtl/divopt/oadm_fixed_plane_centered.v \
 	      ../../rtl/divopt/oadm_multilevel_opt.v \
 	      tb_multilevel_full_equiv.v
 	vsim -c -do "run -all; quit -f" tb_multilevel_full_equiv
