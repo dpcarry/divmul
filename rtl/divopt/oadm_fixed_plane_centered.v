@@ -28,10 +28,43 @@ module oadm_fixed_plane_centered #(
     wire signed [RESIDUAL_WIDTH-1:0] y_residual =
         y_residual_wide[RESIDUAL_WIDTH-1:0];
 
-    wire signed [PRODUCT_WIDTH-1:0] x_residual_product =
-        x_residual * $signed({1'b0, y_midpoint});
-    wire signed [PRODUCT_WIDTH-1:0] y_residual_product =
-        y_residual * $signed({1'b0, x_midpoint});
+    wire signed [PRODUCT_WIDTH-1:0] x_residual_extended =
+        {{6{x_residual[RESIDUAL_WIDTH-1]}}, x_residual};
+    wire signed [PRODUCT_WIDTH-1:0] y_residual_extended =
+        {{6{y_residual[RESIDUAL_WIDTH-1]}}, y_residual};
+    wire signed [RESIDUAL_WIDTH+3:0] x_index_product =
+        x_residual * $signed({1'b0, y_index});
+    wire signed [RESIDUAL_WIDTH+3:0] y_index_product =
+        y_residual * $signed({1'b0, x_index});
+    wire signed [PRODUCT_WIDTH-1:0] x_index_extended =
+        {{2{x_index_product[RESIDUAL_WIDTH+3]}}, x_index_product};
+    wire signed [PRODUCT_WIDTH-1:0] y_index_extended =
+        {{2{y_index_product[RESIDUAL_WIDTH+3]}}, y_index_product};
+    wire signed [PRODUCT_WIDTH-1:0] x_residual_product;
+    wire signed [PRODUCT_WIDTH-1:0] y_residual_product;
+    generate
+        if (LEVEL == 0) begin : l0_scale
+            assign x_residual_product = (x_residual_extended <<< 4)
+                + (x_residual_extended <<< 3);
+            assign y_residual_product = (y_residual_extended <<< 4)
+                + (y_residual_extended <<< 3);
+        end else if (LEVEL == 1) begin : l1_scale
+            assign x_residual_product = (x_residual_extended <<< 4)
+                + (x_residual_extended <<< 2) + (x_index_extended <<< 3);
+            assign y_residual_product = (y_residual_extended <<< 4)
+                + (y_residual_extended <<< 2) + (y_index_extended <<< 3);
+        end else if (LEVEL == 2) begin : l2_scale
+            assign x_residual_product = (x_residual_extended <<< 4)
+                + (x_residual_extended <<< 1) + (x_index_extended <<< 2);
+            assign y_residual_product = (y_residual_extended <<< 4)
+                + (y_residual_extended <<< 1) + (y_index_extended <<< 2);
+        end else begin : l3_scale
+            assign x_residual_product = (x_residual_extended <<< 4)
+                + x_residual_extended + (x_index_extended <<< 1);
+            assign y_residual_product = (y_residual_extended <<< 4)
+                + y_residual_extended + (y_index_extended <<< 1);
+        end
+    endgenerate
     wire signed [28:0] x_product_extended =
         {{LEVEL{x_residual_product[PRODUCT_WIDTH-1]}}, x_residual_product};
     wire signed [28:0] y_product_extended =
