@@ -14,6 +14,14 @@ def root_plane(x_mantissa, y_mantissa, level, divide_mode):
     return centered_plane(x_mantissa, y_mantissa, level, divide_mode, 10)
 
 
+FIXED_SELECTIONS = (
+    (18, 18, 7, (59,)),
+    (16, 16, 7, (83, 42)),
+    (10, 14, 8, (203, 136, 97, 73)),
+    (16, 16, 8, (227, 182, 149, 124, 105, 90, 78, 68)),
+)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--cases", type=int, default=1000)
@@ -44,21 +52,30 @@ def main():
                 runtime_core = plane
             runtime_result = int(pack_fp32(runtime_core)[0, 0])
 
-            l2_plane = root_plane(x_mantissa, y_mantissa, 2, True)
-            l2_index = int((y_mantissa[0, 0] - ONE_Q) >> 21)
-            l2_coefficient = np.array(
-                [[(203, 136, 97, 73)[l2_index]]], dtype=np.int64
-            )
-            l2_core = scale_plane(l2_plane, l2_coefficient, 8, 14)
-            l2_result = int(pack_fp32(l2_core)[0, 0])
+            fixed_results = []
+            for fixed_level, selection in enumerate(FIXED_SELECTIONS):
+                residual_drop, scale_drop, bits, table = selection
+                fixed_plane = centered_plane(
+                    x_mantissa, y_mantissa, fixed_level, True, residual_drop
+                )
+                segment = (0 if fixed_level == 0 else
+                           int((y_mantissa[0, 0] - ONE_Q)
+                               >> (23 - fixed_level)))
+                fixed_coefficient = np.array(
+                    [[table[segment]]], dtype=np.int64
+                )
+                fixed_core = scale_plane(
+                    fixed_plane, fixed_coefficient, bits, scale_drop
+                )
+                fixed_results.append(int(pack_fp32(fixed_core)[0, 0]))
             output.write(
-                "%08x %08x %d %d %08x %08x\n" % (
+                "%08x %08x %d %d %08x %08x %08x %08x %08x\n" % (
                     (127 << 23) | x_fraction,
                     (127 << 23) | y_fraction,
                     level,
                     divide_mode,
                     runtime_result,
-                    l2_result,
+                    *fixed_results,
                 )
             )
 

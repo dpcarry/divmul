@@ -202,7 +202,20 @@ module oadm_runtime_root_opt (
 endmodule
 
 
-module oadm_fixed_l2_div_root_opt (
+module oadm_fixed_div_root_opt #(
+    parameter integer LEVEL = 2,
+    parameter integer RESIDUAL_DROP = 10,
+    parameter integer SCALE_DROP = 14,
+    parameter integer COEFFICIENT_BITS = 8,
+    parameter [7:0] C0 = 8'd203,
+    parameter [7:0] C1 = 8'd136,
+    parameter [7:0] C2 = 8'd97,
+    parameter [7:0] C3 = 8'd73,
+    parameter [7:0] C4 = 8'd0,
+    parameter [7:0] C5 = 8'd0,
+    parameter [7:0] C6 = 8'd0,
+    parameter [7:0] C7 = 8'd0
+) (
     input wire [31:0] x,
     input wire [31:0] y,
     output wire [31:0] result
@@ -210,23 +223,46 @@ module oadm_fixed_l2_div_root_opt (
     wire [23:0] x_mantissa = {1'b1, x[22:0]};
     wire [23:0] y_mantissa = {1'b1, y[22:0]};
     wire signed [28:0] plane_full;
-    oadm_runtime_plane_pruned plane (
+    oadm_runtime_plane_pruned #(
+        .RESIDUAL_DROP(RESIDUAL_DROP)
+    ) plane (
         .x_mantissa(x_mantissa), .y_mantissa(y_mantissa),
-        .level(2'd2), .divide_mode(1'b1), .plane_exact(plane_full)
+        .level(LEVEL[1:0]), .divide_mode(1'b1), .plane_exact(plane_full)
     );
 
-    reg [7:0] coefficient;
+    reg [COEFFICIENT_BITS-1:0] coefficient;
     always @* begin
-        case (y_mantissa[22:21])
-            2'b00: coefficient = 8'd203;
-            2'b01: coefficient = 8'd136;
-            2'b10: coefficient = 8'd97;
-            default: coefficient = 8'd73;
-        endcase
+        if (LEVEL == 0) begin
+            coefficient = C0[COEFFICIENT_BITS-1:0];
+        end else if (LEVEL == 1) begin
+            coefficient = y_mantissa[22]
+                ? C1[COEFFICIENT_BITS-1:0]
+                : C0[COEFFICIENT_BITS-1:0];
+        end else if (LEVEL == 2) begin
+            case (y_mantissa[22:21])
+                2'b00: coefficient = C0[COEFFICIENT_BITS-1:0];
+                2'b01: coefficient = C1[COEFFICIENT_BITS-1:0];
+                2'b10: coefficient = C2[COEFFICIENT_BITS-1:0];
+                default: coefficient = C3[COEFFICIENT_BITS-1:0];
+            endcase
+        end else begin
+            case (y_mantissa[22:20])
+                3'b000: coefficient = C0[COEFFICIENT_BITS-1:0];
+                3'b001: coefficient = C1[COEFFICIENT_BITS-1:0];
+                3'b010: coefficient = C2[COEFFICIENT_BITS-1:0];
+                3'b011: coefficient = C3[COEFFICIENT_BITS-1:0];
+                3'b100: coefficient = C4[COEFFICIENT_BITS-1:0];
+                3'b101: coefficient = C5[COEFFICIENT_BITS-1:0];
+                3'b110: coefficient = C6[COEFFICIENT_BITS-1:0];
+                default: coefficient = C7[COEFFICIENT_BITS-1:0];
+            endcase
+        end
     end
-    wire [18:0] reduced_scale_product = plane_full[24:14] * coefficient;
+    wire [24-SCALE_DROP+COEFFICIENT_BITS:0] reduced_scale_product =
+        plane_full[24:SCALE_DROP] * coefficient;
     wire signed [28:0] core_value =
-        $signed({4'b0000, reduced_scale_product, 6'b000000});
+        $signed({4'b0000, reduced_scale_product,
+                 {(SCALE_DROP-COEFFICIENT_BITS){1'b0}}});
 
     wire sign_input = x[31] ^ y[31];
     wire signed [9:0] exponent_input = $signed({2'b0, x[30:23]})
@@ -247,4 +283,55 @@ module oadm_fixed_l2_div_root_opt (
         end
     end
     assign result = {sign_input, result_exponent[7:0], normalized_fraction};
+endmodule
+
+
+module oadm_fixed_l0_div_root_opt (
+    input wire [31:0] x,
+    input wire [31:0] y,
+    output wire [31:0] result
+);
+    oadm_fixed_div_root_opt #(
+        .LEVEL(0), .RESIDUAL_DROP(18), .SCALE_DROP(18),
+        .COEFFICIENT_BITS(7), .C0(8'd59)
+    ) implementation (.x(x), .y(y), .result(result));
+endmodule
+
+
+module oadm_fixed_l1_div_root_opt (
+    input wire [31:0] x,
+    input wire [31:0] y,
+    output wire [31:0] result
+);
+    oadm_fixed_div_root_opt #(
+        .LEVEL(1), .RESIDUAL_DROP(16), .SCALE_DROP(16),
+        .COEFFICIENT_BITS(7), .C0(8'd83), .C1(8'd42)
+    ) implementation (.x(x), .y(y), .result(result));
+endmodule
+
+
+module oadm_fixed_l2_div_root_opt (
+    input wire [31:0] x,
+    input wire [31:0] y,
+    output wire [31:0] result
+);
+    oadm_fixed_div_root_opt #(
+        .LEVEL(2), .RESIDUAL_DROP(10), .SCALE_DROP(14),
+        .COEFFICIENT_BITS(8),
+        .C0(8'd203), .C1(8'd136), .C2(8'd97), .C3(8'd73)
+    ) implementation (.x(x), .y(y), .result(result));
+endmodule
+
+
+module oadm_fixed_l3_div_root_opt (
+    input wire [31:0] x,
+    input wire [31:0] y,
+    output wire [31:0] result
+);
+    oadm_fixed_div_root_opt #(
+        .LEVEL(3), .RESIDUAL_DROP(16), .SCALE_DROP(16),
+        .COEFFICIENT_BITS(8),
+        .C0(8'd227), .C1(8'd182), .C2(8'd149), .C3(8'd124),
+        .C4(8'd105), .C5(8'd90), .C6(8'd78), .C7(8'd68)
+    ) implementation (.x(x), .y(y), .result(result));
 endmodule

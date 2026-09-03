@@ -202,6 +202,30 @@ def run(points):
         fp32_bits_to_real(pack_fp32(l2_root_core))
     ))
 
+    fixed_selections = (
+        (18, 18, 7, (59,)),
+        (16, 16, 7, (83, 42)),
+        (10, 14, 8, (203, 136, 97, 73)),
+        (16, 16, 8, (227, 182, 149, 124, 105, 90, 78, 68)),
+    )
+    for level, selection in enumerate(fixed_selections):
+        residual_drop, scale_drop, coefficient_bits, table_values = selection
+        table = np.array(table_values, dtype=np.int64)
+        if level == 0:
+            segment = np.zeros_like(y_mantissa, dtype=np.int64)
+        else:
+            segment = ((y_mantissa - ONE_Q) >> (23 - level)).astype(np.int64)
+        plane = centered_plane(
+            x_mantissa, y_mantissa, level, True, residual_drop
+        )
+        core = scale_plane(
+            plane, table[segment], coefficient_bits, scale_drop
+        )
+        rows.append(metric_row(
+            "fixed_root", "DIV", level, expected,
+            fp32_bits_to_real(pack_fp32(core))
+        ))
+
     coefficient_tables = {}
     for coefficient_bits in (7, 8):
         for selector_bits in (2, 3, 4):

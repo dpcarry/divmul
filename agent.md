@@ -588,9 +588,10 @@ paper-table rows.
     A separate strict DIV-only L2 candidate uses the same precision pruning and
     a quantization-aware four-entry Q0.8 reciprocal-square table
     `{203,136,97,73}`. It keeps four L2 y intervals rather than adding L3
-    partitions. Its PPA is 1555.200006 um2 / 3.42979 ns / 0.0828411 mW, and its
+    partitions. Its final parameterized-top PPA is 1555.200006 um2 / 3.42979 ns /
+    0.0827526 mW, and its
     common-vector MAE/MRED/RMSE are 0.003100417 / 0.002892013 / 0.004394511.
-    Relative to local PACE L4, it is 44.18% smaller, 7.50% faster, and 37.63%
+    Relative to local PACE L4, it is 44.18% smaller, 7.50% faster, and 37.70%
     lower power while reducing those three error metrics by 20.44%, 24.56%,
     and 27.55%. This is a promising experimental point, not yet a paper-table
     replacement.
@@ -604,6 +605,35 @@ paper-table rows.
     `qsim_rtl/root_opt/`, `dc/root_opt/outputs_10ns/`,
     `pt_dc/root_opt/reports_10ns/`, and
     `ppa_results/root_opt_results_10ns.csv`.
+
+22. September 2 per-level extension of root-level precision pruning. A joint
+    search over residual drops, reciprocal-scale input drops, Q0.7/Q0.8 width,
+    and cell-local coefficient retuning selected fixed DIV-only points
+    `(18,18,Q0.7)` for L0, `(16,16,Q0.7)` for L1, the existing
+    `(10,14,Q0.8)` accuracy-oriented L2, and `(16,16,Q0.8)` for L3. The
+    coefficient tables are `{59}`, `{83,42}`, `{203,136,97,73}`, and
+    `{227,182,149,124,105,90,78,68}`. No level adds partition cells: L0--L3
+    retain 1, 2, 4, and 8 y intervals, respectively.
+
+    Common 10,000-vector MAE/MRED/RMSE are L0
+    0.042490737/0.042625992/0.056921209, L1
+    0.011530309/0.010870842/0.016338037, L2
+    0.003100417/0.002892013/0.004394511, and L3
+    0.002748346/0.002775435/0.003482566. All three metrics improve versus each
+    current OADM fixed-level baseline. Canonical PPA is L0
+    457.920004 um2/2.10219 ns/0.0195455 mW, L1
+    813.960003/2.71267/0.0399603, L2
+    1555.200006/3.42979/0.0827526, and L3
+    1412.640001/2.99306/0.0753662. Area reductions versus current L0--L3 are
+    64.39%, 62.06%, 39.89%, and 58.12% without measured accuracy loss.
+
+    The independent Python integer model covers runtime plus every fixed level
+    on 1,000 vectors. The expanded final-netlist miter covers the runtime unit
+    and all four fixed tops on 20,005 vectors per DUT; both checks pass with
+    zero mismatches. Evidence: `python/fixed_level_root_search.py`,
+    `python/results_root_opt/fixed_level_sweep.csv`,
+    `ppa_results/fixed_level_root_opt_10ns.csv`, and the item-21 root-opt
+    evidence directories.
 
 ## Tool and License Notes
 

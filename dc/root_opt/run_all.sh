@@ -34,7 +34,11 @@ run_one() {
         pt_shell -file "$PT_SCRIPT" >"$pt_dir/pt_console.log" 2>&1
 }
 
-for top in oadm_runtime_root_opt oadm_fixed_l2_div_root_opt; do
+for top in oadm_runtime_root_opt \
+           oadm_fixed_l0_div_root_opt \
+           oadm_fixed_l1_div_root_opt \
+           oadm_fixed_l2_div_root_opt \
+           oadm_fixed_l3_div_root_opt; do
     if [[ -z ${ONLY_TOP:-} || $ONLY_TOP == "$top" ]]; then
         run_one "$top"
     fi

@@ -97,6 +97,14 @@ supporting accuracy CSV, independent model cross-check, final-netlist gate
 miter, formulas, and raw DC/PT paths are documented in
 `rtl/root_opt/README.md`. These rows are not paper-facing selections yet.
 
+### `fixed_level_root_opt_10ns.csv`
+
+Level-by-level strict DIV-only comparison of the current L0--L3 OADM points
+against the precision-pruned and coefficient-retuned fixed-level candidates.
+Each root-opt row records its residual/scale drops, coefficient table, common
+10,000-vector accuracy, PPA deltas, and final report paths. L0--L3 are all
+normal-finite FP32 wrappers and use the same canonical mapping boundary.
+
 ### `divmul_best_by_level.csv`
 
 Compact paper-facing selection index for full OADM L0-L3 and the runtime

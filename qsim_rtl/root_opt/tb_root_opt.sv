@@ -8,7 +8,7 @@ module tb_root_opt;
     reg divide_mode;
     wire [31:0] baseline_out;
     wire [31:0] runtime_root_out;
-    wire [31:0] l2_root_out;
+    wire [31:0] fixed_root_out [0:3];
     wire [31:0] pace_l4_out;
     reg [31:0] x_vectors [0:CASES-1];
     reg [31:0] y_vectors [0:CASES-1];
@@ -19,9 +19,9 @@ module tb_root_opt;
     real root_abs [0:1][0:3];
     real root_rel [0:1][0:3];
     real root_sq [0:1][0:3];
-    real l2_abs;
-    real l2_rel;
-    real l2_sq;
+    real fixed_abs [0:3];
+    real fixed_rel [0:3];
+    real fixed_sq [0:3];
     real pace_abs;
     real pace_rel;
     real pace_sq;
@@ -45,9 +45,14 @@ module tb_root_opt;
         .x(x), .y(y), .level(level), .divide_mode(divide_mode),
         .result(runtime_root_out)
     );
-    oadm_fixed_l2_div_root_opt l2_root (
-        .x(x), .y(y), .result(l2_root_out)
-    );
+    oadm_fixed_l0_div_root_opt fixed_l0 (
+        .x(x), .y(y), .result(fixed_root_out[0]));
+    oadm_fixed_l1_div_root_opt fixed_l1 (
+        .x(x), .y(y), .result(fixed_root_out[1]));
+    oadm_fixed_l2_div_root_opt fixed_l2 (
+        .x(x), .y(y), .result(fixed_root_out[2]));
+    oadm_fixed_l3_div_root_opt fixed_l3 (
+        .x(x), .y(y), .result(fixed_root_out[3]));
     pace_fp32_l4 pace_l4 (.x(x), .y(y), .out(pace_l4_out));
 
     function real fp32_to_real;
@@ -88,12 +93,14 @@ module tb_root_opt;
     initial begin
         seed = 6321;
         special_mismatches = 0;
-        l2_abs = 0.0;
-        l2_rel = 0.0;
-        l2_sq = 0.0;
         pace_abs = 0.0;
         pace_rel = 0.0;
         pace_sq = 0.0;
+        for (level_index = 0; level_index < 4; level_index = level_index + 1) begin
+            fixed_abs[level_index] = 0.0;
+            fixed_rel[level_index] = 0.0;
+            fixed_sq[level_index] = 0.0;
+        end
         for (i = 0; i < CASES; i = i + 1) begin
             fraction_x = $random(seed) & 23'h7fffff;
             fraction_y = $random(seed) & 23'h7fffff;
@@ -134,12 +141,16 @@ module tb_root_opt;
                     root_sq[mode_index][level_index] =
                         root_sq[mode_index][level_index] + error * error;
 
-                    if (mode_index == 1 && level_index == 2) begin
-                        actual = fp32_to_real(l2_root_out);
+                    if (mode_index == 1) begin
+                        actual = fp32_to_real(fixed_root_out[level_index]);
                         error = abs_real(actual - expected);
-                        l2_abs = l2_abs + error;
-                        l2_rel = l2_rel + error / expected;
-                        l2_sq = l2_sq + error * error;
+                        fixed_abs[level_index] = fixed_abs[level_index] + error;
+                        fixed_rel[level_index] =
+                            fixed_rel[level_index] + error / expected;
+                        fixed_sq[level_index] =
+                            fixed_sq[level_index] + error * error;
+                    end
+                    if (mode_index == 1 && level_index == 2) begin
                         actual = fp32_to_real(pace_l4_out);
                         error = abs_real(actual - expected);
                         pace_abs = pace_abs + error;
@@ -172,8 +183,12 @@ module tb_root_opt;
                     $sqrt(root_sq[mode_index][level_index] / CASES));
             end
         end
-        $fdisplay(csv_file, "l2_root,DIV,L2,%0d,%.9f,%.9f,%.9f", CASES,
-            l2_abs / CASES, l2_rel / CASES, $sqrt(l2_sq / CASES));
+        for (level_index = 0; level_index < 4; level_index = level_index + 1)
+            $fdisplay(csv_file, "fixed_root,DIV,L%0d,%0d,%.9f,%.9f,%.9f",
+                level_index, CASES,
+                fixed_abs[level_index] / CASES,
+                fixed_rel[level_index] / CASES,
+                $sqrt(fixed_sq[level_index] / CASES));
         $fdisplay(csv_file, "pace_l4,DIV,L4,%0d,%.9f,%.9f,%.9f", CASES,
             pace_abs / CASES, pace_rel / CASES, $sqrt(pace_sq / CASES));
         $fclose(csv_file);
