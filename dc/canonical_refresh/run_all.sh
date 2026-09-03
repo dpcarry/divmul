@@ -78,23 +78,9 @@ if [[ ${RUN_SIMDIVE:-1} == 1 ]]; then
         "$ROOT/rtl/simdive_original/simdive_original_fp32_wrapper.v"
 fi
 
-if [[ ${RUN_SHARING:-1} == 1 ]]; then
+if [[ ${RUN_VARIANT_AUDIT:-1} == 1 ]]; then
     INDEX="$WORKTREES/centered-index-sharing"
-    RESIDUAL="$WORKTREES/centered-residual-rerun"
     mapfile -t index_rtl < <(oadm_files "$INDEX")
-    mapfile -t residual_rtl < <(oadm_files "$RESIDUAL")
-    for level in 0 1 2 3; do
-        for mode in full div mul; do
-            case $mode in
-                full) top="oadm_fixed_l${level}_opt" ;;
-                div) top="oadm_fixed_l${level}_div_opt" ;;
-                mul) top="oadm_fixed_l${level}_mul_canonical" ;;
-            esac
-            run_one "sharing/L${level}_centered_residual/$mode" "$top" \
-                "${residual_rtl[@]}"
-        done
-    done
-    # Audit the retained L0 Pareto alternative without mixing it into sharing.
     run_one "variant_audit/L0_centered_index/full" oadm_fixed_l0_opt \
         "${index_rtl[@]}"
 fi

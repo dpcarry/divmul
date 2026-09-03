@@ -36,21 +36,22 @@ Accuracy values require an additional same-vector and same-interface check.
 The September 3 rerun replaces the explicit-flatten/`compile_ultra` PPA
 numbers as the current comparison boundary. The authoritative tables are:
 
-- `hier_compile_master_10ns.csv`: all 46 attempted points, report paths,
+- `hier_compile_master_10ns.csv`: all 38 retained points, report paths,
   hierarchy/cell counts, and machine-checkable pass status.
 - `exact_baselines_hier_compile_10ns.csv`: exact MUL, DIV, and selectable
   DIV+MUL.
-- `root_opt_hier_compile_10ns.csv`: root-opt DIV L0-L3 and runtime DIV+MUL.
+- `root_opt_hier_compile_10ns.csv`: root-opt DIV L0-L3, runtime DIV+MUL, and
+  fixed-level integrated DIV+MUL L0-L3.
 - `mul_root_opt_hier_compile_10ns.csv`: all 12 MUL root-opt variants.
 - `div_only_vs_pace_hier_compile_10ns.csv`: root-opt OADM DIV L0-L3 against
   PACE L1-L4 under one wrapper and mapping boundary.
 - `priorwork_hier_compile_10ns.csv`: QIAD, FaNZeD, TruncApp, and LEAD.
-- `divmul_sharing_ablation_hier_compile_10ns.csv`: the retained pre-pruning
-  centered-residual sharing experiment. It is not a root-opt sharing result.
+- `divmul_sharing_ablation_hier_compile_10ns.csv`: current root-opt DIV-only
+  plus balanced MUL-only versus the fixed-level integrated OADM hardware.
 - `amlib_oam_vs_oadm_mul_hier_compile_10ns.csv`: AM-Lib OAM against the
-  pre-pruning OADM MUL-only baseline.
+  current balanced root-opt OADM MUL-only view.
 
-Of the 46 attempted points, 45 are valid combinational DC/PT results. The
+Of the 38 retained points, 37 are valid combinational DC/PT results. The
 SIMDive-derived wrapper is retained in the master audit with status
 `check_timing_failed;sequential_present`: ordinary `compile` preserves 23
 RTL-inferred latches, so it is excluded from strict combinational comparison.
@@ -63,32 +64,12 @@ must not be mixed with the current hierarchy-preserving tables.
 
 ## Previous Explicit-Flatten CSVs
 
-### `canonical_refresh_10ns.csv`
-
-Master audit table for the 21 freshly synthesized canonical points. It contains
-exact MUL/DIV/DIV+MUL, the SIMDive-derived wrapper, centered-residual OADM
-full/DIV-only/MUL-only L0-L3 views, the full-unit L0 centered-index audit, and
-AM-Lib OAM L0-L3. Each row records area, PT delay, PT power, ADP, and the DC/PT
-evidence paths. Use this file to verify that a value came from the canonical
-flow; use the narrower tables below when writing a specific comparison.
-The strict DIV-only L2 row was subsequently superseded by the validated
-fixed-L2 optimization in `div_only_l2_optimization_10ns.csv`; the original
-21-point master row remains an audit record of the pre-optimization snapshot.
-
 ### `exact_baselines_10ns_nopipe.csv`
 
 The three DesignWare exact references: standalone FP32 MUL, standalone FP32
 DIV, and the unshared selectable FP32 DIV+MUL block. It records latency,
 throughput implied by the 10 ns boundary, area, power, and energy per operation.
 The selectable row is the valid exact baseline for full OADM DIV+MUL.
-
-### `divmul_sharing_ablation_10ns.csv`
-
-The structural sharing experiment for L0-L3. Every row uses centered-residual
-RTL and compares a separately synthesized DIV-only plus MUL-only area sum with
-one selectable DIV+MUL implementation. Delay and power for each tied view are
-also included. Do not substitute the L0 centered-index or L3
-subtractor-free-residual Pareto points into this table.
 
 ### `div_only_vs_pace.csv`
 
@@ -119,35 +100,7 @@ OADM under the canonical flow. Error is qualitative context only because the
 current OADM and SIMDive runs use different vector sequences, and DIV includes
 a Q8 quotient adapter. This is not a native FP32 SIMDive implementation.
 
-### `amlib_oam_vs_oadm_mul_10ns.csv`
-
-L0-L3 comparison between the unmodified AM-Lib OAM source snapshot at commit
-`cc3864baead2584a94f0e7111e8d73d923fa3b35` and the centered-residual OADM
-MUL-only views used in the sharing table. PPA uses the same canonical flow and
-accuracy uses 200,006 common vectors. The error statistics are nearly
-identical, but outputs are not bit-exact; mismatch count and maximum bit delta
-are therefore retained explicitly.
-
 ## Selection and Audit CSVs
-
-### `fixed_level_root_opt_10ns.csv`
-
-Level-by-level strict DIV-only comparison of the current L0--L3 OADM points
-against the precision-pruned and coefficient-retuned fixed-level candidates.
-Each root-opt row records its residual/scale drops, coefficient table, common
-10,000-vector accuracy, PPA deltas, and final report paths. L0--L3 are all
-normal-finite FP32 wrappers and use the same canonical mapping boundary.
-
-### `mul_root_opt_results_10ns.csv`
-
-Isolated fixed-level multiplier precision experiment. For each L0--L3 level,
-it retains the original AM-Lib OAM and centered-residual OADM MUL-only
-references and adds accuracy-preserving, balanced, and area-oriented residual
-pruning points. Accuracy uses 200,000 common normalized finite vectors; every
-new RTL is also checked against an independent integer model and its flattened
-final netlist. These candidates were freshly rerun with the shared normal-finite
-wrapper. Derivation, candidate selection, and evidence paths are recorded in
-`mul_root_opt.md`.
 
 ### `divmul_best_by_level.csv`
 
@@ -210,7 +163,6 @@ its accuracy studies; they are retained for provenance:
 qsim_rtl/simdive_original/run_accuracy.sh
 qsim_rtl/simdive_original/run_canonical_gate_miter.sh
 qsim_rtl/amlib_oam_compare/run_accuracy.sh
-scripts/update_canonical_results.py
 qsim_rtl/l2_divopt/run_equiv.sh
 dc/l2_divopt/run_all.sh
 qsim_rtl/l2_divopt/run_gate_miters.sh
@@ -232,12 +184,14 @@ Reproduce the current mapping campaign with:
 ```text
 bash dc/hier_compile_10ns/run_all.sh
 .venv/bin/python scripts/collect_hier_compile_results.py
+bash qsim_rtl/root_opt/run_fixed_divmul_equiv.sh
 GATE_DC_ROOT="$PWD/dc/hier_compile_10ns/outputs/root_div" \
   GATE_LOG="$PWD/qsim_rtl/root_opt/hier_compile_gate_miter.log" \
   bash qsim_rtl/root_opt/run_gate_miter.sh
 GATE_DC_ROOT="$PWD/dc/hier_compile_10ns/outputs/mul_root" \
   GATE_LOG="$PWD/qsim_rtl/mul_root_opt/hier_compile_gate_miter.log" \
   bash qsim_rtl/mul_root_opt/run_gate_miter.sh
+bash qsim_rtl/root_opt/run_fixed_divmul_gate_miter.sh
 bash qsim_rtl/hier_compile_gate/run_gate_miters.sh
 ```
 
@@ -255,12 +209,16 @@ invalid points.
 - `div_only_vs_pace_flattened_exploratory.csv`: temporary duplicate removed
   when the common explicit-flatten policy became canonical.
 - `pt_dc/pace_oadm_compare/comparison.csv`: stale hierarchy-mismatched summary.
-- `root_opt_results_10ns.csv`: mixed runtime/DIV-only summary superseded by
-  `fixed_level_root_opt_10ns.csv` and `mul_root_opt_results_10ns.csv`; its PPA
-  predated the shared-wrapper rerun.
+- `root_opt_results_10ns.csv`, `fixed_level_root_opt_10ns.csv`, and
+  `mul_root_opt_results_10ns.csv`: old mapping-policy summaries superseded by
+  the hierarchy-preserving root-opt tables.
+- `canonical_refresh_10ns.csv`, `divmul_sharing_ablation_10ns.csv`, and
+  `amlib_oam_vs_oadm_mul_10ns.csv`: pre-pruning tables whose sharing evidence
+  was removed after the current integrated root-opt rerun.
 - `div_only_explicit_flatten_10ns.csv`: duplicate detailed table containing
   stale pre-unification PPA; current report paths and validation are carried by
   `div_only_vs_pace.csv` and `priorwork_comparison_10ns.csv`.
 
-Historical raw reports are intentionally not deleted. They remain evidence for
-the research timeline but are not authoritative paper data.
+Most historical raw reports remain timeline evidence. The obsolete
+pre-pruning sharing reports were explicitly deleted so they cannot be mistaken
+for current integrated OADM results.

@@ -116,8 +116,8 @@ def collect() -> dict[str, dict[str, object]]:
             "boundary": "TSMC65 typical CCS; 10 ns; no pipeline; INVD0; "
                         "0.004 output load; vectorless PT",
         }
-    if len(points) != 46:
-        raise RuntimeError(f"expected 46 points, found {len(points)}")
+    if len(points) != 38:
+        raise RuntimeError(f"expected 38 points, found {len(points)}")
     return points
 
 
@@ -135,7 +135,7 @@ def main() -> None:
     exact = subset(points, "exact/")
     write(PPA / "exact_baselines_hier_compile_10ns.csv", master_fields, exact)
 
-    root = subset(points, "root_div/")
+    root = subset(points, "root_div/") + subset(points, "root_shared/")
     write(PPA / "root_opt_hier_compile_10ns.csv", master_fields, root)
 
     mul = subset(points, "mul_root/")
@@ -174,16 +174,19 @@ def main() -> None:
 
     sharing = []
     for level in range(4):
-        base = f"sharing/L{level}_centered_residual"
-        div = points[f"{base}/div"]
-        mul_point = points[f"{base}/mul"]
-        full = points[f"{base}/full"]
+        div = points[f"root_div/oadm_fixed_l{level}_div_root_opt"]
+        mul_point = points[f"mul_root/oadm_fixed_l{level}_mul_root_opt"]
+        full = points[f"root_shared/oadm_fixed_l{level}_divmul_root_opt"]
         da = float(div["area_um2"])
         ma = float(mul_point["area_um2"])
         fa = float(full["area_um2"])
         dp = float(div["power_mw"])
         mp = float(mul_point["power_mw"])
         fp = float(full["power_mw"])
+        dd = float(div["delay_ns"])
+        md = float(mul_point["delay_ns"])
+        fd = float(full["delay_ns"])
+        separate_delay = max(dd, md)
         sharing.append({
             "level": f"L{level}",
             "div_area_um2": fmt(da, 6),
@@ -194,7 +197,10 @@ def main() -> None:
             "area_saved_pct": fmt(100.0 * (da + ma - fa) / (da + ma), 2),
             "div_delay_ns": div["delay_ns"],
             "mul_delay_ns": mul_point["delay_ns"],
+            "separate_critical_delay_ns": fmt(separate_delay, 5),
             "shared_delay_ns": full["delay_ns"],
+            "shared_delay_overhead_pct": fmt(
+                100.0 * (fd / separate_delay - 1.0), 2),
             "div_power_mw": fmt(dp, 7),
             "mul_power_mw": fmt(mp, 7),
             "separate_sum_power_mw": fmt(dp + mp, 7),
@@ -209,7 +215,7 @@ def main() -> None:
     amlib = []
     for level in range(4):
         oam = points[f"amlib_oam/L{level}"]
-        oadm = points[f"sharing/L{level}_centered_residual/mul"]
+        oadm = points[f"mul_root/oadm_fixed_l{level}_mul_root_opt"]
         amlib.extend([oam, oadm])
     write(PPA / "amlib_oam_vs_oadm_mul_hier_compile_10ns.csv",
           master_fields, amlib)

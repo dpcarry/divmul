@@ -7,7 +7,7 @@ DC_SCRIPT="$ROOT/dc/hier_compile_10ns/module.tcl"
 PT_SCRIPT="$ROOT/pt_dc/canonical_refresh/pt.tcl"
 DC_ROOT="$ROOT/dc/hier_compile_10ns/outputs"
 PT_ROOT="$ROOT/pt_dc/hier_compile_10ns/reports"
-CAMPAIGN_GROUPS=${CAMPAIGN_GROUPS:-canonical,pace,prior,root_div,mul_root}
+CAMPAIGN_GROUPS=${CAMPAIGN_GROUPS:-canonical,pace,prior,root_div,mul_root,root_shared}
 
 join_pipe() {
     local IFS='|'
@@ -92,17 +92,6 @@ if enabled canonical; then
         "$ROOT/rtl/simdive_original_compat/shifter_out_mul_div_compat.v" \
         "$SIMD/top_module.v" \
         "$ROOT/rtl/simdive_original/simdive_original_fp32_wrapper.v"
-
-    RESIDUAL="$WORKTREES/centered-residual-rerun"
-    mapfile -t residual_rtl < <(oadm_files "$RESIDUAL")
-    for level in 0 1 2 3; do
-        run_one "sharing/L${level}_centered_residual/full" \
-            "oadm_fixed_l${level}_opt" "" "${residual_rtl[@]}"
-        run_one "sharing/L${level}_centered_residual/div" \
-            "oadm_fixed_l${level}_div_opt" "" "${residual_rtl[@]}"
-        run_one "sharing/L${level}_centered_residual/mul" \
-            "oadm_fixed_l${level}_mul_canonical" "" "${residual_rtl[@]}"
-    done
 
     INDEX="$WORKTREES/centered-index-sharing"
     mapfile -t index_rtl < <(oadm_files "$INDEX")
@@ -191,6 +180,17 @@ if enabled mul_root; then
             esac
             run_one "mul_root/$top" "$top" "" "${mul_rtl[@]}"
         done
+    done
+fi
+
+if enabled root_shared; then
+    shared_rtl=(
+        "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v"
+        "$ROOT/rtl/root_opt/oadm_fixed_divmul_root_opt.v"
+    )
+    for level in 0 1 2 3; do
+        top="oadm_fixed_l${level}_divmul_root_opt"
+        run_one "root_shared/$top" "$top" "" "${shared_rtl[@]}"
     done
 fi
 

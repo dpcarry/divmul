@@ -1,0 +1,766 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : oadm_fixed_l0_divmul_root_opt
+Version: U-2022.12-SP7
+Date   : Thu Sep  3 13:57:05 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l0_divmul_root_opt ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                               Incr       Path
+  ----------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                              0.00       0.00
+  clock network delay (ideal)                                                                         0.00       0.00
+  input external delay                                                                                0.02       0.02 f
+  divide_mode (in)                                                                                    0.00       0.02 f
+  implementation/divide_mode (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                             0.00       0.02 f
+  implementation/U7/ZN (INVD1)                                                                        0.09       0.11 r
+  implementation/U50/ZN (INVD1)                                                                       0.12       0.23 f
+  implementation/U99/ZN (INR2D1)                                                                      0.07       0.31 r
+  implementation/mult_63_U9/S (HA1D0)                                                                 0.08       0.38 f
+  implementation/U73/ZN (INVD1)                                                                       0.02       0.40 r
+  implementation/U108/Z (CKXOR2D1)                                                                    0.06       0.46 f
+  implementation/U71/Z (AO22D0)                                                                       0.07       0.53 f
+  implementation/U70/CO (FA1D0)                                                                       0.08       0.61 f
+  implementation/U66/CO (FA1D0)                                                                       0.06       0.67 f
+  implementation/U63/CO (FA1D0)                                                                       0.06       0.72 f
+  implementation/U59/CO (FA1D0)                                                                       0.06       0.78 f
+  implementation/U56/CO (FA1D0)                                                                       0.06       0.83 f
+  implementation/U51/CO (FA1D0)                                                                       0.06       0.89 f
+  implementation/U53/CO (FA1D0)                                                                       0.06       0.94 f
+  implementation/U93/CO (FA1D0)                                                                       0.05       1.00 f
+  implementation/U6/ZN (XNR3D0)                                                                       0.13       1.13 r
+  implementation/mult_113/a[6] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)             0.00       1.13 r
+  implementation/mult_113/U41/ZN (INVD1)                                                              0.02       1.15 f
+  implementation/mult_113/U20/S (FA1D0)                                                               0.10       1.25 f
+  implementation/mult_113/U9/CO (FA1D0)                                                               0.10       1.35 f
+  implementation/mult_113/U8/CO (FA1D0)                                                               0.06       1.40 f
+  implementation/mult_113/U7/CO (FA1D0)                                                               0.06       1.46 f
+  implementation/mult_113/U6/CO (FA1D0)                                                               0.06       1.52 f
+  implementation/mult_113/U46/ZN (NR2D0)                                                              0.05       1.58 r
+  implementation/mult_113/U44/ZN (CKND2D0)                                                            0.04       1.61 f
+  implementation/mult_113/U43/ZN (XNR2D0)                                                             0.05       1.66 f
+  implementation/mult_113/product[12] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)      0.00       1.66 f
+  implementation/U49/ZN (AOI22D1)                                                                     0.05       1.71 r
+  implementation/U10/ZN (IND3D1)                                                                      0.11       1.82 f
+  implementation/U8/ZN (ND2D1)                                                                        0.16       1.98 r
+  implementation/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                           0.00       1.98 r
+  implementation/fp_wrapper/U48/CO (FA1D0)                                                            0.11       2.10 r
+  implementation/fp_wrapper/U49/CO (FA1D0)                                                            0.05       2.15 r
+  implementation/fp_wrapper/U50/CO (FA1D0)                                                            0.05       2.20 r
+  implementation/fp_wrapper/U51/CO (FA1D0)                                                            0.05       2.25 r
+  implementation/fp_wrapper/U52/CO (FA1D0)                                                            0.05       2.30 r
+  implementation/fp_wrapper/U53/CO (FA1D0)                                                            0.05       2.36 r
+  implementation/fp_wrapper/U63/Z (XOR3D1)                                                            0.07       2.42 f
+  implementation/fp_wrapper/U61/Z (AO22D0)                                                            0.08       2.50 f
+  implementation/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                   0.00       2.50 f
+  implementation/result[30] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                              0.00       2.50 f
+  result[30] (out)                                                                                    0.00       2.50 f
+  data arrival time                                                                                              2.50
+
+  clock vclk (rise edge)                                                                             10.00      10.00
+  clock network delay (ideal)                                                                         0.00      10.00
+  output external delay                                                                              -0.02       9.98
+  data required time                                                                                             9.98
+  ----------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                             9.98
+  data arrival time                                                                                             -2.50
+  ----------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                    7.48
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l0_divmul_root_opt ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                               Incr       Path
+  ----------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                              0.00       0.00
+  clock network delay (ideal)                                                                         0.00       0.00
+  input external delay                                                                                0.02       0.02 f
+  divide_mode (in)                                                                                    0.00       0.02 f
+  implementation/divide_mode (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                             0.00       0.02 f
+  implementation/U7/ZN (INVD1)                                                                        0.09       0.11 r
+  implementation/U50/ZN (INVD1)                                                                       0.12       0.23 f
+  implementation/U99/ZN (INR2D1)                                                                      0.07       0.31 r
+  implementation/mult_63_U9/S (HA1D0)                                                                 0.08       0.38 f
+  implementation/U73/ZN (INVD1)                                                                       0.02       0.40 r
+  implementation/U108/Z (CKXOR2D1)                                                                    0.06       0.46 f
+  implementation/U71/Z (AO22D0)                                                                       0.07       0.53 f
+  implementation/U70/CO (FA1D0)                                                                       0.08       0.61 f
+  implementation/U66/CO (FA1D0)                                                                       0.06       0.67 f
+  implementation/U63/CO (FA1D0)                                                                       0.06       0.72 f
+  implementation/U59/CO (FA1D0)                                                                       0.06       0.78 f
+  implementation/U56/CO (FA1D0)                                                                       0.06       0.83 f
+  implementation/U51/CO (FA1D0)                                                                       0.06       0.89 f
+  implementation/U53/CO (FA1D0)                                                                       0.06       0.94 f
+  implementation/U93/CO (FA1D0)                                                                       0.05       1.00 f
+  implementation/U6/ZN (XNR3D0)                                                                       0.13       1.13 r
+  implementation/mult_113/a[6] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)             0.00       1.13 r
+  implementation/mult_113/U41/ZN (INVD1)                                                              0.02       1.15 f
+  implementation/mult_113/U20/S (FA1D0)                                                               0.10       1.25 f
+  implementation/mult_113/U9/CO (FA1D0)                                                               0.10       1.35 f
+  implementation/mult_113/U8/CO (FA1D0)                                                               0.06       1.40 f
+  implementation/mult_113/U7/CO (FA1D0)                                                               0.06       1.46 f
+  implementation/mult_113/U6/CO (FA1D0)                                                               0.06       1.52 f
+  implementation/mult_113/U46/ZN (NR2D0)                                                              0.05       1.58 r
+  implementation/mult_113/U44/ZN (CKND2D0)                                                            0.04       1.61 f
+  implementation/mult_113/U43/ZN (XNR2D0)                                                             0.05       1.66 f
+  implementation/mult_113/product[12] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)      0.00       1.66 f
+  implementation/U49/ZN (AOI22D1)                                                                     0.05       1.71 r
+  implementation/U10/ZN (IND3D1)                                                                      0.11       1.82 f
+  implementation/U8/ZN (ND2D1)                                                                        0.16       1.98 r
+  implementation/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                           0.00       1.98 r
+  implementation/fp_wrapper/U48/CO (FA1D0)                                                            0.11       2.10 r
+  implementation/fp_wrapper/U49/CO (FA1D0)                                                            0.05       2.15 r
+  implementation/fp_wrapper/U50/CO (FA1D0)                                                            0.05       2.20 r
+  implementation/fp_wrapper/U51/CO (FA1D0)                                                            0.05       2.25 r
+  implementation/fp_wrapper/U52/CO (FA1D0)                                                            0.05       2.30 r
+  implementation/fp_wrapper/U53/CO (FA1D0)                                                            0.05       2.36 r
+  implementation/fp_wrapper/U63/Z (XOR3D1)                                                            0.07       2.42 f
+  implementation/fp_wrapper/U61/Z (AO22D0)                                                            0.08       2.50 f
+  implementation/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                   0.00       2.50 f
+  implementation/result[30] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                              0.00       2.50 f
+  result[30] (out)                                                                                    0.00       2.50 f
+  data arrival time                                                                                              2.50
+
+  clock vclk (rise edge)                                                                             10.00      10.00
+  clock network delay (ideal)                                                                         0.00      10.00
+  output external delay                                                                              -0.02       9.98
+  data required time                                                                                             9.98
+  ----------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                             9.98
+  data arrival time                                                                                             -2.50
+  ----------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                    7.48
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l0_divmul_root_opt ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                               Incr       Path
+  ----------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                              0.00       0.00
+  clock network delay (ideal)                                                                         0.00       0.00
+  input external delay                                                                                0.02       0.02 f
+  divide_mode (in)                                                                                    0.00       0.02 f
+  implementation/divide_mode (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                             0.00       0.02 f
+  implementation/U7/ZN (INVD1)                                                                        0.09       0.11 r
+  implementation/U50/ZN (INVD1)                                                                       0.12       0.23 f
+  implementation/U99/ZN (INR2D1)                                                                      0.07       0.31 r
+  implementation/mult_63_U9/S (HA1D0)                                                                 0.08       0.38 f
+  implementation/U73/ZN (INVD1)                                                                       0.02       0.40 r
+  implementation/U108/Z (CKXOR2D1)                                                                    0.06       0.46 f
+  implementation/U71/Z (AO22D0)                                                                       0.07       0.53 f
+  implementation/U70/CO (FA1D0)                                                                       0.08       0.61 f
+  implementation/U66/CO (FA1D0)                                                                       0.06       0.67 f
+  implementation/U63/CO (FA1D0)                                                                       0.06       0.72 f
+  implementation/U59/CO (FA1D0)                                                                       0.06       0.78 f
+  implementation/U56/CO (FA1D0)                                                                       0.06       0.83 f
+  implementation/U51/CO (FA1D0)                                                                       0.06       0.89 f
+  implementation/U53/CO (FA1D0)                                                                       0.06       0.94 f
+  implementation/U93/CO (FA1D0)                                                                       0.05       1.00 f
+  implementation/U6/ZN (XNR3D0)                                                                       0.13       1.13 r
+  implementation/mult_113/a[6] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)             0.00       1.13 r
+  implementation/mult_113/U41/ZN (INVD1)                                                              0.02       1.15 f
+  implementation/mult_113/U20/S (FA1D0)                                                               0.10       1.25 f
+  implementation/mult_113/U9/CO (FA1D0)                                                               0.10       1.35 f
+  implementation/mult_113/U8/CO (FA1D0)                                                               0.06       1.40 f
+  implementation/mult_113/U7/CO (FA1D0)                                                               0.06       1.46 f
+  implementation/mult_113/U6/CO (FA1D0)                                                               0.06       1.52 f
+  implementation/mult_113/U46/ZN (NR2D0)                                                              0.05       1.58 r
+  implementation/mult_113/U44/ZN (CKND2D0)                                                            0.04       1.61 f
+  implementation/mult_113/U43/ZN (XNR2D0)                                                             0.05       1.66 f
+  implementation/mult_113/product[12] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)      0.00       1.66 f
+  implementation/U49/ZN (AOI22D1)                                                                     0.05       1.71 r
+  implementation/U10/ZN (IND3D1)                                                                      0.11       1.82 f
+  implementation/U8/ZN (ND2D1)                                                                        0.16       1.98 r
+  implementation/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                           0.00       1.98 r
+  implementation/fp_wrapper/U48/CO (FA1D0)                                                            0.11       2.10 r
+  implementation/fp_wrapper/U49/CO (FA1D0)                                                            0.05       2.15 r
+  implementation/fp_wrapper/U50/CO (FA1D0)                                                            0.05       2.20 r
+  implementation/fp_wrapper/U51/CO (FA1D0)                                                            0.05       2.25 r
+  implementation/fp_wrapper/U52/CO (FA1D0)                                                            0.05       2.30 r
+  implementation/fp_wrapper/U53/CO (FA1D0)                                                            0.05       2.36 r
+  implementation/fp_wrapper/U63/Z (XOR3D1)                                                            0.07       2.42 f
+  implementation/fp_wrapper/U61/Z (AO22D0)                                                            0.08       2.50 f
+  implementation/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                   0.00       2.50 f
+  implementation/result[30] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                              0.00       2.50 f
+  result[30] (out)                                                                                    0.00       2.50 f
+  data arrival time                                                                                              2.50
+
+  clock vclk (rise edge)                                                                             10.00      10.00
+  clock network delay (ideal)                                                                         0.00      10.00
+  output external delay                                                                              -0.02       9.98
+  data required time                                                                                             9.98
+  ----------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                             9.98
+  data arrival time                                                                                             -2.50
+  ----------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                    7.48
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l0_divmul_root_opt ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                               Incr       Path
+  ----------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                              0.00       0.00
+  clock network delay (ideal)                                                                         0.00       0.00
+  input external delay                                                                                0.02       0.02 f
+  divide_mode (in)                                                                                    0.00       0.02 f
+  implementation/divide_mode (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                             0.00       0.02 f
+  implementation/U7/ZN (INVD1)                                                                        0.09       0.11 r
+  implementation/U50/ZN (INVD1)                                                                       0.12       0.23 f
+  implementation/U99/ZN (INR2D1)                                                                      0.07       0.31 r
+  implementation/mult_63_U9/S (HA1D0)                                                                 0.08       0.38 f
+  implementation/U73/ZN (INVD1)                                                                       0.02       0.40 r
+  implementation/U108/Z (CKXOR2D1)                                                                    0.06       0.46 f
+  implementation/U71/Z (AO22D0)                                                                       0.07       0.53 f
+  implementation/U70/CO (FA1D0)                                                                       0.08       0.61 f
+  implementation/U66/CO (FA1D0)                                                                       0.06       0.67 f
+  implementation/U63/CO (FA1D0)                                                                       0.06       0.72 f
+  implementation/U59/CO (FA1D0)                                                                       0.06       0.78 f
+  implementation/U56/CO (FA1D0)                                                                       0.06       0.83 f
+  implementation/U51/CO (FA1D0)                                                                       0.06       0.89 f
+  implementation/U53/CO (FA1D0)                                                                       0.06       0.94 f
+  implementation/U93/CO (FA1D0)                                                                       0.05       1.00 f
+  implementation/U6/ZN (XNR3D0)                                                                       0.13       1.13 r
+  implementation/mult_113/a[6] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)             0.00       1.13 r
+  implementation/mult_113/U41/ZN (INVD1)                                                              0.02       1.15 f
+  implementation/mult_113/U20/S (FA1D0)                                                               0.10       1.25 f
+  implementation/mult_113/U9/CO (FA1D0)                                                               0.10       1.35 f
+  implementation/mult_113/U8/CO (FA1D0)                                                               0.06       1.40 f
+  implementation/mult_113/U7/CO (FA1D0)                                                               0.06       1.46 f
+  implementation/mult_113/U6/CO (FA1D0)                                                               0.06       1.52 f
+  implementation/mult_113/U46/ZN (NR2D0)                                                              0.05       1.58 r
+  implementation/mult_113/U44/ZN (CKND2D0)                                                            0.04       1.61 f
+  implementation/mult_113/U43/ZN (XNR2D0)                                                             0.05       1.66 f
+  implementation/mult_113/product[12] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)      0.00       1.66 f
+  implementation/U49/ZN (AOI22D1)                                                                     0.05       1.71 r
+  implementation/U10/ZN (IND3D1)                                                                      0.11       1.82 f
+  implementation/U8/ZN (ND2D1)                                                                        0.16       1.98 r
+  implementation/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                           0.00       1.98 r
+  implementation/fp_wrapper/U48/CO (FA1D0)                                                            0.11       2.10 r
+  implementation/fp_wrapper/U49/CO (FA1D0)                                                            0.05       2.15 r
+  implementation/fp_wrapper/U50/CO (FA1D0)                                                            0.05       2.20 r
+  implementation/fp_wrapper/U51/CO (FA1D0)                                                            0.05       2.25 r
+  implementation/fp_wrapper/U52/CO (FA1D0)                                                            0.05       2.30 r
+  implementation/fp_wrapper/U53/CO (FA1D0)                                                            0.05       2.36 r
+  implementation/fp_wrapper/U63/Z (XOR3D1)                                                            0.07       2.42 f
+  implementation/fp_wrapper/U61/Z (AO22D0)                                                            0.08       2.50 f
+  implementation/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                   0.00       2.50 f
+  implementation/result[30] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                              0.00       2.50 f
+  result[30] (out)                                                                                    0.00       2.50 f
+  data arrival time                                                                                              2.50
+
+  clock vclk (rise edge)                                                                             10.00      10.00
+  clock network delay (ideal)                                                                         0.00      10.00
+  output external delay                                                                              -0.02       9.98
+  data required time                                                                                             9.98
+  ----------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                             9.98
+  data arrival time                                                                                             -2.50
+  ----------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                    7.48
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l0_divmul_root_opt ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                               Incr       Path
+  ----------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                              0.00       0.00
+  clock network delay (ideal)                                                                         0.00       0.00
+  input external delay                                                                                0.02       0.02 f
+  divide_mode (in)                                                                                    0.00       0.02 f
+  implementation/divide_mode (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                             0.00       0.02 f
+  implementation/U7/ZN (INVD1)                                                                        0.09       0.11 r
+  implementation/U50/ZN (INVD1)                                                                       0.12       0.23 f
+  implementation/U99/ZN (INR2D1)                                                                      0.07       0.31 r
+  implementation/mult_63_U9/S (HA1D0)                                                                 0.08       0.38 f
+  implementation/U73/ZN (INVD1)                                                                       0.02       0.40 r
+  implementation/U108/Z (CKXOR2D1)                                                                    0.06       0.46 f
+  implementation/U71/Z (AO22D0)                                                                       0.07       0.53 f
+  implementation/U70/CO (FA1D0)                                                                       0.08       0.61 f
+  implementation/U66/CO (FA1D0)                                                                       0.06       0.67 f
+  implementation/U63/CO (FA1D0)                                                                       0.06       0.72 f
+  implementation/U59/CO (FA1D0)                                                                       0.06       0.78 f
+  implementation/U56/CO (FA1D0)                                                                       0.06       0.83 f
+  implementation/U51/CO (FA1D0)                                                                       0.06       0.89 f
+  implementation/U53/CO (FA1D0)                                                                       0.06       0.94 f
+  implementation/U93/CO (FA1D0)                                                                       0.05       1.00 f
+  implementation/U6/ZN (XNR3D0)                                                                       0.13       1.13 r
+  implementation/mult_113/a[6] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)             0.00       1.13 r
+  implementation/mult_113/U41/ZN (INVD1)                                                              0.02       1.15 f
+  implementation/mult_113/U20/S (FA1D0)                                                               0.10       1.25 f
+  implementation/mult_113/U9/CO (FA1D0)                                                               0.10       1.35 f
+  implementation/mult_113/U8/CO (FA1D0)                                                               0.06       1.40 f
+  implementation/mult_113/U7/CO (FA1D0)                                                               0.06       1.46 f
+  implementation/mult_113/U6/CO (FA1D0)                                                               0.06       1.52 f
+  implementation/mult_113/U46/ZN (NR2D0)                                                              0.05       1.58 r
+  implementation/mult_113/U44/ZN (CKND2D0)                                                            0.04       1.61 f
+  implementation/mult_113/U43/ZN (XNR2D0)                                                             0.05       1.66 f
+  implementation/mult_113/product[12] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)      0.00       1.66 f
+  implementation/U49/ZN (AOI22D1)                                                                     0.05       1.71 r
+  implementation/U10/ZN (IND3D1)                                                                      0.11       1.82 f
+  implementation/U8/ZN (ND2D1)                                                                        0.16       1.98 r
+  implementation/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                           0.00       1.98 r
+  implementation/fp_wrapper/U48/CO (FA1D0)                                                            0.11       2.10 r
+  implementation/fp_wrapper/U49/CO (FA1D0)                                                            0.05       2.15 r
+  implementation/fp_wrapper/U50/CO (FA1D0)                                                            0.05       2.20 r
+  implementation/fp_wrapper/U51/CO (FA1D0)                                                            0.05       2.25 r
+  implementation/fp_wrapper/U52/CO (FA1D0)                                                            0.05       2.30 r
+  implementation/fp_wrapper/U53/CO (FA1D0)                                                            0.05       2.36 r
+  implementation/fp_wrapper/U63/Z (XOR3D1)                                                            0.07       2.42 f
+  implementation/fp_wrapper/U61/Z (AO22D0)                                                            0.08       2.50 f
+  implementation/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                   0.00       2.50 f
+  implementation/result[30] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                              0.00       2.50 f
+  result[30] (out)                                                                                    0.00       2.50 f
+  data arrival time                                                                                              2.50
+
+  clock vclk (rise edge)                                                                             10.00      10.00
+  clock network delay (ideal)                                                                         0.00      10.00
+  output external delay                                                                              -0.02       9.98
+  data required time                                                                                             9.98
+  ----------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                             9.98
+  data arrival time                                                                                             -2.50
+  ----------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                    7.48
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l0_divmul_root_opt ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                               Incr       Path
+  ----------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                              0.00       0.00
+  clock network delay (ideal)                                                                         0.00       0.00
+  input external delay                                                                                0.02       0.02 f
+  divide_mode (in)                                                                                    0.00       0.02 f
+  implementation/divide_mode (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                             0.00       0.02 f
+  implementation/U7/ZN (INVD1)                                                                        0.09       0.11 r
+  implementation/U50/ZN (INVD1)                                                                       0.12       0.23 f
+  implementation/U99/ZN (INR2D1)                                                                      0.07       0.31 r
+  implementation/mult_63_U9/S (HA1D0)                                                                 0.08       0.38 f
+  implementation/U73/ZN (INVD1)                                                                       0.02       0.40 r
+  implementation/U108/Z (CKXOR2D1)                                                                    0.06       0.46 f
+  implementation/U71/Z (AO22D0)                                                                       0.07       0.53 f
+  implementation/U70/CO (FA1D0)                                                                       0.08       0.61 f
+  implementation/U66/CO (FA1D0)                                                                       0.06       0.67 f
+  implementation/U63/CO (FA1D0)                                                                       0.06       0.72 f
+  implementation/U59/CO (FA1D0)                                                                       0.06       0.78 f
+  implementation/U56/CO (FA1D0)                                                                       0.06       0.83 f
+  implementation/U51/CO (FA1D0)                                                                       0.06       0.89 f
+  implementation/U53/CO (FA1D0)                                                                       0.06       0.94 f
+  implementation/U93/CO (FA1D0)                                                                       0.05       1.00 f
+  implementation/U6/ZN (XNR3D0)                                                                       0.13       1.13 r
+  implementation/mult_113/a[6] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)             0.00       1.13 r
+  implementation/mult_113/U41/ZN (INVD1)                                                              0.02       1.15 f
+  implementation/mult_113/U20/S (FA1D0)                                                               0.10       1.25 f
+  implementation/mult_113/U9/CO (FA1D0)                                                               0.10       1.35 f
+  implementation/mult_113/U8/CO (FA1D0)                                                               0.06       1.40 f
+  implementation/mult_113/U7/CO (FA1D0)                                                               0.06       1.46 f
+  implementation/mult_113/U6/CO (FA1D0)                                                               0.06       1.52 f
+  implementation/mult_113/U46/ZN (NR2D0)                                                              0.05       1.58 r
+  implementation/mult_113/U44/ZN (CKND2D0)                                                            0.04       1.61 f
+  implementation/mult_113/U43/ZN (XNR2D0)                                                             0.05       1.66 f
+  implementation/mult_113/product[12] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)      0.00       1.66 f
+  implementation/U49/ZN (AOI22D1)                                                                     0.05       1.71 r
+  implementation/U10/ZN (IND3D1)                                                                      0.11       1.82 f
+  implementation/U8/ZN (ND2D1)                                                                        0.16       1.98 r
+  implementation/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                           0.00       1.98 r
+  implementation/fp_wrapper/U48/CO (FA1D0)                                                            0.11       2.10 r
+  implementation/fp_wrapper/U49/CO (FA1D0)                                                            0.05       2.15 r
+  implementation/fp_wrapper/U50/CO (FA1D0)                                                            0.05       2.20 r
+  implementation/fp_wrapper/U51/CO (FA1D0)                                                            0.05       2.25 r
+  implementation/fp_wrapper/U52/CO (FA1D0)                                                            0.05       2.30 r
+  implementation/fp_wrapper/U53/CO (FA1D0)                                                            0.05       2.36 r
+  implementation/fp_wrapper/U63/Z (XOR3D1)                                                            0.07       2.42 f
+  implementation/fp_wrapper/U61/Z (AO22D0)                                                            0.08       2.50 f
+  implementation/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                   0.00       2.50 f
+  implementation/result[30] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                              0.00       2.50 f
+  result[30] (out)                                                                                    0.00       2.50 f
+  data arrival time                                                                                              2.50
+
+  clock vclk (rise edge)                                                                             10.00      10.00
+  clock network delay (ideal)                                                                         0.00      10.00
+  output external delay                                                                              -0.02       9.98
+  data required time                                                                                             9.98
+  ----------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                             9.98
+  data arrival time                                                                                             -2.50
+  ----------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                    7.48
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l0_divmul_root_opt ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                               Incr       Path
+  ----------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                              0.00       0.00
+  clock network delay (ideal)                                                                         0.00       0.00
+  input external delay                                                                                0.02       0.02 f
+  divide_mode (in)                                                                                    0.00       0.02 f
+  implementation/divide_mode (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                             0.00       0.02 f
+  implementation/U7/ZN (INVD1)                                                                        0.09       0.11 r
+  implementation/U50/ZN (INVD1)                                                                       0.12       0.23 f
+  implementation/U99/ZN (INR2D1)                                                                      0.07       0.31 r
+  implementation/mult_63_U9/S (HA1D0)                                                                 0.08       0.38 f
+  implementation/U73/ZN (INVD1)                                                                       0.02       0.40 r
+  implementation/U108/Z (CKXOR2D1)                                                                    0.06       0.46 f
+  implementation/U71/Z (AO22D0)                                                                       0.07       0.53 f
+  implementation/U70/CO (FA1D0)                                                                       0.08       0.61 f
+  implementation/U66/CO (FA1D0)                                                                       0.06       0.67 f
+  implementation/U63/CO (FA1D0)                                                                       0.06       0.72 f
+  implementation/U59/CO (FA1D0)                                                                       0.06       0.78 f
+  implementation/U56/CO (FA1D0)                                                                       0.06       0.83 f
+  implementation/U51/CO (FA1D0)                                                                       0.06       0.89 f
+  implementation/U53/CO (FA1D0)                                                                       0.06       0.94 f
+  implementation/U93/CO (FA1D0)                                                                       0.05       1.00 f
+  implementation/U6/ZN (XNR3D0)                                                                       0.13       1.13 r
+  implementation/mult_113/a[6] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)             0.00       1.13 r
+  implementation/mult_113/U41/ZN (INVD1)                                                              0.02       1.15 f
+  implementation/mult_113/U20/S (FA1D0)                                                               0.10       1.25 f
+  implementation/mult_113/U9/CO (FA1D0)                                                               0.10       1.35 f
+  implementation/mult_113/U8/CO (FA1D0)                                                               0.06       1.40 f
+  implementation/mult_113/U7/CO (FA1D0)                                                               0.06       1.46 f
+  implementation/mult_113/U6/CO (FA1D0)                                                               0.06       1.52 f
+  implementation/mult_113/U46/ZN (NR2D0)                                                              0.05       1.58 r
+  implementation/mult_113/U44/ZN (CKND2D0)                                                            0.04       1.61 f
+  implementation/mult_113/U43/ZN (XNR2D0)                                                             0.05       1.66 f
+  implementation/mult_113/product[12] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)      0.00       1.66 f
+  implementation/U49/ZN (AOI22D1)                                                                     0.05       1.71 r
+  implementation/U10/ZN (IND3D1)                                                                      0.11       1.82 f
+  implementation/U8/ZN (ND2D1)                                                                        0.16       1.98 r
+  implementation/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                           0.00       1.98 r
+  implementation/fp_wrapper/U48/CO (FA1D0)                                                            0.11       2.10 r
+  implementation/fp_wrapper/U49/CO (FA1D0)                                                            0.05       2.15 r
+  implementation/fp_wrapper/U50/CO (FA1D0)                                                            0.05       2.20 r
+  implementation/fp_wrapper/U51/CO (FA1D0)                                                            0.05       2.25 r
+  implementation/fp_wrapper/U52/CO (FA1D0)                                                            0.05       2.30 r
+  implementation/fp_wrapper/U53/CO (FA1D0)                                                            0.05       2.36 r
+  implementation/fp_wrapper/U63/Z (XOR3D1)                                                            0.07       2.42 f
+  implementation/fp_wrapper/U61/Z (AO22D0)                                                            0.08       2.50 f
+  implementation/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                   0.00       2.50 f
+  implementation/result[30] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                              0.00       2.50 f
+  result[30] (out)                                                                                    0.00       2.50 f
+  data arrival time                                                                                              2.50
+
+  clock vclk (rise edge)                                                                             10.00      10.00
+  clock network delay (ideal)                                                                         0.00      10.00
+  output external delay                                                                              -0.02       9.98
+  data required time                                                                                             9.98
+  ----------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                             9.98
+  data arrival time                                                                                             -2.50
+  ----------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                    7.48
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l0_divmul_root_opt ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                               Incr       Path
+  ----------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                              0.00       0.00
+  clock network delay (ideal)                                                                         0.00       0.00
+  input external delay                                                                                0.02       0.02 f
+  divide_mode (in)                                                                                    0.00       0.02 f
+  implementation/divide_mode (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                             0.00       0.02 f
+  implementation/U7/ZN (INVD1)                                                                        0.09       0.11 r
+  implementation/U50/ZN (INVD1)                                                                       0.12       0.23 f
+  implementation/U99/ZN (INR2D1)                                                                      0.07       0.31 r
+  implementation/mult_63_U9/S (HA1D0)                                                                 0.08       0.38 f
+  implementation/U73/ZN (INVD1)                                                                       0.02       0.40 r
+  implementation/U108/Z (CKXOR2D1)                                                                    0.06       0.46 f
+  implementation/U71/Z (AO22D0)                                                                       0.07       0.53 f
+  implementation/U70/CO (FA1D0)                                                                       0.08       0.61 f
+  implementation/U66/CO (FA1D0)                                                                       0.06       0.67 f
+  implementation/U63/CO (FA1D0)                                                                       0.06       0.72 f
+  implementation/U59/CO (FA1D0)                                                                       0.06       0.78 f
+  implementation/U56/CO (FA1D0)                                                                       0.06       0.83 f
+  implementation/U51/CO (FA1D0)                                                                       0.06       0.89 f
+  implementation/U53/CO (FA1D0)                                                                       0.06       0.94 f
+  implementation/U93/CO (FA1D0)                                                                       0.05       1.00 f
+  implementation/U6/ZN (XNR3D0)                                                                       0.13       1.13 r
+  implementation/mult_113/a[6] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)             0.00       1.13 r
+  implementation/mult_113/U41/ZN (INVD1)                                                              0.02       1.15 f
+  implementation/mult_113/U20/S (FA1D0)                                                               0.10       1.25 f
+  implementation/mult_113/U9/CO (FA1D0)                                                               0.10       1.35 f
+  implementation/mult_113/U8/CO (FA1D0)                                                               0.06       1.40 f
+  implementation/mult_113/U7/CO (FA1D0)                                                               0.06       1.46 f
+  implementation/mult_113/U6/CO (FA1D0)                                                               0.06       1.52 f
+  implementation/mult_113/U46/ZN (NR2D0)                                                              0.05       1.58 r
+  implementation/mult_113/U44/ZN (CKND2D0)                                                            0.04       1.61 f
+  implementation/mult_113/U43/ZN (XNR2D0)                                                             0.05       1.66 f
+  implementation/mult_113/product[12] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)      0.00       1.66 f
+  implementation/U49/ZN (AOI22D1)                                                                     0.05       1.71 r
+  implementation/U10/ZN (IND3D1)                                                                      0.11       1.82 f
+  implementation/U8/ZN (ND2D1)                                                                        0.16       1.98 r
+  implementation/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                           0.00       1.98 r
+  implementation/fp_wrapper/U48/CO (FA1D0)                                                            0.11       2.10 r
+  implementation/fp_wrapper/U49/CO (FA1D0)                                                            0.05       2.15 r
+  implementation/fp_wrapper/U50/CO (FA1D0)                                                            0.05       2.20 r
+  implementation/fp_wrapper/U51/CO (FA1D0)                                                            0.05       2.25 r
+  implementation/fp_wrapper/U52/CO (FA1D0)                                                            0.05       2.30 r
+  implementation/fp_wrapper/U53/CO (FA1D0)                                                            0.05       2.36 r
+  implementation/fp_wrapper/U63/Z (XOR3D1)                                                            0.07       2.42 f
+  implementation/fp_wrapper/U61/Z (AO22D0)                                                            0.08       2.50 f
+  implementation/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                   0.00       2.50 f
+  implementation/result[30] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                              0.00       2.50 f
+  result[30] (out)                                                                                    0.00       2.50 f
+  data arrival time                                                                                              2.50
+
+  clock vclk (rise edge)                                                                             10.00      10.00
+  clock network delay (ideal)                                                                         0.00      10.00
+  output external delay                                                                              -0.02       9.98
+  data required time                                                                                             9.98
+  ----------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                             9.98
+  data arrival time                                                                                             -2.50
+  ----------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                    7.48
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l0_divmul_root_opt ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                               Incr       Path
+  ----------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                              0.00       0.00
+  clock network delay (ideal)                                                                         0.00       0.00
+  input external delay                                                                                0.02       0.02 f
+  divide_mode (in)                                                                                    0.00       0.02 f
+  implementation/divide_mode (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                             0.00       0.02 f
+  implementation/U7/ZN (INVD1)                                                                        0.09       0.11 r
+  implementation/U50/ZN (INVD1)                                                                       0.12       0.23 f
+  implementation/U99/ZN (INR2D1)                                                                      0.07       0.31 r
+  implementation/mult_63_U9/S (HA1D0)                                                                 0.08       0.38 f
+  implementation/U73/ZN (INVD1)                                                                       0.02       0.40 r
+  implementation/U108/Z (CKXOR2D1)                                                                    0.06       0.46 f
+  implementation/U71/Z (AO22D0)                                                                       0.07       0.53 f
+  implementation/U70/CO (FA1D0)                                                                       0.08       0.61 f
+  implementation/U66/CO (FA1D0)                                                                       0.06       0.67 f
+  implementation/U63/CO (FA1D0)                                                                       0.06       0.72 f
+  implementation/U59/CO (FA1D0)                                                                       0.06       0.78 f
+  implementation/U56/CO (FA1D0)                                                                       0.06       0.83 f
+  implementation/U51/CO (FA1D0)                                                                       0.06       0.89 f
+  implementation/U53/CO (FA1D0)                                                                       0.06       0.94 f
+  implementation/U93/CO (FA1D0)                                                                       0.05       1.00 f
+  implementation/U6/ZN (XNR3D0)                                                                       0.13       1.13 r
+  implementation/mult_113/a[6] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)             0.00       1.13 r
+  implementation/mult_113/U41/ZN (INVD1)                                                              0.02       1.15 f
+  implementation/mult_113/U20/S (FA1D0)                                                               0.10       1.25 f
+  implementation/mult_113/U9/CO (FA1D0)                                                               0.10       1.35 f
+  implementation/mult_113/U8/CO (FA1D0)                                                               0.06       1.40 f
+  implementation/mult_113/U7/CO (FA1D0)                                                               0.06       1.46 f
+  implementation/mult_113/U6/CO (FA1D0)                                                               0.06       1.52 f
+  implementation/mult_113/U46/ZN (NR2D0)                                                              0.05       1.58 r
+  implementation/mult_113/U44/ZN (CKND2D0)                                                            0.04       1.61 f
+  implementation/mult_113/U43/ZN (XNR2D0)                                                             0.05       1.66 f
+  implementation/mult_113/product[12] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)      0.00       1.66 f
+  implementation/U49/ZN (AOI22D1)                                                                     0.05       1.71 r
+  implementation/U10/ZN (IND3D1)                                                                      0.11       1.82 f
+  implementation/U8/ZN (ND2D1)                                                                        0.16       1.98 r
+  implementation/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                           0.00       1.98 r
+  implementation/fp_wrapper/U48/CO (FA1D0)                                                            0.11       2.10 r
+  implementation/fp_wrapper/U49/CO (FA1D0)                                                            0.05       2.15 r
+  implementation/fp_wrapper/U50/CO (FA1D0)                                                            0.05       2.20 r
+  implementation/fp_wrapper/U51/CO (FA1D0)                                                            0.05       2.25 r
+  implementation/fp_wrapper/U52/CO (FA1D0)                                                            0.05       2.30 r
+  implementation/fp_wrapper/U53/CO (FA1D0)                                                            0.05       2.36 r
+  implementation/fp_wrapper/U63/Z (XOR3D1)                                                            0.07       2.42 f
+  implementation/fp_wrapper/U61/Z (AO22D0)                                                            0.08       2.50 f
+  implementation/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                   0.00       2.50 f
+  implementation/result[30] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                              0.00       2.50 f
+  result[30] (out)                                                                                    0.00       2.50 f
+  data arrival time                                                                                              2.50
+
+  clock vclk (rise edge)                                                                             10.00      10.00
+  clock network delay (ideal)                                                                         0.00      10.00
+  output external delay                                                                              -0.02       9.98
+  data required time                                                                                             9.98
+  ----------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                             9.98
+  data arrival time                                                                                             -2.50
+  ----------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                    7.48
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l0_divmul_root_opt ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                               Incr       Path
+  ----------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                              0.00       0.00
+  clock network delay (ideal)                                                                         0.00       0.00
+  input external delay                                                                                0.02       0.02 f
+  divide_mode (in)                                                                                    0.00       0.02 f
+  implementation/divide_mode (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                             0.00       0.02 f
+  implementation/U7/ZN (INVD1)                                                                        0.09       0.11 r
+  implementation/U50/ZN (INVD1)                                                                       0.12       0.23 f
+  implementation/U99/ZN (INR2D1)                                                                      0.07       0.31 r
+  implementation/mult_63_U9/S (HA1D0)                                                                 0.08       0.38 f
+  implementation/U73/ZN (INVD1)                                                                       0.02       0.40 r
+  implementation/U108/Z (CKXOR2D1)                                                                    0.06       0.46 f
+  implementation/U71/Z (AO22D0)                                                                       0.07       0.53 f
+  implementation/U70/CO (FA1D0)                                                                       0.08       0.61 f
+  implementation/U66/CO (FA1D0)                                                                       0.06       0.67 f
+  implementation/U63/CO (FA1D0)                                                                       0.06       0.72 f
+  implementation/U59/CO (FA1D0)                                                                       0.06       0.78 f
+  implementation/U56/CO (FA1D0)                                                                       0.06       0.83 f
+  implementation/U51/CO (FA1D0)                                                                       0.06       0.89 f
+  implementation/U53/CO (FA1D0)                                                                       0.06       0.94 f
+  implementation/U93/CO (FA1D0)                                                                       0.05       1.00 f
+  implementation/U6/ZN (XNR3D0)                                                                       0.13       1.13 r
+  implementation/mult_113/a[6] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)             0.00       1.13 r
+  implementation/mult_113/U41/ZN (INVD1)                                                              0.02       1.15 f
+  implementation/mult_113/U20/S (FA1D0)                                                               0.10       1.25 f
+  implementation/mult_113/U9/CO (FA1D0)                                                               0.10       1.35 f
+  implementation/mult_113/U8/CO (FA1D0)                                                               0.06       1.40 f
+  implementation/mult_113/U7/CO (FA1D0)                                                               0.06       1.46 f
+  implementation/mult_113/U6/CO (FA1D0)                                                               0.06       1.52 f
+  implementation/mult_113/U46/ZN (NR2D0)                                                              0.05       1.58 r
+  implementation/mult_113/U44/ZN (CKND2D0)                                                            0.04       1.61 f
+  implementation/mult_113/U43/ZN (XNR2D0)                                                             0.05       1.66 f
+  implementation/mult_113/product[12] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b_DW_mult_uns_0)      0.00       1.66 f
+  implementation/U49/ZN (AOI22D1)                                                                     0.05       1.71 r
+  implementation/U10/ZN (IND3D1)                                                                      0.11       1.82 f
+  implementation/U8/ZN (ND2D1)                                                                        0.16       1.98 r
+  implementation/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                           0.00       1.98 r
+  implementation/fp_wrapper/U48/CO (FA1D0)                                                            0.11       2.10 r
+  implementation/fp_wrapper/U49/CO (FA1D0)                                                            0.05       2.15 r
+  implementation/fp_wrapper/U50/CO (FA1D0)                                                            0.05       2.20 r
+  implementation/fp_wrapper/U51/CO (FA1D0)                                                            0.05       2.25 r
+  implementation/fp_wrapper/U52/CO (FA1D0)                                                            0.05       2.30 r
+  implementation/fp_wrapper/U53/CO (FA1D0)                                                            0.05       2.36 r
+  implementation/fp_wrapper/U63/Z (XOR3D1)                                                            0.07       2.42 f
+  implementation/fp_wrapper/U61/Z (AO22D0)                                                            0.08       2.50 f
+  implementation/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                   0.00       2.50 f
+  implementation/result[30] (oadm_fixed_divmul_root_opt_0_18_16_18_7_3b)                              0.00       2.50 f
+  result[30] (out)                                                                                    0.00       2.50 f
+  data arrival time                                                                                              2.50
+
+  clock vclk (rise edge)                                                                             10.00      10.00
+  clock network delay (ideal)                                                                         0.00      10.00
+  output external delay                                                                              -0.02       9.98
+  data required time                                                                                             9.98
+  ----------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                             9.98
+  data arrival time                                                                                             -2.50
+  ----------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                    7.48
+
+
+1

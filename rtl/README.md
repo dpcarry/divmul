@@ -10,8 +10,8 @@ retained for reproduction and ablation studies.
 |---|---|---|---|
 | Precision-pruned DIV-only L0-L3 | `root_opt/oadm_root_opt.v` | `oadm_fixed_l0_div_root_opt` through `oadm_fixed_l3_div_root_opt` | Latest fixed-level DIV implementation and source of `ppa_results/root_opt_hier_compile_10ns.csv` |
 | Precision-pruned runtime DIV+MUL | `root_opt/oadm_root_opt.v` | `oadm_runtime_root_opt` | Latest runtime root-pruning experiment; not interchangeable with fixed-level PPA |
+| Precision-pruned fixed DIV+MUL L0-L3 | `root_opt/oadm_fixed_divmul_root_opt.v` | `oadm_fixed_l*_divmul_root_opt` | Current integrated OADM hardware; shares the plane multipliers and matches the selected DIV and balanced MUL views bit for bit |
 | Precision-pruned MUL-only L0-L3 | `mul_root_opt/oadm_mul_root_opt.v` | `oadm_fixed_l*_mul_root_opt_accuracy`, `oadm_fixed_l*_mul_root_opt`, `oadm_fixed_l*_mul_root_opt_aggressive` | Latest fixed-level MUL experiment and source of `ppa_results/mul_root_opt_hier_compile_10ns.csv` |
-| Current pre-pruning OADM baseline | `divopt/oadm_multilevel_opt.v` plus the helper files listed below | `oadm_fixed_l*_opt`, `oadm_fixed_l*_div_opt`, and `oadm_fixed_l*_mul_canonical` | Current comparison baseline used by the canonical 10 ns tables |
 | Normal-finite FP32 shell | `../PACE/common/FP_DIV_WRAPPER_32.v` | `fp32_normal_finite_wrapper` | Shared wrapper used by current OADM DIV, OADM MUL, PACE, and normalized prior-work comparisons |
 
 The fixed DIV root-opt settings currently used in the CSV are:
@@ -31,10 +31,11 @@ For MUL root-opt, the suffix identifies the retained design point:
 | no suffix | `16,14,12,10` | Balanced root-pruning point |
 | `_aggressive` | `18,16,14,12` | Area-oriented point |
 
-## Current Baseline Dependencies
+## Historical Baseline Dependencies
 
-The current pre-pruning DIV/MUL baseline is not a single standalone file. Its
-canonical source list is defined by `dc/canonical_refresh/run_all.sh` and uses:
+The superseded pre-pruning DIV/MUL baseline is not a single standalone file.
+Its historical source list is defined by `dc/canonical_refresh/run_all.sh` and
+uses:
 
 ```text
 rtl/csa3.v
@@ -51,13 +52,9 @@ rtl/canonical_refresh/oadm_mul_wrappers.v
 PACE/common/FP_DIV_WRAPPER_32.v
 ```
 
-Important reproducibility detail: the canonical sharing rows load the first
-nine helper paths from the exact `centered-index-sharing` or
-`centered-residual-rerun` worktree snapshot, then load
-`rtl/divopt/oadm_multilevel_opt.v`, the MUL wrappers, and the shared FP32
-wrapper from this checkout. Use `dc/canonical_refresh/run_all.sh`; compiling a
-casual collection of similarly named local files does not reproduce those
-rows.
+The obsolete pre-pruning sharing reports and CSV were removed. This source
+list remains only for non-sharing historical reproduction; it is not a current
+paper-facing OADM implementation.
 
 The root-opt campaigns have self-contained source lists:
 
@@ -70,6 +67,10 @@ rtl/root_opt/oadm_root_opt.v
 # MUL-only root-opt
 PACE/common/FP_DIV_WRAPPER_32.v
 rtl/mul_root_opt/oadm_mul_root_opt.v
+
+# Fixed integrated DIV+MUL root-opt
+PACE/common/FP_DIV_WRAPPER_32.v
+rtl/root_opt/oadm_fixed_divmul_root_opt.v
 ```
 
 Their current hierarchy-preserving flow is `dc/hier_compile_10ns/run_all.sh`.
