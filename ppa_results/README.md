@@ -87,6 +87,16 @@ are therefore retained explicitly.
 
 ## Selection and Audit CSVs
 
+### `root_opt_results_10ns.csv`
+
+Experimental results from the `root_opt` branch. It records a precision-pruned
+runtime DIV+MUL candidate against the current runtime centered-residual point,
+and a tuned fixed-L2 DIV-only candidate against both the current fixed L2 and
+PACE L4. Runtime and strict DIV-only scopes are deliberately separate. The
+supporting accuracy CSV, independent model cross-check, final-netlist gate
+miter, formulas, and raw DC/PT paths are documented in
+`rtl/root_opt/README.md`. These rows are not paper-facing selections yet.
+
 ### `divmul_best_by_level.csv`
 
 Compact paper-facing selection index for full OADM L0-L3 and the runtime

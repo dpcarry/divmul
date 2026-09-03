@@ -569,6 +569,42 @@ paper-table rows.
     `SAADI-EC_A_Quality-Configurable_Approximate_Divider_for_Energy_Efficiency.pdf`,
     `LEAD.pdf`, `ILAFD.pdf`, `RAPID.pdf`, and `2011.01148v1.pdf`.
 
+21. September 2 root-level precision-pruning experiment. The paper-ready state
+    was checkpointed as commit `403673b` on branch `paper_ready`, and branch
+    `root_opt` was created from that exact commit. The new runtime candidate
+    retains runtime DIV/MUL and L0--L3 selection, the same mantissa partitions,
+    midpoint coordinates, and centered local tangent planes. It removes ten
+    residual LSBs before each residual-by-midpoint product and, for DIV, removes
+    fourteen plane LSBs before the Q0.7 reciprocal-square multiplication. The
+    correction/rounding LUT was removed after experiments showed that it
+    obstructed synthesis simplification while barely affecting aggregate
+    error. On the same explicit-flatten, area-optimized 10 ns flow, runtime PPA
+    changes from 5114.880036 um2 / 5.28936 ns / 0.2323480 mW to
+    2990.520020 um2 / 4.34479 ns / 0.1236310 mW: reductions of 41.53%, 17.86%,
+    and 46.79%, respectively. Across common 10,000-vector DIV/MUL L0--L3 tests,
+    the largest increase in MAE, MRED, or RMSE is 6.96% (DIV L3 RMSE), within
+    the requested 10% bound.
+
+    A separate strict DIV-only L2 candidate uses the same precision pruning and
+    a quantization-aware four-entry Q0.8 reciprocal-square table
+    `{203,136,97,73}`. It keeps four L2 y intervals rather than adding L3
+    partitions. Its PPA is 1555.200006 um2 / 3.42979 ns / 0.0828411 mW, and its
+    common-vector MAE/MRED/RMSE are 0.003100417 / 0.002892013 / 0.004394511.
+    Relative to local PACE L4, it is 44.18% smaller, 7.50% faster, and 37.63%
+    lower power while reducing those three error metrics by 20.44%, 24.56%,
+    and 27.55%. This is a promising experimental point, not yet a paper-table
+    replacement.
+
+    The final RTL passed an independent Python integer-model cross-check on
+    1,000 vectors and an RTL-versus-final-DC-netlist miter on 20,005 vectors per
+    DUT. Both synthesized designs are combinational, flattened, macro-free,
+    pass PrimeTime `check_timing`, and have no maximum-delay violations.
+    Evidence: `rtl/root_opt/`, `python/root_opt_search.py`,
+    `python/root_opt_crosscheck.py`, `python/results_root_opt/`,
+    `qsim_rtl/root_opt/`, `dc/root_opt/outputs_10ns/`,
+    `pt_dc/root_opt/reports_10ns/`, and
+    `ppa_results/root_opt_results_10ns.csv`.
+
 ## Tool and License Notes
 
 - In the Codex restricted environment, Synopsys/Siemens license-host DNS can
