@@ -9,50 +9,10 @@ module oadm_multilevel_opt #(
     output wire [31:0] result
 );
     localparam CORE_WIDTH = 29;
-    localparam signed [CORE_WIDTH-1:0] ONE_Q = 29'sd8388608;
-    localparam signed [CORE_WIDTH-1:0] TWO_Q = 29'sd16777216;
-    localparam [31:0] QUIET_NAN = 32'h7fc00000;
-
-    wire [7:0] x_exponent = x[30:23];
-    wire [7:0] y_exponent = y[30:23];
-    wire [22:0] x_fraction = x[22:0];
-    wire [22:0] y_fraction = y[22:0];
+    wire [22:0] x_fraction;
+    wire [22:0] y_fraction;
     wire [23:0] x_mantissa = {1'b1, x_fraction};
     wire [23:0] y_mantissa = {1'b1, y_fraction};
-    wire sign_input = x[31] ^ y[31];
-    wire x_nan = (x_exponent == 8'hff) && (x_fraction != 0);
-    wire y_nan = (y_exponent == 8'hff) && (y_fraction != 0);
-    wire x_inf = (x_exponent == 8'hff) && (x_fraction == 0);
-    wire y_inf = (y_exponent == 8'hff) && (y_fraction == 0);
-    wire x_zero = (x_exponent == 8'h00);
-    wire y_zero = (y_exponent == 8'h00);
-
-    reg invalid_input;
-    reg infinity_input;
-    reg zero_input;
-    reg signed [9:0] exponent_input;
-    always @* begin
-        invalid_input = x_nan || y_nan;
-        infinity_input = 1'b0;
-        zero_input = 1'b0;
-        if (divide_mode) begin
-            invalid_input = invalid_input || (x_zero && y_zero)
-                          || (x_inf && y_inf);
-            infinity_input = !invalid_input && (x_inf || y_zero);
-            zero_input = !invalid_input && !infinity_input
-                       && (x_zero || y_inf);
-            exponent_input = $signed({2'b0, x_exponent})
-                           - $signed({2'b0, y_exponent}) + 10'sd127;
-        end else begin
-            invalid_input = invalid_input || (x_zero && y_inf)
-                          || (x_inf && y_zero);
-            infinity_input = !invalid_input && (x_inf || y_inf);
-            zero_input = !invalid_input && !infinity_input
-                       && (x_zero || y_zero);
-            exponent_input = $signed({2'b0, x_exponent})
-                           + $signed({2'b0, y_exponent}) - 10'sd127;
-        end
-    end
 
     localparam [1:0] FIXED_LEVEL_VALUE = FIXED_LEVEL;
     wire [1:0] active_level = (FIXED_LEVEL >= 0)
@@ -109,52 +69,33 @@ module oadm_multilevel_opt #(
     wire signed [CORE_WIDTH-1:0] core_value = divide_mode
         ? divided_value : shared_value;
 
-    reg signed [CORE_WIDTH-1:0] normalized_value;
-    reg signed [9:0] result_exponent;
-    reg [31:0] finite_result;
-    reg [31:0] result_comb;
+    reg [22:0] normalized_fraction;
+    reg signed [2:0] exponent_adjust;
     always @* begin
-        normalized_value = core_value;
-        result_exponent = exponent_input;
+        normalized_fraction = core_value[22:0];
+        exponent_adjust = 3'sd0;
         // Every L0-L3 MUL/DIV core is in [0.25, 4), so the Q23 integer
         // bits select all reachable normalization cases directly.
         if (core_value[24]) begin
-            normalized_value = core_value >>> 1;
-            result_exponent = result_exponent + 1;
+            normalized_fraction = core_value[23:1];
+            exponent_adjust = 3'sd1;
         end else if (core_value[23]) begin
-            normalized_value = core_value;
+            normalized_fraction = core_value[22:0];
         end else if (core_value[22]) begin
-            normalized_value = core_value <<< 1;
-            result_exponent = result_exponent - 1;
+            normalized_fraction = {core_value[21:0], 1'b0};
+            exponent_adjust = -3'sd1;
         end else begin
-            normalized_value = core_value <<< 2;
-            result_exponent = result_exponent - 2;
-        end
-
-        if (result_exponent <= 0) begin
-            finite_result = {sign_input, 31'b0};
-        end else if (result_exponent >= 255) begin
-            finite_result = {sign_input, 8'hff, 23'b0};
-        end else begin
-            finite_result = {sign_input, result_exponent[7:0],
-                             normalized_value[22:0]};
-        end
-
-        if (FP_STYLE == 1) begin
-            result_comb = {sign_input, result_exponent[7:0],
-                           normalized_value[22:0]};
-        end else if (invalid_input) begin
-            result_comb = QUIET_NAN;
-        end else if (infinity_input) begin
-            result_comb = {sign_input, 8'hff, 23'b0};
-        end else if (zero_input) begin
-            result_comb = {sign_input, 31'b0};
-        end else begin
-            result_comb = finite_result;
+            normalized_fraction = {core_value[20:0], 2'b0};
+            exponent_adjust = -3'sd2;
         end
     end
 
-    assign result = result_comb;
+    fp32_normal_finite_wrapper fp_wrapper (
+        .x(x), .y(y), .divide_mode(divide_mode),
+        .fraction_x(x_fraction), .fraction_y(y_fraction),
+        .result_fraction(normalized_fraction),
+        .exponent_adjust(exponent_adjust), .result(result)
+    );
 endmodule
 
 module oadm_runtime_opt (

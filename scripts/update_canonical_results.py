@@ -62,7 +62,7 @@ def point(tag, top):
 def write_csv(path, fields, rows):
     temporary = path.with_suffix(path.suffix + ".tmp")
     with temporary.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     temporary.replace(path)

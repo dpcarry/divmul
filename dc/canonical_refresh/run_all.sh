@@ -42,7 +42,6 @@ OADM_COMMON_REL=(
     rtl/divopt/oadm_lowlevel_plane_direct.v
     rtl/divopt/oadm_multilevel_plane_direct.v
     rtl/divopt/oadm_fixed_plane_centered.v
-    rtl/divopt/oadm_multilevel_opt.v
 )
 
 oadm_files() {
@@ -52,6 +51,8 @@ oadm_files() {
     for rel in "${OADM_COMMON_REL[@]}"; do
         files+=("$tree/$rel")
     done
+    files+=("$ROOT/PACE/common/FP_DIV_WRAPPER_32.v")
+    files+=("$ROOT/rtl/divopt/oadm_multilevel_opt.v")
     files+=("$ROOT/rtl/canonical_refresh/oadm_mul_wrappers.v")
     printf '%s\n' "${files[@]}"
 }

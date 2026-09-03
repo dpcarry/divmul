@@ -8,6 +8,7 @@ DC_ROOT="$ROOT/dc/root_opt/outputs_10ns"
 PT_ROOT="$ROOT/pt_dc/root_opt/reports_10ns"
 
 RTL=(
+    "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v"
     "$ROOT/rtl/divopt/oadm_experiment_variants.v"
     "$ROOT/rtl/root_opt/oadm_root_opt.v"
 )

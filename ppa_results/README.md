@@ -18,6 +18,15 @@ the local comparison boundary is:
   `optimize_netlist -area` mapping.
 - PrimeTime vectorless probability 0.5 and 0.1 input toggles per 10 ns.
 
+Approximate FP32 DIV and MUL rows use the shared
+`PACE/common/FP_DIV_WRAPPER_32.v:fp32_normal_finite_wrapper`: identical sign,
+exponent, mantissa extraction, normalization packing, and 32-bit I/O, with
+only normalized finite operands in scope. `FP_DIV_WRAPPER_32` is retained as a
+PACE-compatible DIV adapter around that implementation. OADM root-opt DIV,
+PACE, QIAD, FaNZeD, TruncApp, LEAD, and root-opt MUL were all freshly
+synthesized after this unification. The exact DesignWare and selectable full
+OADM rows remain separate architectural baselines and are labeled as such.
+
 PPA can be compared structurally only when rows use this common boundary.
 Accuracy values require an additional same-vector and same-interface check.
 
@@ -52,19 +61,22 @@ subtractor-free-residual Pareto points into this table.
 
 ### `div_only_vs_pace.csv`
 
-The strict DIV-only OADM/PACE comparison. OADM L0-L3 use centered-residual
-normal-finite FP32 wrappers and are paired with PACE L1-L4; L2 uses the
-bit-exact fixed-level and reduced-scale specialization documented below. The file contains
-same-vector error metrics, canonical PPA, percentage differences, and gate
-regression notes. PACE is DIV-only and must not be compared directly with the
-area of a full selectable OADM DIV+MUL unit.
+The strict DIV-only OADM/PACE comparison. OADM L0-L3 use the selected root-opt
+centered-residual normal-finite FP32 wrappers and are paired with PACE L1-L4.
+The file contains same-vector error metrics, canonical PPA, percentage
+differences, and gate-regression notes. These root-opt points prune internal
+precision and calibrate the quantized reciprocal coefficients, so they are not
+bit-exact to the pre-root-opt OADM baselines. PACE is DIV-only and must not be
+compared directly with the area of a full selectable OADM DIV+MUL unit.
 
 ### `priorwork_comparison_10ns.csv`
 
 Local DIV-only context for PACE, QIAD, FaNZeD, TruncApp, and the combinational
 LEAD unroll. It contains accuracy, PPA, ADP, source identity, and wrapper/gate
 validation notes. These are local reproductions under the common mapping
-boundary, not transplanted PPA numbers from the original papers. QIAD remains
+boundary, not transplanted PPA numbers from the original papers. Every row now
+uses the shared `fp32_normal_finite_wrapper`; QIAD's earlier full-special-case
+result was superseded by its normal-finite rerun. QIAD remains
 in this CSV even though it is omitted from the ADP plot to preserve plot scale.
 
 ### `simdive_original_fp32.csv`
@@ -87,16 +99,6 @@ are therefore retained explicitly.
 
 ## Selection and Audit CSVs
 
-### `root_opt_results_10ns.csv`
-
-Experimental results from the `root_opt` branch. It records a precision-pruned
-runtime DIV+MUL candidate against the current runtime centered-residual point,
-and a tuned fixed-L2 DIV-only candidate against both the current fixed L2 and
-PACE L4. Runtime and strict DIV-only scopes are deliberately separate. The
-supporting accuracy CSV, independent model cross-check, final-netlist gate
-miter, formulas, and raw DC/PT paths are documented in
-`rtl/root_opt/README.md`. These rows are not paper-facing selections yet.
-
 ### `fixed_level_root_opt_10ns.csv`
 
 Level-by-level strict DIV-only comparison of the current L0--L3 OADM points
@@ -104,6 +106,17 @@ against the precision-pruned and coefficient-retuned fixed-level candidates.
 Each root-opt row records its residual/scale drops, coefficient table, common
 10,000-vector accuracy, PPA deltas, and final report paths. L0--L3 are all
 normal-finite FP32 wrappers and use the same canonical mapping boundary.
+
+### `mul_root_opt_results_10ns.csv`
+
+Isolated fixed-level multiplier precision experiment. For each L0--L3 level,
+it retains the original AM-Lib OAM and centered-residual OADM MUL-only
+references and adds accuracy-preserving, balanced, and area-oriented residual
+pruning points. Accuracy uses 200,000 common normalized finite vectors; every
+new RTL is also checked against an independent integer model and its flattened
+final netlist. These candidates were freshly rerun with the shared normal-finite
+wrapper. Derivation, candidate selection, and evidence paths are recorded in
+`mul_root_opt.md`.
 
 ### `divmul_best_by_level.csv`
 
@@ -150,13 +163,6 @@ under explicit flattening. Centered residual wins area, delay, and power in
 this DIV-only scope. This does not contradict the full DIV+MUL L0 result, where
 centered index has slightly lower area and delay but slightly higher power.
 
-### `div_only_explicit_flatten_10ns.csv`
-
-Detailed source table behind `div_only_vs_pace.csv`. It includes all OADM and
-PACE level rows, the non-selected L0 centered-index candidate, full report
-paths, accuracy metrics, and gate-check status. Keep it for audit and
-reproduction; use `div_only_vs_pace.csv` for the concise paper comparison.
-
 ### `pace_flatten_sensitivity_10ns.csv`
 
 Methodology audit comparing legacy hierarchy-preserving, flatten-only, and
@@ -178,6 +184,16 @@ qsim_rtl/l2_divopt/run_equiv.sh
 dc/l2_divopt/run_all.sh
 qsim_rtl/l2_divopt/run_gate_miters.sh
 scripts/update_l2_divopt_results.py
+make -C qsim_rtl/root_opt run
+make -C qsim_rtl/root_opt crosscheck
+bash qsim_rtl/root_opt/run_gate_miter.sh
+python3 scripts/validate_fixed_level_root_results.py
+.venv/bin/python python/mul_root_opt_search.py --points 500
+bash qsim_rtl/mul_root_opt/run_accuracy.sh
+bash dc/mul_root_opt/run_all.sh
+bash qsim_rtl/mul_root_opt/run_gate_miter.sh
+.venv/bin/python scripts/collect_mul_root_opt_results.py
+.venv/bin/python scripts/update_unified_wrapper_results.py
 ```
 
 The CSV generator refuses to update its five generated tables if a required
@@ -194,6 +210,12 @@ reports are under `dc/canonical_refresh/outputs_10ns/` and
 - `div_only_vs_pace_flattened_exploratory.csv`: temporary duplicate removed
   when the common explicit-flatten policy became canonical.
 - `pt_dc/pace_oadm_compare/comparison.csv`: stale hierarchy-mismatched summary.
+- `root_opt_results_10ns.csv`: mixed runtime/DIV-only summary superseded by
+  `fixed_level_root_opt_10ns.csv` and `mul_root_opt_results_10ns.csv`; its PPA
+  predated the shared-wrapper rerun.
+- `div_only_explicit_flatten_10ns.csv`: duplicate detailed table containing
+  stale pre-unification PPA; current report paths and validation are carried by
+  `div_only_vs_pace.csv` and `priorwork_comparison_10ns.csv`.
 
 Historical raw reports are intentionally not deleted. They remain evidence for
 the research timeline but are not authoritative paper data.

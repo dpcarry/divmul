@@ -415,7 +415,23 @@ paper-table rows.
     `worktrees/truncapp-repro/`, `worktrees/lead-repro/`,
     `ppa_results/paper_reconstruction_fp32_div.md`.
 
-15. SIMDive source-based wrapper and obsolete reconstruction.
+15. QIAD normal-finite wrapper normalization.
+    The original QIAD RTL is a 23-bit fixed-point core, not an FP32 unit. Its
+    former CSV row used a local full-special-case FP32 shell and was therefore
+    not wrapper-equivalent to PACE, FaNZeD/INZeD, TruncApp, and LEAD. The
+    replacement `worktrees/qiad-repro/rtl/qiad_prior/qiad_prior_fp32_paceio.v`
+    uses the same PACE `FP_DIV_WRAPPER_32` normal-finite shell. On 100000
+    normal-finite vectors its RTL output was bit-identical to the former
+    wrapper and retained MAE/MRED/RMSE of 0.005889/0.005880/0.006940. A
+    1000-vector post-DC gate miter also reported zero mismatches. Fresh 10-ns
+    explicit-flatten DC/PT reports give 8301.959941 um2, 7.48347 ns, and
+    0.628426 mW; these replace the former QIAD CSV values.
+    Evidence: `worktrees/qiad-repro/dc/qiad_prior/outputs_paceio_explicit_flatten_area10/`,
+    `worktrees/qiad-repro/pt_dc/qiad_prior/reports_paceio_explicit_flatten_area10/`,
+    `worktrees/qiad-repro/qsim_rtl/qiad_prior/tb_qiad_prior_fp32_paceio.sv`,
+    `ppa_results/priorwork_comparison_10ns.csv`.
+
+16. SIMDive source-based wrapper and obsolete reconstruction.
     Before author RTL was integrated, a hand-written paper-derived SIMDive-like
     reconstruction produced a 992.52-um^2 row. That row is obsolete and must not
     be used. The usable experiment instantiates the authors' N=32 integer core
@@ -432,7 +448,7 @@ paper-table rows.
     `dc/simdive_original/outputs_fair_10ns/`,
     `pt_dc/simdive_original/reports_fair_10ns/`.
 
-16. Current paper-facing result index and fair boundaries.
+17. Current paper-facing result index and fair boundaries.
     `ppa_results/README.md` is the current paper-facing index: full OADM
     DIV+MUL versus unshared exact DIV+MUL, strict OADM DIV-only versus PACE
     DIV-only, mode-tied sharing ablation for structural sharing, bounded
@@ -442,7 +458,7 @@ paper-table rows.
     Evidence: `ppa_results/README.md`,
     `paper_hardware/oadm_divmul_10ns.tex`, `paper_hardware/pictures/`.
 
-17. September 2 hierarchy-mapping fairness correction.
+18. September 2 hierarchy-mapping fairness correction.
     The former strict DIV-only OADM/PACE CSV was not fair despite matching the
     process, constraints, and PT activity model: its OADM L0--L2 source flow
     (`dc/multilevel_opt/module.tcl`) and L3 source flow
@@ -473,7 +489,7 @@ paper-table rows.
     `pt_dc/pace_oadm_compare/reports/oadm_*_fair_hier/`,
     `ppa_results/div_only_vs_pace.csv`.
 
-18. Final-opt labels in strict DIV-only comparison.
+19. Final-opt labels in strict DIV-only comparison.
     The PACE-I/O L0 wrapper uses the centered-index-equivalent L0 plane; L1
     and L2 use the centered-residual plane. The former L3 strict row used the
     older specialized `oadm_fixed_l3_div_opt_centered_paceio`, whose plane has
@@ -491,7 +507,7 @@ paper-table rows.
     result from this experiment: it is a different selectable DIV+MUL wrapper
     and PPA boundary.
 
-19. September 2 canonical explicit-flatten rebuild supersedes the temporary
+20. September 2 canonical explicit-flatten rebuild supersedes the temporary
     hierarchy-preserving correction in items 17--18. The project adopted one
     mapping policy for all local structural PPA comparisons: TSMC65 typical
     CCS, 10 ns, no pipeline, input-only capacitance/fanout constraints,
@@ -522,7 +538,7 @@ paper-table rows.
     `ppa_results/amlib_oam_vs_oadm_mul_10ns.csv`,
     `third_party/amlib_oam/PROVENANCE.md`.
 
-20. September 2 fixed-L2 DIV-only specialization and literature-guided search.
+21. September 2 fixed-L2 DIV-only specialization and literature-guided search.
     The former strict L2 point instantiated the generic multilevel centered-
     residual datapath and was slower than the separately specialized L3 point.
     A dedicated L2 implementation now fixes midpoint numerators to
@@ -569,7 +585,7 @@ paper-table rows.
     `SAADI-EC_A_Quality-Configurable_Approximate_Divider_for_Energy_Efficiency.pdf`,
     `LEAD.pdf`, `ILAFD.pdf`, `RAPID.pdf`, and `2011.01148v1.pdf`.
 
-21. September 2 root-level precision-pruning experiment. The paper-ready state
+22. September 2 root-level precision-pruning experiment. The paper-ready state
     was checkpointed as commit `403673b` on branch `paper_ready`, and branch
     `root_opt` was created from that exact commit. The new runtime candidate
     retains runtime DIV/MUL and L0--L3 selection, the same mantissa partitions,
@@ -597,16 +613,16 @@ paper-table rows.
     replacement.
 
     The final RTL passed an independent Python integer-model cross-check on
-    1,000 vectors and an RTL-versus-final-DC-netlist miter on 20,005 vectors per
+    1,000 vectors and an RTL-versus-final-DC-netlist miter on 20,002 vectors per
     DUT. Both synthesized designs are combinational, flattened, macro-free,
     pass PrimeTime `check_timing`, and have no maximum-delay violations.
     Evidence: `rtl/root_opt/`, `python/root_opt_search.py`,
     `python/root_opt_crosscheck.py`, `python/results_root_opt/`,
     `qsim_rtl/root_opt/`, `dc/root_opt/outputs_10ns/`,
     `pt_dc/root_opt/reports_10ns/`, and
-    `ppa_results/root_opt_results_10ns.csv`.
+    `ppa_results/fixed_level_root_opt_10ns.csv`.
 
-22. September 2 per-level extension of root-level precision pruning. A joint
+23. September 2 per-level extension of root-level precision pruning. A joint
     search over residual drops, reciprocal-scale input drops, Q0.7/Q0.8 width,
     and cell-local coefficient retuning selected fixed DIV-only points
     `(18,18,Q0.7)` for L0, `(16,16,Q0.7)` for L1, the existing
@@ -618,22 +634,72 @@ paper-table rows.
     Common 10,000-vector MAE/MRED/RMSE are L0
     0.042490737/0.042625992/0.056921209, L1
     0.011530309/0.010870842/0.016338037, L2
-    0.003100417/0.002892013/0.004394511, and L3
+    0.003852507/0.003674431/0.005367505, and L3
     0.002748346/0.002775435/0.003482566. All three metrics improve versus each
     current OADM fixed-level baseline. Canonical PPA is L0
-    457.920004 um2/2.10219 ns/0.0195455 mW, L1
-    813.960003/2.71267/0.0399603, L2
-    1555.200006/3.42979/0.0827526, and L3
-    1412.640001/2.99306/0.0753662. Area reductions versus current L0--L3 are
-    64.39%, 62.06%, 39.89%, and 58.12% without measured accuracy loss.
+    422.640006 um2/1.98545 ns/0.0179954 mW, L1
+    783.360005/2.62745/0.0392231, L2
+    1058.400006/2.64548/0.0533156, and L3
+    1382.400002/2.91930/0.0730775. Area reductions versus the freshly rerun
+    unified-wrapper L0--L3 baselines are 65.57%, 62.07%, 60.01%, and 59.24%
+    without measured accuracy loss.
 
     The independent Python integer model covers runtime plus every fixed level
     on 1,000 vectors. The expanded final-netlist miter covers the runtime unit
-    and all four fixed tops on 20,005 vectors per DUT; both checks pass with
+    and all four fixed tops on 20,002 vectors per DUT; both checks pass with
     zero mismatches. Evidence: `python/fixed_level_root_search.py`,
     `python/results_root_opt/fixed_level_sweep.csv`,
     `ppa_results/fixed_level_root_opt_10ns.csv`, and the item-21 root-opt
     evidence directories.
+
+24. September 3 fixed-level MUL root-precision experiment. This experiment was
+    added entirely in new `mul_root_opt` RTL, simulation, DC, PT, and result
+    directories; the upstream AM-Lib OAM snapshot and existing OADM MUL RTL
+    were not modified. Canonical OAM/OADM PPA was subsequently rerun through
+    the same normal-finite wrapper and refreshed in
+    `amlib_oam_vs_oadm_mul_10ns.csv`. The OAM-equivalent plane still computes
+    `kx*ky + ky*rx + kx*ry`, but each centered residual is arithmetically
+    truncated before its midpoint product. Because floor truncation removes a
+    mean half-step from each residual, the design adds the analytic Q23 bias
+    `(Kx+Ky)*2^(D-5)`, where `Kx=16*kx`, `Ky=16*ky`, and `D` is the residual
+    drop. This uses the already available midpoint sum and requires no new
+    coefficient or two-dimensional correction LUT.
+
+    Three fixed-level sets were retained. The accuracy-preserving set drops
+    `{12,10,8,6}` residual LSBs for L0--L3. On 200,000 common normal-finite
+    vectors, its largest increase among MAE/MRED/RMSE is 0.00263%. Relative to
+    the current centered-residual OADM MUL-only PPA, its L0--L3 area reductions
+    are 37.34%, 42.30%, 29.58%, and 26.98%; delay reductions are 25.24%,
+    25.95%, 20.26%, and 11.75%; power reductions are 41.47%, 40.20%, 31.29%,
+    and 21.96%. The balanced set drops `{16,14,12,10}` bits and reduces area by
+    41.26--55.38% with less than 0.42% MAE increase. The area-oriented set
+    drops `{18,16,14,12}` bits and reduces area by 47.58--62.08% with less than
+    4.7% increase in any reported error metric.
+
+    All 12 new netlists are combinational and fully flattened, pass PrimeTime
+    `check_timing`, and pass a 20,002-vector-per-DUT RTL-versus-netlist miter.
+    An independently coded integer model has zero mismatches against all three
+    candidates at every level on the 200,000-vector accuracy sequence. This is
+    a fixed-level MUL-only result and has not yet been integrated into the
+    runtime shared DIV+MUL top or the sharing ablation. Evidence:
+    `mul_root_opt.md`, `rtl/mul_root_opt/`,
+    `python/mul_root_opt_search.py`, `python/results_mul_root_opt/`,
+    `qsim_rtl/mul_root_opt/`, `dc/mul_root_opt/outputs_10ns/`,
+    `pt_dc/mul_root_opt/reports_10ns/`, and
+    `ppa_results/mul_root_opt_results_10ns.csv`.
+
+25. September 3 exhaustive L0 Q0.7 coefficient audit. With the selected
+    fixed-L0 `RESIDUAL_DROP=18` and `SCALE_DROP=18` hardware held constant, all
+    legal Q0.7 integer coefficients `1...127` were evaluated over a 500-by-500
+    uniform normalized-mantissa grid using the bit-exact scale, normalization,
+    and FP32 packing model. `C=59` is the global RMSE/MSE optimum at
+    0.056632643; the nearest quantization of the theoretical midpoint value,
+    `C=57`, gives 0.071185786. `C=58` instead minimizes MAE and MRED, so every
+    best-coefficient claim must name its objective. A paper-ready PDF/PNG plot
+    shows the `52...65` neighborhood, while the CSV retains all 127 codes.
+    Evidence: `python/l0_q07_coefficient_sweep.py`,
+    `python/results_root_opt/l0_q07_coefficient_sweep.csv`, and
+    `paper_hardware/pictures/l0_q07_coefficient_sweep.{pdf,png}`.
 
 ## Tool and License Notes
 

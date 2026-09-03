@@ -84,43 +84,10 @@ module oadm_runtime_root_opt (
     input  wire        divide_mode,
     output wire [31:0] result
 );
-    localparam [31:0] QUIET_NAN = 32'h7fc00000;
-    wire [7:0] x_exponent = x[30:23];
-    wire [7:0] y_exponent = y[30:23];
-    wire [22:0] x_fraction = x[22:0];
-    wire [22:0] y_fraction = y[22:0];
+    wire [22:0] x_fraction;
+    wire [22:0] y_fraction;
     wire [23:0] x_mantissa = {1'b1, x_fraction};
     wire [23:0] y_mantissa = {1'b1, y_fraction};
-    wire sign_input = x[31] ^ y[31];
-    wire x_nan = (x_exponent == 8'hff) && (x_fraction != 0);
-    wire y_nan = (y_exponent == 8'hff) && (y_fraction != 0);
-    wire x_inf = (x_exponent == 8'hff) && (x_fraction == 0);
-    wire y_inf = (y_exponent == 8'hff) && (y_fraction == 0);
-    wire x_zero = (x_exponent == 8'h00);
-    wire y_zero = (y_exponent == 8'h00);
-
-    reg invalid_input;
-    reg infinity_input;
-    reg zero_input;
-    reg signed [9:0] exponent_input;
-    always @* begin
-        invalid_input = x_nan || y_nan;
-        infinity_input = 1'b0;
-        zero_input = 1'b0;
-        if (divide_mode) begin
-            invalid_input = invalid_input || (x_zero && y_zero) || (x_inf && y_inf);
-            infinity_input = !invalid_input && (x_inf || y_zero);
-            zero_input = !invalid_input && !infinity_input && (x_zero || y_inf);
-            exponent_input = $signed({2'b0, x_exponent})
-                           - $signed({2'b0, y_exponent}) + 10'sd127;
-        end else begin
-            invalid_input = invalid_input || (x_zero && y_inf) || (x_inf && y_zero);
-            infinity_input = !invalid_input && (x_inf || y_inf);
-            zero_input = !invalid_input && !infinity_input && (x_zero || y_zero);
-            exponent_input = $signed({2'b0, x_exponent})
-                           + $signed({2'b0, y_exponent}) - 10'sd127;
-        end
-    end
 
     wire signed [28:0] plane_full;
     oadm_runtime_plane_pruned plane (
@@ -163,42 +130,31 @@ module oadm_runtime_root_opt (
         $signed({4'b0000, reduced_scale_product, 7'b0000000});
     wire signed [28:0] core_value = divide_mode ? divided_value : plane_full;
 
-    reg signed [28:0] normalized_value;
-    reg signed [9:0] result_exponent;
-    reg [31:0] finite_result;
-    reg [31:0] result_comb;
+    reg [22:0] normalized_fraction;
+    reg signed [2:0] exponent_adjust;
     always @* begin
-        normalized_value = core_value;
-        result_exponent = exponent_input;
+        normalized_fraction = core_value[22:0];
+        exponent_adjust = 3'sd0;
         if (core_value[24]) begin
-            normalized_value = core_value >>> 1;
-            result_exponent = result_exponent + 1;
+            normalized_fraction = core_value[23:1];
+            exponent_adjust = 3'sd1;
         end else if (core_value[23]) begin
-            normalized_value = core_value;
+            normalized_fraction = core_value[22:0];
         end else if (core_value[22]) begin
-            normalized_value = core_value <<< 1;
-            result_exponent = result_exponent - 1;
+            normalized_fraction = {core_value[21:0], 1'b0};
+            exponent_adjust = -3'sd1;
         end else begin
-            normalized_value = core_value <<< 2;
-            result_exponent = result_exponent - 2;
+            normalized_fraction = {core_value[20:0], 2'b0};
+            exponent_adjust = -3'sd2;
         end
-        if (result_exponent <= 0)
-            finite_result = {sign_input, 31'b0};
-        else if (result_exponent >= 255)
-            finite_result = {sign_input, 8'hff, 23'b0};
-        else
-            finite_result = {sign_input, result_exponent[7:0], normalized_value[22:0]};
-
-        if (invalid_input)
-            result_comb = QUIET_NAN;
-        else if (infinity_input)
-            result_comb = {sign_input, 8'hff, 23'b0};
-        else if (zero_input)
-            result_comb = {sign_input, 31'b0};
-        else
-            result_comb = finite_result;
     end
-    assign result = result_comb;
+
+    fp32_normal_finite_wrapper fp_wrapper (
+        .x(x), .y(y), .divide_mode(divide_mode),
+        .fraction_x(x_fraction), .fraction_y(y_fraction),
+        .result_fraction(normalized_fraction),
+        .exponent_adjust(exponent_adjust), .result(result)
+    );
 endmodule
 
 
@@ -220,8 +176,10 @@ module oadm_fixed_div_root_opt #(
     input wire [31:0] y,
     output wire [31:0] result
 );
-    wire [23:0] x_mantissa = {1'b1, x[22:0]};
-    wire [23:0] y_mantissa = {1'b1, y[22:0]};
+    wire [22:0] x_fraction;
+    wire [22:0] y_fraction;
+    wire [23:0] x_mantissa = {1'b1, x_fraction};
+    wire [23:0] y_mantissa = {1'b1, y_fraction};
     wire signed [28:0] plane_full;
     oadm_runtime_plane_pruned #(
         .RESIDUAL_DROP(RESIDUAL_DROP)
@@ -264,25 +222,28 @@ module oadm_fixed_div_root_opt #(
         $signed({4'b0000, reduced_scale_product,
                  {(SCALE_DROP-COEFFICIENT_BITS){1'b0}}});
 
-    wire sign_input = x[31] ^ y[31];
-    wire signed [9:0] exponent_input = $signed({2'b0, x[30:23]})
-        - $signed({2'b0, y[30:23]}) + 10'sd127;
     reg [22:0] normalized_fraction;
-    reg signed [9:0] result_exponent;
+    reg signed [2:0] exponent_adjust;
     always @* begin
         normalized_fraction = core_value[22:0];
-        result_exponent = exponent_input;
+        exponent_adjust = 3'sd0;
         if (core_value[23]) begin
             normalized_fraction = core_value[22:0];
         end else if (core_value[22]) begin
             normalized_fraction = {core_value[21:0], 1'b0};
-            result_exponent = exponent_input - 1;
+            exponent_adjust = -3'sd1;
         end else begin
             normalized_fraction = {core_value[20:0], 2'b0};
-            result_exponent = exponent_input - 2;
+            exponent_adjust = -3'sd2;
         end
     end
-    assign result = {sign_input, result_exponent[7:0], normalized_fraction};
+
+    fp32_normal_finite_wrapper fp_wrapper (
+        .x(x), .y(y), .divide_mode(1'b1),
+        .fraction_x(x_fraction), .fraction_y(y_fraction),
+        .result_fraction(normalized_fraction),
+        .exponent_adjust(exponent_adjust), .result(result)
+    );
 endmodule
 
 
@@ -316,7 +277,7 @@ module oadm_fixed_l2_div_root_opt (
     output wire [31:0] result
 );
     oadm_fixed_div_root_opt #(
-        .LEVEL(2), .RESIDUAL_DROP(10), .SCALE_DROP(14),
+        .LEVEL(2), .RESIDUAL_DROP(16), .SCALE_DROP(16),
         .COEFFICIENT_BITS(8),
         .C0(8'd203), .C1(8'd136), .C2(8'd97), .C3(8'd73)
     ) implementation (.x(x), .y(y), .result(result));

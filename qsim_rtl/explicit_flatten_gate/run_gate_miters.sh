@@ -65,6 +65,7 @@ for level in 1 2 3 4; do
 done
 
 OADM_COMMON=(
+    "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v"
     "$ROOT/rtl/csa3.v"
     "$ROOT/rtl/pipeline_sweep/oadm_pipe_cut.v"
     "$ROOT/rtl/pipeline_sweep/oadm_dm_pipe.v"
@@ -103,18 +104,19 @@ run_miter oadm_l3 OADM_L3 oadm_fixed_l3_div_opt_centered_paceio \
     "$ROOT/rtl/divopt/oadm_fixed_l3_div_opt.v"
 fi
 
-run_miter qiad DESIGN_QIAD qiad_prior_fp32_div \
-    "$WORKTREES/qiad-repro/dc/qiad_prior/outputs_explicit_flatten_area10/qiad_prior_fp32_div.nl.v" \
+run_miter qiad DESIGN_QIAD qiad_prior_fp32_paceio \
+    "$WORKTREES/qiad-repro/dc/qiad_prior/outputs_paceio_explicit_flatten_area10/qiad_prior_fp32_paceio.nl.v" \
     "$ROOT/qsim_rtl/explicit_flatten_gate/tb_prior_gate_miter.sv" \
     "$WORKTREES/qiad-repro/rtl/qiad_prior/ref_core/qiad/top.v" \
     "$WORKTREES/qiad-repro/rtl/qiad_prior/ref_core/qiad/QUAD_RECIPROCAL.v" \
-    "$WORKTREES/qiad-repro/rtl/qiad_prior/qiad_prior_fp32_div.v"
+    "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
+    "$WORKTREES/qiad-repro/rtl/qiad_prior/qiad_prior_fp32_paceio.v"
 
 run_miter fanzed DESIGN_FANZED fanzed_prior_fp32_paceio \
     "$WORKTREES/fanzed-prior-rtl/dc/fanzed_prior_paceio/outputs_explicit_flatten_area10/fanzed_prior_fp32_paceio.nl.v" \
     "$ROOT/qsim_rtl/explicit_flatten_gate/tb_prior_gate_miter.sv" \
     "$WORKTREES/fanzed-prior-rtl/rtl/fanzed_prior/ref_core/inzed/top.v" \
-    "$WORKTREES/fanzed-prior-rtl/rtl/pace_common/FP_DIV_WRAPPER_32.v" \
+    "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
     "$WORKTREES/fanzed-prior-rtl/rtl/fanzed_prior/fanzed_prior_fp32_paceio.v"
 
 run_miter truncapp DESIGN_TRUNCAPP truncapp_fp32_paceio \
@@ -123,7 +125,7 @@ run_miter truncapp DESIGN_TRUNCAPP truncapp_fp32_paceio \
     "$WORKTREES/truncapp-repro/rtl/truncapp/ref_core/truncapp/INV.v" \
     "$WORKTREES/truncapp-repro/rtl/truncapp/ref_core/truncapp/TRUNC.v" \
     "$WORKTREES/truncapp-repro/rtl/truncapp/ref_core/truncapp/top.v" \
-    "$WORKTREES/truncapp-repro/rtl/pace_common/FP_DIV_WRAPPER_32.v" \
+    "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
     "$WORKTREES/truncapp-repro/rtl/truncapp/truncapp_fp32_paceio.v"
 
 run_miter lead DESIGN_LEAD lead_fp32_paceio_comb \
@@ -134,7 +136,7 @@ run_miter lead DESIGN_LEAD lead_fp32_paceio_comb \
     "$ROOT/qsim_rtl/explicit_flatten_gate/lead_zero_cnt_compat.v" \
     "$WORKTREES/lead-repro/rtl/lead/ref_core/common/NORMALIZE.v" \
     "$WORKTREES/lead-repro/rtl/lead/ref_core/common/SHIFTER.v" \
-    "$WORKTREES/lead-repro/rtl/pace_common/FP_DIV_WRAPPER_32.v" \
+    "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
     "$WORKTREES/lead-repro/rtl/lead/lead_comb_core.v" \
     "$WORKTREES/lead-repro/rtl/lead/lead_fp32_paceio_comb.v"
 

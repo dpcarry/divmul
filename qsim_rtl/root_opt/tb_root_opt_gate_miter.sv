@@ -76,19 +76,12 @@ module tb_root_opt_gate_miter;
         level = 2'd0; divide_mode = 1'b0; check_outputs();
         x = 32'h3fffffff; y = 32'h3f800000;
         level = 2'd3; divide_mode = 1'b1; check_outputs();
-        x = 32'h00000000; y = 32'h00000000;
-        level = 2'd2; divide_mode = 1'b1; check_outputs();
-        x = 32'h7f800000; y = 32'h7f800000;
-        level = 2'd1; divide_mode = 1'b1; check_outputs();
-        x = 32'h7fc00001; y = 32'h3f800000;
-        level = 2'd3; divide_mode = 1'b0; check_outputs();
-
         for (i = 0; i < CASES; i = i + 1) begin
             x = {$random(seed) & 1'b1,
-                 (($random(seed) & 8'hfd) + 1'b1),
+                 $urandom_range(1, 254),
                  $random(seed) & 23'h7fffff};
             y = {$random(seed) & 1'b1,
-                 (($random(seed) & 8'hfd) + 1'b1),
+                 $urandom_range(1, 254),
                  $random(seed) & 23'h7fffff};
             level = $random(seed) & 2'b11;
             divide_mode = $random(seed) & 1'b1;
@@ -102,7 +95,8 @@ module tb_root_opt_gate_miter;
                 "root-opt gate mismatches: runtime=%0d fixed=%0d/%0d/%0d/%0d",
                 runtime_mismatches, fixed_mismatches[0], fixed_mismatches[1],
                 fixed_mismatches[2], fixed_mismatches[3]);
-        $display("ROOT_OPT_GATE_MITER PASS: %0d vectors per DUT", CASES + 5);
+        $display("ROOT_OPT_GATE_MITER PASS: %0d normal-finite vectors per DUT",
+                 CASES + 2);
         $finish;
     end
 endmodule

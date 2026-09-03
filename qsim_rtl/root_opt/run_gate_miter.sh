@@ -22,6 +22,7 @@ done
 vlib "$TMP/work"
 vlog -work "$TMP/work" "$CELL_LIB"
 vlog -sv -work "$TMP/work" \
+    "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
     "$ROOT/rtl/root_opt/oadm_root_opt.v" \
     "$TMP/${RUNTIME}_gate.v" "${FIXED_NETLISTS[@]}" \
     "$ROOT/qsim_rtl/root_opt/tb_root_opt_gate_miter.sv"

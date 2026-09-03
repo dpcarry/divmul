@@ -9,7 +9,7 @@ module tb_root_opt;
     wire [31:0] baseline_out;
     wire [31:0] runtime_root_out;
     wire [31:0] fixed_root_out [0:3];
-    wire [31:0] pace_l4_out;
+    wire [31:0] pace_out [1:4];
     reg [31:0] x_vectors [0:CASES-1];
     reg [31:0] y_vectors [0:CASES-1];
 
@@ -22,9 +22,9 @@ module tb_root_opt;
     real fixed_abs [0:3];
     real fixed_rel [0:3];
     real fixed_sq [0:3];
-    real pace_abs;
-    real pace_rel;
-    real pace_sq;
+    real pace_abs [1:4];
+    real pace_rel [1:4];
+    real pace_sq [1:4];
     real expected;
     real actual;
     real error;
@@ -33,6 +33,7 @@ module tb_root_opt;
     integer fraction_y;
     integer mode_index;
     integer level_index;
+    integer pace_level;
     integer i;
     integer csv_file;
     integer special_mismatches;
@@ -53,7 +54,10 @@ module tb_root_opt;
         .x(x), .y(y), .result(fixed_root_out[2]));
     oadm_fixed_l3_div_root_opt fixed_l3 (
         .x(x), .y(y), .result(fixed_root_out[3]));
-    pace_fp32_l4 pace_l4 (.x(x), .y(y), .out(pace_l4_out));
+    pace_fp32_l1 pace_l1 (.x(x), .y(y), .out(pace_out[1]));
+    pace_fp32_l2 pace_l2 (.x(x), .y(y), .out(pace_out[2]));
+    pace_fp32_l3 pace_l3 (.x(x), .y(y), .out(pace_out[3]));
+    pace_fp32_l4 pace_l4 (.x(x), .y(y), .out(pace_out[4]));
 
     function real fp32_to_real;
         input [31:0] bits;
@@ -93,9 +97,11 @@ module tb_root_opt;
     initial begin
         seed = 6321;
         special_mismatches = 0;
-        pace_abs = 0.0;
-        pace_rel = 0.0;
-        pace_sq = 0.0;
+        for (pace_level = 1; pace_level <= 4; pace_level = pace_level + 1) begin
+            pace_abs[pace_level] = 0.0;
+            pace_rel[pace_level] = 0.0;
+            pace_sq[pace_level] = 0.0;
+        end
         for (level_index = 0; level_index < 4; level_index = level_index + 1) begin
             fixed_abs[level_index] = 0.0;
             fixed_rel[level_index] = 0.0;
@@ -150,22 +156,21 @@ module tb_root_opt;
                         fixed_sq[level_index] =
                             fixed_sq[level_index] + error * error;
                     end
-                    if (mode_index == 1 && level_index == 2) begin
-                        actual = fp32_to_real(pace_l4_out);
-                        error = abs_real(actual - expected);
-                        pace_abs = pace_abs + error;
-                        pace_rel = pace_rel + error / expected;
-                        pace_sq = pace_sq + error * error;
+                    if (mode_index == 1 && level_index == 0) begin
+                        for (pace_level = 1; pace_level <= 4;
+                                pace_level = pace_level + 1) begin
+                            actual = fp32_to_real(pace_out[pace_level]);
+                            error = abs_real(actual - expected);
+                            pace_abs[pace_level] = pace_abs[pace_level] + error;
+                            pace_rel[pace_level] = pace_rel[pace_level]
+                                                   + error / expected;
+                            pace_sq[pace_level] = pace_sq[pace_level]
+                                                 + error * error;
+                        end
                     end
                 end
             end
         end
-
-        check_special(32'h00000000, 32'h3f800000, 2'd0, 1'b0);
-        check_special(32'h7f800000, 32'h00000000, 2'd3, 1'b0);
-        check_special(32'h00000000, 32'h00000000, 2'd2, 1'b1);
-        check_special(32'h7f800000, 32'h7f800000, 2'd1, 1'b1);
-        check_special(32'h7fc00001, 32'h3f800000, 2'd3, 1'b1);
 
         csv_file = $fopen("root_opt_accuracy.csv", "w");
         $fdisplay(csv_file, "candidate,mode,level,cases,mae,mred,rmse");
@@ -189,13 +194,15 @@ module tb_root_opt;
                 fixed_abs[level_index] / CASES,
                 fixed_rel[level_index] / CASES,
                 $sqrt(fixed_sq[level_index] / CASES));
-        $fdisplay(csv_file, "pace_l4,DIV,L4,%0d,%.9f,%.9f,%.9f", CASES,
-            pace_abs / CASES, pace_rel / CASES, $sqrt(pace_sq / CASES));
+        for (pace_level = 1; pace_level <= 4; pace_level = pace_level + 1)
+            $fdisplay(csv_file, "pace_l%0d,DIV,L%0d,%0d,%.9f,%.9f,%.9f",
+                pace_level, pace_level, CASES,
+                pace_abs[pace_level] / CASES,
+                pace_rel[pace_level] / CASES,
+                $sqrt(pace_sq[pace_level] / CASES));
         $fclose(csv_file);
 
-        if (special_mismatches != 0)
-            $fatal(1, "%0d special-case shell mismatches", special_mismatches);
-        $display("PASS: root-opt accuracy campaign and special-case shell checks");
+        $display("PASS: root-opt normalized-finite accuracy campaign");
         $finish;
     end
 endmodule

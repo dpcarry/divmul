@@ -31,10 +31,12 @@ r'_x = floor(r_x / 2^10) * 2^10,
 r'_y = floor(r_y / 2^10) * 2^10.
 ```
 
-This changes the dynamic products from approximately 23-by-6 bits to
-13-by-6 bits while retaining the same partition, midpoint, and tangent-plane
-form. Arithmetic right shift defines the floor operation for negative signed
-residuals.
+The original natural residual widths are 23, 22, 21, and 20 bits for L0-L3.
+The root-opt implementation uses a common 23-bit sign-extended container before
+pruning, so the declared post-pruning operand may include redundant sign bits.
+For the current fixed points, the independent retained residual information is
+5, 6, 5, and 4 bits for L0-L3, respectively. Arithmetic right shift defines
+the floor operation for negative signed residuals.
 
 For division, let `C/2^B` be the reciprocal-square coefficient. Instead of
 forming the full `W*C` product, the optimized scaler computes
@@ -62,29 +64,35 @@ selected pruning and quantization-aware coefficient tables:
 top                         residual drop  scale drop  coefficients
 oadm_fixed_l0_div_root_opt       18            18      Q0.7 {59}
 oadm_fixed_l1_div_root_opt       16            16      Q0.7 {83,42}
-oadm_fixed_l2_div_root_opt       10            14      Q0.8 {203,136,97,73}
+oadm_fixed_l2_div_root_opt       16            16      Q0.8 {203,136,97,73}
 oadm_fixed_l3_div_root_opt       16            16      Q0.8 {227,182,149,124,105,90,78,68}
 ```
 
-The L2 point deliberately retains more arithmetic precision because it targets
-accuracy beyond PACE L4. The other levels select more aggressive low-cost
-points that still improve all three measured error statistics over their
-current implementations. Coefficient retuning compensates the local tangent
-plane's systematic error; it does not add partitions or a refinement level.
+Every level returns `w_n` in a 29-bit signed Q23 container. Normal DIV values
+use 25 meaningful bits (`w_n` is nonnegative and below 4); scale pruning keeps
+7 of those bits at L0 and 9 bits at L1-L3.
+
+The revised L2 point uses the same arithmetic widths as L3. It supersedes an
+earlier `10/14` point that unnecessarily retained extra precision to target
+accuracy beyond PACE L4. All levels improve all three measured error statistics
+over their pre-root-opt implementations. Coefficient retuning compensates the
+complete quantized datapath error; it does not add partitions or a refinement
+level.
 
 Under the canonical 10 ns flow, the resulting fixed-level PPA is:
 
 ```text
 level  area (um2)  PT delay (ns)  PT power (mW)
-L0      457.9200      2.10219        0.0195455
-L1      813.9600      2.71267        0.0399603
-L2     1555.2000      3.42979        0.0827526
-L3     1412.6400      2.99306        0.0753662
+L0      422.6400      1.98545        0.0179954
+L1      783.3600      2.62745        0.0392231
+L2     1058.4000      2.64548        0.0533156
+L3     1382.4000      2.91930        0.0730775
 ```
 
-L3 is smaller and faster than L2 because its selected point drops sixteen bits
-at both arithmetic boundaries, whereas accuracy-oriented L2 retains ten-bit
-residual and fourteen-bit scale pruning.
+L2 is now smaller than L3 because both use sixteen-bit pruning at the residual
+and scale boundaries, while L2 has only four denominator intervals and L3 has
+eight. The former L2-greater-than-L3 anomaly belonged to the superseded 10/14
+L2 point.
 
 ## Validation
 
@@ -95,8 +103,8 @@ residual and fourteen-bit scale pruning.
   baseline/candidate/PACE accuracy comparison.
 - `qsim_rtl/root_opt/transcript`: independent Python integer-model versus RTL
   cross-check, 1,000 vectors, zero mismatches.
-- `qsim_rtl/root_opt/gate_miter.log`: runtime and all four fixed-level RTL tops
-  versus their final DC netlists, 20,005 vectors per DUT, zero mismatches.
+- `qsim_rtl/root_opt/gate_miter.log`: all four fixed-level RTL tops versus their
+  final DC netlists, 20,002 normal-finite vectors per DUT, zero mismatches.
 - `dc/root_opt/outputs_10ns/` and `pt_dc/root_opt/reports_10ns/`: canonical
   explicit-flatten 10 ns DC/PT evidence.
 

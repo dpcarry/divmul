@@ -75,7 +75,8 @@ def main():
 
     gate_log = read("qsim_rtl/root_opt/gate_miter.log")
     model_log = read("qsim_rtl/root_opt/transcript")
-    if "ROOT_OPT_GATE_MITER PASS: 20005 vectors per DUT" not in gate_log:
+    if ("ROOT_OPT_GATE_MITER PASS: 20002 normal-finite vectors per DUT"
+            not in gate_log):
         raise RuntimeError("final gate-miter pass marker is missing")
     if "ROOT_OPT_MODEL_CROSSCHECK PASS: 1000 vectors" not in model_log:
         raise RuntimeError("integer-model cross-check pass marker is missing")

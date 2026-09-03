@@ -11,8 +11,8 @@ module tb_prior_gate_miter;
     integer mismatches;
 
 `ifdef DESIGN_QIAD
-    qiad_prior_fp32_div rtl_dut (.x(x), .y(y), .result(rtl_out));
-    qiad_prior_fp32_div_gate gate_dut (.x(x), .y(y), .result(gate_out));
+    qiad_prior_fp32_paceio rtl_dut (.x(x), .y(y), .out(rtl_out));
+    qiad_prior_fp32_paceio_gate gate_dut (.x(x), .y(y), .out(gate_out));
 `elsif DESIGN_FANZED
     fanzed_prior_fp32_paceio rtl_dut (.x(x), .y(y), .out(rtl_out));
     fanzed_prior_fp32_paceio_gate gate_dut (.x(x), .y(y), .out(gate_out));
