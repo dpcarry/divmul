@@ -377,19 +377,15 @@ paper-table rows.
     `optimization_branches/final-opt/results.csv`. The redundant standalone
     CSD experiment CSV was removed from `ppa_results` during result cleanup.
 
-12. Sharing-ablation boundary tightened.
-    Early sharing studies compared full pipelined OADM against separate
-    divider and upstream OAM multiplier blocks or isolated mantissa cores, which
-    were useful but not the final paper boundary. The current paper-facing
-    sharing ablation re-elaborates the current no-pipeline RTL with operation
-    mode tied to DIV or MUL and compares their separate sum against one
-    selectable full OADM DIV+MUL block. It measures structural sharing under
-    matched RTL/flow, but its L0 implementation is `centered_residual`, not the
-    full-table `centered_index` L0 point.
-    Evidence: `dc/separate_area/README.md`,
-    `dc/oadm_sharing_ablation/README.md`,
-    `ppa_results/divmul_sharing_ablation_10ns.csv`,
-    `dc/multilevel_opt/outputs_sharing_10ns/`.
+12. Sharing-ablation boundary tightened and later replaced.
+    The early pre-pruning sharing RTL and reports were removed after root-opt.
+    The current paper-facing ablation compares each selected root-opt DIV-only
+    and balanced MUL-only area sum against a fixed-level integrated root-opt
+    OADM that shares the midpoint/residual multipliers. The integrated outputs
+    are bit-exact to both standalone views under their corresponding mode.
+    Evidence: `rtl/root_opt/oadm_fixed_divmul_root_opt.v`,
+    `ppa_results/divmul_sharing_ablation_hier_compile_10ns.csv`, and
+    `dc/hier_compile_10ns/outputs/root_shared/`.
 
 13. Exact DesignWare baseline boundary.
     Older exact baselines used seven-cycle pipelined DesignWare blocks at the

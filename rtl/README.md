@@ -106,7 +106,6 @@ results, but it should not be selected as the latest OADM implementation:
 | `divopt/oadm_fixed_l2_div_opt.v`, `oadm_fixed_l3_div_opt.v`, `oadm_l3_plane_direct.v`, `oadm_l3_plane_factored.v`, and `oadm_rounding_error_lut.v` | Superseded DIV optimization candidates |
 | `divopt/oadm_experiment_variants.v` | Experiment collection; still a dependency of `root_opt`, but its standalone tops are not the final fixed DIV rows |
 | `oadm_levels_opt/` | Eq. 10/11 sharing experiment; bit-exact but worse PPA, retained as a negative result |
-| `oadm_sharing_ablation/` | Dedicated sharing-ablation wrappers |
 | `paper_repro/` | Paper-reproduction wrappers, not the latest root-opt RTL |
 | `exact/exact_fp32_7stage.v` | Legacy pipelined exact baseline; do not mix with the 10 ns no-pipeline tables |
 | `simdive/` | Reconstructed SIMDive experiment; the current original-source comparison uses `simdive_original/` instead |
