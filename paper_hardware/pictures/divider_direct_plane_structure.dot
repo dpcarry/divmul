@@ -1,0 +1,52 @@
+digraph divider_direct_plane_structure {
+  graph [rankdir=LR, bgcolor="white", pad="0.12", nodesep="0.32", ranksep="0.48",
+         fontname="Helvetica", splines=ortho];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11,
+        margin="0.10,0.07", color="#34506b", penwidth=1.2];
+  edge [color="#4b6073", penwidth=1.2, arrowsize=0.7, fontname="Helvetica", fontsize=9];
+
+  input [label="FP32 X, Y", fillcolor="#e8f0f7", width=1.0];
+  unpack [label="Unpack\nsign / exponent\nmantissas x, y", fillcolor="#e8f0f7", width=1.55];
+  select [label="L0--L3 midpoint select\nfrom mantissa partition\nkx^n, ky^n", fillcolor="#fff3d8", width=2.0];
+
+  plane [
+    shape=plain,
+    style="",
+    label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLPADDING="8" COLOR="#34506b">
+        <TR>
+          <TD COLSPAN="3" BGCOLOR="#dff1ea"><FONT POINT-SIZE="13"><B>Selected-level DIV plane</B></FONT></TD>
+        </TR>
+        <TR>
+          <TD COLSPAN="3" BGCOLOR="#dff1ea"><FONT POINT-SIZE="10">same three tangent-plane terms used by OAM</FONT></TD>
+        </TR>
+        <TR>
+          <TD BGCOLOR="#e3f2ed" BORDER="1" COLOR="#88b7a5"><FONT POINT-SIZE="12">ky<SUP>n</SUP> x</FONT></TD>
+          <TD BGCOLOR="#e3f2ed" BORDER="1" COLOR="#88b7a5"><FONT POINT-SIZE="12">kx<SUP>n</SUP> y</FONT></TD>
+          <TD BGCOLOR="#e3f2ed" BORDER="1" COLOR="#88b7a5"><FONT POINT-SIZE="12">kx<SUP>n</SUP>ky<SUP>n</SUP></FONT></TD>
+        </TR>
+        <TR>
+          <TD COLSPAN="3" BGCOLOR="#dff1ea"><FONT POINT-SIZE="11">DIV: +kxky + ky*x - kx*y</FONT></TD>
+        </TR>
+        <TR>
+          <TD COLSPAN="3" BGCOLOR="#dff1ea"><FONT POINT-SIZE="10">OAM MUL: -kxky + ky*x + kx*y</FONT></TD>
+        </TR>
+      </TABLE>
+    >
+  ];
+
+  scale [label="DIV-only scale\nQ0.7 LUT:\n1/(ky^n)^2", fillcolor="#fce8e6", penwidth=1.7, width=1.45];
+
+  norm [label="Normalize / pack\nsign xor\nexponent adjust", fillcolor="#e8f0f7", width=1.55];
+  out [label="FP32 quotient\nZ = X / Y", fillcolor="#e8f0f7", width=1.25];
+  { rank=same; select; plane; }
+  { rank=same; scale; norm; }
+
+  input -> unpack;
+  unpack -> select [xlabel="mantissa", weight=5];
+  select -> plane;
+  plane -> scale;
+  scale -> norm;
+  norm -> out;
+  unpack -> norm [xlabel="sign / exponent", constraint=false];
+}

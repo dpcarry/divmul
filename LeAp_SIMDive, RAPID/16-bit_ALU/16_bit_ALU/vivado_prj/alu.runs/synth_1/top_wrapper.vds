@@ -1,0 +1,504 @@
+#-----------------------------------------------------------
+# Vivado v2017.4 (64-bit)
+# SW Build 2086221 on Fri Dec 15 20:54:30 MST 2017
+# IP Build 2085800 on Fri Dec 15 22:25:07 MST 2017
+# Start of session at: Thu Apr 29 18:08:13 2021
+# Process ID: 743
+# Current directory: /afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/vivado_prj/alu.runs/synth_1
+# Command line: vivado -log top_wrapper.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top_wrapper.tcl
+# Log file: /afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/vivado_prj/alu.runs/synth_1/top_wrapper.vds
+# Journal file: /afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/vivado_prj/alu.runs/synth_1/vivado.jou
+#-----------------------------------------------------------
+source top_wrapper.tcl -notrace
+Command: synth_design -top top_wrapper -part xc7vx485tffg1761-2 -directive AreaOptimized_high -control_set_opt_threshold 1 -max_bram 0 -max_uram 0 -max_dsp 0 -max_bram_cascade_height 0 -max_uram_cascade_height 0
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7vx485t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7vx485t'
+INFO: [Common 17-1540] The version limit for your license is '2017.12' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for any updates or new releases.
+INFO: [Vivado_Tcl 4-288] User specified maximum number of block RAM allowed in design is 0
+INFO: [Vivado_Tcl 4-551] User specified maximum number of Ultra RAM blocks allowed in design is 0
+INFO: [Vivado_Tcl 4-287] User specified maximum number of block DSP allowed in design is 0
+INFO: [Vivado_Tcl 4-549] User specified maximum number of BRAM that can be cascaded is 0
+INFO: [Vivado_Tcl 4-550] User specified maximum number of URAM that can be cascaded is 0
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 1041 
+WARNING: [Synth 8-1935] empty port in module declaration [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/func_select_add.v:6]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/LOD_function.v:30]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/LOD_function.v:44]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 1500.508 ; gain = 97.270 ; free physical = 7454 ; free virtual = 11919
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'top_wrapper' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/top_wrapper.vhd:19]
+	Parameter word_size bound to: 16 - type: integer 
+INFO: [Synth 8-3491] module 'top_module' declared at '/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/top_module.v:1' bound to instance 'inst0' of component 'top_module' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/top_wrapper.vhd:56]
+INFO: [Synth 8-638] synthesizing module 'top_module' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/top_module.v:1]
+	Parameter N bound to: 16 - type: integer 
+	Parameter lgN bound to: 4 - type: integer 
+INFO: [Synth 8-638] synthesizing module 'hybrid' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:1]
+	Parameter N bound to: 16 - type: integer 
+	Parameter lgN bound to: 4 - type: integer 
+INFO: [Synth 8-638] synthesizing module 'lod' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/lod.v:1]
+	Parameter N bound to: 16 - type: integer 
+	Parameter lgN bound to: 4 - type: integer 
+INFO: [Synth 8-155] case statement is not full and has no default [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/LOD_function.v:22]
+INFO: [Synth 8-155] case statement is not full and has no default [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/LOD_function.v:22]
+INFO: [Synth 8-256] done synthesizing module 'lod' (1#1) [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/lod.v:1]
+INFO: [Synth 8-638] synthesizing module 'shifter' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/shifter.v:1]
+	Parameter N bound to: 16 - type: integer 
+	Parameter lgN bound to: 4 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'shifter' (2#1) [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/shifter.v:1]
+WARNING: [Synth 8-689] width (15) of port connection 'out' does not match port width (16) of module 'shifter' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:63]
+WARNING: [Synth 8-689] width (15) of port connection 'out' does not match port width (16) of module 'shifter' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:64]
+INFO: [Synth 8-638] synthesizing module 'select_ec_16_mul_div' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/select_error_coeff_mul_64_16_bit.v:2]
+	Parameter ZERO bound to: 3'b000 
+	Parameter ONE bound to: 3'b001 
+	Parameter TWO bound to: 3'b010 
+	Parameter THREE bound to: 3'b011 
+	Parameter FOUR bound to: 3'b100 
+	Parameter FIVE bound to: 3'b101 
+	Parameter SIX bound to: 3'b110 
+	Parameter SEVEN bound to: 3'b111 
+	Parameter c00_m bound to: 16'b0000000000111101 
+	Parameter c01_m bound to: 16'b0000000100101101 
+	Parameter c02_m bound to: 16'b0000000111101000 
+	Parameter c03_m bound to: 16'b0000001001000000 
+	Parameter c04_m bound to: 16'b0000001011011010 
+	Parameter c05_m bound to: 16'b0000010001100000 
+	Parameter c06_m bound to: 16'b0000010011010010 
+	Parameter c07_m bound to: 16'b0000001001100111 
+	Parameter c11_m bound to: 16'b0000001110111010 
+	Parameter c12_m bound to: 16'b0000011000000010 
+	Parameter c13_m bound to: 16'b0000100100000100 
+	Parameter c14_m bound to: 16'b0000110000111000 
+	Parameter c15_m bound to: 16'b0000100000001100 
+	Parameter c16_m bound to: 16'b0000101000100100 
+	Parameter c17_m bound to: 16'b0000001111000000 
+	Parameter c22_m bound to: 16'b0000101010110100 
+	Parameter c23_m bound to: 16'b0000111111010000 
+	Parameter c24_m bound to: 16'b0001010000000000 
+	Parameter c25_m bound to: 16'b0000111000000000 
+	Parameter c26_m bound to: 16'b0000100100000000 
+	Parameter c27_m bound to: 16'b0000001100110011 
+	Parameter c33_m bound to: 16'b0001010000000000 
+	Parameter c34_m bound to: 16'b0001000010001000 
+	Parameter c35_m bound to: 16'b0000110000000000 
+	Parameter c36_m bound to: 16'b0000011100011000 
+	Parameter c37_m bound to: 16'b0000001010000000 
+	Parameter c44_m bound to: 16'b0000110100001100 
+	Parameter c45_m bound to: 16'b0000100100101000 
+	Parameter c46_m bound to: 16'b0000010100111010 
+	Parameter c47_m bound to: 16'b0000000110110011 
+	Parameter c55_m bound to: 16'b0000011011000000 
+	Parameter c56_m bound to: 16'b0000010000000000 
+	Parameter c57_m bound to: 16'b0000000110000000 
+	Parameter c66_m bound to: 16'b0000001010000010 
+	Parameter c67_m bound to: 16'b0000000011100000 
+	Parameter c77_m bound to: 16'b0000000000110001 
+	Parameter c00_d bound to: 16'b0000000000100001 
+	Parameter c01_d bound to: 16'b0000100111100011 
+	Parameter c02_d bound to: 16'b0001000001111110 
+	Parameter c03_d bound to: 16'b0001000101000111 
+	Parameter c04_d bound to: 16'b0001001000010010 
+	Parameter c05_d bound to: 16'b0001000000000000 
+	Parameter c06_d bound to: 16'b0000100111011000 
+	Parameter c07_d bound to: 16'b0000000100000000 
+	Parameter c10_d bound to: 16'b0000000010111011 
+	Parameter c11_d bound to: 16'b0000000100000001 
+	Parameter c12_d bound to: 16'b0000100011111001 
+	Parameter c13_d bound to: 16'b0000110001100111 
+	Parameter c14_d bound to: 16'b0000110101110101 
+	Parameter c15_d bound to: 16'b0000101111000101 
+	Parameter c16_d bound to: 16'b0000100000110101 
+	Parameter c17_d bound to: 16'b0000001100110110 
+	Parameter c20_d bound to: 16'b0000000111100001 
+	Parameter c21_d bound to: 16'b0000001010101010 
+	Parameter c22_d bound to: 16'b0000000101011011 
+	Parameter c23_d bound to: 16'b0000011001011111 
+	Parameter c24_d bound to: 16'b0000100011001100 
+	Parameter c25_d bound to: 16'b0000100001111100 
+	Parameter c26_d bound to: 16'b0000010110101000 
+	Parameter c27_d bound to: 16'b0000001011101000 
+	Parameter c30_d bound to: 16'b0000001100000011 
+	Parameter c31_d bound to: 16'b0000010011011110 
+	Parameter c32_d bound to: 16'b0000001111100000 
+	Parameter c33_d bound to: 16'b0000000110011001 
+	Parameter c34_d bound to: 16'b0000010001101110 
+	Parameter c35_d bound to: 16'b0000010111111001 
+	Parameter c36_d bound to: 16'b0000010010001010 
+	Parameter c37_d bound to: 16'b0000001000000011 
+	Parameter c40_d bound to: 16'b0000001001001111 
+	Parameter c41_d bound to: 16'b0000011111110101 
+	Parameter c42_d bound to: 16'b0000011111111011 
+	Parameter c43_d bound to: 16'b0000010000110010 
+	Parameter c44_d bound to: 16'b0000000110011110 
+	Parameter c45_d bound to: 16'b0000001010111111 
+	Parameter c46_d bound to: 16'b0000001101000100 
+	Parameter c47_d bound to: 16'b0000000101101011 
+	Parameter c50_d bound to: 16'b0000010000110001 
+	Parameter c51_d bound to: 16'b0000100111101001 
+	Parameter c52_d bound to: 16'b0000101111000001 
+	Parameter c53_d bound to: 16'b0000100111100011 
+	Parameter c54_d bound to: 16'b0000011000000101 
+	Parameter c55_d bound to: 16'b0000000110000111 
+	Parameter c56_d bound to: 16'b0000000110101100 
+	Parameter c57_d bound to: 16'b0000000100100101 
+	Parameter c60_d bound to: 16'b0000010100000110 
+	Parameter c61_d bound to: 16'b0000111000000000 
+	Parameter c62_d bound to: 16'b0000111000100001 
+	Parameter c63_d bound to: 16'b0000111100000000 
+	Parameter c64_d bound to: 16'b0000101111100110 
+	Parameter c65_d bound to: 16'b0000011000011001 
+	Parameter c66_d bound to: 16'b0000000101110011 
+	Parameter c67_d bound to: 16'b0000000001111010 
+	Parameter c70_d bound to: 16'b0000011001010000 
+	Parameter c71_d bound to: 16'b0000111100001101 
+	Parameter c72_d bound to: 16'b0001010010111010 
+	Parameter c73_d bound to: 16'b0001010001010101 
+	Parameter c74_d bound to: 16'b0001000100000000 
+	Parameter c75_d bound to: 16'b0000101101011010 
+	Parameter c76_d bound to: 16'b0000011011000100 
+	Parameter c77_d bound to: 16'b0000000101100011 
+INFO: [Synth 8-226] default block is never used [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/select_error_coeff_mul_64_16_bit.v:94]
+INFO: [Synth 8-226] default block is never used [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/select_error_coeff_mul_64_16_bit.v:180]
+INFO: [Synth 8-256] done synthesizing module 'select_ec_16_mul_div' (3#1) [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/select_error_coeff_mul_64_16_bit.v:2]
+INFO: [Synth 8-638] synthesizing module 'adder' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/adder_div.v:1]
+	Parameter N bound to: 16 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'adder' (4#1) [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/adder_div.v:1]
+INFO: [Synth 8-638] synthesizing module 'func_select_add' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/func_select_add.v:2]
+	Parameter N bound to: 16 - type: integer 
+WARNING: [Synth 8-308] ignoring empty port [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/func_select_add.v:8]
+INFO: [Synth 8-256] done synthesizing module 'func_select_add' (5#1) [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/func_select_add.v:2]
+WARNING: [Synth 8-689] width (2) of port connection 'func' does not match port width (1) of module 'func_select_add' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:95]
+WARNING: [Synth 8-689] width (17) of port connection 'a' does not match port width (16) of module 'func_select_add' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:96]
+WARNING: [Synth 8-689] width (17) of port connection 'output_o1' does not match port width (16) of module 'func_select_add' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:97]
+WARNING: [Synth 8-350] instance 'func_select_2' of module 'func_select_add' requires 4 connections, but only 3 given [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:95]
+WARNING: [Synth 8-689] width (2) of port connection 'cin' does not match port width (1) of module 'adder' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:103]
+WARNING: [Synth 8-689] width (16) of port connection 'sum' does not match port width (17) of module 'adder' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:104]
+INFO: [Synth 8-638] synthesizing module 'add_integer_part' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/add_frac_bit.v:2]
+	Parameter lgN bound to: 4 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'add_integer_part' (6#1) [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/add_frac_bit.v:2]
+WARNING: [Synth 8-689] width (2) of port connection 'func' does not match port width (1) of module 'add_integer_part' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:108]
+WARNING: [Synth 8-689] width (5) of port connection 'a' does not match port width (4) of module 'add_integer_part' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:109]
+WARNING: [Synth 8-689] width (5) of port connection 'b' does not match port width (4) of module 'add_integer_part' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:110]
+INFO: [Synth 8-638] synthesizing module 'shifter_out_mul_div' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/shifter_out_mul_div.v:3]
+	Parameter N bound to: 16 - type: integer 
+	Parameter lgN bound to: 4 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'shifter_out_mul_div' (7#1) [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/shifter_out_mul_div.v:3]
+WARNING: [Synth 8-689] width (2) of port connection 'func' does not match port width (1) of module 'shifter_out_mul_div' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:117]
+WARNING: [Synth 8-689] width (16) of port connection 'a' does not match port width (15) of module 'shifter_out_mul_div' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:118]
+INFO: [Synth 8-256] done synthesizing module 'hybrid' (8#1) [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/hybird.v:1]
+WARNING: [Synth 8-689] width (1) of port connection 'func' does not match port width (2) of module 'hybrid' [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/top_module.v:31]
+INFO: [Synth 8-256] done synthesizing module 'top_module' (9#1) [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/top_module.v:1]
+INFO: [Synth 8-256] done synthesizing module 'top_wrapper' (10#1) [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/SRC/top_wrapper.vhd:19]
+WARNING: [Synth 8-3331] design shifter_out_mul_div has unconnected port func
+WARNING: [Synth 8-3331] design top_wrapper has unconnected port rst
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1526.758 ; gain = 123.520 ; free physical = 7471 ; free virtual = 11940
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 1526.758 ; gain = 123.520 ; free physical = 7466 ; free virtual = 11935
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7vx485tffg1761-2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/vivado_prj/alu.srcs/constrs_1/new/constr_1.xdc]
+Finished Parsing XDC File [/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/vivado_prj/alu.srcs/constrs_1/new/constr_1.xdc]
+Completed Processing XDC Constraints
+
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2012.977 ; gain = 0.000 ; free physical = 7077 ; free virtual = 11529
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:46 ; elapsed = 00:01:26 . Memory (MB): peak = 2012.977 ; gain = 609.738 ; free physical = 7123 ; free virtual = 11600
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7vx485tffg1761-2
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:46 ; elapsed = 00:01:26 . Memory (MB): peak = 2012.977 ; gain = 609.738 ; free physical = 7123 ; free virtual = 11600
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:46 ; elapsed = 00:01:26 . Memory (MB): peak = 2012.977 ; gain = 609.738 ; free physical = 7120 ; free virtual = 11599
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5544] ROM "lgN4.lod_detected" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:47 ; elapsed = 00:01:26 . Memory (MB): peak = 2012.977 ; gain = 609.738 ; free physical = 7095 ; free virtual = 11575
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input     32 Bit       Adders := 1     
+	   3 Input     17 Bit       Adders := 2     
+	   2 Input     17 Bit       Adders := 1     
+	   4 Input      6 Bit       Adders := 1     
+	   3 Input      5 Bit       Adders := 1     
++---Registers : 
+	               32 Bit    Registers := 1     
+	               16 Bit    Registers := 2     
+	                2 Bit    Registers := 1     
++---Muxes : 
+	   3 Input     32 Bit        Muxes := 1     
+	   2 Input     16 Bit        Muxes := 1     
+	   2 Input     13 Bit        Muxes := 2     
+	   2 Input      6 Bit        Muxes := 1     
+	   2 Input      5 Bit        Muxes := 2     
+	   5 Input      2 Bit        Muxes := 6     
+	   2 Input      1 Bit        Muxes := 2     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module top_wrapper 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
+	               16 Bit    Registers := 2     
+	                2 Bit    Registers := 1     
+Module lod 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input      5 Bit        Muxes := 1     
+	   5 Input      2 Bit        Muxes := 3     
+	   2 Input      1 Bit        Muxes := 1     
+Module select_ec_16_mul_div 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     13 Bit        Muxes := 2     
+Module adder 
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input     17 Bit       Adders := 1     
+Module func_select_add 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     16 Bit        Muxes := 1     
+Module add_integer_part 
+Detailed RTL Component Info : 
++---Adders : 
+	   4 Input      6 Bit       Adders := 1     
+	   3 Input      5 Bit       Adders := 1     
++---Muxes : 
+	   2 Input      6 Bit        Muxes := 1     
+Module top_module 
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input     32 Bit       Adders := 1     
+	   2 Input     17 Bit       Adders := 1     
++---Muxes : 
+	   3 Input     32 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 2800 (col length:140)
+BRAMs: 2060 (col length: RAMB18 140 RAMB36 70)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-3331] design top_wrapper has unconnected port rst
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:48 ; elapsed = 00:01:28 . Memory (MB): peak = 2012.977 ; gain = 609.738 ; free physical = 7077 ; free virtual = 11554
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+ROM:
++---------------------+--------------------------------------+---------------+----------------+
+|Module Name          | RTL Object                           | Depth x Width | Implemented As | 
++---------------------+--------------------------------------+---------------+----------------+
+|select_ec_16_mul_div | error_coeff                          | 64x13         | LUT            | 
+|select_ec_16_mul_div | error_coeff                          | 64x13         | LUT            | 
+|top_wrapper          | inst0/inst_1/inst_mul_ec/error_coeff | 64x13         | LUT            | 
+|top_wrapper          | inst0/inst_1/inst_mul_ec/error_coeff | 64x13         | LUT            | 
++---------------------+--------------------------------------+---------------+----------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:54 ; elapsed = 00:01:36 . Memory (MB): peak = 2012.977 ; gain = 609.738 ; free physical = 6978 ; free virtual = 11434
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:57 ; elapsed = 00:01:39 . Memory (MB): peak = 2031.977 ; gain = 628.738 ; free physical = 6941 ; free virtual = 11397
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:57 ; elapsed = 00:01:39 . Memory (MB): peak = 2039.984 ; gain = 636.746 ; free physical = 6941 ; free virtual = 11397
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:58 ; elapsed = 00:01:40 . Memory (MB): peak = 2039.984 ; gain = 636.746 ; free physical = 6942 ; free virtual = 11398
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:58 ; elapsed = 00:01:40 . Memory (MB): peak = 2039.984 ; gain = 636.746 ; free physical = 6942 ; free virtual = 11398
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:58 ; elapsed = 00:01:40 . Memory (MB): peak = 2039.984 ; gain = 636.746 ; free physical = 6942 ; free virtual = 11398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:58 ; elapsed = 00:01:40 . Memory (MB): peak = 2039.984 ; gain = 636.746 ; free physical = 6942 ; free virtual = 11398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:58 ; elapsed = 00:01:40 . Memory (MB): peak = 2039.984 ; gain = 636.746 ; free physical = 6942 ; free virtual = 11398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:58 ; elapsed = 00:01:40 . Memory (MB): peak = 2039.984 ; gain = 636.746 ; free physical = 6942 ; free virtual = 11398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-------+------+
+|      |Cell   |Count |
++------+-------+------+
+|1     |BUFG   |     1|
+|2     |CARRY4 |    14|
+|3     |LUT2   |    51|
+|4     |LUT3   |    22|
+|5     |LUT4   |    49|
+|6     |LUT5   |    29|
+|7     |LUT6   |    95|
+|8     |FDRE   |    51|
+|9     |FDSE   |    15|
+|10    |IBUF   |    35|
+|11    |OBUF   |    32|
++------+-------+------+
+
+Report Instance Areas: 
++------+-------------------+-----------+------+
+|      |Instance           |Module     |Cells |
++------+-------------------+-----------+------+
+|1     |top                |           |   394|
+|2     |  inst0            |top_module |   143|
+|3     |    inst_1         |hybrid     |    98|
+|4     |      adder_inst_2 |adder      |    98|
++------+-------------------+-----------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:58 ; elapsed = 00:01:40 . Memory (MB): peak = 2039.984 ; gain = 636.746 ; free physical = 6942 ; free virtual = 11398
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 1 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:27 ; elapsed = 00:00:32 . Memory (MB): peak = 2039.984 ; gain = 150.527 ; free physical = 6998 ; free virtual = 11454
+Synthesis Optimization Complete : Time (s): cpu = 00:00:58 ; elapsed = 00:01:40 . Memory (MB): peak = 2039.992 ; gain = 636.746 ; free physical = 7004 ; free virtual = 11460
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 49 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+INFO: [Common 17-83] Releasing license: Synthesis
+43 Infos, 21 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:01:01 ; elapsed = 00:01:47 . Memory (MB): peak = 2039.992 ; gain = 670.801 ; free physical = 7005 ; free virtual = 11461
+INFO: [Common 17-1381] The checkpoint '/afs/pd.inf.tu-dresden.de/users/muza153a/Desktop/alu/vivado_prj/alu.runs/synth_1/top_wrapper.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file top_wrapper_utilization_synth.rpt -pb top_wrapper_utilization_synth.pb
+report_utilization: Time (s): cpu = 00:00:00.42 ; elapsed = 00:00:00.43 . Memory (MB): peak = 2063.996 ; gain = 0.000 ; free physical = 7005 ; free virtual = 11462
+INFO: [Common 17-206] Exiting Vivado at Thu Apr 29 18:10:15 2021...

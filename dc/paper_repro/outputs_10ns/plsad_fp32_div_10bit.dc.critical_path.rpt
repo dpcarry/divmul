@@ -1,0 +1,856 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : plsad_fp32_div_10bit
+Version: U-2022.12-SP7
+Date   : Sat Aug 22 17:06:38 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: y[21] (input port clocked by vclk)
+  Endpoint: result[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  plsad_fp32_div_10bit ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_div_MANTISSA_BITS10 ZeroWireload tcbn65gplustc_ccs
+  paper_fp32_div_pack ZeroWireload         tcbn65gplustc_ccs
+
+  Point                                                 Incr       Path
+  ------------------------------------------------------------------------
+  clock vclk (rise edge)                                0.00       0.00
+  clock network delay (ideal)                           0.00       0.00
+  input external delay                                  0.02       0.02 f
+  y[21] (in)                                            0.00       0.02 f
+  U13/Z (BUFFD0)                                        0.03       0.05 f
+  impl/y[21] (plsad_fp32_div_MANTISSA_BITS10)           0.00       0.05 f
+  impl/U157/Z (BUFFD0)                                  0.04       0.09 f
+  impl/U139/ZN (CKND2D0)                                0.04       0.13 r
+  impl/U126/Z (OR2D0)                                   0.05       0.18 r
+  impl/U118/Z (BUFFD0)                                  0.05       0.23 r
+  impl/U110/Z (BUFFD0)                                  0.05       0.28 r
+  impl/U101/ZN (INVD0)                                  0.03       0.30 f
+  impl/U227/ZN (CKND2D0)                                0.02       0.33 r
+  impl/U228/ZN (OAI211D0)                               0.04       0.37 f
+  impl/U229/Z (AO21D0)                                  0.07       0.44 f
+  impl/U41/Z (XOR2D0)                                   0.05       0.49 r
+  impl/DP_OP_187J1_123_5310/U98/CO (FA1D0)              0.09       0.58 r
+  impl/DP_OP_187J1_123_5310/U97/CO (FA1D0)              0.05       0.63 r
+  impl/DP_OP_187J1_123_5310/U96/S (FA1D0)               0.06       0.70 f
+  impl/DP_OP_187J1_123_5310/U17/CO (FA1D0)              0.10       0.80 f
+  impl/DP_OP_187J1_123_5310/U16/CO (FA1D0)              0.06       0.85 f
+  impl/DP_OP_187J1_123_5310/U15/CO (FA1D0)              0.06       0.91 f
+  impl/DP_OP_187J1_123_5310/U14/CO (FA1D0)              0.06       0.96 f
+  impl/DP_OP_187J1_123_5310/U13/CO (FA1D0)              0.06       1.02 f
+  impl/DP_OP_187J1_123_5310/U12/CO (FA1D0)              0.06       1.07 f
+  impl/DP_OP_187J1_123_5310/U11/CO (FA1D0)              0.06       1.13 f
+  impl/DP_OP_187J1_123_5310/U10/CO (FA1D0)              0.06       1.19 f
+  impl/DP_OP_187J1_123_5310/U9/CO (FA1D0)               0.06       1.25 f
+  impl/U15/ZN (INVD0)                                   0.02       1.27 r
+  impl/U14/ZN (CKND2D0)                                 0.02       1.29 f
+  impl/U12/Z (OR2D0)                                    0.05       1.34 f
+  impl/U10/Z (OR2D0)                                    0.05       1.39 f
+  impl/U8/Z (OR2D0)                                     0.04       1.43 f
+  impl/U6/ZN (XNR2D0)                                   0.05       1.49 f
+  impl/U5/ZN (AOI22D0)                                  0.05       1.53 r
+  impl/U165/ZN (INVD0)                                  0.03       1.56 f
+  impl/pack/mantissa_q[26] (paper_fp32_div_pack)        0.00       1.56 f
+  impl/pack/U56/Z (OR4D0)                               0.11       1.67 f
+  impl/pack/U55/ZN (IND2D0)                             0.03       1.71 r
+  impl/pack/U54/ZN (INVD0)                              0.02       1.72 f
+  impl/pack/U51/ZN (INVD0)                              0.03       1.75 r
+  impl/pack/U48/ZN (CKND2D0)                            0.04       1.79 f
+  impl/pack/U46/ZN (NR2D0)                              0.05       1.84 r
+  impl/pack/U43/ZN (CKND2D0)                            0.04       1.88 f
+  impl/pack/U108/ZN (MUX2ND0)                           0.04       1.92 r
+  impl/pack/U36/ZN (IIND4D0)                            0.04       1.97 r
+  impl/pack/U35/ZN (OAI21D0)                            0.02       1.99 f
+  impl/pack/U33/ZN (AOI211D0)                           0.08       2.07 r
+  impl/pack/U32/Z (CKAN2D0)                             0.06       2.13 r
+  impl/pack/U28/ZN (INVD0)                              0.02       2.15 f
+  impl/pack/U26/ZN (INVD0)                              0.04       2.19 r
+  impl/pack/U20/ZN (CKND2D0)                            0.04       2.23 f
+  impl/pack/U104/ZN (INVD0)                             0.04       2.27 r
+  impl/pack/U5/ZN (AOI22D0)                             0.03       2.30 f
+  impl/pack/U3/ZN (CKND2D0)                             0.05       2.35 r
+  impl/pack/result[22] (paper_fp32_div_pack)            0.00       2.35 r
+  impl/result[22] (plsad_fp32_div_MANTISSA_BITS10)      0.00       2.35 r
+  result[22] (out)                                      0.00       2.35 r
+  data arrival time                                                2.35
+
+  clock vclk (rise edge)                               10.00      10.00
+  clock network delay (ideal)                           0.00      10.00
+  output external delay                                -0.02       9.98
+  data required time                                               9.98
+  ------------------------------------------------------------------------
+  data required time                                               9.98
+  data arrival time                                               -2.35
+  ------------------------------------------------------------------------
+  slack (MET)                                                      7.63
+
+
+  Startpoint: y[21] (input port clocked by vclk)
+  Endpoint: result[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  plsad_fp32_div_10bit ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_div_MANTISSA_BITS10 ZeroWireload tcbn65gplustc_ccs
+  paper_fp32_div_pack ZeroWireload         tcbn65gplustc_ccs
+
+  Point                                                 Incr       Path
+  ------------------------------------------------------------------------
+  clock vclk (rise edge)                                0.00       0.00
+  clock network delay (ideal)                           0.00       0.00
+  input external delay                                  0.02       0.02 f
+  y[21] (in)                                            0.00       0.02 f
+  U13/Z (BUFFD0)                                        0.03       0.05 f
+  impl/y[21] (plsad_fp32_div_MANTISSA_BITS10)           0.00       0.05 f
+  impl/U157/Z (BUFFD0)                                  0.04       0.09 f
+  impl/U139/ZN (CKND2D0)                                0.04       0.13 r
+  impl/U126/Z (OR2D0)                                   0.05       0.18 r
+  impl/U118/Z (BUFFD0)                                  0.05       0.23 r
+  impl/U110/Z (BUFFD0)                                  0.05       0.28 r
+  impl/U101/ZN (INVD0)                                  0.03       0.30 f
+  impl/U227/ZN (CKND2D0)                                0.02       0.33 r
+  impl/U228/ZN (OAI211D0)                               0.04       0.37 f
+  impl/U229/Z (AO21D0)                                  0.07       0.44 f
+  impl/U41/Z (XOR2D0)                                   0.05       0.49 r
+  impl/DP_OP_187J1_123_5310/U98/CO (FA1D0)              0.09       0.58 r
+  impl/DP_OP_187J1_123_5310/U97/CO (FA1D0)              0.05       0.63 r
+  impl/DP_OP_187J1_123_5310/U96/S (FA1D0)               0.06       0.70 f
+  impl/DP_OP_187J1_123_5310/U17/CO (FA1D0)              0.10       0.80 f
+  impl/DP_OP_187J1_123_5310/U16/CO (FA1D0)              0.06       0.85 f
+  impl/DP_OP_187J1_123_5310/U15/CO (FA1D0)              0.06       0.91 f
+  impl/DP_OP_187J1_123_5310/U14/CO (FA1D0)              0.06       0.96 f
+  impl/DP_OP_187J1_123_5310/U13/CO (FA1D0)              0.06       1.02 f
+  impl/DP_OP_187J1_123_5310/U12/CO (FA1D0)              0.06       1.07 f
+  impl/DP_OP_187J1_123_5310/U11/CO (FA1D0)              0.06       1.13 f
+  impl/DP_OP_187J1_123_5310/U10/CO (FA1D0)              0.06       1.19 f
+  impl/DP_OP_187J1_123_5310/U9/CO (FA1D0)               0.06       1.25 f
+  impl/U15/ZN (INVD0)                                   0.02       1.27 r
+  impl/U14/ZN (CKND2D0)                                 0.02       1.29 f
+  impl/U12/Z (OR2D0)                                    0.05       1.34 f
+  impl/U10/Z (OR2D0)                                    0.05       1.39 f
+  impl/U8/Z (OR2D0)                                     0.04       1.43 f
+  impl/U6/ZN (XNR2D0)                                   0.05       1.49 f
+  impl/U5/ZN (AOI22D0)                                  0.05       1.53 r
+  impl/U165/ZN (INVD0)                                  0.03       1.56 f
+  impl/pack/mantissa_q[26] (paper_fp32_div_pack)        0.00       1.56 f
+  impl/pack/U56/Z (OR4D0)                               0.11       1.67 f
+  impl/pack/U55/ZN (IND2D0)                             0.03       1.71 r
+  impl/pack/U54/ZN (INVD0)                              0.02       1.72 f
+  impl/pack/U51/ZN (INVD0)                              0.03       1.75 r
+  impl/pack/U48/ZN (CKND2D0)                            0.04       1.79 f
+  impl/pack/U46/ZN (NR2D0)                              0.05       1.84 r
+  impl/pack/U43/ZN (CKND2D0)                            0.04       1.88 f
+  impl/pack/U108/ZN (MUX2ND0)                           0.04       1.92 r
+  impl/pack/U36/ZN (IIND4D0)                            0.04       1.97 r
+  impl/pack/U35/ZN (OAI21D0)                            0.02       1.99 f
+  impl/pack/U33/ZN (AOI211D0)                           0.08       2.07 r
+  impl/pack/U32/Z (CKAN2D0)                             0.06       2.13 r
+  impl/pack/U28/ZN (INVD0)                              0.02       2.15 f
+  impl/pack/U26/ZN (INVD0)                              0.04       2.19 r
+  impl/pack/U20/ZN (CKND2D0)                            0.04       2.23 f
+  impl/pack/U104/ZN (INVD0)                             0.04       2.27 r
+  impl/pack/U5/ZN (AOI22D0)                             0.03       2.30 f
+  impl/pack/U3/ZN (CKND2D0)                             0.05       2.35 r
+  impl/pack/result[22] (paper_fp32_div_pack)            0.00       2.35 r
+  impl/result[22] (plsad_fp32_div_MANTISSA_BITS10)      0.00       2.35 r
+  result[22] (out)                                      0.00       2.35 r
+  data arrival time                                                2.35
+
+  clock vclk (rise edge)                               10.00      10.00
+  clock network delay (ideal)                           0.00      10.00
+  output external delay                                -0.02       9.98
+  data required time                                               9.98
+  ------------------------------------------------------------------------
+  data required time                                               9.98
+  data arrival time                                               -2.35
+  ------------------------------------------------------------------------
+  slack (MET)                                                      7.63
+
+
+  Startpoint: y[21] (input port clocked by vclk)
+  Endpoint: result[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  plsad_fp32_div_10bit ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_div_MANTISSA_BITS10 ZeroWireload tcbn65gplustc_ccs
+  paper_fp32_div_pack ZeroWireload         tcbn65gplustc_ccs
+
+  Point                                                 Incr       Path
+  ------------------------------------------------------------------------
+  clock vclk (rise edge)                                0.00       0.00
+  clock network delay (ideal)                           0.00       0.00
+  input external delay                                  0.02       0.02 f
+  y[21] (in)                                            0.00       0.02 f
+  U13/Z (BUFFD0)                                        0.03       0.05 f
+  impl/y[21] (plsad_fp32_div_MANTISSA_BITS10)           0.00       0.05 f
+  impl/U157/Z (BUFFD0)                                  0.04       0.09 f
+  impl/U139/ZN (CKND2D0)                                0.04       0.13 r
+  impl/U126/Z (OR2D0)                                   0.05       0.18 r
+  impl/U118/Z (BUFFD0)                                  0.05       0.23 r
+  impl/U110/Z (BUFFD0)                                  0.05       0.28 r
+  impl/U101/ZN (INVD0)                                  0.03       0.30 f
+  impl/U227/ZN (CKND2D0)                                0.02       0.33 r
+  impl/U228/ZN (OAI211D0)                               0.04       0.37 f
+  impl/U229/Z (AO21D0)                                  0.07       0.44 f
+  impl/U41/Z (XOR2D0)                                   0.05       0.49 r
+  impl/DP_OP_187J1_123_5310/U98/CO (FA1D0)              0.09       0.58 r
+  impl/DP_OP_187J1_123_5310/U97/CO (FA1D0)              0.05       0.63 r
+  impl/DP_OP_187J1_123_5310/U96/S (FA1D0)               0.06       0.70 f
+  impl/DP_OP_187J1_123_5310/U17/CO (FA1D0)              0.10       0.80 f
+  impl/DP_OP_187J1_123_5310/U16/CO (FA1D0)              0.06       0.85 f
+  impl/DP_OP_187J1_123_5310/U15/CO (FA1D0)              0.06       0.91 f
+  impl/DP_OP_187J1_123_5310/U14/CO (FA1D0)              0.06       0.96 f
+  impl/DP_OP_187J1_123_5310/U13/CO (FA1D0)              0.06       1.02 f
+  impl/DP_OP_187J1_123_5310/U12/CO (FA1D0)              0.06       1.07 f
+  impl/DP_OP_187J1_123_5310/U11/CO (FA1D0)              0.06       1.13 f
+  impl/DP_OP_187J1_123_5310/U10/CO (FA1D0)              0.06       1.19 f
+  impl/DP_OP_187J1_123_5310/U9/CO (FA1D0)               0.06       1.25 f
+  impl/U15/ZN (INVD0)                                   0.02       1.27 r
+  impl/U14/ZN (CKND2D0)                                 0.02       1.29 f
+  impl/U12/Z (OR2D0)                                    0.05       1.34 f
+  impl/U10/Z (OR2D0)                                    0.05       1.39 f
+  impl/U8/Z (OR2D0)                                     0.04       1.43 f
+  impl/U6/ZN (XNR2D0)                                   0.05       1.49 f
+  impl/U5/ZN (AOI22D0)                                  0.05       1.53 r
+  impl/U165/ZN (INVD0)                                  0.03       1.56 f
+  impl/pack/mantissa_q[26] (paper_fp32_div_pack)        0.00       1.56 f
+  impl/pack/U56/Z (OR4D0)                               0.11       1.67 f
+  impl/pack/U55/ZN (IND2D0)                             0.03       1.71 r
+  impl/pack/U54/ZN (INVD0)                              0.02       1.72 f
+  impl/pack/U51/ZN (INVD0)                              0.03       1.75 r
+  impl/pack/U48/ZN (CKND2D0)                            0.04       1.79 f
+  impl/pack/U46/ZN (NR2D0)                              0.05       1.84 r
+  impl/pack/U43/ZN (CKND2D0)                            0.04       1.88 f
+  impl/pack/U108/ZN (MUX2ND0)                           0.04       1.92 r
+  impl/pack/U36/ZN (IIND4D0)                            0.04       1.97 r
+  impl/pack/U35/ZN (OAI21D0)                            0.02       1.99 f
+  impl/pack/U33/ZN (AOI211D0)                           0.08       2.07 r
+  impl/pack/U32/Z (CKAN2D0)                             0.06       2.13 r
+  impl/pack/U28/ZN (INVD0)                              0.02       2.15 f
+  impl/pack/U26/ZN (INVD0)                              0.04       2.19 r
+  impl/pack/U20/ZN (CKND2D0)                            0.04       2.23 f
+  impl/pack/U104/ZN (INVD0)                             0.04       2.27 r
+  impl/pack/U5/ZN (AOI22D0)                             0.03       2.30 f
+  impl/pack/U3/ZN (CKND2D0)                             0.05       2.35 r
+  impl/pack/result[22] (paper_fp32_div_pack)            0.00       2.35 r
+  impl/result[22] (plsad_fp32_div_MANTISSA_BITS10)      0.00       2.35 r
+  result[22] (out)                                      0.00       2.35 r
+  data arrival time                                                2.35
+
+  clock vclk (rise edge)                               10.00      10.00
+  clock network delay (ideal)                           0.00      10.00
+  output external delay                                -0.02       9.98
+  data required time                                               9.98
+  ------------------------------------------------------------------------
+  data required time                                               9.98
+  data arrival time                                               -2.35
+  ------------------------------------------------------------------------
+  slack (MET)                                                      7.63
+
+
+  Startpoint: y[21] (input port clocked by vclk)
+  Endpoint: result[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  plsad_fp32_div_10bit ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_div_MANTISSA_BITS10 ZeroWireload tcbn65gplustc_ccs
+  paper_fp32_div_pack ZeroWireload         tcbn65gplustc_ccs
+
+  Point                                                 Incr       Path
+  ------------------------------------------------------------------------
+  clock vclk (rise edge)                                0.00       0.00
+  clock network delay (ideal)                           0.00       0.00
+  input external delay                                  0.02       0.02 f
+  y[21] (in)                                            0.00       0.02 f
+  U13/Z (BUFFD0)                                        0.03       0.05 f
+  impl/y[21] (plsad_fp32_div_MANTISSA_BITS10)           0.00       0.05 f
+  impl/U157/Z (BUFFD0)                                  0.04       0.09 f
+  impl/U139/ZN (CKND2D0)                                0.04       0.13 r
+  impl/U126/Z (OR2D0)                                   0.05       0.18 r
+  impl/U118/Z (BUFFD0)                                  0.05       0.23 r
+  impl/U110/Z (BUFFD0)                                  0.05       0.28 r
+  impl/U101/ZN (INVD0)                                  0.03       0.30 f
+  impl/U227/ZN (CKND2D0)                                0.02       0.33 r
+  impl/U228/ZN (OAI211D0)                               0.04       0.37 f
+  impl/U229/Z (AO21D0)                                  0.07       0.44 f
+  impl/U41/Z (XOR2D0)                                   0.05       0.49 r
+  impl/DP_OP_187J1_123_5310/U98/CO (FA1D0)              0.09       0.58 r
+  impl/DP_OP_187J1_123_5310/U97/CO (FA1D0)              0.05       0.63 r
+  impl/DP_OP_187J1_123_5310/U96/S (FA1D0)               0.06       0.70 f
+  impl/DP_OP_187J1_123_5310/U17/CO (FA1D0)              0.10       0.80 f
+  impl/DP_OP_187J1_123_5310/U16/CO (FA1D0)              0.06       0.85 f
+  impl/DP_OP_187J1_123_5310/U15/CO (FA1D0)              0.06       0.91 f
+  impl/DP_OP_187J1_123_5310/U14/CO (FA1D0)              0.06       0.96 f
+  impl/DP_OP_187J1_123_5310/U13/CO (FA1D0)              0.06       1.02 f
+  impl/DP_OP_187J1_123_5310/U12/CO (FA1D0)              0.06       1.07 f
+  impl/DP_OP_187J1_123_5310/U11/CO (FA1D0)              0.06       1.13 f
+  impl/DP_OP_187J1_123_5310/U10/CO (FA1D0)              0.06       1.19 f
+  impl/DP_OP_187J1_123_5310/U9/CO (FA1D0)               0.06       1.25 f
+  impl/U15/ZN (INVD0)                                   0.02       1.27 r
+  impl/U14/ZN (CKND2D0)                                 0.02       1.29 f
+  impl/U12/Z (OR2D0)                                    0.05       1.34 f
+  impl/U10/Z (OR2D0)                                    0.05       1.39 f
+  impl/U8/Z (OR2D0)                                     0.04       1.43 f
+  impl/U6/ZN (XNR2D0)                                   0.05       1.49 f
+  impl/U5/ZN (AOI22D0)                                  0.05       1.53 r
+  impl/U165/ZN (INVD0)                                  0.03       1.56 f
+  impl/pack/mantissa_q[26] (paper_fp32_div_pack)        0.00       1.56 f
+  impl/pack/U56/Z (OR4D0)                               0.11       1.67 f
+  impl/pack/U55/ZN (IND2D0)                             0.03       1.71 r
+  impl/pack/U54/ZN (INVD0)                              0.02       1.72 f
+  impl/pack/U51/ZN (INVD0)                              0.03       1.75 r
+  impl/pack/U48/ZN (CKND2D0)                            0.04       1.79 f
+  impl/pack/U46/ZN (NR2D0)                              0.05       1.84 r
+  impl/pack/U43/ZN (CKND2D0)                            0.04       1.88 f
+  impl/pack/U108/ZN (MUX2ND0)                           0.04       1.92 r
+  impl/pack/U36/ZN (IIND4D0)                            0.04       1.97 r
+  impl/pack/U35/ZN (OAI21D0)                            0.02       1.99 f
+  impl/pack/U33/ZN (AOI211D0)                           0.08       2.07 r
+  impl/pack/U32/Z (CKAN2D0)                             0.06       2.13 r
+  impl/pack/U28/ZN (INVD0)                              0.02       2.15 f
+  impl/pack/U26/ZN (INVD0)                              0.04       2.19 r
+  impl/pack/U20/ZN (CKND2D0)                            0.04       2.23 f
+  impl/pack/U104/ZN (INVD0)                             0.04       2.27 r
+  impl/pack/U5/ZN (AOI22D0)                             0.03       2.30 f
+  impl/pack/U3/ZN (CKND2D0)                             0.05       2.35 r
+  impl/pack/result[22] (paper_fp32_div_pack)            0.00       2.35 r
+  impl/result[22] (plsad_fp32_div_MANTISSA_BITS10)      0.00       2.35 r
+  result[22] (out)                                      0.00       2.35 r
+  data arrival time                                                2.35
+
+  clock vclk (rise edge)                               10.00      10.00
+  clock network delay (ideal)                           0.00      10.00
+  output external delay                                -0.02       9.98
+  data required time                                               9.98
+  ------------------------------------------------------------------------
+  data required time                                               9.98
+  data arrival time                                               -2.35
+  ------------------------------------------------------------------------
+  slack (MET)                                                      7.63
+
+
+  Startpoint: y[21] (input port clocked by vclk)
+  Endpoint: result[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  plsad_fp32_div_10bit ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_div_MANTISSA_BITS10 ZeroWireload tcbn65gplustc_ccs
+  paper_fp32_div_pack ZeroWireload         tcbn65gplustc_ccs
+
+  Point                                                 Incr       Path
+  ------------------------------------------------------------------------
+  clock vclk (rise edge)                                0.00       0.00
+  clock network delay (ideal)                           0.00       0.00
+  input external delay                                  0.02       0.02 f
+  y[21] (in)                                            0.00       0.02 f
+  U13/Z (BUFFD0)                                        0.03       0.05 f
+  impl/y[21] (plsad_fp32_div_MANTISSA_BITS10)           0.00       0.05 f
+  impl/U157/Z (BUFFD0)                                  0.04       0.09 f
+  impl/U139/ZN (CKND2D0)                                0.04       0.13 r
+  impl/U126/Z (OR2D0)                                   0.05       0.18 r
+  impl/U118/Z (BUFFD0)                                  0.05       0.23 r
+  impl/U110/Z (BUFFD0)                                  0.05       0.28 r
+  impl/U101/ZN (INVD0)                                  0.03       0.30 f
+  impl/U227/ZN (CKND2D0)                                0.02       0.33 r
+  impl/U228/ZN (OAI211D0)                               0.04       0.37 f
+  impl/U229/Z (AO21D0)                                  0.07       0.44 f
+  impl/U41/Z (XOR2D0)                                   0.05       0.49 r
+  impl/DP_OP_187J1_123_5310/U98/CO (FA1D0)              0.09       0.58 r
+  impl/DP_OP_187J1_123_5310/U97/CO (FA1D0)              0.05       0.63 r
+  impl/DP_OP_187J1_123_5310/U96/S (FA1D0)               0.06       0.70 f
+  impl/DP_OP_187J1_123_5310/U17/CO (FA1D0)              0.10       0.80 f
+  impl/DP_OP_187J1_123_5310/U16/CO (FA1D0)              0.06       0.85 f
+  impl/DP_OP_187J1_123_5310/U15/CO (FA1D0)              0.06       0.91 f
+  impl/DP_OP_187J1_123_5310/U14/CO (FA1D0)              0.06       0.96 f
+  impl/DP_OP_187J1_123_5310/U13/CO (FA1D0)              0.06       1.02 f
+  impl/DP_OP_187J1_123_5310/U12/CO (FA1D0)              0.06       1.07 f
+  impl/DP_OP_187J1_123_5310/U11/CO (FA1D0)              0.06       1.13 f
+  impl/DP_OP_187J1_123_5310/U10/CO (FA1D0)              0.06       1.19 f
+  impl/DP_OP_187J1_123_5310/U9/CO (FA1D0)               0.06       1.25 f
+  impl/U15/ZN (INVD0)                                   0.02       1.27 r
+  impl/U14/ZN (CKND2D0)                                 0.02       1.29 f
+  impl/U12/Z (OR2D0)                                    0.05       1.34 f
+  impl/U10/Z (OR2D0)                                    0.05       1.39 f
+  impl/U8/Z (OR2D0)                                     0.04       1.43 f
+  impl/U6/ZN (XNR2D0)                                   0.05       1.49 f
+  impl/U5/ZN (AOI22D0)                                  0.05       1.53 r
+  impl/U165/ZN (INVD0)                                  0.03       1.56 f
+  impl/pack/mantissa_q[26] (paper_fp32_div_pack)        0.00       1.56 f
+  impl/pack/U56/Z (OR4D0)                               0.11       1.67 f
+  impl/pack/U55/ZN (IND2D0)                             0.03       1.71 r
+  impl/pack/U54/ZN (INVD0)                              0.02       1.72 f
+  impl/pack/U51/ZN (INVD0)                              0.03       1.75 r
+  impl/pack/U48/ZN (CKND2D0)                            0.04       1.79 f
+  impl/pack/U46/ZN (NR2D0)                              0.05       1.84 r
+  impl/pack/U43/ZN (CKND2D0)                            0.04       1.88 f
+  impl/pack/U108/ZN (MUX2ND0)                           0.04       1.92 r
+  impl/pack/U36/ZN (IIND4D0)                            0.04       1.97 r
+  impl/pack/U35/ZN (OAI21D0)                            0.02       1.99 f
+  impl/pack/U33/ZN (AOI211D0)                           0.08       2.07 r
+  impl/pack/U32/Z (CKAN2D0)                             0.06       2.13 r
+  impl/pack/U28/ZN (INVD0)                              0.02       2.15 f
+  impl/pack/U26/ZN (INVD0)                              0.04       2.19 r
+  impl/pack/U20/ZN (CKND2D0)                            0.04       2.23 f
+  impl/pack/U104/ZN (INVD0)                             0.04       2.27 r
+  impl/pack/U5/ZN (AOI22D0)                             0.03       2.30 f
+  impl/pack/U3/ZN (CKND2D0)                             0.05       2.35 r
+  impl/pack/result[22] (paper_fp32_div_pack)            0.00       2.35 r
+  impl/result[22] (plsad_fp32_div_MANTISSA_BITS10)      0.00       2.35 r
+  result[22] (out)                                      0.00       2.35 r
+  data arrival time                                                2.35
+
+  clock vclk (rise edge)                               10.00      10.00
+  clock network delay (ideal)                           0.00      10.00
+  output external delay                                -0.02       9.98
+  data required time                                               9.98
+  ------------------------------------------------------------------------
+  data required time                                               9.98
+  data arrival time                                               -2.35
+  ------------------------------------------------------------------------
+  slack (MET)                                                      7.63
+
+
+  Startpoint: y[21] (input port clocked by vclk)
+  Endpoint: result[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  plsad_fp32_div_10bit ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_div_MANTISSA_BITS10 ZeroWireload tcbn65gplustc_ccs
+  paper_fp32_div_pack ZeroWireload         tcbn65gplustc_ccs
+
+  Point                                                 Incr       Path
+  ------------------------------------------------------------------------
+  clock vclk (rise edge)                                0.00       0.00
+  clock network delay (ideal)                           0.00       0.00
+  input external delay                                  0.02       0.02 f
+  y[21] (in)                                            0.00       0.02 f
+  U13/Z (BUFFD0)                                        0.03       0.05 f
+  impl/y[21] (plsad_fp32_div_MANTISSA_BITS10)           0.00       0.05 f
+  impl/U157/Z (BUFFD0)                                  0.04       0.09 f
+  impl/U139/ZN (CKND2D0)                                0.04       0.13 r
+  impl/U126/Z (OR2D0)                                   0.05       0.18 r
+  impl/U118/Z (BUFFD0)                                  0.05       0.23 r
+  impl/U110/Z (BUFFD0)                                  0.05       0.28 r
+  impl/U101/ZN (INVD0)                                  0.03       0.30 f
+  impl/U227/ZN (CKND2D0)                                0.02       0.33 r
+  impl/U228/ZN (OAI211D0)                               0.04       0.37 f
+  impl/U229/Z (AO21D0)                                  0.07       0.44 f
+  impl/U41/Z (XOR2D0)                                   0.05       0.49 r
+  impl/DP_OP_187J1_123_5310/U98/CO (FA1D0)              0.09       0.58 r
+  impl/DP_OP_187J1_123_5310/U97/CO (FA1D0)              0.05       0.63 r
+  impl/DP_OP_187J1_123_5310/U96/S (FA1D0)               0.06       0.70 f
+  impl/DP_OP_187J1_123_5310/U17/CO (FA1D0)              0.10       0.80 f
+  impl/DP_OP_187J1_123_5310/U16/CO (FA1D0)              0.06       0.85 f
+  impl/DP_OP_187J1_123_5310/U15/CO (FA1D0)              0.06       0.91 f
+  impl/DP_OP_187J1_123_5310/U14/CO (FA1D0)              0.06       0.96 f
+  impl/DP_OP_187J1_123_5310/U13/CO (FA1D0)              0.06       1.02 f
+  impl/DP_OP_187J1_123_5310/U12/CO (FA1D0)              0.06       1.07 f
+  impl/DP_OP_187J1_123_5310/U11/CO (FA1D0)              0.06       1.13 f
+  impl/DP_OP_187J1_123_5310/U10/CO (FA1D0)              0.06       1.19 f
+  impl/DP_OP_187J1_123_5310/U9/CO (FA1D0)               0.06       1.25 f
+  impl/U15/ZN (INVD0)                                   0.02       1.27 r
+  impl/U14/ZN (CKND2D0)                                 0.02       1.29 f
+  impl/U12/Z (OR2D0)                                    0.05       1.34 f
+  impl/U10/Z (OR2D0)                                    0.05       1.39 f
+  impl/U8/Z (OR2D0)                                     0.04       1.43 f
+  impl/U6/ZN (XNR2D0)                                   0.05       1.49 f
+  impl/U5/ZN (AOI22D0)                                  0.05       1.53 r
+  impl/U165/ZN (INVD0)                                  0.03       1.56 f
+  impl/pack/mantissa_q[26] (paper_fp32_div_pack)        0.00       1.56 f
+  impl/pack/U56/Z (OR4D0)                               0.11       1.67 f
+  impl/pack/U55/ZN (IND2D0)                             0.03       1.71 r
+  impl/pack/U54/ZN (INVD0)                              0.02       1.72 f
+  impl/pack/U51/ZN (INVD0)                              0.03       1.75 r
+  impl/pack/U48/ZN (CKND2D0)                            0.04       1.79 f
+  impl/pack/U46/ZN (NR2D0)                              0.05       1.84 r
+  impl/pack/U43/ZN (CKND2D0)                            0.04       1.88 f
+  impl/pack/U108/ZN (MUX2ND0)                           0.04       1.92 r
+  impl/pack/U36/ZN (IIND4D0)                            0.04       1.97 r
+  impl/pack/U35/ZN (OAI21D0)                            0.02       1.99 f
+  impl/pack/U33/ZN (AOI211D0)                           0.08       2.07 r
+  impl/pack/U32/Z (CKAN2D0)                             0.06       2.13 r
+  impl/pack/U28/ZN (INVD0)                              0.02       2.15 f
+  impl/pack/U26/ZN (INVD0)                              0.04       2.19 r
+  impl/pack/U20/ZN (CKND2D0)                            0.04       2.23 f
+  impl/pack/U104/ZN (INVD0)                             0.04       2.27 r
+  impl/pack/U5/ZN (AOI22D0)                             0.03       2.30 f
+  impl/pack/U3/ZN (CKND2D0)                             0.05       2.35 r
+  impl/pack/result[22] (paper_fp32_div_pack)            0.00       2.35 r
+  impl/result[22] (plsad_fp32_div_MANTISSA_BITS10)      0.00       2.35 r
+  result[22] (out)                                      0.00       2.35 r
+  data arrival time                                                2.35
+
+  clock vclk (rise edge)                               10.00      10.00
+  clock network delay (ideal)                           0.00      10.00
+  output external delay                                -0.02       9.98
+  data required time                                               9.98
+  ------------------------------------------------------------------------
+  data required time                                               9.98
+  data arrival time                                               -2.35
+  ------------------------------------------------------------------------
+  slack (MET)                                                      7.63
+
+
+  Startpoint: y[21] (input port clocked by vclk)
+  Endpoint: result[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  plsad_fp32_div_10bit ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_div_MANTISSA_BITS10 ZeroWireload tcbn65gplustc_ccs
+  paper_fp32_div_pack ZeroWireload         tcbn65gplustc_ccs
+
+  Point                                                 Incr       Path
+  ------------------------------------------------------------------------
+  clock vclk (rise edge)                                0.00       0.00
+  clock network delay (ideal)                           0.00       0.00
+  input external delay                                  0.02       0.02 f
+  y[21] (in)                                            0.00       0.02 f
+  U13/Z (BUFFD0)                                        0.03       0.05 f
+  impl/y[21] (plsad_fp32_div_MANTISSA_BITS10)           0.00       0.05 f
+  impl/U157/Z (BUFFD0)                                  0.04       0.09 f
+  impl/U139/ZN (CKND2D0)                                0.04       0.13 r
+  impl/U126/Z (OR2D0)                                   0.05       0.18 r
+  impl/U118/Z (BUFFD0)                                  0.05       0.23 r
+  impl/U110/Z (BUFFD0)                                  0.05       0.28 r
+  impl/U101/ZN (INVD0)                                  0.03       0.30 f
+  impl/U227/ZN (CKND2D0)                                0.02       0.33 r
+  impl/U228/ZN (OAI211D0)                               0.04       0.37 f
+  impl/U229/Z (AO21D0)                                  0.07       0.44 f
+  impl/U41/Z (XOR2D0)                                   0.05       0.49 r
+  impl/DP_OP_187J1_123_5310/U98/CO (FA1D0)              0.09       0.58 r
+  impl/DP_OP_187J1_123_5310/U97/CO (FA1D0)              0.05       0.63 r
+  impl/DP_OP_187J1_123_5310/U96/S (FA1D0)               0.06       0.70 f
+  impl/DP_OP_187J1_123_5310/U17/CO (FA1D0)              0.10       0.80 f
+  impl/DP_OP_187J1_123_5310/U16/CO (FA1D0)              0.06       0.85 f
+  impl/DP_OP_187J1_123_5310/U15/CO (FA1D0)              0.06       0.91 f
+  impl/DP_OP_187J1_123_5310/U14/CO (FA1D0)              0.06       0.96 f
+  impl/DP_OP_187J1_123_5310/U13/CO (FA1D0)              0.06       1.02 f
+  impl/DP_OP_187J1_123_5310/U12/CO (FA1D0)              0.06       1.07 f
+  impl/DP_OP_187J1_123_5310/U11/CO (FA1D0)              0.06       1.13 f
+  impl/DP_OP_187J1_123_5310/U10/CO (FA1D0)              0.06       1.19 f
+  impl/DP_OP_187J1_123_5310/U9/CO (FA1D0)               0.06       1.25 f
+  impl/U15/ZN (INVD0)                                   0.02       1.27 r
+  impl/U14/ZN (CKND2D0)                                 0.02       1.29 f
+  impl/U12/Z (OR2D0)                                    0.05       1.34 f
+  impl/U10/Z (OR2D0)                                    0.05       1.39 f
+  impl/U8/Z (OR2D0)                                     0.04       1.43 f
+  impl/U6/ZN (XNR2D0)                                   0.05       1.49 f
+  impl/U5/ZN (AOI22D0)                                  0.05       1.53 r
+  impl/U165/ZN (INVD0)                                  0.03       1.56 f
+  impl/pack/mantissa_q[26] (paper_fp32_div_pack)        0.00       1.56 f
+  impl/pack/U56/Z (OR4D0)                               0.11       1.67 f
+  impl/pack/U55/ZN (IND2D0)                             0.03       1.71 r
+  impl/pack/U54/ZN (INVD0)                              0.02       1.72 f
+  impl/pack/U51/ZN (INVD0)                              0.03       1.75 r
+  impl/pack/U48/ZN (CKND2D0)                            0.04       1.79 f
+  impl/pack/U46/ZN (NR2D0)                              0.05       1.84 r
+  impl/pack/U43/ZN (CKND2D0)                            0.04       1.88 f
+  impl/pack/U108/ZN (MUX2ND0)                           0.04       1.92 r
+  impl/pack/U36/ZN (IIND4D0)                            0.04       1.97 r
+  impl/pack/U35/ZN (OAI21D0)                            0.02       1.99 f
+  impl/pack/U33/ZN (AOI211D0)                           0.08       2.07 r
+  impl/pack/U32/Z (CKAN2D0)                             0.06       2.13 r
+  impl/pack/U28/ZN (INVD0)                              0.02       2.15 f
+  impl/pack/U26/ZN (INVD0)                              0.04       2.19 r
+  impl/pack/U20/ZN (CKND2D0)                            0.04       2.23 f
+  impl/pack/U104/ZN (INVD0)                             0.04       2.27 r
+  impl/pack/U5/ZN (AOI22D0)                             0.03       2.30 f
+  impl/pack/U3/ZN (CKND2D0)                             0.05       2.35 r
+  impl/pack/result[22] (paper_fp32_div_pack)            0.00       2.35 r
+  impl/result[22] (plsad_fp32_div_MANTISSA_BITS10)      0.00       2.35 r
+  result[22] (out)                                      0.00       2.35 r
+  data arrival time                                                2.35
+
+  clock vclk (rise edge)                               10.00      10.00
+  clock network delay (ideal)                           0.00      10.00
+  output external delay                                -0.02       9.98
+  data required time                                               9.98
+  ------------------------------------------------------------------------
+  data required time                                               9.98
+  data arrival time                                               -2.35
+  ------------------------------------------------------------------------
+  slack (MET)                                                      7.63
+
+
+  Startpoint: y[21] (input port clocked by vclk)
+  Endpoint: result[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  plsad_fp32_div_10bit ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_div_MANTISSA_BITS10 ZeroWireload tcbn65gplustc_ccs
+  paper_fp32_div_pack ZeroWireload         tcbn65gplustc_ccs
+
+  Point                                                 Incr       Path
+  ------------------------------------------------------------------------
+  clock vclk (rise edge)                                0.00       0.00
+  clock network delay (ideal)                           0.00       0.00
+  input external delay                                  0.02       0.02 f
+  y[21] (in)                                            0.00       0.02 f
+  U13/Z (BUFFD0)                                        0.03       0.05 f
+  impl/y[21] (plsad_fp32_div_MANTISSA_BITS10)           0.00       0.05 f
+  impl/U157/Z (BUFFD0)                                  0.04       0.09 f
+  impl/U139/ZN (CKND2D0)                                0.04       0.13 r
+  impl/U126/Z (OR2D0)                                   0.05       0.18 r
+  impl/U118/Z (BUFFD0)                                  0.05       0.23 r
+  impl/U110/Z (BUFFD0)                                  0.05       0.28 r
+  impl/U101/ZN (INVD0)                                  0.03       0.30 f
+  impl/U227/ZN (CKND2D0)                                0.02       0.33 r
+  impl/U228/ZN (OAI211D0)                               0.04       0.37 f
+  impl/U229/Z (AO21D0)                                  0.07       0.44 f
+  impl/U41/Z (XOR2D0)                                   0.05       0.49 r
+  impl/DP_OP_187J1_123_5310/U98/CO (FA1D0)              0.09       0.58 r
+  impl/DP_OP_187J1_123_5310/U97/CO (FA1D0)              0.05       0.63 r
+  impl/DP_OP_187J1_123_5310/U96/S (FA1D0)               0.06       0.70 f
+  impl/DP_OP_187J1_123_5310/U17/CO (FA1D0)              0.10       0.80 f
+  impl/DP_OP_187J1_123_5310/U16/CO (FA1D0)              0.06       0.85 f
+  impl/DP_OP_187J1_123_5310/U15/CO (FA1D0)              0.06       0.91 f
+  impl/DP_OP_187J1_123_5310/U14/CO (FA1D0)              0.06       0.96 f
+  impl/DP_OP_187J1_123_5310/U13/CO (FA1D0)              0.06       1.02 f
+  impl/DP_OP_187J1_123_5310/U12/CO (FA1D0)              0.06       1.07 f
+  impl/DP_OP_187J1_123_5310/U11/CO (FA1D0)              0.06       1.13 f
+  impl/DP_OP_187J1_123_5310/U10/CO (FA1D0)              0.06       1.19 f
+  impl/DP_OP_187J1_123_5310/U9/CO (FA1D0)               0.06       1.25 f
+  impl/U15/ZN (INVD0)                                   0.02       1.27 r
+  impl/U14/ZN (CKND2D0)                                 0.02       1.29 f
+  impl/U12/Z (OR2D0)                                    0.05       1.34 f
+  impl/U10/Z (OR2D0)                                    0.05       1.39 f
+  impl/U8/Z (OR2D0)                                     0.04       1.43 f
+  impl/U6/ZN (XNR2D0)                                   0.05       1.49 f
+  impl/U5/ZN (AOI22D0)                                  0.05       1.53 r
+  impl/U165/ZN (INVD0)                                  0.03       1.56 f
+  impl/pack/mantissa_q[26] (paper_fp32_div_pack)        0.00       1.56 f
+  impl/pack/U56/Z (OR4D0)                               0.11       1.67 f
+  impl/pack/U55/ZN (IND2D0)                             0.03       1.71 r
+  impl/pack/U54/ZN (INVD0)                              0.02       1.72 f
+  impl/pack/U51/ZN (INVD0)                              0.03       1.75 r
+  impl/pack/U48/ZN (CKND2D0)                            0.04       1.79 f
+  impl/pack/U46/ZN (NR2D0)                              0.05       1.84 r
+  impl/pack/U43/ZN (CKND2D0)                            0.04       1.88 f
+  impl/pack/U108/ZN (MUX2ND0)                           0.04       1.92 r
+  impl/pack/U36/ZN (IIND4D0)                            0.04       1.97 r
+  impl/pack/U35/ZN (OAI21D0)                            0.02       1.99 f
+  impl/pack/U33/ZN (AOI211D0)                           0.08       2.07 r
+  impl/pack/U32/Z (CKAN2D0)                             0.06       2.13 r
+  impl/pack/U28/ZN (INVD0)                              0.02       2.15 f
+  impl/pack/U26/ZN (INVD0)                              0.04       2.19 r
+  impl/pack/U20/ZN (CKND2D0)                            0.04       2.23 f
+  impl/pack/U104/ZN (INVD0)                             0.04       2.27 r
+  impl/pack/U5/ZN (AOI22D0)                             0.03       2.30 f
+  impl/pack/U3/ZN (CKND2D0)                             0.05       2.35 r
+  impl/pack/result[22] (paper_fp32_div_pack)            0.00       2.35 r
+  impl/result[22] (plsad_fp32_div_MANTISSA_BITS10)      0.00       2.35 r
+  result[22] (out)                                      0.00       2.35 r
+  data arrival time                                                2.35
+
+  clock vclk (rise edge)                               10.00      10.00
+  clock network delay (ideal)                           0.00      10.00
+  output external delay                                -0.02       9.98
+  data required time                                               9.98
+  ------------------------------------------------------------------------
+  data required time                                               9.98
+  data arrival time                                               -2.35
+  ------------------------------------------------------------------------
+  slack (MET)                                                      7.63
+
+
+  Startpoint: y[21] (input port clocked by vclk)
+  Endpoint: result[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  plsad_fp32_div_10bit ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_div_MANTISSA_BITS10 ZeroWireload tcbn65gplustc_ccs
+  paper_fp32_div_pack ZeroWireload         tcbn65gplustc_ccs
+
+  Point                                                 Incr       Path
+  ------------------------------------------------------------------------
+  clock vclk (rise edge)                                0.00       0.00
+  clock network delay (ideal)                           0.00       0.00
+  input external delay                                  0.02       0.02 f
+  y[21] (in)                                            0.00       0.02 f
+  U13/Z (BUFFD0)                                        0.03       0.05 f
+  impl/y[21] (plsad_fp32_div_MANTISSA_BITS10)           0.00       0.05 f
+  impl/U157/Z (BUFFD0)                                  0.04       0.09 f
+  impl/U139/ZN (CKND2D0)                                0.04       0.13 r
+  impl/U126/Z (OR2D0)                                   0.05       0.18 r
+  impl/U118/Z (BUFFD0)                                  0.05       0.23 r
+  impl/U110/Z (BUFFD0)                                  0.05       0.28 r
+  impl/U101/ZN (INVD0)                                  0.03       0.30 f
+  impl/U227/ZN (CKND2D0)                                0.02       0.33 r
+  impl/U228/ZN (OAI211D0)                               0.04       0.37 f
+  impl/U229/Z (AO21D0)                                  0.07       0.44 f
+  impl/U41/Z (XOR2D0)                                   0.05       0.49 r
+  impl/DP_OP_187J1_123_5310/U98/CO (FA1D0)              0.09       0.58 r
+  impl/DP_OP_187J1_123_5310/U97/CO (FA1D0)              0.05       0.63 r
+  impl/DP_OP_187J1_123_5310/U96/S (FA1D0)               0.06       0.70 f
+  impl/DP_OP_187J1_123_5310/U17/CO (FA1D0)              0.10       0.80 f
+  impl/DP_OP_187J1_123_5310/U16/CO (FA1D0)              0.06       0.85 f
+  impl/DP_OP_187J1_123_5310/U15/CO (FA1D0)              0.06       0.91 f
+  impl/DP_OP_187J1_123_5310/U14/CO (FA1D0)              0.06       0.96 f
+  impl/DP_OP_187J1_123_5310/U13/CO (FA1D0)              0.06       1.02 f
+  impl/DP_OP_187J1_123_5310/U12/CO (FA1D0)              0.06       1.07 f
+  impl/DP_OP_187J1_123_5310/U11/CO (FA1D0)              0.06       1.13 f
+  impl/DP_OP_187J1_123_5310/U10/CO (FA1D0)              0.06       1.19 f
+  impl/DP_OP_187J1_123_5310/U9/CO (FA1D0)               0.06       1.25 f
+  impl/U15/ZN (INVD0)                                   0.02       1.27 r
+  impl/U14/ZN (CKND2D0)                                 0.02       1.29 f
+  impl/U12/Z (OR2D0)                                    0.05       1.34 f
+  impl/U10/Z (OR2D0)                                    0.05       1.39 f
+  impl/U8/Z (OR2D0)                                     0.04       1.43 f
+  impl/U6/ZN (XNR2D0)                                   0.05       1.49 f
+  impl/U5/ZN (AOI22D0)                                  0.05       1.53 r
+  impl/U165/ZN (INVD0)                                  0.03       1.56 f
+  impl/pack/mantissa_q[26] (paper_fp32_div_pack)        0.00       1.56 f
+  impl/pack/U56/Z (OR4D0)                               0.11       1.67 f
+  impl/pack/U55/ZN (IND2D0)                             0.03       1.71 r
+  impl/pack/U54/ZN (INVD0)                              0.02       1.72 f
+  impl/pack/U51/ZN (INVD0)                              0.03       1.75 r
+  impl/pack/U48/ZN (CKND2D0)                            0.04       1.79 f
+  impl/pack/U46/ZN (NR2D0)                              0.05       1.84 r
+  impl/pack/U43/ZN (CKND2D0)                            0.04       1.88 f
+  impl/pack/U108/ZN (MUX2ND0)                           0.04       1.92 r
+  impl/pack/U36/ZN (IIND4D0)                            0.04       1.97 r
+  impl/pack/U35/ZN (OAI21D0)                            0.02       1.99 f
+  impl/pack/U33/ZN (AOI211D0)                           0.08       2.07 r
+  impl/pack/U32/Z (CKAN2D0)                             0.06       2.13 r
+  impl/pack/U28/ZN (INVD0)                              0.02       2.15 f
+  impl/pack/U26/ZN (INVD0)                              0.04       2.19 r
+  impl/pack/U20/ZN (CKND2D0)                            0.04       2.23 f
+  impl/pack/U104/ZN (INVD0)                             0.04       2.27 r
+  impl/pack/U5/ZN (AOI22D0)                             0.03       2.30 f
+  impl/pack/U3/ZN (CKND2D0)                             0.05       2.35 r
+  impl/pack/result[22] (paper_fp32_div_pack)            0.00       2.35 r
+  impl/result[22] (plsad_fp32_div_MANTISSA_BITS10)      0.00       2.35 r
+  result[22] (out)                                      0.00       2.35 r
+  data arrival time                                                2.35
+
+  clock vclk (rise edge)                               10.00      10.00
+  clock network delay (ideal)                           0.00      10.00
+  output external delay                                -0.02       9.98
+  data required time                                               9.98
+  ------------------------------------------------------------------------
+  data required time                                               9.98
+  data arrival time                                               -2.35
+  ------------------------------------------------------------------------
+  slack (MET)                                                      7.63
+
+
+  Startpoint: y[21] (input port clocked by vclk)
+  Endpoint: result[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  plsad_fp32_div_10bit ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_div_MANTISSA_BITS10 ZeroWireload tcbn65gplustc_ccs
+  paper_fp32_div_pack ZeroWireload         tcbn65gplustc_ccs
+
+  Point                                                 Incr       Path
+  ------------------------------------------------------------------------
+  clock vclk (rise edge)                                0.00       0.00
+  clock network delay (ideal)                           0.00       0.00
+  input external delay                                  0.02       0.02 f
+  y[21] (in)                                            0.00       0.02 f
+  U13/Z (BUFFD0)                                        0.03       0.05 f
+  impl/y[21] (plsad_fp32_div_MANTISSA_BITS10)           0.00       0.05 f
+  impl/U157/Z (BUFFD0)                                  0.04       0.09 f
+  impl/U139/ZN (CKND2D0)                                0.04       0.13 r
+  impl/U126/Z (OR2D0)                                   0.05       0.18 r
+  impl/U118/Z (BUFFD0)                                  0.05       0.23 r
+  impl/U110/Z (BUFFD0)                                  0.05       0.28 r
+  impl/U101/ZN (INVD0)                                  0.03       0.30 f
+  impl/U227/ZN (CKND2D0)                                0.02       0.33 r
+  impl/U228/ZN (OAI211D0)                               0.04       0.37 f
+  impl/U229/Z (AO21D0)                                  0.07       0.44 f
+  impl/U41/Z (XOR2D0)                                   0.05       0.49 r
+  impl/DP_OP_187J1_123_5310/U98/CO (FA1D0)              0.09       0.58 r
+  impl/DP_OP_187J1_123_5310/U97/CO (FA1D0)              0.05       0.63 r
+  impl/DP_OP_187J1_123_5310/U96/S (FA1D0)               0.06       0.70 f
+  impl/DP_OP_187J1_123_5310/U17/CO (FA1D0)              0.10       0.80 f
+  impl/DP_OP_187J1_123_5310/U16/CO (FA1D0)              0.06       0.85 f
+  impl/DP_OP_187J1_123_5310/U15/CO (FA1D0)              0.06       0.91 f
+  impl/DP_OP_187J1_123_5310/U14/CO (FA1D0)              0.06       0.96 f
+  impl/DP_OP_187J1_123_5310/U13/CO (FA1D0)              0.06       1.02 f
+  impl/DP_OP_187J1_123_5310/U12/CO (FA1D0)              0.06       1.07 f
+  impl/DP_OP_187J1_123_5310/U11/CO (FA1D0)              0.06       1.13 f
+  impl/DP_OP_187J1_123_5310/U10/CO (FA1D0)              0.06       1.19 f
+  impl/DP_OP_187J1_123_5310/U9/CO (FA1D0)               0.06       1.25 f
+  impl/U15/ZN (INVD0)                                   0.02       1.27 r
+  impl/U14/ZN (CKND2D0)                                 0.02       1.29 f
+  impl/U12/Z (OR2D0)                                    0.05       1.34 f
+  impl/U10/Z (OR2D0)                                    0.05       1.39 f
+  impl/U8/Z (OR2D0)                                     0.04       1.43 f
+  impl/U6/ZN (XNR2D0)                                   0.05       1.49 f
+  impl/U5/ZN (AOI22D0)                                  0.05       1.53 r
+  impl/U165/ZN (INVD0)                                  0.03       1.56 f
+  impl/pack/mantissa_q[26] (paper_fp32_div_pack)        0.00       1.56 f
+  impl/pack/U56/Z (OR4D0)                               0.11       1.67 f
+  impl/pack/U55/ZN (IND2D0)                             0.03       1.71 r
+  impl/pack/U54/ZN (INVD0)                              0.02       1.72 f
+  impl/pack/U51/ZN (INVD0)                              0.03       1.75 r
+  impl/pack/U48/ZN (CKND2D0)                            0.04       1.79 f
+  impl/pack/U46/ZN (NR2D0)                              0.05       1.84 r
+  impl/pack/U43/ZN (CKND2D0)                            0.04       1.88 f
+  impl/pack/U108/ZN (MUX2ND0)                           0.04       1.92 r
+  impl/pack/U36/ZN (IIND4D0)                            0.04       1.97 r
+  impl/pack/U35/ZN (OAI21D0)                            0.02       1.99 f
+  impl/pack/U33/ZN (AOI211D0)                           0.08       2.07 r
+  impl/pack/U32/Z (CKAN2D0)                             0.06       2.13 r
+  impl/pack/U28/ZN (INVD0)                              0.02       2.15 f
+  impl/pack/U26/ZN (INVD0)                              0.04       2.19 r
+  impl/pack/U20/ZN (CKND2D0)                            0.04       2.23 f
+  impl/pack/U104/ZN (INVD0)                             0.04       2.27 r
+  impl/pack/U5/ZN (AOI22D0)                             0.03       2.30 f
+  impl/pack/U3/ZN (CKND2D0)                             0.05       2.35 r
+  impl/pack/result[22] (paper_fp32_div_pack)            0.00       2.35 r
+  impl/result[22] (plsad_fp32_div_MANTISSA_BITS10)      0.00       2.35 r
+  result[22] (out)                                      0.00       2.35 r
+  data arrival time                                                2.35
+
+  clock vclk (rise edge)                               10.00      10.00
+  clock network delay (ideal)                           0.00      10.00
+  output external delay                                -0.02       9.98
+  data required time                                               9.98
+  ------------------------------------------------------------------------
+  data required time                                               9.98
+  data arrival time                                               -2.35
+  ------------------------------------------------------------------------
+  slack (MET)                                                      7.63
+
+
+1

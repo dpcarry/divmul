@@ -1,0 +1,100 @@
+digraph oad_theoretical_divider_architecture {
+  graph [
+    rankdir=LR,
+    bgcolor="white",
+    pad="0.08",
+    nodesep="0.26",
+    ranksep="0.34",
+    splines=ortho,
+    outputorder=edgesfirst
+  ];
+
+  node [
+    shape=box,
+    style="filled",
+    fontname="Times-Roman",
+    fontsize=17,
+    margin="0.10,0.07",
+    color="black",
+    penwidth=1.6
+  ];
+
+  edge [
+    color="black",
+    penwidth=1.5,
+    arrowsize=0.7,
+    fontname="Times-Roman",
+    fontsize=14
+  ];
+
+  sign_x [label="Sign X", fillcolor="#b9cde5", width=1.05];
+  sign_y [label="Sign Y", fillcolor="#b9cde5", width=1.05];
+  exp_x [label="Exp X", fillcolor="#b9cde5", width=1.05];
+  exp_y [label="Exp Y", fillcolor="#b9cde5", width=1.05];
+  control [label="Control\nFraction X\nFraction Y", fillcolor="#b9cde5", width=1.55, height=0.78];
+
+  xor [label="XOR", fillcolor="white", width=0.68];
+  exp_sub [label="-", shape=circle, fillcolor="white", width=0.34, fixedsize=true, margin="0.02"];
+  exp_bias [label="+ Exp Bias", fillcolor="white", color="white", fontsize=15, width=1.05];
+
+  sign_z [label="Sign Z", fillcolor="#b9cde5", width=1.05];
+  exp_z [label="Exp Z", fillcolor="#b9cde5", width=1.05];
+  frac_z [label="Fraction Z", fillcolor="#b9cde5", width=1.18];
+
+  normalize [
+    label="NORMALIZE",
+    fillcolor="white",
+    width=0.38,
+    height=1.95,
+    orientation=90
+  ];
+
+  plane [
+    shape=plain,
+    label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLPADDING="7" COLOR="black">
+        <TR>
+          <TD BGCOLOR="#ffe699"><FONT POINT-SIZE="18">Selected Level OAD Plane</FONT></TD>
+        </TR>
+        <TR>
+          <TD BGCOLOR="#fff2bf"><FONT POINT-SIZE="14">L0 / L1 / L2 / L3 midpoint: k<SUB>x</SUB><SUP>n</SUP>, k<SUB>y</SUB><SUP>n</SUP></FONT></TD>
+        </TR>
+        <TR>
+          <TD BGCOLOR="#fff2bf"><FONT POINT-SIZE="15">shared terms: k<SUB>y</SUB><SUP>n</SUP>x, k<SUB>x</SUB><SUP>n</SUP>y, k<SUB>x</SUB><SUP>n</SUP>k<SUB>y</SUB><SUP>n</SUP></FONT></TD>
+        </TR>
+        <TR>
+          <TD BGCOLOR="#ffe699"><FONT POINT-SIZE="16">w<SUB>n</SUB> = k<SUB>x</SUB><SUP>n</SUP>k<SUB>y</SUB><SUP>n</SUP> + k<SUB>y</SUB><SUP>n</SUP>x - k<SUB>x</SUB><SUP>n</SUP>y</FONT></TD>
+        </TR>
+      </TABLE>
+    >
+  ];
+
+  recip [
+    label=<LUT / constant<BR/>1/(k<SUB>y</SUB><SUP>n</SUP>)<SUP>2</SUP>>,
+    fillcolor="#ffe699",
+    width=1.35
+  ];
+
+  scale [label="×", shape=circle, fillcolor="white", width=0.38, fixedsize=true, margin="0.02"];
+
+  { rank=same; sign_x; sign_y; }
+  { rank=same; exp_x; exp_y; }
+  { rank=same; sign_z; exp_z; frac_z; }
+
+  sign_x -> xor;
+  sign_y -> xor;
+  xor -> sign_z;
+
+  exp_x -> exp_sub;
+  exp_y -> exp_sub;
+  exp_sub -> exp_bias;
+  exp_bias -> normalize;
+  normalize -> exp_z;
+
+  control -> plane [color="#4472c4", penwidth=1.8];
+  control -> recip [color="#4472c4", penwidth=1.8];
+  plane -> scale [color="#4472c4", penwidth=1.8];
+  recip -> scale [color="#4472c4", penwidth=1.8];
+  scale -> normalize [color="#4472c4", penwidth=1.8];
+  normalize -> frac_z;
+}

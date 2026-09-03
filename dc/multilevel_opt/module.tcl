@@ -11,7 +11,7 @@ set output_dir "${output_root}/${top_level}"
 file mkdir $output_dir
 
 source -verbose "../common_scripts/common.tcl"
-analyze -format verilog [list \
+set rtl_files [list \
     ../../rtl/csa3.v \
     ../../rtl/pipeline_sweep/oadm_pipe_cut.v \
     ../../rtl/pipeline_sweep/oadm_dm_pipe.v \
@@ -22,6 +22,12 @@ analyze -format verilog [list \
     ../../rtl/divopt/oadm_multilevel_plane_direct.v \
     ../../rtl/divopt/oadm_fixed_plane_centered.v \
     ../../rtl/divopt/oadm_multilevel_opt.v]
+if {[info exists ::env(EXTRA_RTL)]} {
+    foreach extra_rtl $::env(EXTRA_RTL) {
+        lappend rtl_files $extra_rtl
+    }
+}
+analyze -format verilog $rtl_files
 elaborate $top_level
 if {[check_error -v] == 1} { exit 1 }
 link

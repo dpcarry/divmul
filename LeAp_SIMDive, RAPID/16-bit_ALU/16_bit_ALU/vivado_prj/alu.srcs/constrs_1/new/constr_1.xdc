@@ -1,0 +1,1 @@
+  create_clock -period 5.4 -name clock -add [get_ports -filter {NAME =~  "*clk*" && DIRECTION == "IN" }]
