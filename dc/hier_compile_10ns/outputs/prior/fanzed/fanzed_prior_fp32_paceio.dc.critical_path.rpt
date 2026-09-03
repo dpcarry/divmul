@@ -1,0 +1,1466 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : fanzed_prior_fp32_paceio
+Version: U-2022.12-SP7
+Date   : Thu Sep  3 12:45:48 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: y[16] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio ZeroWireload    tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  LOD_width23_1      ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  ZERO_CNT_width23_1 ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width23_1 ZeroWireload         tcbn65gplustc_ccs
+  top_width23        ZeroWireload          tcbn65gplustc_ccs
+  LOD_width23_1_DW01_inc_0_DW01_inc_1 ZeroWireload tcbn65gplustc_ccs
+  LOD_ENC_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  top_width23_DW_cmp_2 ZeroWireload        tcbn65gplustc_ccs
+  top_width23_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width46    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[16] (in)                                                                                             0.01       0.03 r
+  fp_wrapper/y[16] (FP_DIV_WRAPPER_32)                                                                   0.00       0.03 r
+  fp_wrapper/shared_wrapper/y[16] (fp32_normal_finite_wrapper)                                           0.00       0.03 r
+  fp_wrapper/shared_wrapper/U46/Z (CKBD1)                                                                0.03       0.06 r
+  fp_wrapper/shared_wrapper/fraction_y[16] (fp32_normal_finite_wrapper)                                  0.00       0.06 r
+  fp_wrapper/mantissa_y[16] (FP_DIV_WRAPPER_32)                                                          0.00       0.06 r
+  lt_14/B[15] (fanzed_prior_fp32_paceio_DW_cmp_0)                                                        0.00       0.06 r
+  lt_14/U439/ZN (INVD1)                                                                                  0.01       0.07 f
+  lt_14/U495/Z (AN2D0)                                                                                   0.03       0.10 f
+  lt_14/U494/ZN (AOI21D0)                                                                                0.05       0.15 r
+  lt_14/U484/ZN (OAI211D0)                                                                               0.06       0.21 f
+  lt_14/U483/Z (AO221D0)                                                                                 0.11       0.32 f
+  lt_14/U482/ZN (CKND2D0)                                                                                0.03       0.35 r
+  lt_14/U466/ZN (OAI32D0)                                                                                0.04       0.38 f
+  lt_14/U461/ZN (OAI32D0)                                                                                0.08       0.47 r
+  lt_14/GE_LT_GT_LE (fanzed_prior_fp32_paceio_DW_cmp_0)                                                  0.00       0.47 r
+  U127/Z (CKBD1)                                                                                         0.14       0.60 r
+  U107/ZN (OAI22D1)                                                                                      0.07       0.67 f
+  fanzed_core/y[20] (top_width23)                                                                        0.00       0.67 f
+  fanzed_core/u_norm_y/x[20] (NORMALIZE_width23_1)                                                       0.00       0.67 f
+  fanzed_core/u_norm_y/lod/x[20] (ZERO_CNT_width23_1)                                                    0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/in0[20] (LOD_width23_1)                                                 0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/U26/ZN (INVD1)                                                          0.03       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/A[2] (LOD_width23_1_DW01_inc_0_DW01_inc_1)         0.00       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_2/CO (HA1D0)                                  0.06       0.75 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_3/CO (HA1D0)                                  0.06       0.81 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_4/CO (HA1D0)                                  0.06       0.88 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_5/CO (HA1D0)                                  0.06       0.94 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_6/CO (HA1D0)                                  0.06       1.00 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_7/CO (HA1D0)                                  0.06       1.06 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_8/CO (HA1D0)                                  0.06       1.12 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_9/CO (HA1D0)                                  0.06       1.18 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_10/CO (HA1D0)                                 0.06       1.24 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_11/CO (HA1D0)                                 0.06       1.30 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_12/CO (HA1D0)                                 0.06       1.36 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_13/CO (HA1D0)                                 0.06       1.42 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_14/CO (HA1D0)                                 0.06       1.48 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_15/CO (HA1D0)                                 0.06       1.54 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_16/CO (HA1D0)                                 0.06       1.60 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_17/CO (HA1D0)                                 0.06       1.66 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_18/CO (HA1D0)                                 0.06       1.72 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_19/CO (HA1D0)                                 0.06       1.78 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_20/CO (HA1D0)                                 0.06       1.84 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_21/CO (HA1D0)                                 0.05       1.89 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1/Z (CKXOR2D0)                                    0.06       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/SUM[22] (LOD_width23_1_DW01_inc_0_DW01_inc_1)      0.00       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/U24/Z (AN2XD1)                                                          0.03       1.98 f
+  fanzed_core/u_norm_y/lod/u_lod/out0[0] (LOD_width23_1)                                                 0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/l_one[0] (LOD_ENC_width23_1)                                            0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/U48/ZN (INVD1)                                                          0.01       1.99 r
+  fanzed_core/u_norm_y/lod/u_enc/U46/ZN (OAI31D1)                                                        0.02       2.02 f
+  fanzed_core/u_norm_y/lod/u_enc/U45/Z (CKBD1)                                                           0.03       2.05 f
+  fanzed_core/u_norm_y/lod/u_enc/num0[1] (LOD_ENC_width23_1)                                             0.00       2.05 f
+  fanzed_core/u_norm_y/lod/num0[1] (ZERO_CNT_width23_1)                                                  0.00       2.05 f
+  fanzed_core/u_norm_y/U5/Z (CKBD1)                                                                      0.05       2.09 f
+  fanzed_core/u_norm_y/shifter/shift[1] (SHIFTER_width23_1)                                              0.00       2.09 f
+  fanzed_core/u_norm_y/shifter/U35/ZN (INVD1)                                                            0.19       2.28 r
+  fanzed_core/u_norm_y/shifter/U223/ZN (MUX2ND0)                                                         0.09       2.37 r
+  fanzed_core/u_norm_y/shifter/U227/ZN (MUX2ND0)                                                         0.05       2.41 f
+  fanzed_core/u_norm_y/shifter/U10/ZN (NR2D1)                                                            0.05       2.46 r
+  fanzed_core/u_norm_y/shifter/U325/ZN (MUX2ND0)                                                         0.03       2.49 f
+  fanzed_core/u_norm_y/shifter/U160/ZN (ND2D1)                                                           0.03       2.52 r
+  fanzed_core/u_norm_y/shifter/out0[15] (SHIFTER_width23_1)                                              0.00       2.52 r
+  fanzed_core/u_norm_y/out0[15] (NORMALIZE_width23_1)                                                    0.00       2.52 r
+  fanzed_core/lt_29/B[15] (top_width23_DW_cmp_2)                                                         0.00       2.52 r
+  fanzed_core/lt_29/U439/ZN (INVD1)                                                                      0.01       2.54 f
+  fanzed_core/lt_29/U491/Z (AN2D0)                                                                       0.03       2.57 f
+  fanzed_core/lt_29/U490/ZN (AOI21D0)                                                                    0.05       2.62 r
+  fanzed_core/lt_29/U480/ZN (OAI211D0)                                                                   0.06       2.68 f
+  fanzed_core/lt_29/U479/Z (AO221D0)                                                                     0.11       2.78 f
+  fanzed_core/lt_29/U478/ZN (CKND2D0)                                                                    0.03       2.82 r
+  fanzed_core/lt_29/U462/ZN (OAI32D0)                                                                    0.04       2.85 f
+  fanzed_core/lt_29/U434/ZN (OAI32D1)                                                                    0.17       3.02 r
+  fanzed_core/lt_29/GE_LT_GT_LE (top_width23_DW_cmp_2)                                                   0.00       3.02 r
+  fanzed_core/U38/Z (AN2XD1)                                                                             0.06       3.08 r
+  fanzed_core/U29/Z (AN2XD1)                                                                             0.04       3.12 r
+  fanzed_core/U16/Z (AN2XD1)                                                                             0.04       3.15 r
+  fanzed_core/U7/ZN (ND2D1)                                                                              0.02       3.17 f
+  fanzed_core/U32/Z (CKXOR2D0)                                                                           0.07       3.24 f
+  fanzed_core/U30/ZN (IINR4D0)                                                                           0.05       3.29 f
+  fanzed_core/U15/ZN (INVD1)                                                                             0.11       3.40 r
+  fanzed_core/U17/Z (AO22D0)                                                                             0.24       3.64 r
+  fanzed_core/u_shift/shift[1] (SHIFTER_width46)                                                         0.00       3.64 r
+  fanzed_core/u_shift/U75/ZN (INVD1)                                                                     0.18       3.82 f
+  fanzed_core/u_shift/U154/ZN (CKND0)                                                                    0.24       4.06 r
+  fanzed_core/u_shift/U519/ZN (MUX2ND0)                                                                  0.09       4.16 f
+  fanzed_core/u_shift/U523/ZN (MUX2ND0)                                                                  0.06       4.21 r
+  fanzed_core/u_shift/U73/Z (MUX2D0)                                                                     0.05       4.26 r
+  fanzed_core/u_shift/U65/ZN (OAI22D0)                                                                   0.03       4.29 f
+  fanzed_core/u_shift/U322/Z (AO22D0)                                                                    0.06       4.36 f
+  fanzed_core/u_shift/out0[22] (SHIFTER_width46)                                                         0.00       4.36 f
+  fanzed_core/out0[22] (top_width23)                                                                     0.00       4.36 f
+  U136/ZN (AOI22D1)                                                                                      0.17       4.52 r
+  fp_wrapper/shift[0] (FP_DIV_WRAPPER_32)                                                                0.00       4.52 r
+  fp_wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                              0.00       4.52 r
+  fp_wrapper/shared_wrapper/U15/CO (FA1D0)                                                               0.12       4.64 r
+  fp_wrapper/shared_wrapper/U16/CO (FA1D0)                                                               0.05       4.70 r
+  fp_wrapper/shared_wrapper/U17/CO (FA1D0)                                                               0.05       4.75 r
+  fp_wrapper/shared_wrapper/U18/CO (FA1D0)                                                               0.05       4.80 r
+  fp_wrapper/shared_wrapper/U19/CO (FA1D0)                                                               0.05       4.85 r
+  fp_wrapper/shared_wrapper/U20/CO (FA1D0)                                                               0.05       4.91 r
+  fp_wrapper/shared_wrapper/U45/Z (XOR3D1)                                                               0.08       4.98 f
+  fp_wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                      0.00       4.98 f
+  fp_wrapper/out0[30] (FP_DIV_WRAPPER_32)                                                                0.00       4.98 f
+  out0[30] (out)                                                                                         0.00       4.98 f
+  data arrival time                                                                                                 4.98
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -4.98
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       5.00
+
+
+  Startpoint: y[16] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio ZeroWireload    tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  LOD_width23_1      ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  ZERO_CNT_width23_1 ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width23_1 ZeroWireload         tcbn65gplustc_ccs
+  top_width23        ZeroWireload          tcbn65gplustc_ccs
+  LOD_width23_1_DW01_inc_0_DW01_inc_1 ZeroWireload tcbn65gplustc_ccs
+  LOD_ENC_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  top_width23_DW_cmp_2 ZeroWireload        tcbn65gplustc_ccs
+  top_width23_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width46    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[16] (in)                                                                                             0.01       0.03 r
+  fp_wrapper/y[16] (FP_DIV_WRAPPER_32)                                                                   0.00       0.03 r
+  fp_wrapper/shared_wrapper/y[16] (fp32_normal_finite_wrapper)                                           0.00       0.03 r
+  fp_wrapper/shared_wrapper/U46/Z (CKBD1)                                                                0.03       0.06 r
+  fp_wrapper/shared_wrapper/fraction_y[16] (fp32_normal_finite_wrapper)                                  0.00       0.06 r
+  fp_wrapper/mantissa_y[16] (FP_DIV_WRAPPER_32)                                                          0.00       0.06 r
+  lt_14/B[15] (fanzed_prior_fp32_paceio_DW_cmp_0)                                                        0.00       0.06 r
+  lt_14/U439/ZN (INVD1)                                                                                  0.01       0.07 f
+  lt_14/U495/Z (AN2D0)                                                                                   0.03       0.10 f
+  lt_14/U494/ZN (AOI21D0)                                                                                0.05       0.15 r
+  lt_14/U484/ZN (OAI211D0)                                                                               0.06       0.21 f
+  lt_14/U483/Z (AO221D0)                                                                                 0.11       0.32 f
+  lt_14/U482/ZN (CKND2D0)                                                                                0.03       0.35 r
+  lt_14/U466/ZN (OAI32D0)                                                                                0.04       0.38 f
+  lt_14/U461/ZN (OAI32D0)                                                                                0.08       0.47 r
+  lt_14/GE_LT_GT_LE (fanzed_prior_fp32_paceio_DW_cmp_0)                                                  0.00       0.47 r
+  U127/Z (CKBD1)                                                                                         0.14       0.60 r
+  U107/ZN (OAI22D1)                                                                                      0.07       0.67 f
+  fanzed_core/y[20] (top_width23)                                                                        0.00       0.67 f
+  fanzed_core/u_norm_y/x[20] (NORMALIZE_width23_1)                                                       0.00       0.67 f
+  fanzed_core/u_norm_y/lod/x[20] (ZERO_CNT_width23_1)                                                    0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/in0[20] (LOD_width23_1)                                                 0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/U26/ZN (INVD1)                                                          0.03       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/A[2] (LOD_width23_1_DW01_inc_0_DW01_inc_1)         0.00       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_2/CO (HA1D0)                                  0.06       0.75 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_3/CO (HA1D0)                                  0.06       0.81 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_4/CO (HA1D0)                                  0.06       0.88 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_5/CO (HA1D0)                                  0.06       0.94 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_6/CO (HA1D0)                                  0.06       1.00 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_7/CO (HA1D0)                                  0.06       1.06 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_8/CO (HA1D0)                                  0.06       1.12 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_9/CO (HA1D0)                                  0.06       1.18 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_10/CO (HA1D0)                                 0.06       1.24 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_11/CO (HA1D0)                                 0.06       1.30 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_12/CO (HA1D0)                                 0.06       1.36 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_13/CO (HA1D0)                                 0.06       1.42 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_14/CO (HA1D0)                                 0.06       1.48 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_15/CO (HA1D0)                                 0.06       1.54 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_16/CO (HA1D0)                                 0.06       1.60 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_17/CO (HA1D0)                                 0.06       1.66 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_18/CO (HA1D0)                                 0.06       1.72 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_19/CO (HA1D0)                                 0.06       1.78 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_20/CO (HA1D0)                                 0.06       1.84 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_21/CO (HA1D0)                                 0.05       1.89 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1/Z (CKXOR2D0)                                    0.06       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/SUM[22] (LOD_width23_1_DW01_inc_0_DW01_inc_1)      0.00       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/U24/Z (AN2XD1)                                                          0.03       1.98 f
+  fanzed_core/u_norm_y/lod/u_lod/out0[0] (LOD_width23_1)                                                 0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/l_one[0] (LOD_ENC_width23_1)                                            0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/U48/ZN (INVD1)                                                          0.01       1.99 r
+  fanzed_core/u_norm_y/lod/u_enc/U46/ZN (OAI31D1)                                                        0.02       2.02 f
+  fanzed_core/u_norm_y/lod/u_enc/U45/Z (CKBD1)                                                           0.03       2.05 f
+  fanzed_core/u_norm_y/lod/u_enc/num0[1] (LOD_ENC_width23_1)                                             0.00       2.05 f
+  fanzed_core/u_norm_y/lod/num0[1] (ZERO_CNT_width23_1)                                                  0.00       2.05 f
+  fanzed_core/u_norm_y/U5/Z (CKBD1)                                                                      0.05       2.09 f
+  fanzed_core/u_norm_y/shifter/shift[1] (SHIFTER_width23_1)                                              0.00       2.09 f
+  fanzed_core/u_norm_y/shifter/U35/ZN (INVD1)                                                            0.19       2.28 r
+  fanzed_core/u_norm_y/shifter/U223/ZN (MUX2ND0)                                                         0.09       2.37 r
+  fanzed_core/u_norm_y/shifter/U227/ZN (MUX2ND0)                                                         0.05       2.41 f
+  fanzed_core/u_norm_y/shifter/U10/ZN (NR2D1)                                                            0.05       2.46 r
+  fanzed_core/u_norm_y/shifter/U325/ZN (MUX2ND0)                                                         0.03       2.49 f
+  fanzed_core/u_norm_y/shifter/U160/ZN (ND2D1)                                                           0.03       2.52 r
+  fanzed_core/u_norm_y/shifter/out0[15] (SHIFTER_width23_1)                                              0.00       2.52 r
+  fanzed_core/u_norm_y/out0[15] (NORMALIZE_width23_1)                                                    0.00       2.52 r
+  fanzed_core/lt_29/B[15] (top_width23_DW_cmp_2)                                                         0.00       2.52 r
+  fanzed_core/lt_29/U439/ZN (INVD1)                                                                      0.01       2.54 f
+  fanzed_core/lt_29/U491/Z (AN2D0)                                                                       0.03       2.57 f
+  fanzed_core/lt_29/U490/ZN (AOI21D0)                                                                    0.05       2.62 r
+  fanzed_core/lt_29/U480/ZN (OAI211D0)                                                                   0.06       2.68 f
+  fanzed_core/lt_29/U479/Z (AO221D0)                                                                     0.11       2.78 f
+  fanzed_core/lt_29/U478/ZN (CKND2D0)                                                                    0.03       2.82 r
+  fanzed_core/lt_29/U462/ZN (OAI32D0)                                                                    0.04       2.85 f
+  fanzed_core/lt_29/U434/ZN (OAI32D1)                                                                    0.17       3.02 r
+  fanzed_core/lt_29/GE_LT_GT_LE (top_width23_DW_cmp_2)                                                   0.00       3.02 r
+  fanzed_core/U38/Z (AN2XD1)                                                                             0.06       3.08 r
+  fanzed_core/U29/Z (AN2XD1)                                                                             0.04       3.12 r
+  fanzed_core/U16/Z (AN2XD1)                                                                             0.04       3.15 r
+  fanzed_core/U7/ZN (ND2D1)                                                                              0.02       3.17 f
+  fanzed_core/U32/Z (CKXOR2D0)                                                                           0.07       3.24 f
+  fanzed_core/U30/ZN (IINR4D0)                                                                           0.05       3.29 f
+  fanzed_core/U15/ZN (INVD1)                                                                             0.11       3.40 r
+  fanzed_core/U17/Z (AO22D0)                                                                             0.24       3.64 r
+  fanzed_core/u_shift/shift[1] (SHIFTER_width46)                                                         0.00       3.64 r
+  fanzed_core/u_shift/U75/ZN (INVD1)                                                                     0.18       3.82 f
+  fanzed_core/u_shift/U154/ZN (CKND0)                                                                    0.24       4.06 r
+  fanzed_core/u_shift/U519/ZN (MUX2ND0)                                                                  0.09       4.16 f
+  fanzed_core/u_shift/U523/ZN (MUX2ND0)                                                                  0.06       4.21 r
+  fanzed_core/u_shift/U73/Z (MUX2D0)                                                                     0.05       4.26 r
+  fanzed_core/u_shift/U65/ZN (OAI22D0)                                                                   0.03       4.29 f
+  fanzed_core/u_shift/U322/Z (AO22D0)                                                                    0.06       4.36 f
+  fanzed_core/u_shift/out0[22] (SHIFTER_width46)                                                         0.00       4.36 f
+  fanzed_core/out0[22] (top_width23)                                                                     0.00       4.36 f
+  U136/ZN (AOI22D1)                                                                                      0.17       4.52 r
+  fp_wrapper/shift[0] (FP_DIV_WRAPPER_32)                                                                0.00       4.52 r
+  fp_wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                              0.00       4.52 r
+  fp_wrapper/shared_wrapper/U15/CO (FA1D0)                                                               0.12       4.64 r
+  fp_wrapper/shared_wrapper/U16/CO (FA1D0)                                                               0.05       4.70 r
+  fp_wrapper/shared_wrapper/U17/CO (FA1D0)                                                               0.05       4.75 r
+  fp_wrapper/shared_wrapper/U18/CO (FA1D0)                                                               0.05       4.80 r
+  fp_wrapper/shared_wrapper/U19/CO (FA1D0)                                                               0.05       4.85 r
+  fp_wrapper/shared_wrapper/U20/CO (FA1D0)                                                               0.05       4.91 r
+  fp_wrapper/shared_wrapper/U45/Z (XOR3D1)                                                               0.08       4.98 f
+  fp_wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                      0.00       4.98 f
+  fp_wrapper/out0[30] (FP_DIV_WRAPPER_32)                                                                0.00       4.98 f
+  out0[30] (out)                                                                                         0.00       4.98 f
+  data arrival time                                                                                                 4.98
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -4.98
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       5.00
+
+
+  Startpoint: y[16] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio ZeroWireload    tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  LOD_width23_1      ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  ZERO_CNT_width23_1 ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width23_1 ZeroWireload         tcbn65gplustc_ccs
+  top_width23        ZeroWireload          tcbn65gplustc_ccs
+  LOD_width23_1_DW01_inc_0_DW01_inc_1 ZeroWireload tcbn65gplustc_ccs
+  LOD_ENC_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  top_width23_DW_cmp_2 ZeroWireload        tcbn65gplustc_ccs
+  top_width23_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width46    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[16] (in)                                                                                             0.01       0.03 r
+  fp_wrapper/y[16] (FP_DIV_WRAPPER_32)                                                                   0.00       0.03 r
+  fp_wrapper/shared_wrapper/y[16] (fp32_normal_finite_wrapper)                                           0.00       0.03 r
+  fp_wrapper/shared_wrapper/U46/Z (CKBD1)                                                                0.03       0.06 r
+  fp_wrapper/shared_wrapper/fraction_y[16] (fp32_normal_finite_wrapper)                                  0.00       0.06 r
+  fp_wrapper/mantissa_y[16] (FP_DIV_WRAPPER_32)                                                          0.00       0.06 r
+  lt_14/B[15] (fanzed_prior_fp32_paceio_DW_cmp_0)                                                        0.00       0.06 r
+  lt_14/U439/ZN (INVD1)                                                                                  0.01       0.07 f
+  lt_14/U495/Z (AN2D0)                                                                                   0.03       0.10 f
+  lt_14/U494/ZN (AOI21D0)                                                                                0.05       0.15 r
+  lt_14/U484/ZN (OAI211D0)                                                                               0.06       0.21 f
+  lt_14/U483/Z (AO221D0)                                                                                 0.11       0.32 f
+  lt_14/U482/ZN (CKND2D0)                                                                                0.03       0.35 r
+  lt_14/U466/ZN (OAI32D0)                                                                                0.04       0.38 f
+  lt_14/U461/ZN (OAI32D0)                                                                                0.08       0.47 r
+  lt_14/GE_LT_GT_LE (fanzed_prior_fp32_paceio_DW_cmp_0)                                                  0.00       0.47 r
+  U127/Z (CKBD1)                                                                                         0.14       0.60 r
+  U107/ZN (OAI22D1)                                                                                      0.07       0.67 f
+  fanzed_core/y[20] (top_width23)                                                                        0.00       0.67 f
+  fanzed_core/u_norm_y/x[20] (NORMALIZE_width23_1)                                                       0.00       0.67 f
+  fanzed_core/u_norm_y/lod/x[20] (ZERO_CNT_width23_1)                                                    0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/in0[20] (LOD_width23_1)                                                 0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/U26/ZN (INVD1)                                                          0.03       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/A[2] (LOD_width23_1_DW01_inc_0_DW01_inc_1)         0.00       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_2/CO (HA1D0)                                  0.06       0.75 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_3/CO (HA1D0)                                  0.06       0.81 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_4/CO (HA1D0)                                  0.06       0.88 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_5/CO (HA1D0)                                  0.06       0.94 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_6/CO (HA1D0)                                  0.06       1.00 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_7/CO (HA1D0)                                  0.06       1.06 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_8/CO (HA1D0)                                  0.06       1.12 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_9/CO (HA1D0)                                  0.06       1.18 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_10/CO (HA1D0)                                 0.06       1.24 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_11/CO (HA1D0)                                 0.06       1.30 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_12/CO (HA1D0)                                 0.06       1.36 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_13/CO (HA1D0)                                 0.06       1.42 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_14/CO (HA1D0)                                 0.06       1.48 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_15/CO (HA1D0)                                 0.06       1.54 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_16/CO (HA1D0)                                 0.06       1.60 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_17/CO (HA1D0)                                 0.06       1.66 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_18/CO (HA1D0)                                 0.06       1.72 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_19/CO (HA1D0)                                 0.06       1.78 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_20/CO (HA1D0)                                 0.06       1.84 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_21/CO (HA1D0)                                 0.05       1.89 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1/Z (CKXOR2D0)                                    0.06       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/SUM[22] (LOD_width23_1_DW01_inc_0_DW01_inc_1)      0.00       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/U24/Z (AN2XD1)                                                          0.03       1.98 f
+  fanzed_core/u_norm_y/lod/u_lod/out0[0] (LOD_width23_1)                                                 0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/l_one[0] (LOD_ENC_width23_1)                                            0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/U48/ZN (INVD1)                                                          0.01       1.99 r
+  fanzed_core/u_norm_y/lod/u_enc/U46/ZN (OAI31D1)                                                        0.02       2.02 f
+  fanzed_core/u_norm_y/lod/u_enc/U45/Z (CKBD1)                                                           0.03       2.05 f
+  fanzed_core/u_norm_y/lod/u_enc/num0[1] (LOD_ENC_width23_1)                                             0.00       2.05 f
+  fanzed_core/u_norm_y/lod/num0[1] (ZERO_CNT_width23_1)                                                  0.00       2.05 f
+  fanzed_core/u_norm_y/U5/Z (CKBD1)                                                                      0.05       2.09 f
+  fanzed_core/u_norm_y/shifter/shift[1] (SHIFTER_width23_1)                                              0.00       2.09 f
+  fanzed_core/u_norm_y/shifter/U35/ZN (INVD1)                                                            0.19       2.28 r
+  fanzed_core/u_norm_y/shifter/U223/ZN (MUX2ND0)                                                         0.09       2.37 r
+  fanzed_core/u_norm_y/shifter/U227/ZN (MUX2ND0)                                                         0.05       2.41 f
+  fanzed_core/u_norm_y/shifter/U10/ZN (NR2D1)                                                            0.05       2.46 r
+  fanzed_core/u_norm_y/shifter/U325/ZN (MUX2ND0)                                                         0.03       2.49 f
+  fanzed_core/u_norm_y/shifter/U160/ZN (ND2D1)                                                           0.03       2.52 r
+  fanzed_core/u_norm_y/shifter/out0[15] (SHIFTER_width23_1)                                              0.00       2.52 r
+  fanzed_core/u_norm_y/out0[15] (NORMALIZE_width23_1)                                                    0.00       2.52 r
+  fanzed_core/lt_29/B[15] (top_width23_DW_cmp_2)                                                         0.00       2.52 r
+  fanzed_core/lt_29/U439/ZN (INVD1)                                                                      0.01       2.54 f
+  fanzed_core/lt_29/U491/Z (AN2D0)                                                                       0.03       2.57 f
+  fanzed_core/lt_29/U490/ZN (AOI21D0)                                                                    0.05       2.62 r
+  fanzed_core/lt_29/U480/ZN (OAI211D0)                                                                   0.06       2.68 f
+  fanzed_core/lt_29/U479/Z (AO221D0)                                                                     0.11       2.78 f
+  fanzed_core/lt_29/U478/ZN (CKND2D0)                                                                    0.03       2.82 r
+  fanzed_core/lt_29/U462/ZN (OAI32D0)                                                                    0.04       2.85 f
+  fanzed_core/lt_29/U434/ZN (OAI32D1)                                                                    0.17       3.02 r
+  fanzed_core/lt_29/GE_LT_GT_LE (top_width23_DW_cmp_2)                                                   0.00       3.02 r
+  fanzed_core/U38/Z (AN2XD1)                                                                             0.06       3.08 r
+  fanzed_core/U29/Z (AN2XD1)                                                                             0.04       3.12 r
+  fanzed_core/U16/Z (AN2XD1)                                                                             0.04       3.15 r
+  fanzed_core/U7/ZN (ND2D1)                                                                              0.02       3.17 f
+  fanzed_core/U32/Z (CKXOR2D0)                                                                           0.07       3.24 f
+  fanzed_core/U30/ZN (IINR4D0)                                                                           0.05       3.29 f
+  fanzed_core/U15/ZN (INVD1)                                                                             0.11       3.40 r
+  fanzed_core/U17/Z (AO22D0)                                                                             0.24       3.64 r
+  fanzed_core/u_shift/shift[1] (SHIFTER_width46)                                                         0.00       3.64 r
+  fanzed_core/u_shift/U75/ZN (INVD1)                                                                     0.18       3.82 f
+  fanzed_core/u_shift/U154/ZN (CKND0)                                                                    0.24       4.06 r
+  fanzed_core/u_shift/U519/ZN (MUX2ND0)                                                                  0.09       4.16 f
+  fanzed_core/u_shift/U523/ZN (MUX2ND0)                                                                  0.06       4.21 r
+  fanzed_core/u_shift/U73/Z (MUX2D0)                                                                     0.05       4.26 r
+  fanzed_core/u_shift/U65/ZN (OAI22D0)                                                                   0.03       4.29 f
+  fanzed_core/u_shift/U322/Z (AO22D0)                                                                    0.06       4.36 f
+  fanzed_core/u_shift/out0[22] (SHIFTER_width46)                                                         0.00       4.36 f
+  fanzed_core/out0[22] (top_width23)                                                                     0.00       4.36 f
+  U136/ZN (AOI22D1)                                                                                      0.17       4.52 r
+  fp_wrapper/shift[0] (FP_DIV_WRAPPER_32)                                                                0.00       4.52 r
+  fp_wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                              0.00       4.52 r
+  fp_wrapper/shared_wrapper/U15/CO (FA1D0)                                                               0.12       4.64 r
+  fp_wrapper/shared_wrapper/U16/CO (FA1D0)                                                               0.05       4.70 r
+  fp_wrapper/shared_wrapper/U17/CO (FA1D0)                                                               0.05       4.75 r
+  fp_wrapper/shared_wrapper/U18/CO (FA1D0)                                                               0.05       4.80 r
+  fp_wrapper/shared_wrapper/U19/CO (FA1D0)                                                               0.05       4.85 r
+  fp_wrapper/shared_wrapper/U20/CO (FA1D0)                                                               0.05       4.91 r
+  fp_wrapper/shared_wrapper/U45/Z (XOR3D1)                                                               0.08       4.98 f
+  fp_wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                      0.00       4.98 f
+  fp_wrapper/out0[30] (FP_DIV_WRAPPER_32)                                                                0.00       4.98 f
+  out0[30] (out)                                                                                         0.00       4.98 f
+  data arrival time                                                                                                 4.98
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -4.98
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       5.00
+
+
+  Startpoint: y[16] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio ZeroWireload    tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  LOD_width23_1      ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  ZERO_CNT_width23_1 ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width23_1 ZeroWireload         tcbn65gplustc_ccs
+  top_width23        ZeroWireload          tcbn65gplustc_ccs
+  LOD_width23_1_DW01_inc_0_DW01_inc_1 ZeroWireload tcbn65gplustc_ccs
+  LOD_ENC_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  top_width23_DW_cmp_2 ZeroWireload        tcbn65gplustc_ccs
+  top_width23_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width46    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[16] (in)                                                                                             0.01       0.03 r
+  fp_wrapper/y[16] (FP_DIV_WRAPPER_32)                                                                   0.00       0.03 r
+  fp_wrapper/shared_wrapper/y[16] (fp32_normal_finite_wrapper)                                           0.00       0.03 r
+  fp_wrapper/shared_wrapper/U46/Z (CKBD1)                                                                0.03       0.06 r
+  fp_wrapper/shared_wrapper/fraction_y[16] (fp32_normal_finite_wrapper)                                  0.00       0.06 r
+  fp_wrapper/mantissa_y[16] (FP_DIV_WRAPPER_32)                                                          0.00       0.06 r
+  lt_14/B[15] (fanzed_prior_fp32_paceio_DW_cmp_0)                                                        0.00       0.06 r
+  lt_14/U439/ZN (INVD1)                                                                                  0.01       0.07 f
+  lt_14/U495/Z (AN2D0)                                                                                   0.03       0.10 f
+  lt_14/U494/ZN (AOI21D0)                                                                                0.05       0.15 r
+  lt_14/U484/ZN (OAI211D0)                                                                               0.06       0.21 f
+  lt_14/U483/Z (AO221D0)                                                                                 0.11       0.32 f
+  lt_14/U482/ZN (CKND2D0)                                                                                0.03       0.35 r
+  lt_14/U466/ZN (OAI32D0)                                                                                0.04       0.38 f
+  lt_14/U461/ZN (OAI32D0)                                                                                0.08       0.47 r
+  lt_14/GE_LT_GT_LE (fanzed_prior_fp32_paceio_DW_cmp_0)                                                  0.00       0.47 r
+  U127/Z (CKBD1)                                                                                         0.14       0.60 r
+  U107/ZN (OAI22D1)                                                                                      0.07       0.67 f
+  fanzed_core/y[20] (top_width23)                                                                        0.00       0.67 f
+  fanzed_core/u_norm_y/x[20] (NORMALIZE_width23_1)                                                       0.00       0.67 f
+  fanzed_core/u_norm_y/lod/x[20] (ZERO_CNT_width23_1)                                                    0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/in0[20] (LOD_width23_1)                                                 0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/U26/ZN (INVD1)                                                          0.03       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/A[2] (LOD_width23_1_DW01_inc_0_DW01_inc_1)         0.00       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_2/CO (HA1D0)                                  0.06       0.75 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_3/CO (HA1D0)                                  0.06       0.81 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_4/CO (HA1D0)                                  0.06       0.88 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_5/CO (HA1D0)                                  0.06       0.94 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_6/CO (HA1D0)                                  0.06       1.00 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_7/CO (HA1D0)                                  0.06       1.06 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_8/CO (HA1D0)                                  0.06       1.12 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_9/CO (HA1D0)                                  0.06       1.18 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_10/CO (HA1D0)                                 0.06       1.24 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_11/CO (HA1D0)                                 0.06       1.30 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_12/CO (HA1D0)                                 0.06       1.36 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_13/CO (HA1D0)                                 0.06       1.42 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_14/CO (HA1D0)                                 0.06       1.48 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_15/CO (HA1D0)                                 0.06       1.54 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_16/CO (HA1D0)                                 0.06       1.60 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_17/CO (HA1D0)                                 0.06       1.66 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_18/CO (HA1D0)                                 0.06       1.72 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_19/CO (HA1D0)                                 0.06       1.78 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_20/CO (HA1D0)                                 0.06       1.84 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_21/CO (HA1D0)                                 0.05       1.89 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1/Z (CKXOR2D0)                                    0.06       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/SUM[22] (LOD_width23_1_DW01_inc_0_DW01_inc_1)      0.00       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/U24/Z (AN2XD1)                                                          0.03       1.98 f
+  fanzed_core/u_norm_y/lod/u_lod/out0[0] (LOD_width23_1)                                                 0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/l_one[0] (LOD_ENC_width23_1)                                            0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/U48/ZN (INVD1)                                                          0.01       1.99 r
+  fanzed_core/u_norm_y/lod/u_enc/U46/ZN (OAI31D1)                                                        0.02       2.02 f
+  fanzed_core/u_norm_y/lod/u_enc/U45/Z (CKBD1)                                                           0.03       2.05 f
+  fanzed_core/u_norm_y/lod/u_enc/num0[1] (LOD_ENC_width23_1)                                             0.00       2.05 f
+  fanzed_core/u_norm_y/lod/num0[1] (ZERO_CNT_width23_1)                                                  0.00       2.05 f
+  fanzed_core/u_norm_y/U5/Z (CKBD1)                                                                      0.05       2.09 f
+  fanzed_core/u_norm_y/shifter/shift[1] (SHIFTER_width23_1)                                              0.00       2.09 f
+  fanzed_core/u_norm_y/shifter/U35/ZN (INVD1)                                                            0.19       2.28 r
+  fanzed_core/u_norm_y/shifter/U223/ZN (MUX2ND0)                                                         0.09       2.37 r
+  fanzed_core/u_norm_y/shifter/U227/ZN (MUX2ND0)                                                         0.05       2.41 f
+  fanzed_core/u_norm_y/shifter/U10/ZN (NR2D1)                                                            0.05       2.46 r
+  fanzed_core/u_norm_y/shifter/U325/ZN (MUX2ND0)                                                         0.03       2.49 f
+  fanzed_core/u_norm_y/shifter/U160/ZN (ND2D1)                                                           0.03       2.52 r
+  fanzed_core/u_norm_y/shifter/out0[15] (SHIFTER_width23_1)                                              0.00       2.52 r
+  fanzed_core/u_norm_y/out0[15] (NORMALIZE_width23_1)                                                    0.00       2.52 r
+  fanzed_core/lt_29/B[15] (top_width23_DW_cmp_2)                                                         0.00       2.52 r
+  fanzed_core/lt_29/U439/ZN (INVD1)                                                                      0.01       2.54 f
+  fanzed_core/lt_29/U491/Z (AN2D0)                                                                       0.03       2.57 f
+  fanzed_core/lt_29/U490/ZN (AOI21D0)                                                                    0.05       2.62 r
+  fanzed_core/lt_29/U480/ZN (OAI211D0)                                                                   0.06       2.68 f
+  fanzed_core/lt_29/U479/Z (AO221D0)                                                                     0.11       2.78 f
+  fanzed_core/lt_29/U478/ZN (CKND2D0)                                                                    0.03       2.82 r
+  fanzed_core/lt_29/U462/ZN (OAI32D0)                                                                    0.04       2.85 f
+  fanzed_core/lt_29/U434/ZN (OAI32D1)                                                                    0.17       3.02 r
+  fanzed_core/lt_29/GE_LT_GT_LE (top_width23_DW_cmp_2)                                                   0.00       3.02 r
+  fanzed_core/U38/Z (AN2XD1)                                                                             0.06       3.08 r
+  fanzed_core/U29/Z (AN2XD1)                                                                             0.04       3.12 r
+  fanzed_core/U16/Z (AN2XD1)                                                                             0.04       3.15 r
+  fanzed_core/U7/ZN (ND2D1)                                                                              0.02       3.17 f
+  fanzed_core/U32/Z (CKXOR2D0)                                                                           0.07       3.24 f
+  fanzed_core/U30/ZN (IINR4D0)                                                                           0.05       3.29 f
+  fanzed_core/U15/ZN (INVD1)                                                                             0.11       3.40 r
+  fanzed_core/U17/Z (AO22D0)                                                                             0.24       3.64 r
+  fanzed_core/u_shift/shift[1] (SHIFTER_width46)                                                         0.00       3.64 r
+  fanzed_core/u_shift/U75/ZN (INVD1)                                                                     0.18       3.82 f
+  fanzed_core/u_shift/U154/ZN (CKND0)                                                                    0.24       4.06 r
+  fanzed_core/u_shift/U519/ZN (MUX2ND0)                                                                  0.09       4.16 f
+  fanzed_core/u_shift/U523/ZN (MUX2ND0)                                                                  0.06       4.21 r
+  fanzed_core/u_shift/U73/Z (MUX2D0)                                                                     0.05       4.26 r
+  fanzed_core/u_shift/U65/ZN (OAI22D0)                                                                   0.03       4.29 f
+  fanzed_core/u_shift/U322/Z (AO22D0)                                                                    0.06       4.36 f
+  fanzed_core/u_shift/out0[22] (SHIFTER_width46)                                                         0.00       4.36 f
+  fanzed_core/out0[22] (top_width23)                                                                     0.00       4.36 f
+  U136/ZN (AOI22D1)                                                                                      0.17       4.52 r
+  fp_wrapper/shift[0] (FP_DIV_WRAPPER_32)                                                                0.00       4.52 r
+  fp_wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                              0.00       4.52 r
+  fp_wrapper/shared_wrapper/U15/CO (FA1D0)                                                               0.12       4.64 r
+  fp_wrapper/shared_wrapper/U16/CO (FA1D0)                                                               0.05       4.70 r
+  fp_wrapper/shared_wrapper/U17/CO (FA1D0)                                                               0.05       4.75 r
+  fp_wrapper/shared_wrapper/U18/CO (FA1D0)                                                               0.05       4.80 r
+  fp_wrapper/shared_wrapper/U19/CO (FA1D0)                                                               0.05       4.85 r
+  fp_wrapper/shared_wrapper/U20/CO (FA1D0)                                                               0.05       4.91 r
+  fp_wrapper/shared_wrapper/U45/Z (XOR3D1)                                                               0.08       4.98 f
+  fp_wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                      0.00       4.98 f
+  fp_wrapper/out0[30] (FP_DIV_WRAPPER_32)                                                                0.00       4.98 f
+  out0[30] (out)                                                                                         0.00       4.98 f
+  data arrival time                                                                                                 4.98
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -4.98
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       5.00
+
+
+  Startpoint: y[16] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio ZeroWireload    tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  LOD_width23_1      ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  ZERO_CNT_width23_1 ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width23_1 ZeroWireload         tcbn65gplustc_ccs
+  top_width23        ZeroWireload          tcbn65gplustc_ccs
+  LOD_width23_1_DW01_inc_0_DW01_inc_1 ZeroWireload tcbn65gplustc_ccs
+  LOD_ENC_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  top_width23_DW_cmp_2 ZeroWireload        tcbn65gplustc_ccs
+  top_width23_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width46    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[16] (in)                                                                                             0.01       0.03 r
+  fp_wrapper/y[16] (FP_DIV_WRAPPER_32)                                                                   0.00       0.03 r
+  fp_wrapper/shared_wrapper/y[16] (fp32_normal_finite_wrapper)                                           0.00       0.03 r
+  fp_wrapper/shared_wrapper/U46/Z (CKBD1)                                                                0.03       0.06 r
+  fp_wrapper/shared_wrapper/fraction_y[16] (fp32_normal_finite_wrapper)                                  0.00       0.06 r
+  fp_wrapper/mantissa_y[16] (FP_DIV_WRAPPER_32)                                                          0.00       0.06 r
+  lt_14/B[15] (fanzed_prior_fp32_paceio_DW_cmp_0)                                                        0.00       0.06 r
+  lt_14/U439/ZN (INVD1)                                                                                  0.01       0.07 f
+  lt_14/U495/Z (AN2D0)                                                                                   0.03       0.10 f
+  lt_14/U494/ZN (AOI21D0)                                                                                0.05       0.15 r
+  lt_14/U484/ZN (OAI211D0)                                                                               0.06       0.21 f
+  lt_14/U483/Z (AO221D0)                                                                                 0.11       0.32 f
+  lt_14/U482/ZN (CKND2D0)                                                                                0.03       0.35 r
+  lt_14/U466/ZN (OAI32D0)                                                                                0.04       0.38 f
+  lt_14/U461/ZN (OAI32D0)                                                                                0.08       0.47 r
+  lt_14/GE_LT_GT_LE (fanzed_prior_fp32_paceio_DW_cmp_0)                                                  0.00       0.47 r
+  U127/Z (CKBD1)                                                                                         0.14       0.60 r
+  U107/ZN (OAI22D1)                                                                                      0.07       0.67 f
+  fanzed_core/y[20] (top_width23)                                                                        0.00       0.67 f
+  fanzed_core/u_norm_y/x[20] (NORMALIZE_width23_1)                                                       0.00       0.67 f
+  fanzed_core/u_norm_y/lod/x[20] (ZERO_CNT_width23_1)                                                    0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/in0[20] (LOD_width23_1)                                                 0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/U26/ZN (INVD1)                                                          0.03       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/A[2] (LOD_width23_1_DW01_inc_0_DW01_inc_1)         0.00       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_2/CO (HA1D0)                                  0.06       0.75 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_3/CO (HA1D0)                                  0.06       0.81 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_4/CO (HA1D0)                                  0.06       0.88 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_5/CO (HA1D0)                                  0.06       0.94 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_6/CO (HA1D0)                                  0.06       1.00 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_7/CO (HA1D0)                                  0.06       1.06 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_8/CO (HA1D0)                                  0.06       1.12 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_9/CO (HA1D0)                                  0.06       1.18 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_10/CO (HA1D0)                                 0.06       1.24 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_11/CO (HA1D0)                                 0.06       1.30 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_12/CO (HA1D0)                                 0.06       1.36 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_13/CO (HA1D0)                                 0.06       1.42 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_14/CO (HA1D0)                                 0.06       1.48 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_15/CO (HA1D0)                                 0.06       1.54 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_16/CO (HA1D0)                                 0.06       1.60 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_17/CO (HA1D0)                                 0.06       1.66 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_18/CO (HA1D0)                                 0.06       1.72 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_19/CO (HA1D0)                                 0.06       1.78 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_20/CO (HA1D0)                                 0.06       1.84 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_21/CO (HA1D0)                                 0.05       1.89 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1/Z (CKXOR2D0)                                    0.06       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/SUM[22] (LOD_width23_1_DW01_inc_0_DW01_inc_1)      0.00       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/U24/Z (AN2XD1)                                                          0.03       1.98 f
+  fanzed_core/u_norm_y/lod/u_lod/out0[0] (LOD_width23_1)                                                 0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/l_one[0] (LOD_ENC_width23_1)                                            0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/U48/ZN (INVD1)                                                          0.01       1.99 r
+  fanzed_core/u_norm_y/lod/u_enc/U46/ZN (OAI31D1)                                                        0.02       2.02 f
+  fanzed_core/u_norm_y/lod/u_enc/U45/Z (CKBD1)                                                           0.03       2.05 f
+  fanzed_core/u_norm_y/lod/u_enc/num0[1] (LOD_ENC_width23_1)                                             0.00       2.05 f
+  fanzed_core/u_norm_y/lod/num0[1] (ZERO_CNT_width23_1)                                                  0.00       2.05 f
+  fanzed_core/u_norm_y/U5/Z (CKBD1)                                                                      0.05       2.09 f
+  fanzed_core/u_norm_y/shifter/shift[1] (SHIFTER_width23_1)                                              0.00       2.09 f
+  fanzed_core/u_norm_y/shifter/U35/ZN (INVD1)                                                            0.19       2.28 r
+  fanzed_core/u_norm_y/shifter/U223/ZN (MUX2ND0)                                                         0.09       2.37 r
+  fanzed_core/u_norm_y/shifter/U227/ZN (MUX2ND0)                                                         0.05       2.41 f
+  fanzed_core/u_norm_y/shifter/U10/ZN (NR2D1)                                                            0.05       2.46 r
+  fanzed_core/u_norm_y/shifter/U325/ZN (MUX2ND0)                                                         0.03       2.49 f
+  fanzed_core/u_norm_y/shifter/U160/ZN (ND2D1)                                                           0.03       2.52 r
+  fanzed_core/u_norm_y/shifter/out0[15] (SHIFTER_width23_1)                                              0.00       2.52 r
+  fanzed_core/u_norm_y/out0[15] (NORMALIZE_width23_1)                                                    0.00       2.52 r
+  fanzed_core/lt_29/B[15] (top_width23_DW_cmp_2)                                                         0.00       2.52 r
+  fanzed_core/lt_29/U439/ZN (INVD1)                                                                      0.01       2.54 f
+  fanzed_core/lt_29/U491/Z (AN2D0)                                                                       0.03       2.57 f
+  fanzed_core/lt_29/U490/ZN (AOI21D0)                                                                    0.05       2.62 r
+  fanzed_core/lt_29/U480/ZN (OAI211D0)                                                                   0.06       2.68 f
+  fanzed_core/lt_29/U479/Z (AO221D0)                                                                     0.11       2.78 f
+  fanzed_core/lt_29/U478/ZN (CKND2D0)                                                                    0.03       2.82 r
+  fanzed_core/lt_29/U462/ZN (OAI32D0)                                                                    0.04       2.85 f
+  fanzed_core/lt_29/U434/ZN (OAI32D1)                                                                    0.17       3.02 r
+  fanzed_core/lt_29/GE_LT_GT_LE (top_width23_DW_cmp_2)                                                   0.00       3.02 r
+  fanzed_core/U38/Z (AN2XD1)                                                                             0.06       3.08 r
+  fanzed_core/U29/Z (AN2XD1)                                                                             0.04       3.12 r
+  fanzed_core/U16/Z (AN2XD1)                                                                             0.04       3.15 r
+  fanzed_core/U7/ZN (ND2D1)                                                                              0.02       3.17 f
+  fanzed_core/U32/Z (CKXOR2D0)                                                                           0.07       3.24 f
+  fanzed_core/U30/ZN (IINR4D0)                                                                           0.05       3.29 f
+  fanzed_core/U15/ZN (INVD1)                                                                             0.11       3.40 r
+  fanzed_core/U17/Z (AO22D0)                                                                             0.24       3.64 r
+  fanzed_core/u_shift/shift[1] (SHIFTER_width46)                                                         0.00       3.64 r
+  fanzed_core/u_shift/U75/ZN (INVD1)                                                                     0.18       3.82 f
+  fanzed_core/u_shift/U154/ZN (CKND0)                                                                    0.24       4.06 r
+  fanzed_core/u_shift/U519/ZN (MUX2ND0)                                                                  0.09       4.16 f
+  fanzed_core/u_shift/U523/ZN (MUX2ND0)                                                                  0.06       4.21 r
+  fanzed_core/u_shift/U73/Z (MUX2D0)                                                                     0.05       4.26 r
+  fanzed_core/u_shift/U65/ZN (OAI22D0)                                                                   0.03       4.29 f
+  fanzed_core/u_shift/U322/Z (AO22D0)                                                                    0.06       4.36 f
+  fanzed_core/u_shift/out0[22] (SHIFTER_width46)                                                         0.00       4.36 f
+  fanzed_core/out0[22] (top_width23)                                                                     0.00       4.36 f
+  U136/ZN (AOI22D1)                                                                                      0.17       4.52 r
+  fp_wrapper/shift[0] (FP_DIV_WRAPPER_32)                                                                0.00       4.52 r
+  fp_wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                              0.00       4.52 r
+  fp_wrapper/shared_wrapper/U15/CO (FA1D0)                                                               0.12       4.64 r
+  fp_wrapper/shared_wrapper/U16/CO (FA1D0)                                                               0.05       4.70 r
+  fp_wrapper/shared_wrapper/U17/CO (FA1D0)                                                               0.05       4.75 r
+  fp_wrapper/shared_wrapper/U18/CO (FA1D0)                                                               0.05       4.80 r
+  fp_wrapper/shared_wrapper/U19/CO (FA1D0)                                                               0.05       4.85 r
+  fp_wrapper/shared_wrapper/U20/CO (FA1D0)                                                               0.05       4.91 r
+  fp_wrapper/shared_wrapper/U45/Z (XOR3D1)                                                               0.08       4.98 f
+  fp_wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                      0.00       4.98 f
+  fp_wrapper/out0[30] (FP_DIV_WRAPPER_32)                                                                0.00       4.98 f
+  out0[30] (out)                                                                                         0.00       4.98 f
+  data arrival time                                                                                                 4.98
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -4.98
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       5.00
+
+
+  Startpoint: y[16] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio ZeroWireload    tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  LOD_width23_1      ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  ZERO_CNT_width23_1 ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width23_1 ZeroWireload         tcbn65gplustc_ccs
+  top_width23        ZeroWireload          tcbn65gplustc_ccs
+  LOD_width23_1_DW01_inc_0_DW01_inc_1 ZeroWireload tcbn65gplustc_ccs
+  LOD_ENC_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  top_width23_DW_cmp_2 ZeroWireload        tcbn65gplustc_ccs
+  top_width23_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width46    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[16] (in)                                                                                             0.01       0.03 r
+  fp_wrapper/y[16] (FP_DIV_WRAPPER_32)                                                                   0.00       0.03 r
+  fp_wrapper/shared_wrapper/y[16] (fp32_normal_finite_wrapper)                                           0.00       0.03 r
+  fp_wrapper/shared_wrapper/U46/Z (CKBD1)                                                                0.03       0.06 r
+  fp_wrapper/shared_wrapper/fraction_y[16] (fp32_normal_finite_wrapper)                                  0.00       0.06 r
+  fp_wrapper/mantissa_y[16] (FP_DIV_WRAPPER_32)                                                          0.00       0.06 r
+  lt_14/B[15] (fanzed_prior_fp32_paceio_DW_cmp_0)                                                        0.00       0.06 r
+  lt_14/U439/ZN (INVD1)                                                                                  0.01       0.07 f
+  lt_14/U495/Z (AN2D0)                                                                                   0.03       0.10 f
+  lt_14/U494/ZN (AOI21D0)                                                                                0.05       0.15 r
+  lt_14/U484/ZN (OAI211D0)                                                                               0.06       0.21 f
+  lt_14/U483/Z (AO221D0)                                                                                 0.11       0.32 f
+  lt_14/U482/ZN (CKND2D0)                                                                                0.03       0.35 r
+  lt_14/U466/ZN (OAI32D0)                                                                                0.04       0.38 f
+  lt_14/U461/ZN (OAI32D0)                                                                                0.08       0.47 r
+  lt_14/GE_LT_GT_LE (fanzed_prior_fp32_paceio_DW_cmp_0)                                                  0.00       0.47 r
+  U127/Z (CKBD1)                                                                                         0.14       0.60 r
+  U107/ZN (OAI22D1)                                                                                      0.07       0.67 f
+  fanzed_core/y[20] (top_width23)                                                                        0.00       0.67 f
+  fanzed_core/u_norm_y/x[20] (NORMALIZE_width23_1)                                                       0.00       0.67 f
+  fanzed_core/u_norm_y/lod/x[20] (ZERO_CNT_width23_1)                                                    0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/in0[20] (LOD_width23_1)                                                 0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/U26/ZN (INVD1)                                                          0.03       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/A[2] (LOD_width23_1_DW01_inc_0_DW01_inc_1)         0.00       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_2/CO (HA1D0)                                  0.06       0.75 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_3/CO (HA1D0)                                  0.06       0.81 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_4/CO (HA1D0)                                  0.06       0.88 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_5/CO (HA1D0)                                  0.06       0.94 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_6/CO (HA1D0)                                  0.06       1.00 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_7/CO (HA1D0)                                  0.06       1.06 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_8/CO (HA1D0)                                  0.06       1.12 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_9/CO (HA1D0)                                  0.06       1.18 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_10/CO (HA1D0)                                 0.06       1.24 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_11/CO (HA1D0)                                 0.06       1.30 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_12/CO (HA1D0)                                 0.06       1.36 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_13/CO (HA1D0)                                 0.06       1.42 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_14/CO (HA1D0)                                 0.06       1.48 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_15/CO (HA1D0)                                 0.06       1.54 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_16/CO (HA1D0)                                 0.06       1.60 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_17/CO (HA1D0)                                 0.06       1.66 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_18/CO (HA1D0)                                 0.06       1.72 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_19/CO (HA1D0)                                 0.06       1.78 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_20/CO (HA1D0)                                 0.06       1.84 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_21/CO (HA1D0)                                 0.05       1.89 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1/Z (CKXOR2D0)                                    0.06       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/SUM[22] (LOD_width23_1_DW01_inc_0_DW01_inc_1)      0.00       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/U24/Z (AN2XD1)                                                          0.03       1.98 f
+  fanzed_core/u_norm_y/lod/u_lod/out0[0] (LOD_width23_1)                                                 0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/l_one[0] (LOD_ENC_width23_1)                                            0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/U48/ZN (INVD1)                                                          0.01       1.99 r
+  fanzed_core/u_norm_y/lod/u_enc/U46/ZN (OAI31D1)                                                        0.02       2.02 f
+  fanzed_core/u_norm_y/lod/u_enc/U45/Z (CKBD1)                                                           0.03       2.05 f
+  fanzed_core/u_norm_y/lod/u_enc/num0[1] (LOD_ENC_width23_1)                                             0.00       2.05 f
+  fanzed_core/u_norm_y/lod/num0[1] (ZERO_CNT_width23_1)                                                  0.00       2.05 f
+  fanzed_core/u_norm_y/U5/Z (CKBD1)                                                                      0.05       2.09 f
+  fanzed_core/u_norm_y/shifter/shift[1] (SHIFTER_width23_1)                                              0.00       2.09 f
+  fanzed_core/u_norm_y/shifter/U35/ZN (INVD1)                                                            0.19       2.28 r
+  fanzed_core/u_norm_y/shifter/U223/ZN (MUX2ND0)                                                         0.09       2.37 r
+  fanzed_core/u_norm_y/shifter/U227/ZN (MUX2ND0)                                                         0.05       2.41 f
+  fanzed_core/u_norm_y/shifter/U10/ZN (NR2D1)                                                            0.05       2.46 r
+  fanzed_core/u_norm_y/shifter/U325/ZN (MUX2ND0)                                                         0.03       2.49 f
+  fanzed_core/u_norm_y/shifter/U160/ZN (ND2D1)                                                           0.03       2.52 r
+  fanzed_core/u_norm_y/shifter/out0[15] (SHIFTER_width23_1)                                              0.00       2.52 r
+  fanzed_core/u_norm_y/out0[15] (NORMALIZE_width23_1)                                                    0.00       2.52 r
+  fanzed_core/lt_29/B[15] (top_width23_DW_cmp_2)                                                         0.00       2.52 r
+  fanzed_core/lt_29/U439/ZN (INVD1)                                                                      0.01       2.54 f
+  fanzed_core/lt_29/U491/Z (AN2D0)                                                                       0.03       2.57 f
+  fanzed_core/lt_29/U490/ZN (AOI21D0)                                                                    0.05       2.62 r
+  fanzed_core/lt_29/U480/ZN (OAI211D0)                                                                   0.06       2.68 f
+  fanzed_core/lt_29/U479/Z (AO221D0)                                                                     0.11       2.78 f
+  fanzed_core/lt_29/U478/ZN (CKND2D0)                                                                    0.03       2.82 r
+  fanzed_core/lt_29/U462/ZN (OAI32D0)                                                                    0.04       2.85 f
+  fanzed_core/lt_29/U434/ZN (OAI32D1)                                                                    0.17       3.02 r
+  fanzed_core/lt_29/GE_LT_GT_LE (top_width23_DW_cmp_2)                                                   0.00       3.02 r
+  fanzed_core/U38/Z (AN2XD1)                                                                             0.06       3.08 r
+  fanzed_core/U29/Z (AN2XD1)                                                                             0.04       3.12 r
+  fanzed_core/U16/Z (AN2XD1)                                                                             0.04       3.15 r
+  fanzed_core/U7/ZN (ND2D1)                                                                              0.02       3.17 f
+  fanzed_core/U32/Z (CKXOR2D0)                                                                           0.07       3.24 f
+  fanzed_core/U30/ZN (IINR4D0)                                                                           0.05       3.29 f
+  fanzed_core/U15/ZN (INVD1)                                                                             0.11       3.40 r
+  fanzed_core/U17/Z (AO22D0)                                                                             0.24       3.64 r
+  fanzed_core/u_shift/shift[1] (SHIFTER_width46)                                                         0.00       3.64 r
+  fanzed_core/u_shift/U75/ZN (INVD1)                                                                     0.18       3.82 f
+  fanzed_core/u_shift/U154/ZN (CKND0)                                                                    0.24       4.06 r
+  fanzed_core/u_shift/U519/ZN (MUX2ND0)                                                                  0.09       4.16 f
+  fanzed_core/u_shift/U523/ZN (MUX2ND0)                                                                  0.06       4.21 r
+  fanzed_core/u_shift/U73/Z (MUX2D0)                                                                     0.05       4.26 r
+  fanzed_core/u_shift/U65/ZN (OAI22D0)                                                                   0.03       4.29 f
+  fanzed_core/u_shift/U322/Z (AO22D0)                                                                    0.06       4.36 f
+  fanzed_core/u_shift/out0[22] (SHIFTER_width46)                                                         0.00       4.36 f
+  fanzed_core/out0[22] (top_width23)                                                                     0.00       4.36 f
+  U136/ZN (AOI22D1)                                                                                      0.17       4.52 r
+  fp_wrapper/shift[0] (FP_DIV_WRAPPER_32)                                                                0.00       4.52 r
+  fp_wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                              0.00       4.52 r
+  fp_wrapper/shared_wrapper/U15/CO (FA1D0)                                                               0.12       4.64 r
+  fp_wrapper/shared_wrapper/U16/CO (FA1D0)                                                               0.05       4.70 r
+  fp_wrapper/shared_wrapper/U17/CO (FA1D0)                                                               0.05       4.75 r
+  fp_wrapper/shared_wrapper/U18/CO (FA1D0)                                                               0.05       4.80 r
+  fp_wrapper/shared_wrapper/U19/CO (FA1D0)                                                               0.05       4.85 r
+  fp_wrapper/shared_wrapper/U20/CO (FA1D0)                                                               0.05       4.91 r
+  fp_wrapper/shared_wrapper/U45/Z (XOR3D1)                                                               0.08       4.98 f
+  fp_wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                      0.00       4.98 f
+  fp_wrapper/out0[30] (FP_DIV_WRAPPER_32)                                                                0.00       4.98 f
+  out0[30] (out)                                                                                         0.00       4.98 f
+  data arrival time                                                                                                 4.98
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -4.98
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       5.00
+
+
+  Startpoint: y[16] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio ZeroWireload    tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  LOD_width23_1      ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  ZERO_CNT_width23_1 ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width23_1 ZeroWireload         tcbn65gplustc_ccs
+  top_width23        ZeroWireload          tcbn65gplustc_ccs
+  LOD_width23_1_DW01_inc_0_DW01_inc_1 ZeroWireload tcbn65gplustc_ccs
+  LOD_ENC_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  top_width23_DW_cmp_2 ZeroWireload        tcbn65gplustc_ccs
+  top_width23_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width46    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[16] (in)                                                                                             0.01       0.03 r
+  fp_wrapper/y[16] (FP_DIV_WRAPPER_32)                                                                   0.00       0.03 r
+  fp_wrapper/shared_wrapper/y[16] (fp32_normal_finite_wrapper)                                           0.00       0.03 r
+  fp_wrapper/shared_wrapper/U46/Z (CKBD1)                                                                0.03       0.06 r
+  fp_wrapper/shared_wrapper/fraction_y[16] (fp32_normal_finite_wrapper)                                  0.00       0.06 r
+  fp_wrapper/mantissa_y[16] (FP_DIV_WRAPPER_32)                                                          0.00       0.06 r
+  lt_14/B[15] (fanzed_prior_fp32_paceio_DW_cmp_0)                                                        0.00       0.06 r
+  lt_14/U439/ZN (INVD1)                                                                                  0.01       0.07 f
+  lt_14/U495/Z (AN2D0)                                                                                   0.03       0.10 f
+  lt_14/U494/ZN (AOI21D0)                                                                                0.05       0.15 r
+  lt_14/U484/ZN (OAI211D0)                                                                               0.06       0.21 f
+  lt_14/U483/Z (AO221D0)                                                                                 0.11       0.32 f
+  lt_14/U482/ZN (CKND2D0)                                                                                0.03       0.35 r
+  lt_14/U466/ZN (OAI32D0)                                                                                0.04       0.38 f
+  lt_14/U461/ZN (OAI32D0)                                                                                0.08       0.47 r
+  lt_14/GE_LT_GT_LE (fanzed_prior_fp32_paceio_DW_cmp_0)                                                  0.00       0.47 r
+  U127/Z (CKBD1)                                                                                         0.14       0.60 r
+  U107/ZN (OAI22D1)                                                                                      0.07       0.67 f
+  fanzed_core/y[20] (top_width23)                                                                        0.00       0.67 f
+  fanzed_core/u_norm_y/x[20] (NORMALIZE_width23_1)                                                       0.00       0.67 f
+  fanzed_core/u_norm_y/lod/x[20] (ZERO_CNT_width23_1)                                                    0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/in0[20] (LOD_width23_1)                                                 0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/U26/ZN (INVD1)                                                          0.03       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/A[2] (LOD_width23_1_DW01_inc_0_DW01_inc_1)         0.00       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_2/CO (HA1D0)                                  0.06       0.75 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_3/CO (HA1D0)                                  0.06       0.81 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_4/CO (HA1D0)                                  0.06       0.88 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_5/CO (HA1D0)                                  0.06       0.94 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_6/CO (HA1D0)                                  0.06       1.00 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_7/CO (HA1D0)                                  0.06       1.06 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_8/CO (HA1D0)                                  0.06       1.12 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_9/CO (HA1D0)                                  0.06       1.18 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_10/CO (HA1D0)                                 0.06       1.24 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_11/CO (HA1D0)                                 0.06       1.30 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_12/CO (HA1D0)                                 0.06       1.36 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_13/CO (HA1D0)                                 0.06       1.42 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_14/CO (HA1D0)                                 0.06       1.48 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_15/CO (HA1D0)                                 0.06       1.54 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_16/CO (HA1D0)                                 0.06       1.60 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_17/CO (HA1D0)                                 0.06       1.66 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_18/CO (HA1D0)                                 0.06       1.72 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_19/CO (HA1D0)                                 0.06       1.78 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_20/CO (HA1D0)                                 0.06       1.84 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_21/CO (HA1D0)                                 0.05       1.89 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1/Z (CKXOR2D0)                                    0.06       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/SUM[22] (LOD_width23_1_DW01_inc_0_DW01_inc_1)      0.00       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/U24/Z (AN2XD1)                                                          0.03       1.98 f
+  fanzed_core/u_norm_y/lod/u_lod/out0[0] (LOD_width23_1)                                                 0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/l_one[0] (LOD_ENC_width23_1)                                            0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/U48/ZN (INVD1)                                                          0.01       1.99 r
+  fanzed_core/u_norm_y/lod/u_enc/U46/ZN (OAI31D1)                                                        0.02       2.02 f
+  fanzed_core/u_norm_y/lod/u_enc/U45/Z (CKBD1)                                                           0.03       2.05 f
+  fanzed_core/u_norm_y/lod/u_enc/num0[1] (LOD_ENC_width23_1)                                             0.00       2.05 f
+  fanzed_core/u_norm_y/lod/num0[1] (ZERO_CNT_width23_1)                                                  0.00       2.05 f
+  fanzed_core/u_norm_y/U5/Z (CKBD1)                                                                      0.05       2.09 f
+  fanzed_core/u_norm_y/shifter/shift[1] (SHIFTER_width23_1)                                              0.00       2.09 f
+  fanzed_core/u_norm_y/shifter/U35/ZN (INVD1)                                                            0.19       2.28 r
+  fanzed_core/u_norm_y/shifter/U223/ZN (MUX2ND0)                                                         0.09       2.37 r
+  fanzed_core/u_norm_y/shifter/U227/ZN (MUX2ND0)                                                         0.05       2.41 f
+  fanzed_core/u_norm_y/shifter/U10/ZN (NR2D1)                                                            0.05       2.46 r
+  fanzed_core/u_norm_y/shifter/U325/ZN (MUX2ND0)                                                         0.03       2.49 f
+  fanzed_core/u_norm_y/shifter/U160/ZN (ND2D1)                                                           0.03       2.52 r
+  fanzed_core/u_norm_y/shifter/out0[15] (SHIFTER_width23_1)                                              0.00       2.52 r
+  fanzed_core/u_norm_y/out0[15] (NORMALIZE_width23_1)                                                    0.00       2.52 r
+  fanzed_core/lt_29/B[15] (top_width23_DW_cmp_2)                                                         0.00       2.52 r
+  fanzed_core/lt_29/U439/ZN (INVD1)                                                                      0.01       2.54 f
+  fanzed_core/lt_29/U491/Z (AN2D0)                                                                       0.03       2.57 f
+  fanzed_core/lt_29/U490/ZN (AOI21D0)                                                                    0.05       2.62 r
+  fanzed_core/lt_29/U480/ZN (OAI211D0)                                                                   0.06       2.68 f
+  fanzed_core/lt_29/U479/Z (AO221D0)                                                                     0.11       2.78 f
+  fanzed_core/lt_29/U478/ZN (CKND2D0)                                                                    0.03       2.82 r
+  fanzed_core/lt_29/U462/ZN (OAI32D0)                                                                    0.04       2.85 f
+  fanzed_core/lt_29/U434/ZN (OAI32D1)                                                                    0.17       3.02 r
+  fanzed_core/lt_29/GE_LT_GT_LE (top_width23_DW_cmp_2)                                                   0.00       3.02 r
+  fanzed_core/U38/Z (AN2XD1)                                                                             0.06       3.08 r
+  fanzed_core/U29/Z (AN2XD1)                                                                             0.04       3.12 r
+  fanzed_core/U16/Z (AN2XD1)                                                                             0.04       3.15 r
+  fanzed_core/U7/ZN (ND2D1)                                                                              0.02       3.17 f
+  fanzed_core/U32/Z (CKXOR2D0)                                                                           0.07       3.24 f
+  fanzed_core/U30/ZN (IINR4D0)                                                                           0.05       3.29 f
+  fanzed_core/U15/ZN (INVD1)                                                                             0.11       3.40 r
+  fanzed_core/U17/Z (AO22D0)                                                                             0.24       3.64 r
+  fanzed_core/u_shift/shift[1] (SHIFTER_width46)                                                         0.00       3.64 r
+  fanzed_core/u_shift/U75/ZN (INVD1)                                                                     0.18       3.82 f
+  fanzed_core/u_shift/U154/ZN (CKND0)                                                                    0.24       4.06 r
+  fanzed_core/u_shift/U519/ZN (MUX2ND0)                                                                  0.09       4.16 f
+  fanzed_core/u_shift/U523/ZN (MUX2ND0)                                                                  0.06       4.21 r
+  fanzed_core/u_shift/U73/Z (MUX2D0)                                                                     0.05       4.26 r
+  fanzed_core/u_shift/U65/ZN (OAI22D0)                                                                   0.03       4.29 f
+  fanzed_core/u_shift/U322/Z (AO22D0)                                                                    0.06       4.36 f
+  fanzed_core/u_shift/out0[22] (SHIFTER_width46)                                                         0.00       4.36 f
+  fanzed_core/out0[22] (top_width23)                                                                     0.00       4.36 f
+  U136/ZN (AOI22D1)                                                                                      0.17       4.52 r
+  fp_wrapper/shift[0] (FP_DIV_WRAPPER_32)                                                                0.00       4.52 r
+  fp_wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                              0.00       4.52 r
+  fp_wrapper/shared_wrapper/U15/CO (FA1D0)                                                               0.12       4.64 r
+  fp_wrapper/shared_wrapper/U16/CO (FA1D0)                                                               0.05       4.70 r
+  fp_wrapper/shared_wrapper/U17/CO (FA1D0)                                                               0.05       4.75 r
+  fp_wrapper/shared_wrapper/U18/CO (FA1D0)                                                               0.05       4.80 r
+  fp_wrapper/shared_wrapper/U19/CO (FA1D0)                                                               0.05       4.85 r
+  fp_wrapper/shared_wrapper/U20/CO (FA1D0)                                                               0.05       4.91 r
+  fp_wrapper/shared_wrapper/U45/Z (XOR3D1)                                                               0.08       4.98 f
+  fp_wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                      0.00       4.98 f
+  fp_wrapper/out0[30] (FP_DIV_WRAPPER_32)                                                                0.00       4.98 f
+  out0[30] (out)                                                                                         0.00       4.98 f
+  data arrival time                                                                                                 4.98
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -4.98
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       5.00
+
+
+  Startpoint: y[16] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio ZeroWireload    tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  LOD_width23_1      ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  ZERO_CNT_width23_1 ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width23_1 ZeroWireload         tcbn65gplustc_ccs
+  top_width23        ZeroWireload          tcbn65gplustc_ccs
+  LOD_width23_1_DW01_inc_0_DW01_inc_1 ZeroWireload tcbn65gplustc_ccs
+  LOD_ENC_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  top_width23_DW_cmp_2 ZeroWireload        tcbn65gplustc_ccs
+  top_width23_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width46    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[16] (in)                                                                                             0.01       0.03 r
+  fp_wrapper/y[16] (FP_DIV_WRAPPER_32)                                                                   0.00       0.03 r
+  fp_wrapper/shared_wrapper/y[16] (fp32_normal_finite_wrapper)                                           0.00       0.03 r
+  fp_wrapper/shared_wrapper/U46/Z (CKBD1)                                                                0.03       0.06 r
+  fp_wrapper/shared_wrapper/fraction_y[16] (fp32_normal_finite_wrapper)                                  0.00       0.06 r
+  fp_wrapper/mantissa_y[16] (FP_DIV_WRAPPER_32)                                                          0.00       0.06 r
+  lt_14/B[15] (fanzed_prior_fp32_paceio_DW_cmp_0)                                                        0.00       0.06 r
+  lt_14/U439/ZN (INVD1)                                                                                  0.01       0.07 f
+  lt_14/U495/Z (AN2D0)                                                                                   0.03       0.10 f
+  lt_14/U494/ZN (AOI21D0)                                                                                0.05       0.15 r
+  lt_14/U484/ZN (OAI211D0)                                                                               0.06       0.21 f
+  lt_14/U483/Z (AO221D0)                                                                                 0.11       0.32 f
+  lt_14/U482/ZN (CKND2D0)                                                                                0.03       0.35 r
+  lt_14/U466/ZN (OAI32D0)                                                                                0.04       0.38 f
+  lt_14/U461/ZN (OAI32D0)                                                                                0.08       0.47 r
+  lt_14/GE_LT_GT_LE (fanzed_prior_fp32_paceio_DW_cmp_0)                                                  0.00       0.47 r
+  U127/Z (CKBD1)                                                                                         0.14       0.60 r
+  U107/ZN (OAI22D1)                                                                                      0.07       0.67 f
+  fanzed_core/y[20] (top_width23)                                                                        0.00       0.67 f
+  fanzed_core/u_norm_y/x[20] (NORMALIZE_width23_1)                                                       0.00       0.67 f
+  fanzed_core/u_norm_y/lod/x[20] (ZERO_CNT_width23_1)                                                    0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/in0[20] (LOD_width23_1)                                                 0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/U26/ZN (INVD1)                                                          0.03       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/A[2] (LOD_width23_1_DW01_inc_0_DW01_inc_1)         0.00       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_2/CO (HA1D0)                                  0.06       0.75 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_3/CO (HA1D0)                                  0.06       0.81 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_4/CO (HA1D0)                                  0.06       0.88 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_5/CO (HA1D0)                                  0.06       0.94 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_6/CO (HA1D0)                                  0.06       1.00 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_7/CO (HA1D0)                                  0.06       1.06 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_8/CO (HA1D0)                                  0.06       1.12 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_9/CO (HA1D0)                                  0.06       1.18 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_10/CO (HA1D0)                                 0.06       1.24 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_11/CO (HA1D0)                                 0.06       1.30 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_12/CO (HA1D0)                                 0.06       1.36 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_13/CO (HA1D0)                                 0.06       1.42 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_14/CO (HA1D0)                                 0.06       1.48 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_15/CO (HA1D0)                                 0.06       1.54 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_16/CO (HA1D0)                                 0.06       1.60 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_17/CO (HA1D0)                                 0.06       1.66 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_18/CO (HA1D0)                                 0.06       1.72 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_19/CO (HA1D0)                                 0.06       1.78 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_20/CO (HA1D0)                                 0.06       1.84 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_21/CO (HA1D0)                                 0.05       1.89 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1/Z (CKXOR2D0)                                    0.06       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/SUM[22] (LOD_width23_1_DW01_inc_0_DW01_inc_1)      0.00       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/U24/Z (AN2XD1)                                                          0.03       1.98 f
+  fanzed_core/u_norm_y/lod/u_lod/out0[0] (LOD_width23_1)                                                 0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/l_one[0] (LOD_ENC_width23_1)                                            0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/U48/ZN (INVD1)                                                          0.01       1.99 r
+  fanzed_core/u_norm_y/lod/u_enc/U46/ZN (OAI31D1)                                                        0.02       2.02 f
+  fanzed_core/u_norm_y/lod/u_enc/U45/Z (CKBD1)                                                           0.03       2.05 f
+  fanzed_core/u_norm_y/lod/u_enc/num0[1] (LOD_ENC_width23_1)                                             0.00       2.05 f
+  fanzed_core/u_norm_y/lod/num0[1] (ZERO_CNT_width23_1)                                                  0.00       2.05 f
+  fanzed_core/u_norm_y/U5/Z (CKBD1)                                                                      0.05       2.09 f
+  fanzed_core/u_norm_y/shifter/shift[1] (SHIFTER_width23_1)                                              0.00       2.09 f
+  fanzed_core/u_norm_y/shifter/U35/ZN (INVD1)                                                            0.19       2.28 r
+  fanzed_core/u_norm_y/shifter/U223/ZN (MUX2ND0)                                                         0.09       2.37 r
+  fanzed_core/u_norm_y/shifter/U227/ZN (MUX2ND0)                                                         0.05       2.41 f
+  fanzed_core/u_norm_y/shifter/U10/ZN (NR2D1)                                                            0.05       2.46 r
+  fanzed_core/u_norm_y/shifter/U325/ZN (MUX2ND0)                                                         0.03       2.49 f
+  fanzed_core/u_norm_y/shifter/U160/ZN (ND2D1)                                                           0.03       2.52 r
+  fanzed_core/u_norm_y/shifter/out0[15] (SHIFTER_width23_1)                                              0.00       2.52 r
+  fanzed_core/u_norm_y/out0[15] (NORMALIZE_width23_1)                                                    0.00       2.52 r
+  fanzed_core/lt_29/B[15] (top_width23_DW_cmp_2)                                                         0.00       2.52 r
+  fanzed_core/lt_29/U439/ZN (INVD1)                                                                      0.01       2.54 f
+  fanzed_core/lt_29/U491/Z (AN2D0)                                                                       0.03       2.57 f
+  fanzed_core/lt_29/U490/ZN (AOI21D0)                                                                    0.05       2.62 r
+  fanzed_core/lt_29/U480/ZN (OAI211D0)                                                                   0.06       2.68 f
+  fanzed_core/lt_29/U479/Z (AO221D0)                                                                     0.11       2.78 f
+  fanzed_core/lt_29/U478/ZN (CKND2D0)                                                                    0.03       2.82 r
+  fanzed_core/lt_29/U462/ZN (OAI32D0)                                                                    0.04       2.85 f
+  fanzed_core/lt_29/U434/ZN (OAI32D1)                                                                    0.17       3.02 r
+  fanzed_core/lt_29/GE_LT_GT_LE (top_width23_DW_cmp_2)                                                   0.00       3.02 r
+  fanzed_core/U38/Z (AN2XD1)                                                                             0.06       3.08 r
+  fanzed_core/U29/Z (AN2XD1)                                                                             0.04       3.12 r
+  fanzed_core/U16/Z (AN2XD1)                                                                             0.04       3.15 r
+  fanzed_core/U7/ZN (ND2D1)                                                                              0.02       3.17 f
+  fanzed_core/U32/Z (CKXOR2D0)                                                                           0.07       3.24 f
+  fanzed_core/U30/ZN (IINR4D0)                                                                           0.05       3.29 f
+  fanzed_core/U15/ZN (INVD1)                                                                             0.11       3.40 r
+  fanzed_core/U17/Z (AO22D0)                                                                             0.24       3.64 r
+  fanzed_core/u_shift/shift[1] (SHIFTER_width46)                                                         0.00       3.64 r
+  fanzed_core/u_shift/U75/ZN (INVD1)                                                                     0.18       3.82 f
+  fanzed_core/u_shift/U154/ZN (CKND0)                                                                    0.24       4.06 r
+  fanzed_core/u_shift/U519/ZN (MUX2ND0)                                                                  0.09       4.16 f
+  fanzed_core/u_shift/U523/ZN (MUX2ND0)                                                                  0.06       4.21 r
+  fanzed_core/u_shift/U73/Z (MUX2D0)                                                                     0.05       4.26 r
+  fanzed_core/u_shift/U65/ZN (OAI22D0)                                                                   0.03       4.29 f
+  fanzed_core/u_shift/U322/Z (AO22D0)                                                                    0.06       4.36 f
+  fanzed_core/u_shift/out0[22] (SHIFTER_width46)                                                         0.00       4.36 f
+  fanzed_core/out0[22] (top_width23)                                                                     0.00       4.36 f
+  U136/ZN (AOI22D1)                                                                                      0.17       4.52 r
+  fp_wrapper/shift[0] (FP_DIV_WRAPPER_32)                                                                0.00       4.52 r
+  fp_wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                              0.00       4.52 r
+  fp_wrapper/shared_wrapper/U15/CO (FA1D0)                                                               0.12       4.64 r
+  fp_wrapper/shared_wrapper/U16/CO (FA1D0)                                                               0.05       4.70 r
+  fp_wrapper/shared_wrapper/U17/CO (FA1D0)                                                               0.05       4.75 r
+  fp_wrapper/shared_wrapper/U18/CO (FA1D0)                                                               0.05       4.80 r
+  fp_wrapper/shared_wrapper/U19/CO (FA1D0)                                                               0.05       4.85 r
+  fp_wrapper/shared_wrapper/U20/CO (FA1D0)                                                               0.05       4.91 r
+  fp_wrapper/shared_wrapper/U45/Z (XOR3D1)                                                               0.08       4.98 f
+  fp_wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                      0.00       4.98 f
+  fp_wrapper/out0[30] (FP_DIV_WRAPPER_32)                                                                0.00       4.98 f
+  out0[30] (out)                                                                                         0.00       4.98 f
+  data arrival time                                                                                                 4.98
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -4.98
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       5.00
+
+
+  Startpoint: y[16] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio ZeroWireload    tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  LOD_width23_1      ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  ZERO_CNT_width23_1 ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width23_1 ZeroWireload         tcbn65gplustc_ccs
+  top_width23        ZeroWireload          tcbn65gplustc_ccs
+  LOD_width23_1_DW01_inc_0_DW01_inc_1 ZeroWireload tcbn65gplustc_ccs
+  LOD_ENC_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  top_width23_DW_cmp_2 ZeroWireload        tcbn65gplustc_ccs
+  top_width23_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width46    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[16] (in)                                                                                             0.01       0.03 r
+  fp_wrapper/y[16] (FP_DIV_WRAPPER_32)                                                                   0.00       0.03 r
+  fp_wrapper/shared_wrapper/y[16] (fp32_normal_finite_wrapper)                                           0.00       0.03 r
+  fp_wrapper/shared_wrapper/U46/Z (CKBD1)                                                                0.03       0.06 r
+  fp_wrapper/shared_wrapper/fraction_y[16] (fp32_normal_finite_wrapper)                                  0.00       0.06 r
+  fp_wrapper/mantissa_y[16] (FP_DIV_WRAPPER_32)                                                          0.00       0.06 r
+  lt_14/B[15] (fanzed_prior_fp32_paceio_DW_cmp_0)                                                        0.00       0.06 r
+  lt_14/U439/ZN (INVD1)                                                                                  0.01       0.07 f
+  lt_14/U495/Z (AN2D0)                                                                                   0.03       0.10 f
+  lt_14/U494/ZN (AOI21D0)                                                                                0.05       0.15 r
+  lt_14/U484/ZN (OAI211D0)                                                                               0.06       0.21 f
+  lt_14/U483/Z (AO221D0)                                                                                 0.11       0.32 f
+  lt_14/U482/ZN (CKND2D0)                                                                                0.03       0.35 r
+  lt_14/U466/ZN (OAI32D0)                                                                                0.04       0.38 f
+  lt_14/U461/ZN (OAI32D0)                                                                                0.08       0.47 r
+  lt_14/GE_LT_GT_LE (fanzed_prior_fp32_paceio_DW_cmp_0)                                                  0.00       0.47 r
+  U127/Z (CKBD1)                                                                                         0.14       0.60 r
+  U107/ZN (OAI22D1)                                                                                      0.07       0.67 f
+  fanzed_core/y[20] (top_width23)                                                                        0.00       0.67 f
+  fanzed_core/u_norm_y/x[20] (NORMALIZE_width23_1)                                                       0.00       0.67 f
+  fanzed_core/u_norm_y/lod/x[20] (ZERO_CNT_width23_1)                                                    0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/in0[20] (LOD_width23_1)                                                 0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/U26/ZN (INVD1)                                                          0.03       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/A[2] (LOD_width23_1_DW01_inc_0_DW01_inc_1)         0.00       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_2/CO (HA1D0)                                  0.06       0.75 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_3/CO (HA1D0)                                  0.06       0.81 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_4/CO (HA1D0)                                  0.06       0.88 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_5/CO (HA1D0)                                  0.06       0.94 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_6/CO (HA1D0)                                  0.06       1.00 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_7/CO (HA1D0)                                  0.06       1.06 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_8/CO (HA1D0)                                  0.06       1.12 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_9/CO (HA1D0)                                  0.06       1.18 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_10/CO (HA1D0)                                 0.06       1.24 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_11/CO (HA1D0)                                 0.06       1.30 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_12/CO (HA1D0)                                 0.06       1.36 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_13/CO (HA1D0)                                 0.06       1.42 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_14/CO (HA1D0)                                 0.06       1.48 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_15/CO (HA1D0)                                 0.06       1.54 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_16/CO (HA1D0)                                 0.06       1.60 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_17/CO (HA1D0)                                 0.06       1.66 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_18/CO (HA1D0)                                 0.06       1.72 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_19/CO (HA1D0)                                 0.06       1.78 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_20/CO (HA1D0)                                 0.06       1.84 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_21/CO (HA1D0)                                 0.05       1.89 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1/Z (CKXOR2D0)                                    0.06       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/SUM[22] (LOD_width23_1_DW01_inc_0_DW01_inc_1)      0.00       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/U24/Z (AN2XD1)                                                          0.03       1.98 f
+  fanzed_core/u_norm_y/lod/u_lod/out0[0] (LOD_width23_1)                                                 0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/l_one[0] (LOD_ENC_width23_1)                                            0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/U48/ZN (INVD1)                                                          0.01       1.99 r
+  fanzed_core/u_norm_y/lod/u_enc/U46/ZN (OAI31D1)                                                        0.02       2.02 f
+  fanzed_core/u_norm_y/lod/u_enc/U45/Z (CKBD1)                                                           0.03       2.05 f
+  fanzed_core/u_norm_y/lod/u_enc/num0[1] (LOD_ENC_width23_1)                                             0.00       2.05 f
+  fanzed_core/u_norm_y/lod/num0[1] (ZERO_CNT_width23_1)                                                  0.00       2.05 f
+  fanzed_core/u_norm_y/U5/Z (CKBD1)                                                                      0.05       2.09 f
+  fanzed_core/u_norm_y/shifter/shift[1] (SHIFTER_width23_1)                                              0.00       2.09 f
+  fanzed_core/u_norm_y/shifter/U35/ZN (INVD1)                                                            0.19       2.28 r
+  fanzed_core/u_norm_y/shifter/U223/ZN (MUX2ND0)                                                         0.09       2.37 r
+  fanzed_core/u_norm_y/shifter/U227/ZN (MUX2ND0)                                                         0.05       2.41 f
+  fanzed_core/u_norm_y/shifter/U10/ZN (NR2D1)                                                            0.05       2.46 r
+  fanzed_core/u_norm_y/shifter/U325/ZN (MUX2ND0)                                                         0.03       2.49 f
+  fanzed_core/u_norm_y/shifter/U160/ZN (ND2D1)                                                           0.03       2.52 r
+  fanzed_core/u_norm_y/shifter/out0[15] (SHIFTER_width23_1)                                              0.00       2.52 r
+  fanzed_core/u_norm_y/out0[15] (NORMALIZE_width23_1)                                                    0.00       2.52 r
+  fanzed_core/lt_29/B[15] (top_width23_DW_cmp_2)                                                         0.00       2.52 r
+  fanzed_core/lt_29/U439/ZN (INVD1)                                                                      0.01       2.54 f
+  fanzed_core/lt_29/U491/Z (AN2D0)                                                                       0.03       2.57 f
+  fanzed_core/lt_29/U490/ZN (AOI21D0)                                                                    0.05       2.62 r
+  fanzed_core/lt_29/U480/ZN (OAI211D0)                                                                   0.06       2.68 f
+  fanzed_core/lt_29/U479/Z (AO221D0)                                                                     0.11       2.78 f
+  fanzed_core/lt_29/U478/ZN (CKND2D0)                                                                    0.03       2.82 r
+  fanzed_core/lt_29/U462/ZN (OAI32D0)                                                                    0.04       2.85 f
+  fanzed_core/lt_29/U434/ZN (OAI32D1)                                                                    0.17       3.02 r
+  fanzed_core/lt_29/GE_LT_GT_LE (top_width23_DW_cmp_2)                                                   0.00       3.02 r
+  fanzed_core/U38/Z (AN2XD1)                                                                             0.06       3.08 r
+  fanzed_core/U29/Z (AN2XD1)                                                                             0.04       3.12 r
+  fanzed_core/U16/Z (AN2XD1)                                                                             0.04       3.15 r
+  fanzed_core/U7/ZN (ND2D1)                                                                              0.02       3.17 f
+  fanzed_core/U32/Z (CKXOR2D0)                                                                           0.07       3.24 f
+  fanzed_core/U30/ZN (IINR4D0)                                                                           0.05       3.29 f
+  fanzed_core/U15/ZN (INVD1)                                                                             0.11       3.40 r
+  fanzed_core/U17/Z (AO22D0)                                                                             0.24       3.64 r
+  fanzed_core/u_shift/shift[1] (SHIFTER_width46)                                                         0.00       3.64 r
+  fanzed_core/u_shift/U75/ZN (INVD1)                                                                     0.18       3.82 f
+  fanzed_core/u_shift/U154/ZN (CKND0)                                                                    0.24       4.06 r
+  fanzed_core/u_shift/U519/ZN (MUX2ND0)                                                                  0.09       4.16 f
+  fanzed_core/u_shift/U523/ZN (MUX2ND0)                                                                  0.06       4.21 r
+  fanzed_core/u_shift/U73/Z (MUX2D0)                                                                     0.05       4.26 r
+  fanzed_core/u_shift/U65/ZN (OAI22D0)                                                                   0.03       4.29 f
+  fanzed_core/u_shift/U322/Z (AO22D0)                                                                    0.06       4.36 f
+  fanzed_core/u_shift/out0[22] (SHIFTER_width46)                                                         0.00       4.36 f
+  fanzed_core/out0[22] (top_width23)                                                                     0.00       4.36 f
+  U136/ZN (AOI22D1)                                                                                      0.17       4.52 r
+  fp_wrapper/shift[0] (FP_DIV_WRAPPER_32)                                                                0.00       4.52 r
+  fp_wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                              0.00       4.52 r
+  fp_wrapper/shared_wrapper/U15/CO (FA1D0)                                                               0.12       4.64 r
+  fp_wrapper/shared_wrapper/U16/CO (FA1D0)                                                               0.05       4.70 r
+  fp_wrapper/shared_wrapper/U17/CO (FA1D0)                                                               0.05       4.75 r
+  fp_wrapper/shared_wrapper/U18/CO (FA1D0)                                                               0.05       4.80 r
+  fp_wrapper/shared_wrapper/U19/CO (FA1D0)                                                               0.05       4.85 r
+  fp_wrapper/shared_wrapper/U20/CO (FA1D0)                                                               0.05       4.91 r
+  fp_wrapper/shared_wrapper/U45/Z (XOR3D1)                                                               0.08       4.98 f
+  fp_wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                      0.00       4.98 f
+  fp_wrapper/out0[30] (FP_DIV_WRAPPER_32)                                                                0.00       4.98 f
+  out0[30] (out)                                                                                         0.00       4.98 f
+  data arrival time                                                                                                 4.98
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -4.98
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       5.00
+
+
+  Startpoint: y[16] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio ZeroWireload    tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  fanzed_prior_fp32_paceio_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  LOD_width23_1      ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  ZERO_CNT_width23_1 ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width23_1 ZeroWireload         tcbn65gplustc_ccs
+  top_width23        ZeroWireload          tcbn65gplustc_ccs
+  LOD_width23_1_DW01_inc_0_DW01_inc_1 ZeroWireload tcbn65gplustc_ccs
+  LOD_ENC_width23_1  ZeroWireload          tcbn65gplustc_ccs
+  top_width23_DW_cmp_2 ZeroWireload        tcbn65gplustc_ccs
+  top_width23_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width46    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[16] (in)                                                                                             0.01       0.03 r
+  fp_wrapper/y[16] (FP_DIV_WRAPPER_32)                                                                   0.00       0.03 r
+  fp_wrapper/shared_wrapper/y[16] (fp32_normal_finite_wrapper)                                           0.00       0.03 r
+  fp_wrapper/shared_wrapper/U46/Z (CKBD1)                                                                0.03       0.06 r
+  fp_wrapper/shared_wrapper/fraction_y[16] (fp32_normal_finite_wrapper)                                  0.00       0.06 r
+  fp_wrapper/mantissa_y[16] (FP_DIV_WRAPPER_32)                                                          0.00       0.06 r
+  lt_14/B[15] (fanzed_prior_fp32_paceio_DW_cmp_0)                                                        0.00       0.06 r
+  lt_14/U439/ZN (INVD1)                                                                                  0.01       0.07 f
+  lt_14/U495/Z (AN2D0)                                                                                   0.03       0.10 f
+  lt_14/U494/ZN (AOI21D0)                                                                                0.05       0.15 r
+  lt_14/U484/ZN (OAI211D0)                                                                               0.06       0.21 f
+  lt_14/U483/Z (AO221D0)                                                                                 0.11       0.32 f
+  lt_14/U482/ZN (CKND2D0)                                                                                0.03       0.35 r
+  lt_14/U466/ZN (OAI32D0)                                                                                0.04       0.38 f
+  lt_14/U461/ZN (OAI32D0)                                                                                0.08       0.47 r
+  lt_14/GE_LT_GT_LE (fanzed_prior_fp32_paceio_DW_cmp_0)                                                  0.00       0.47 r
+  U127/Z (CKBD1)                                                                                         0.14       0.60 r
+  U107/ZN (OAI22D1)                                                                                      0.07       0.67 f
+  fanzed_core/y[20] (top_width23)                                                                        0.00       0.67 f
+  fanzed_core/u_norm_y/x[20] (NORMALIZE_width23_1)                                                       0.00       0.67 f
+  fanzed_core/u_norm_y/lod/x[20] (ZERO_CNT_width23_1)                                                    0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/in0[20] (LOD_width23_1)                                                 0.00       0.67 f
+  fanzed_core/u_norm_y/lod/u_lod/U26/ZN (INVD1)                                                          0.03       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/A[2] (LOD_width23_1_DW01_inc_0_DW01_inc_1)         0.00       0.70 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_2/CO (HA1D0)                                  0.06       0.75 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_3/CO (HA1D0)                                  0.06       0.81 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_4/CO (HA1D0)                                  0.06       0.88 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_5/CO (HA1D0)                                  0.06       0.94 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_6/CO (HA1D0)                                  0.06       1.00 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_7/CO (HA1D0)                                  0.06       1.06 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_8/CO (HA1D0)                                  0.06       1.12 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_9/CO (HA1D0)                                  0.06       1.18 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_10/CO (HA1D0)                                 0.06       1.24 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_11/CO (HA1D0)                                 0.06       1.30 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_12/CO (HA1D0)                                 0.06       1.36 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_13/CO (HA1D0)                                 0.06       1.42 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_14/CO (HA1D0)                                 0.06       1.48 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_15/CO (HA1D0)                                 0.06       1.54 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_16/CO (HA1D0)                                 0.06       1.60 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_17/CO (HA1D0)                                 0.06       1.66 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_18/CO (HA1D0)                                 0.06       1.72 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_19/CO (HA1D0)                                 0.06       1.78 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_20/CO (HA1D0)                                 0.06       1.84 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1_1_21/CO (HA1D0)                                 0.05       1.89 r
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/U1/Z (CKXOR2D0)                                    0.06       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/add_0_root_add_23_ni/SUM[22] (LOD_width23_1_DW01_inc_0_DW01_inc_1)      0.00       1.95 f
+  fanzed_core/u_norm_y/lod/u_lod/U24/Z (AN2XD1)                                                          0.03       1.98 f
+  fanzed_core/u_norm_y/lod/u_lod/out0[0] (LOD_width23_1)                                                 0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/l_one[0] (LOD_ENC_width23_1)                                            0.00       1.98 f
+  fanzed_core/u_norm_y/lod/u_enc/U48/ZN (INVD1)                                                          0.01       1.99 r
+  fanzed_core/u_norm_y/lod/u_enc/U46/ZN (OAI31D1)                                                        0.02       2.02 f
+  fanzed_core/u_norm_y/lod/u_enc/U45/Z (CKBD1)                                                           0.03       2.05 f
+  fanzed_core/u_norm_y/lod/u_enc/num0[1] (LOD_ENC_width23_1)                                             0.00       2.05 f
+  fanzed_core/u_norm_y/lod/num0[1] (ZERO_CNT_width23_1)                                                  0.00       2.05 f
+  fanzed_core/u_norm_y/U5/Z (CKBD1)                                                                      0.05       2.09 f
+  fanzed_core/u_norm_y/shifter/shift[1] (SHIFTER_width23_1)                                              0.00       2.09 f
+  fanzed_core/u_norm_y/shifter/U35/ZN (INVD1)                                                            0.19       2.28 r
+  fanzed_core/u_norm_y/shifter/U223/ZN (MUX2ND0)                                                         0.09       2.37 r
+  fanzed_core/u_norm_y/shifter/U227/ZN (MUX2ND0)                                                         0.05       2.41 f
+  fanzed_core/u_norm_y/shifter/U10/ZN (NR2D1)                                                            0.05       2.46 r
+  fanzed_core/u_norm_y/shifter/U325/ZN (MUX2ND0)                                                         0.03       2.49 f
+  fanzed_core/u_norm_y/shifter/U160/ZN (ND2D1)                                                           0.03       2.52 r
+  fanzed_core/u_norm_y/shifter/out0[15] (SHIFTER_width23_1)                                              0.00       2.52 r
+  fanzed_core/u_norm_y/out0[15] (NORMALIZE_width23_1)                                                    0.00       2.52 r
+  fanzed_core/lt_29/B[15] (top_width23_DW_cmp_2)                                                         0.00       2.52 r
+  fanzed_core/lt_29/U439/ZN (INVD1)                                                                      0.01       2.54 f
+  fanzed_core/lt_29/U491/Z (AN2D0)                                                                       0.03       2.57 f
+  fanzed_core/lt_29/U490/ZN (AOI21D0)                                                                    0.05       2.62 r
+  fanzed_core/lt_29/U480/ZN (OAI211D0)                                                                   0.06       2.68 f
+  fanzed_core/lt_29/U479/Z (AO221D0)                                                                     0.11       2.78 f
+  fanzed_core/lt_29/U478/ZN (CKND2D0)                                                                    0.03       2.82 r
+  fanzed_core/lt_29/U462/ZN (OAI32D0)                                                                    0.04       2.85 f
+  fanzed_core/lt_29/U434/ZN (OAI32D1)                                                                    0.17       3.02 r
+  fanzed_core/lt_29/GE_LT_GT_LE (top_width23_DW_cmp_2)                                                   0.00       3.02 r
+  fanzed_core/U38/Z (AN2XD1)                                                                             0.06       3.08 r
+  fanzed_core/U29/Z (AN2XD1)                                                                             0.04       3.12 r
+  fanzed_core/U16/Z (AN2XD1)                                                                             0.04       3.15 r
+  fanzed_core/U7/ZN (ND2D1)                                                                              0.02       3.17 f
+  fanzed_core/U32/Z (CKXOR2D0)                                                                           0.07       3.24 f
+  fanzed_core/U30/ZN (IINR4D0)                                                                           0.05       3.29 f
+  fanzed_core/U15/ZN (INVD1)                                                                             0.11       3.40 r
+  fanzed_core/U17/Z (AO22D0)                                                                             0.24       3.64 r
+  fanzed_core/u_shift/shift[1] (SHIFTER_width46)                                                         0.00       3.64 r
+  fanzed_core/u_shift/U75/ZN (INVD1)                                                                     0.18       3.82 f
+  fanzed_core/u_shift/U154/ZN (CKND0)                                                                    0.24       4.06 r
+  fanzed_core/u_shift/U519/ZN (MUX2ND0)                                                                  0.09       4.16 f
+  fanzed_core/u_shift/U523/ZN (MUX2ND0)                                                                  0.06       4.21 r
+  fanzed_core/u_shift/U73/Z (MUX2D0)                                                                     0.05       4.26 r
+  fanzed_core/u_shift/U65/ZN (OAI22D0)                                                                   0.03       4.29 f
+  fanzed_core/u_shift/U322/Z (AO22D0)                                                                    0.06       4.36 f
+  fanzed_core/u_shift/out0[22] (SHIFTER_width46)                                                         0.00       4.36 f
+  fanzed_core/out0[22] (top_width23)                                                                     0.00       4.36 f
+  U136/ZN (AOI22D1)                                                                                      0.17       4.52 r
+  fp_wrapper/shift[0] (FP_DIV_WRAPPER_32)                                                                0.00       4.52 r
+  fp_wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                              0.00       4.52 r
+  fp_wrapper/shared_wrapper/U15/CO (FA1D0)                                                               0.12       4.64 r
+  fp_wrapper/shared_wrapper/U16/CO (FA1D0)                                                               0.05       4.70 r
+  fp_wrapper/shared_wrapper/U17/CO (FA1D0)                                                               0.05       4.75 r
+  fp_wrapper/shared_wrapper/U18/CO (FA1D0)                                                               0.05       4.80 r
+  fp_wrapper/shared_wrapper/U19/CO (FA1D0)                                                               0.05       4.85 r
+  fp_wrapper/shared_wrapper/U20/CO (FA1D0)                                                               0.05       4.91 r
+  fp_wrapper/shared_wrapper/U45/Z (XOR3D1)                                                               0.08       4.98 f
+  fp_wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                      0.00       4.98 f
+  fp_wrapper/out0[30] (FP_DIV_WRAPPER_32)                                                                0.00       4.98 f
+  out0[30] (out)                                                                                         0.00       4.98 f
+  data arrival time                                                                                                 4.98
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -4.98
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       5.00
+
+
+1

@@ -8,9 +8,9 @@ retained for reproduction and ablation studies.
 
 | Purpose | Current RTL | Tops in active results | Status |
 |---|---|---|---|
-| Precision-pruned DIV-only L0-L3 | `root_opt/oadm_root_opt.v` | `oadm_fixed_l0_div_root_opt` through `oadm_fixed_l3_div_root_opt` | Latest fixed-level DIV implementation and source of `ppa_results/fixed_level_root_opt_10ns.csv` |
+| Precision-pruned DIV-only L0-L3 | `root_opt/oadm_root_opt.v` | `oadm_fixed_l0_div_root_opt` through `oadm_fixed_l3_div_root_opt` | Latest fixed-level DIV implementation and source of `ppa_results/root_opt_hier_compile_10ns.csv` |
 | Precision-pruned runtime DIV+MUL | `root_opt/oadm_root_opt.v` | `oadm_runtime_root_opt` | Latest runtime root-pruning experiment; not interchangeable with fixed-level PPA |
-| Precision-pruned MUL-only L0-L3 | `mul_root_opt/oadm_mul_root_opt.v` | `oadm_fixed_l*_mul_root_opt_accuracy`, `oadm_fixed_l*_mul_root_opt`, `oadm_fixed_l*_mul_root_opt_aggressive` | Latest fixed-level MUL experiment and source of `ppa_results/mul_root_opt_results_10ns.csv` |
+| Precision-pruned MUL-only L0-L3 | `mul_root_opt/oadm_mul_root_opt.v` | `oadm_fixed_l*_mul_root_opt_accuracy`, `oadm_fixed_l*_mul_root_opt`, `oadm_fixed_l*_mul_root_opt_aggressive` | Latest fixed-level MUL experiment and source of `ppa_results/mul_root_opt_hier_compile_10ns.csv` |
 | Current pre-pruning OADM baseline | `divopt/oadm_multilevel_opt.v` plus the helper files listed below | `oadm_fixed_l*_opt`, `oadm_fixed_l*_div_opt`, and `oadm_fixed_l*_mul_canonical` | Current comparison baseline used by the canonical 10 ns tables |
 | Normal-finite FP32 shell | `../PACE/common/FP_DIV_WRAPPER_32.v` | `fp32_normal_finite_wrapper` | Shared wrapper used by current OADM DIV, OADM MUL, PACE, and normalized prior-work comparisons |
 
@@ -72,8 +72,8 @@ PACE/common/FP_DIV_WRAPPER_32.v
 rtl/mul_root_opt/oadm_mul_root_opt.v
 ```
 
-Their authoritative flow scripts are `dc/root_opt/run_all.sh` and
-`dc/mul_root_opt/run_all.sh`.
+Their current hierarchy-preserving flow is `dc/hier_compile_10ns/run_all.sh`.
+The older dedicated scripts use the previous explicit-flatten policy.
 
 ## Current Reference RTL
 
@@ -118,15 +118,16 @@ Before changing or reporting a PPA row, trace it in this order:
 CSV row -> top module -> flow source list -> DC netlist/report -> PT report
 ```
 
-The current paper-facing 10 ns result indexes are:
+The current hierarchy-preserving 10 ns result indexes are:
 
 ```text
-ppa_results/fixed_level_root_opt_10ns.csv
-ppa_results/mul_root_opt_results_10ns.csv
-ppa_results/div_only_vs_pace.csv
-ppa_results/canonical_refresh_10ns.csv
-ppa_results/divmul_sharing_ablation_10ns.csv
-ppa_results/exact_baselines_10ns_nopipe.csv
+ppa_results/hier_compile_master_10ns.csv
+ppa_results/root_opt_hier_compile_10ns.csv
+ppa_results/mul_root_opt_hier_compile_10ns.csv
+ppa_results/div_only_vs_pace_hier_compile_10ns.csv
+ppa_results/priorwork_hier_compile_10ns.csv
+ppa_results/divmul_sharing_ablation_hier_compile_10ns.csv
+ppa_results/exact_baselines_hier_compile_10ns.csv
 ```
 
 Do not combine them with legacy 1.5 ns pipelined results or replace a top with

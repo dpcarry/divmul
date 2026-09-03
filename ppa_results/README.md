@@ -14,8 +14,9 @@ the local comparison boundary is:
 - Zero clock uncertainty and 20 ps input/output delay.
 - `INVD0` input driver and 0.004 output load.
 - Input-only maximum capacitance and fanout constraints.
-- Explicit `ungroup -all -flatten`, `set_max_area 0`, and effective
-  `optimize_netlist -area` mapping.
+- Hierarchy-preserving ordinary `compile`, followed by `set_max_area 0` and
+  `optimize_netlist -area`. No `ungroup`, explicit flattening, or
+  `compile_ultra` is allowed.
 - PrimeTime vectorless probability 0.5 and 0.1 input toggles per 10 ns.
 
 Approximate FP32 DIV and MUL rows use the shared
@@ -30,7 +31,37 @@ OADM rows remain separate architectural baselines and are labeled as such.
 PPA can be compared structurally only when rows use this common boundary.
 Accuracy values require an additional same-vector and same-interface check.
 
-## Current Paper-Facing CSVs
+## Current Hierarchy-Preserving CSVs
+
+The September 3 rerun replaces the explicit-flatten/`compile_ultra` PPA
+numbers as the current comparison boundary. The authoritative tables are:
+
+- `hier_compile_master_10ns.csv`: all 46 attempted points, report paths,
+  hierarchy/cell counts, and machine-checkable pass status.
+- `exact_baselines_hier_compile_10ns.csv`: exact MUL, DIV, and selectable
+  DIV+MUL.
+- `root_opt_hier_compile_10ns.csv`: root-opt DIV L0-L3 and runtime DIV+MUL.
+- `mul_root_opt_hier_compile_10ns.csv`: all 12 MUL root-opt variants.
+- `div_only_vs_pace_hier_compile_10ns.csv`: root-opt OADM DIV L0-L3 against
+  PACE L1-L4 under one wrapper and mapping boundary.
+- `priorwork_hier_compile_10ns.csv`: QIAD, FaNZeD, TruncApp, and LEAD.
+- `divmul_sharing_ablation_hier_compile_10ns.csv`: the retained pre-pruning
+  centered-residual sharing experiment. It is not a root-opt sharing result.
+- `amlib_oam_vs_oadm_mul_hier_compile_10ns.csv`: AM-Lib OAM against the
+  pre-pruning OADM MUL-only baseline.
+
+Of the 46 attempted points, 45 are valid combinational DC/PT results. The
+SIMDive-derived wrapper is retained in the master audit with status
+`check_timing_failed;sequential_present`: ordinary `compile` preserves 23
+RTL-inferred latches, so it is excluded from strict combinational comparison.
+Changing its RTL to remove those latches would violate the rule that only the
+mapping policy changes in this rerun.
+
+The unsuffixed CSVs described below are the previous explicit-flatten campaign.
+They remain provenance and accuracy-selection records, but their PPA columns
+must not be mixed with the current hierarchy-preserving tables.
+
+## Previous Explicit-Flatten CSVs
 
 ### `canonical_refresh_10ns.csv`
 
@@ -165,15 +196,15 @@ centered index has slightly lower area and delay but slightly higher power.
 
 ### `pace_flatten_sensitivity_10ns.csv`
 
-Methodology audit comparing legacy hierarchy-preserving, flatten-only, and
+Methodology audit comparing the older hierarchy-preserving, flatten-only, and
 flatten-plus-area-optimization PACE mappings at L1-L4. It documents why
-mapping policy materially changes PPA and why the final cross-design tables use
-the aligned explicit-flatten policy. Legacy rows are sensitivity evidence and
-must not be copied into current paper-facing comparisons.
+mapping policy materially changes PPA. Its explicit-flatten recommendation was
+superseded by the September 3 hierarchy-preserving ordinary-`compile` rerun.
 
-## Reproduction
+## Previous Flow Reproduction
 
-Run `dc/canonical_refresh/run_all.sh`, followed by:
+The following commands reproduce the previous explicit-flatten campaign and
+its accuracy studies; they are retained for provenance:
 
 ```text
 qsim_rtl/simdive_original/run_accuracy.sh
@@ -196,11 +227,25 @@ bash qsim_rtl/mul_root_opt/run_gate_miter.sh
 .venv/bin/python scripts/update_unified_wrapper_results.py
 ```
 
-The CSV generator refuses to update its five generated tables if a required
-report is missing, hierarchical, sequential, contains a macro or black box,
-fails PrimeTime `check_timing`, or has a maximum-delay violation. Canonical raw
-reports are under `dc/canonical_refresh/outputs_10ns/` and
-`pt_dc/canonical_refresh/reports_10ns/`.
+Reproduce the current mapping campaign with:
+
+```text
+bash dc/hier_compile_10ns/run_all.sh
+.venv/bin/python scripts/collect_hier_compile_results.py
+GATE_DC_ROOT="$PWD/dc/hier_compile_10ns/outputs/root_div" \
+  GATE_LOG="$PWD/qsim_rtl/root_opt/hier_compile_gate_miter.log" \
+  bash qsim_rtl/root_opt/run_gate_miter.sh
+GATE_DC_ROOT="$PWD/dc/hier_compile_10ns/outputs/mul_root" \
+  GATE_LOG="$PWD/qsim_rtl/mul_root_opt/hier_compile_gate_miter.log" \
+  bash qsim_rtl/mul_root_opt/run_gate_miter.sh
+bash qsim_rtl/hier_compile_gate/run_gate_miters.sh
+```
+
+Raw DC and PT evidence is under `dc/hier_compile_10ns/outputs/` and
+`pt_dc/hier_compile_10ns/reports/`. The collector requires every report and
+netlist, checks for black boxes and sequential cells, verifies hierarchy is
+retained, and records setup/check-timing status instead of silently dropping
+invalid points.
 
 ## Removed Obsolete CSVs
 

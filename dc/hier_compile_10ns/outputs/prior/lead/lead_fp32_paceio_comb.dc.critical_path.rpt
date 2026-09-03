@@ -1,0 +1,1596 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : lead_fp32_paceio_comb
+Version: U-2022.12-SP7
+Date   : Thu Sep  3 12:48:12 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: x[15] (input port clocked by vclk)
+  Endpoint: out0[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  lead_fp32_paceio_comb ZeroWireload       tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width24_0  ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width24_0 ZeroWireload         tcbn65gplustc_ccs
+  lead_comb_core     ZeroWireload          tcbn65gplustc_ccs
+  lead_fp32_paceio_comb_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_3_DW01_sub_4 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_4_DW01_sub_5 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_cmp_1 ZeroWireload     tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_add_1_DW01_add_5 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width73    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                           Incr       Path
+  --------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                          0.00       0.00
+  clock network delay (ideal)                                                     0.00       0.00
+  input external delay                                                            0.02       0.02 f
+  x[15] (in)                                                                      0.00       0.02 f
+  fp_wrapper/x[15] (FP_DIV_WRAPPER_32)                                            0.00       0.02 f
+  fp_wrapper/shared_wrapper/x[15] (fp32_normal_finite_wrapper)                    0.00       0.02 f
+  fp_wrapper/shared_wrapper/U48/Z (CKBD1)                                         0.03       0.05 f
+  fp_wrapper/shared_wrapper/fraction_x[15] (fp32_normal_finite_wrapper)           0.00       0.05 f
+  fp_wrapper/mantissa_x[15] (FP_DIV_WRAPPER_32)                                   0.00       0.05 f
+  lead_core/x[15] (lead_comb_core)                                                0.00       0.05 f
+  lead_core/norm_a/x[15] (NORMALIZE_width24_0)                                    0.00       0.05 f
+  lead_core/norm_a/shifter/x[15] (SHIFTER_width24_0)                              0.00       0.05 f
+  lead_core/norm_a/shifter/U46/ZN (INVD0)                                         0.02       0.07 r
+  lead_core/norm_a/shifter/U42/ZN (CKND1)                                         0.02       0.09 f
+  lead_core/norm_a/shifter/out0[15] (SHIFTER_width24_0)                           0.00       0.09 f
+  lead_core/norm_a/out0[15] (NORMALIZE_width24_0)                                 0.00       0.09 f
+  lead_core/lt_18/A[16] (lead_comb_core_DW_cmp_1)                                 0.00       0.09 f
+  lead_core/lt_18/U533/ZN (INR2D0)                                                0.04       0.13 f
+  lead_core/lt_18/U532/ZN (AOI21D0)                                               0.06       0.18 r
+  lead_core/lt_18/U465/ZN (INVD1)                                                 0.01       0.20 f
+  lead_core/lt_18/U531/ZN (AOI211D0)                                              0.09       0.28 r
+  lead_core/lt_18/U520/ZN (OAI221D0)                                              0.06       0.35 f
+  lead_core/lt_18/U519/ZN (CKND2D0)                                               0.04       0.38 r
+  lead_core/lt_18/U515/ZN (OAI211D0)                                              0.03       0.42 f
+  lead_core/lt_18/U491/ZN (OAI32D0)                                               0.07       0.49 r
+  lead_core/lt_18/U467/Z (CKBD1)                                                  0.23       0.72 r
+  lead_core/lt_18/GE_LT_GT_LE (lead_comb_core_DW_cmp_1)                           0.00       0.72 r
+  lead_core/U103/Z (CKBD1)                                                        0.05       0.77 r
+  lead_core/U78/ZN (INVD1)                                                        0.10       0.87 f
+  lead_core/U80/Z (AO22D0)                                                        0.18       1.04 f
+  lead_core/mult_21/a[5] (lead_comb_core_DW_mult_uns_1)                           0.00       1.04 f
+  lead_core/mult_21/U42/CO (FA1D0)                                                0.14       1.19 f
+  lead_core/mult_21/U266/Z (AN2D0)                                                0.04       1.22 f
+  lead_core/mult_21/U40/CO (FA1D0)                                                0.05       1.27 f
+  lead_core/mult_21/U39/CO (FA1D0)                                                0.06       1.33 f
+  lead_core/mult_21/U38/CO (FA1D0)                                                0.06       1.38 f
+  lead_core/mult_21/U37/CO (FA1D0)                                                0.06       1.44 f
+  lead_core/mult_21/U36/CO (FA1D0)                                                0.06       1.49 f
+  lead_core/mult_21/U35/CO (FA1D0)                                                0.06       1.55 f
+  lead_core/mult_21/U34/CO (FA1D0)                                                0.06       1.60 f
+  lead_core/mult_21/U33/CO (FA1D0)                                                0.06       1.66 f
+  lead_core/mult_21/U32/CO (FA1D0)                                                0.06       1.72 f
+  lead_core/mult_21/U31/CO (FA1D0)                                                0.06       1.77 f
+  lead_core/mult_21/U30/CO (FA1D0)                                                0.06       1.83 f
+  lead_core/mult_21/U29/CO (FA1D0)                                                0.06       1.88 f
+  lead_core/mult_21/U28/CO (FA1D0)                                                0.06       1.94 f
+  lead_core/mult_21/U27/CO (FA1D0)                                                0.06       1.99 f
+  lead_core/mult_21/U26/CO (FA1D0)                                                0.06       2.05 f
+  lead_core/mult_21/U25/CO (FA1D0)                                                0.06       2.10 f
+  lead_core/mult_21/U24/CO (FA1D0)                                                0.06       2.16 f
+  lead_core/mult_21/U23/CO (FA1D0)                                                0.06       2.21 f
+  lead_core/mult_21/U22/CO (FA1D0)                                                0.06       2.27 f
+  lead_core/mult_21/U21/CO (FA1D0)                                                0.06       2.32 f
+  lead_core/mult_21/U20/CO (FA1D0)                                                0.06       2.38 f
+  lead_core/mult_21/U19/CO (FA1D0)                                                0.06       2.43 f
+  lead_core/mult_21/U18/CO (FA1D0)                                                0.06       2.49 f
+  lead_core/mult_21/U17/CO (FA1D0)                                                0.06       2.55 f
+  lead_core/mult_21/U16/CO (FA1D0)                                                0.06       2.60 f
+  lead_core/mult_21/U15/CO (FA1D0)                                                0.06       2.66 f
+  lead_core/mult_21/U14/CO (FA1D0)                                                0.06       2.71 f
+  lead_core/mult_21/U13/CO (FA1D0)                                                0.06       2.77 f
+  lead_core/mult_21/U12/CO (FA1D0)                                                0.06       2.82 f
+  lead_core/mult_21/U11/CO (FA1D0)                                                0.06       2.88 f
+  lead_core/mult_21/U10/CO (FA1D0)                                                0.06       2.93 f
+  lead_core/mult_21/U9/CO (FA1D0)                                                 0.06       2.99 f
+  lead_core/mult_21/U8/CO (FA1D0)                                                 0.06       3.04 f
+  lead_core/mult_21/U7/CO (FA1D0)                                                 0.06       3.10 f
+  lead_core/mult_21/U6/CO (FA1D0)                                                 0.06       3.15 f
+  lead_core/mult_21/U5/CO (FA1D0)                                                 0.06       3.21 f
+  lead_core/mult_21/U4/CO (FA1D0)                                                 0.06       3.26 f
+  lead_core/mult_21/U3/CO (FA1D0)                                                 0.06       3.32 f
+  lead_core/mult_21/U2/CO (FA1D0)                                                 0.06       3.38 f
+  lead_core/mult_21/U312/Z (CKXOR2D0)                                             0.08       3.46 r
+  lead_core/mult_21/product[47] (lead_comb_core_DW_mult_uns_1)                    0.00       3.46 r
+  lead_core/mult_23/b[23] (lead_comb_core_DW_mult_uns_0)                          0.00       3.46 r
+  lead_core/mult_23/U580/ZN (INVD1)                                               0.06       3.52 f
+  lead_core/mult_23/U840/ZN (NR2D0)                                               0.07       3.59 r
+  lead_core/mult_23/U160/S (CMPE42D1)                                             0.18       3.77 f
+  lead_core/mult_23/U157/S (CMPE42D1)                                             0.17       3.95 f
+  lead_core/mult_23/U156/S (CMPE42D1)                                             0.14       4.09 f
+  lead_core/mult_23/U77/CO (FA1D0)                                                0.10       4.19 f
+  lead_core/mult_23/U76/CO (FA1D0)                                                0.06       4.24 f
+  lead_core/mult_23/U75/CO (FA1D0)                                                0.06       4.30 f
+  lead_core/mult_23/U74/CO (FA1D0)                                                0.06       4.35 f
+  lead_core/mult_23/U73/CO (FA1D0)                                                0.06       4.41 f
+  lead_core/mult_23/U72/CO (FA1D0)                                                0.06       4.47 f
+  lead_core/mult_23/U71/CO (FA1D0)                                                0.06       4.52 f
+  lead_core/mult_23/U70/CO (FA1D0)                                                0.06       4.58 f
+  lead_core/mult_23/U69/CO (FA1D0)                                                0.06       4.63 f
+  lead_core/mult_23/U68/CO (FA1D0)                                                0.06       4.69 f
+  lead_core/mult_23/U67/CO (FA1D0)                                                0.06       4.74 f
+  lead_core/mult_23/U66/CO (FA1D0)                                                0.06       4.80 f
+  lead_core/mult_23/U65/CO (FA1D0)                                                0.06       4.85 f
+  lead_core/mult_23/U64/CO (FA1D0)                                                0.06       4.91 f
+  lead_core/mult_23/U63/CO (FA1D0)                                                0.06       4.96 f
+  lead_core/mult_23/U62/CO (FA1D0)                                                0.06       5.02 f
+  lead_core/mult_23/U61/CO (FA1D0)                                                0.06       5.07 f
+  lead_core/mult_23/U60/CO (FA1D0)                                                0.06       5.13 f
+  lead_core/mult_23/U59/CO (FA1D0)                                                0.06       5.18 f
+  lead_core/mult_23/U58/CO (FA1D0)                                                0.06       5.24 f
+  lead_core/mult_23/U57/CO (FA1D0)                                                0.06       5.30 f
+  lead_core/mult_23/U56/S (FA1D0)                                                 0.07       5.37 r
+  lead_core/mult_23/product[46] (lead_comb_core_DW_mult_uns_0)                    0.00       5.37 r
+  lead_core/add_26/A[45] (lead_comb_core_DW01_add_1_DW01_add_5)                   0.00       5.37 r
+  lead_core/add_26/U1_45/CO (FA1D0)                                               0.09       5.46 r
+  lead_core/add_26/U1_46/CO (FA1D0)                                               0.05       5.51 r
+  lead_core/add_26/U5/Z (CKXOR2D1)                                                0.05       5.56 f
+  lead_core/add_26/SUM[47] (lead_comb_core_DW01_add_1_DW01_add_5)                 0.00       5.56 f
+  lead_core/shift_out/x[47] (SHIFTER_width73)                                     0.00       5.56 f
+  lead_core/shift_out/U86/ZN (INVD1)                                              0.01       5.58 r
+  lead_core/shift_out/U24/ZN (CKND0)                                              0.01       5.59 f
+  lead_core/shift_out/out0[47] (SHIFTER_width73)                                  0.00       5.59 f
+  lead_core/out0[47] (lead_comb_core)                                             0.00       5.59 f
+  U54/Z (AO22D0)                                                                  0.06       5.65 f
+  fp_wrapper/mantissa_out[22] (FP_DIV_WRAPPER_32)                                 0.00       5.65 f
+  fp_wrapper/shared_wrapper/result_fraction[22] (fp32_normal_finite_wrapper)      0.00       5.65 f
+  fp_wrapper/shared_wrapper/U42/Z (CKBD1)                                         0.03       5.69 f
+  fp_wrapper/shared_wrapper/result[22] (fp32_normal_finite_wrapper)               0.00       5.69 f
+  fp_wrapper/out0[22] (FP_DIV_WRAPPER_32)                                         0.00       5.69 f
+  out0[22] (out)                                                                  0.00       5.69 f
+  data arrival time                                                                          5.69
+
+  clock vclk (rise edge)                                                         10.00      10.00
+  clock network delay (ideal)                                                     0.00      10.00
+  output external delay                                                          -0.02       9.98
+  data required time                                                                         9.98
+  --------------------------------------------------------------------------------------------------
+  data required time                                                                         9.98
+  data arrival time                                                                         -5.69
+  --------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                4.29
+
+
+  Startpoint: x[15] (input port clocked by vclk)
+  Endpoint: out0[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  lead_fp32_paceio_comb ZeroWireload       tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width24_0  ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width24_0 ZeroWireload         tcbn65gplustc_ccs
+  lead_comb_core     ZeroWireload          tcbn65gplustc_ccs
+  lead_fp32_paceio_comb_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_3_DW01_sub_4 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_4_DW01_sub_5 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_cmp_1 ZeroWireload     tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_add_1_DW01_add_5 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width73    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                           Incr       Path
+  --------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                          0.00       0.00
+  clock network delay (ideal)                                                     0.00       0.00
+  input external delay                                                            0.02       0.02 f
+  x[15] (in)                                                                      0.00       0.02 f
+  fp_wrapper/x[15] (FP_DIV_WRAPPER_32)                                            0.00       0.02 f
+  fp_wrapper/shared_wrapper/x[15] (fp32_normal_finite_wrapper)                    0.00       0.02 f
+  fp_wrapper/shared_wrapper/U48/Z (CKBD1)                                         0.03       0.05 f
+  fp_wrapper/shared_wrapper/fraction_x[15] (fp32_normal_finite_wrapper)           0.00       0.05 f
+  fp_wrapper/mantissa_x[15] (FP_DIV_WRAPPER_32)                                   0.00       0.05 f
+  lead_core/x[15] (lead_comb_core)                                                0.00       0.05 f
+  lead_core/norm_a/x[15] (NORMALIZE_width24_0)                                    0.00       0.05 f
+  lead_core/norm_a/shifter/x[15] (SHIFTER_width24_0)                              0.00       0.05 f
+  lead_core/norm_a/shifter/U46/ZN (INVD0)                                         0.02       0.07 r
+  lead_core/norm_a/shifter/U42/ZN (CKND1)                                         0.02       0.09 f
+  lead_core/norm_a/shifter/out0[15] (SHIFTER_width24_0)                           0.00       0.09 f
+  lead_core/norm_a/out0[15] (NORMALIZE_width24_0)                                 0.00       0.09 f
+  lead_core/lt_18/A[16] (lead_comb_core_DW_cmp_1)                                 0.00       0.09 f
+  lead_core/lt_18/U533/ZN (INR2D0)                                                0.04       0.13 f
+  lead_core/lt_18/U532/ZN (AOI21D0)                                               0.06       0.18 r
+  lead_core/lt_18/U465/ZN (INVD1)                                                 0.01       0.20 f
+  lead_core/lt_18/U531/ZN (AOI211D0)                                              0.09       0.28 r
+  lead_core/lt_18/U520/ZN (OAI221D0)                                              0.06       0.35 f
+  lead_core/lt_18/U519/ZN (CKND2D0)                                               0.04       0.38 r
+  lead_core/lt_18/U515/ZN (OAI211D0)                                              0.03       0.42 f
+  lead_core/lt_18/U491/ZN (OAI32D0)                                               0.07       0.49 r
+  lead_core/lt_18/U467/Z (CKBD1)                                                  0.23       0.72 r
+  lead_core/lt_18/GE_LT_GT_LE (lead_comb_core_DW_cmp_1)                           0.00       0.72 r
+  lead_core/U103/Z (CKBD1)                                                        0.05       0.77 r
+  lead_core/U78/ZN (INVD1)                                                        0.10       0.87 f
+  lead_core/U80/Z (AO22D0)                                                        0.18       1.04 f
+  lead_core/mult_21/a[5] (lead_comb_core_DW_mult_uns_1)                           0.00       1.04 f
+  lead_core/mult_21/U42/CO (FA1D0)                                                0.14       1.19 f
+  lead_core/mult_21/U266/Z (AN2D0)                                                0.04       1.22 f
+  lead_core/mult_21/U40/CO (FA1D0)                                                0.05       1.27 f
+  lead_core/mult_21/U39/CO (FA1D0)                                                0.06       1.33 f
+  lead_core/mult_21/U38/CO (FA1D0)                                                0.06       1.38 f
+  lead_core/mult_21/U37/CO (FA1D0)                                                0.06       1.44 f
+  lead_core/mult_21/U36/CO (FA1D0)                                                0.06       1.49 f
+  lead_core/mult_21/U35/CO (FA1D0)                                                0.06       1.55 f
+  lead_core/mult_21/U34/CO (FA1D0)                                                0.06       1.60 f
+  lead_core/mult_21/U33/CO (FA1D0)                                                0.06       1.66 f
+  lead_core/mult_21/U32/CO (FA1D0)                                                0.06       1.72 f
+  lead_core/mult_21/U31/CO (FA1D0)                                                0.06       1.77 f
+  lead_core/mult_21/U30/CO (FA1D0)                                                0.06       1.83 f
+  lead_core/mult_21/U29/CO (FA1D0)                                                0.06       1.88 f
+  lead_core/mult_21/U28/CO (FA1D0)                                                0.06       1.94 f
+  lead_core/mult_21/U27/CO (FA1D0)                                                0.06       1.99 f
+  lead_core/mult_21/U26/CO (FA1D0)                                                0.06       2.05 f
+  lead_core/mult_21/U25/CO (FA1D0)                                                0.06       2.10 f
+  lead_core/mult_21/U24/CO (FA1D0)                                                0.06       2.16 f
+  lead_core/mult_21/U23/CO (FA1D0)                                                0.06       2.21 f
+  lead_core/mult_21/U22/CO (FA1D0)                                                0.06       2.27 f
+  lead_core/mult_21/U21/CO (FA1D0)                                                0.06       2.32 f
+  lead_core/mult_21/U20/CO (FA1D0)                                                0.06       2.38 f
+  lead_core/mult_21/U19/CO (FA1D0)                                                0.06       2.43 f
+  lead_core/mult_21/U18/CO (FA1D0)                                                0.06       2.49 f
+  lead_core/mult_21/U17/CO (FA1D0)                                                0.06       2.55 f
+  lead_core/mult_21/U16/CO (FA1D0)                                                0.06       2.60 f
+  lead_core/mult_21/U15/CO (FA1D0)                                                0.06       2.66 f
+  lead_core/mult_21/U14/CO (FA1D0)                                                0.06       2.71 f
+  lead_core/mult_21/U13/CO (FA1D0)                                                0.06       2.77 f
+  lead_core/mult_21/U12/CO (FA1D0)                                                0.06       2.82 f
+  lead_core/mult_21/U11/CO (FA1D0)                                                0.06       2.88 f
+  lead_core/mult_21/U10/CO (FA1D0)                                                0.06       2.93 f
+  lead_core/mult_21/U9/CO (FA1D0)                                                 0.06       2.99 f
+  lead_core/mult_21/U8/CO (FA1D0)                                                 0.06       3.04 f
+  lead_core/mult_21/U7/CO (FA1D0)                                                 0.06       3.10 f
+  lead_core/mult_21/U6/CO (FA1D0)                                                 0.06       3.15 f
+  lead_core/mult_21/U5/CO (FA1D0)                                                 0.06       3.21 f
+  lead_core/mult_21/U4/CO (FA1D0)                                                 0.06       3.26 f
+  lead_core/mult_21/U3/CO (FA1D0)                                                 0.06       3.32 f
+  lead_core/mult_21/U2/CO (FA1D0)                                                 0.06       3.38 f
+  lead_core/mult_21/U312/Z (CKXOR2D0)                                             0.08       3.46 r
+  lead_core/mult_21/product[47] (lead_comb_core_DW_mult_uns_1)                    0.00       3.46 r
+  lead_core/mult_23/b[23] (lead_comb_core_DW_mult_uns_0)                          0.00       3.46 r
+  lead_core/mult_23/U580/ZN (INVD1)                                               0.06       3.52 f
+  lead_core/mult_23/U840/ZN (NR2D0)                                               0.07       3.59 r
+  lead_core/mult_23/U160/S (CMPE42D1)                                             0.18       3.77 f
+  lead_core/mult_23/U157/S (CMPE42D1)                                             0.17       3.95 f
+  lead_core/mult_23/U156/S (CMPE42D1)                                             0.14       4.09 f
+  lead_core/mult_23/U77/CO (FA1D0)                                                0.10       4.19 f
+  lead_core/mult_23/U76/CO (FA1D0)                                                0.06       4.24 f
+  lead_core/mult_23/U75/CO (FA1D0)                                                0.06       4.30 f
+  lead_core/mult_23/U74/CO (FA1D0)                                                0.06       4.35 f
+  lead_core/mult_23/U73/CO (FA1D0)                                                0.06       4.41 f
+  lead_core/mult_23/U72/CO (FA1D0)                                                0.06       4.47 f
+  lead_core/mult_23/U71/CO (FA1D0)                                                0.06       4.52 f
+  lead_core/mult_23/U70/CO (FA1D0)                                                0.06       4.58 f
+  lead_core/mult_23/U69/CO (FA1D0)                                                0.06       4.63 f
+  lead_core/mult_23/U68/CO (FA1D0)                                                0.06       4.69 f
+  lead_core/mult_23/U67/CO (FA1D0)                                                0.06       4.74 f
+  lead_core/mult_23/U66/CO (FA1D0)                                                0.06       4.80 f
+  lead_core/mult_23/U65/CO (FA1D0)                                                0.06       4.85 f
+  lead_core/mult_23/U64/CO (FA1D0)                                                0.06       4.91 f
+  lead_core/mult_23/U63/CO (FA1D0)                                                0.06       4.96 f
+  lead_core/mult_23/U62/CO (FA1D0)                                                0.06       5.02 f
+  lead_core/mult_23/U61/CO (FA1D0)                                                0.06       5.07 f
+  lead_core/mult_23/U60/CO (FA1D0)                                                0.06       5.13 f
+  lead_core/mult_23/U59/CO (FA1D0)                                                0.06       5.18 f
+  lead_core/mult_23/U58/CO (FA1D0)                                                0.06       5.24 f
+  lead_core/mult_23/U57/CO (FA1D0)                                                0.06       5.30 f
+  lead_core/mult_23/U56/S (FA1D0)                                                 0.07       5.37 r
+  lead_core/mult_23/product[46] (lead_comb_core_DW_mult_uns_0)                    0.00       5.37 r
+  lead_core/add_26/A[45] (lead_comb_core_DW01_add_1_DW01_add_5)                   0.00       5.37 r
+  lead_core/add_26/U1_45/CO (FA1D0)                                               0.09       5.46 r
+  lead_core/add_26/U1_46/CO (FA1D0)                                               0.05       5.51 r
+  lead_core/add_26/U5/Z (CKXOR2D1)                                                0.05       5.56 f
+  lead_core/add_26/SUM[47] (lead_comb_core_DW01_add_1_DW01_add_5)                 0.00       5.56 f
+  lead_core/shift_out/x[47] (SHIFTER_width73)                                     0.00       5.56 f
+  lead_core/shift_out/U86/ZN (INVD1)                                              0.01       5.58 r
+  lead_core/shift_out/U24/ZN (CKND0)                                              0.01       5.59 f
+  lead_core/shift_out/out0[47] (SHIFTER_width73)                                  0.00       5.59 f
+  lead_core/out0[47] (lead_comb_core)                                             0.00       5.59 f
+  U54/Z (AO22D0)                                                                  0.06       5.65 f
+  fp_wrapper/mantissa_out[22] (FP_DIV_WRAPPER_32)                                 0.00       5.65 f
+  fp_wrapper/shared_wrapper/result_fraction[22] (fp32_normal_finite_wrapper)      0.00       5.65 f
+  fp_wrapper/shared_wrapper/U42/Z (CKBD1)                                         0.03       5.69 f
+  fp_wrapper/shared_wrapper/result[22] (fp32_normal_finite_wrapper)               0.00       5.69 f
+  fp_wrapper/out0[22] (FP_DIV_WRAPPER_32)                                         0.00       5.69 f
+  out0[22] (out)                                                                  0.00       5.69 f
+  data arrival time                                                                          5.69
+
+  clock vclk (rise edge)                                                         10.00      10.00
+  clock network delay (ideal)                                                     0.00      10.00
+  output external delay                                                          -0.02       9.98
+  data required time                                                                         9.98
+  --------------------------------------------------------------------------------------------------
+  data required time                                                                         9.98
+  data arrival time                                                                         -5.69
+  --------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                4.29
+
+
+  Startpoint: x[15] (input port clocked by vclk)
+  Endpoint: out0[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  lead_fp32_paceio_comb ZeroWireload       tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width24_0  ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width24_0 ZeroWireload         tcbn65gplustc_ccs
+  lead_comb_core     ZeroWireload          tcbn65gplustc_ccs
+  lead_fp32_paceio_comb_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_3_DW01_sub_4 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_4_DW01_sub_5 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_cmp_1 ZeroWireload     tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_add_1_DW01_add_5 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width73    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                           Incr       Path
+  --------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                          0.00       0.00
+  clock network delay (ideal)                                                     0.00       0.00
+  input external delay                                                            0.02       0.02 f
+  x[15] (in)                                                                      0.00       0.02 f
+  fp_wrapper/x[15] (FP_DIV_WRAPPER_32)                                            0.00       0.02 f
+  fp_wrapper/shared_wrapper/x[15] (fp32_normal_finite_wrapper)                    0.00       0.02 f
+  fp_wrapper/shared_wrapper/U48/Z (CKBD1)                                         0.03       0.05 f
+  fp_wrapper/shared_wrapper/fraction_x[15] (fp32_normal_finite_wrapper)           0.00       0.05 f
+  fp_wrapper/mantissa_x[15] (FP_DIV_WRAPPER_32)                                   0.00       0.05 f
+  lead_core/x[15] (lead_comb_core)                                                0.00       0.05 f
+  lead_core/norm_a/x[15] (NORMALIZE_width24_0)                                    0.00       0.05 f
+  lead_core/norm_a/shifter/x[15] (SHIFTER_width24_0)                              0.00       0.05 f
+  lead_core/norm_a/shifter/U46/ZN (INVD0)                                         0.02       0.07 r
+  lead_core/norm_a/shifter/U42/ZN (CKND1)                                         0.02       0.09 f
+  lead_core/norm_a/shifter/out0[15] (SHIFTER_width24_0)                           0.00       0.09 f
+  lead_core/norm_a/out0[15] (NORMALIZE_width24_0)                                 0.00       0.09 f
+  lead_core/lt_18/A[16] (lead_comb_core_DW_cmp_1)                                 0.00       0.09 f
+  lead_core/lt_18/U533/ZN (INR2D0)                                                0.04       0.13 f
+  lead_core/lt_18/U532/ZN (AOI21D0)                                               0.06       0.18 r
+  lead_core/lt_18/U465/ZN (INVD1)                                                 0.01       0.20 f
+  lead_core/lt_18/U531/ZN (AOI211D0)                                              0.09       0.28 r
+  lead_core/lt_18/U520/ZN (OAI221D0)                                              0.06       0.35 f
+  lead_core/lt_18/U519/ZN (CKND2D0)                                               0.04       0.38 r
+  lead_core/lt_18/U515/ZN (OAI211D0)                                              0.03       0.42 f
+  lead_core/lt_18/U491/ZN (OAI32D0)                                               0.07       0.49 r
+  lead_core/lt_18/U467/Z (CKBD1)                                                  0.23       0.72 r
+  lead_core/lt_18/GE_LT_GT_LE (lead_comb_core_DW_cmp_1)                           0.00       0.72 r
+  lead_core/U103/Z (CKBD1)                                                        0.05       0.77 r
+  lead_core/U78/ZN (INVD1)                                                        0.10       0.87 f
+  lead_core/U80/Z (AO22D0)                                                        0.18       1.04 f
+  lead_core/mult_21/a[5] (lead_comb_core_DW_mult_uns_1)                           0.00       1.04 f
+  lead_core/mult_21/U42/CO (FA1D0)                                                0.14       1.19 f
+  lead_core/mult_21/U266/Z (AN2D0)                                                0.04       1.22 f
+  lead_core/mult_21/U40/CO (FA1D0)                                                0.05       1.27 f
+  lead_core/mult_21/U39/CO (FA1D0)                                                0.06       1.33 f
+  lead_core/mult_21/U38/CO (FA1D0)                                                0.06       1.38 f
+  lead_core/mult_21/U37/CO (FA1D0)                                                0.06       1.44 f
+  lead_core/mult_21/U36/CO (FA1D0)                                                0.06       1.49 f
+  lead_core/mult_21/U35/CO (FA1D0)                                                0.06       1.55 f
+  lead_core/mult_21/U34/CO (FA1D0)                                                0.06       1.60 f
+  lead_core/mult_21/U33/CO (FA1D0)                                                0.06       1.66 f
+  lead_core/mult_21/U32/CO (FA1D0)                                                0.06       1.72 f
+  lead_core/mult_21/U31/CO (FA1D0)                                                0.06       1.77 f
+  lead_core/mult_21/U30/CO (FA1D0)                                                0.06       1.83 f
+  lead_core/mult_21/U29/CO (FA1D0)                                                0.06       1.88 f
+  lead_core/mult_21/U28/CO (FA1D0)                                                0.06       1.94 f
+  lead_core/mult_21/U27/CO (FA1D0)                                                0.06       1.99 f
+  lead_core/mult_21/U26/CO (FA1D0)                                                0.06       2.05 f
+  lead_core/mult_21/U25/CO (FA1D0)                                                0.06       2.10 f
+  lead_core/mult_21/U24/CO (FA1D0)                                                0.06       2.16 f
+  lead_core/mult_21/U23/CO (FA1D0)                                                0.06       2.21 f
+  lead_core/mult_21/U22/CO (FA1D0)                                                0.06       2.27 f
+  lead_core/mult_21/U21/CO (FA1D0)                                                0.06       2.32 f
+  lead_core/mult_21/U20/CO (FA1D0)                                                0.06       2.38 f
+  lead_core/mult_21/U19/CO (FA1D0)                                                0.06       2.43 f
+  lead_core/mult_21/U18/CO (FA1D0)                                                0.06       2.49 f
+  lead_core/mult_21/U17/CO (FA1D0)                                                0.06       2.55 f
+  lead_core/mult_21/U16/CO (FA1D0)                                                0.06       2.60 f
+  lead_core/mult_21/U15/CO (FA1D0)                                                0.06       2.66 f
+  lead_core/mult_21/U14/CO (FA1D0)                                                0.06       2.71 f
+  lead_core/mult_21/U13/CO (FA1D0)                                                0.06       2.77 f
+  lead_core/mult_21/U12/CO (FA1D0)                                                0.06       2.82 f
+  lead_core/mult_21/U11/CO (FA1D0)                                                0.06       2.88 f
+  lead_core/mult_21/U10/CO (FA1D0)                                                0.06       2.93 f
+  lead_core/mult_21/U9/CO (FA1D0)                                                 0.06       2.99 f
+  lead_core/mult_21/U8/CO (FA1D0)                                                 0.06       3.04 f
+  lead_core/mult_21/U7/CO (FA1D0)                                                 0.06       3.10 f
+  lead_core/mult_21/U6/CO (FA1D0)                                                 0.06       3.15 f
+  lead_core/mult_21/U5/CO (FA1D0)                                                 0.06       3.21 f
+  lead_core/mult_21/U4/CO (FA1D0)                                                 0.06       3.26 f
+  lead_core/mult_21/U3/CO (FA1D0)                                                 0.06       3.32 f
+  lead_core/mult_21/U2/CO (FA1D0)                                                 0.06       3.38 f
+  lead_core/mult_21/U312/Z (CKXOR2D0)                                             0.08       3.46 r
+  lead_core/mult_21/product[47] (lead_comb_core_DW_mult_uns_1)                    0.00       3.46 r
+  lead_core/mult_23/b[23] (lead_comb_core_DW_mult_uns_0)                          0.00       3.46 r
+  lead_core/mult_23/U580/ZN (INVD1)                                               0.06       3.52 f
+  lead_core/mult_23/U840/ZN (NR2D0)                                               0.07       3.59 r
+  lead_core/mult_23/U160/S (CMPE42D1)                                             0.18       3.77 f
+  lead_core/mult_23/U157/S (CMPE42D1)                                             0.17       3.95 f
+  lead_core/mult_23/U156/S (CMPE42D1)                                             0.14       4.09 f
+  lead_core/mult_23/U77/CO (FA1D0)                                                0.10       4.19 f
+  lead_core/mult_23/U76/CO (FA1D0)                                                0.06       4.24 f
+  lead_core/mult_23/U75/CO (FA1D0)                                                0.06       4.30 f
+  lead_core/mult_23/U74/CO (FA1D0)                                                0.06       4.35 f
+  lead_core/mult_23/U73/CO (FA1D0)                                                0.06       4.41 f
+  lead_core/mult_23/U72/CO (FA1D0)                                                0.06       4.47 f
+  lead_core/mult_23/U71/CO (FA1D0)                                                0.06       4.52 f
+  lead_core/mult_23/U70/CO (FA1D0)                                                0.06       4.58 f
+  lead_core/mult_23/U69/CO (FA1D0)                                                0.06       4.63 f
+  lead_core/mult_23/U68/CO (FA1D0)                                                0.06       4.69 f
+  lead_core/mult_23/U67/CO (FA1D0)                                                0.06       4.74 f
+  lead_core/mult_23/U66/CO (FA1D0)                                                0.06       4.80 f
+  lead_core/mult_23/U65/CO (FA1D0)                                                0.06       4.85 f
+  lead_core/mult_23/U64/CO (FA1D0)                                                0.06       4.91 f
+  lead_core/mult_23/U63/CO (FA1D0)                                                0.06       4.96 f
+  lead_core/mult_23/U62/CO (FA1D0)                                                0.06       5.02 f
+  lead_core/mult_23/U61/CO (FA1D0)                                                0.06       5.07 f
+  lead_core/mult_23/U60/CO (FA1D0)                                                0.06       5.13 f
+  lead_core/mult_23/U59/CO (FA1D0)                                                0.06       5.18 f
+  lead_core/mult_23/U58/CO (FA1D0)                                                0.06       5.24 f
+  lead_core/mult_23/U57/CO (FA1D0)                                                0.06       5.30 f
+  lead_core/mult_23/U56/S (FA1D0)                                                 0.07       5.37 r
+  lead_core/mult_23/product[46] (lead_comb_core_DW_mult_uns_0)                    0.00       5.37 r
+  lead_core/add_26/A[45] (lead_comb_core_DW01_add_1_DW01_add_5)                   0.00       5.37 r
+  lead_core/add_26/U1_45/CO (FA1D0)                                               0.09       5.46 r
+  lead_core/add_26/U1_46/CO (FA1D0)                                               0.05       5.51 r
+  lead_core/add_26/U5/Z (CKXOR2D1)                                                0.05       5.56 f
+  lead_core/add_26/SUM[47] (lead_comb_core_DW01_add_1_DW01_add_5)                 0.00       5.56 f
+  lead_core/shift_out/x[47] (SHIFTER_width73)                                     0.00       5.56 f
+  lead_core/shift_out/U86/ZN (INVD1)                                              0.01       5.58 r
+  lead_core/shift_out/U24/ZN (CKND0)                                              0.01       5.59 f
+  lead_core/shift_out/out0[47] (SHIFTER_width73)                                  0.00       5.59 f
+  lead_core/out0[47] (lead_comb_core)                                             0.00       5.59 f
+  U54/Z (AO22D0)                                                                  0.06       5.65 f
+  fp_wrapper/mantissa_out[22] (FP_DIV_WRAPPER_32)                                 0.00       5.65 f
+  fp_wrapper/shared_wrapper/result_fraction[22] (fp32_normal_finite_wrapper)      0.00       5.65 f
+  fp_wrapper/shared_wrapper/U42/Z (CKBD1)                                         0.03       5.69 f
+  fp_wrapper/shared_wrapper/result[22] (fp32_normal_finite_wrapper)               0.00       5.69 f
+  fp_wrapper/out0[22] (FP_DIV_WRAPPER_32)                                         0.00       5.69 f
+  out0[22] (out)                                                                  0.00       5.69 f
+  data arrival time                                                                          5.69
+
+  clock vclk (rise edge)                                                         10.00      10.00
+  clock network delay (ideal)                                                     0.00      10.00
+  output external delay                                                          -0.02       9.98
+  data required time                                                                         9.98
+  --------------------------------------------------------------------------------------------------
+  data required time                                                                         9.98
+  data arrival time                                                                         -5.69
+  --------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                4.29
+
+
+  Startpoint: x[15] (input port clocked by vclk)
+  Endpoint: out0[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  lead_fp32_paceio_comb ZeroWireload       tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width24_0  ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width24_0 ZeroWireload         tcbn65gplustc_ccs
+  lead_comb_core     ZeroWireload          tcbn65gplustc_ccs
+  lead_fp32_paceio_comb_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_3_DW01_sub_4 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_4_DW01_sub_5 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_cmp_1 ZeroWireload     tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_add_1_DW01_add_5 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width73    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                           Incr       Path
+  --------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                          0.00       0.00
+  clock network delay (ideal)                                                     0.00       0.00
+  input external delay                                                            0.02       0.02 f
+  x[15] (in)                                                                      0.00       0.02 f
+  fp_wrapper/x[15] (FP_DIV_WRAPPER_32)                                            0.00       0.02 f
+  fp_wrapper/shared_wrapper/x[15] (fp32_normal_finite_wrapper)                    0.00       0.02 f
+  fp_wrapper/shared_wrapper/U48/Z (CKBD1)                                         0.03       0.05 f
+  fp_wrapper/shared_wrapper/fraction_x[15] (fp32_normal_finite_wrapper)           0.00       0.05 f
+  fp_wrapper/mantissa_x[15] (FP_DIV_WRAPPER_32)                                   0.00       0.05 f
+  lead_core/x[15] (lead_comb_core)                                                0.00       0.05 f
+  lead_core/norm_a/x[15] (NORMALIZE_width24_0)                                    0.00       0.05 f
+  lead_core/norm_a/shifter/x[15] (SHIFTER_width24_0)                              0.00       0.05 f
+  lead_core/norm_a/shifter/U46/ZN (INVD0)                                         0.02       0.07 r
+  lead_core/norm_a/shifter/U42/ZN (CKND1)                                         0.02       0.09 f
+  lead_core/norm_a/shifter/out0[15] (SHIFTER_width24_0)                           0.00       0.09 f
+  lead_core/norm_a/out0[15] (NORMALIZE_width24_0)                                 0.00       0.09 f
+  lead_core/lt_18/A[16] (lead_comb_core_DW_cmp_1)                                 0.00       0.09 f
+  lead_core/lt_18/U533/ZN (INR2D0)                                                0.04       0.13 f
+  lead_core/lt_18/U532/ZN (AOI21D0)                                               0.06       0.18 r
+  lead_core/lt_18/U465/ZN (INVD1)                                                 0.01       0.20 f
+  lead_core/lt_18/U531/ZN (AOI211D0)                                              0.09       0.28 r
+  lead_core/lt_18/U520/ZN (OAI221D0)                                              0.06       0.35 f
+  lead_core/lt_18/U519/ZN (CKND2D0)                                               0.04       0.38 r
+  lead_core/lt_18/U515/ZN (OAI211D0)                                              0.03       0.42 f
+  lead_core/lt_18/U491/ZN (OAI32D0)                                               0.07       0.49 r
+  lead_core/lt_18/U467/Z (CKBD1)                                                  0.23       0.72 r
+  lead_core/lt_18/GE_LT_GT_LE (lead_comb_core_DW_cmp_1)                           0.00       0.72 r
+  lead_core/U103/Z (CKBD1)                                                        0.05       0.77 r
+  lead_core/U78/ZN (INVD1)                                                        0.10       0.87 f
+  lead_core/U80/Z (AO22D0)                                                        0.18       1.04 f
+  lead_core/mult_21/a[5] (lead_comb_core_DW_mult_uns_1)                           0.00       1.04 f
+  lead_core/mult_21/U42/CO (FA1D0)                                                0.14       1.19 f
+  lead_core/mult_21/U266/Z (AN2D0)                                                0.04       1.22 f
+  lead_core/mult_21/U40/CO (FA1D0)                                                0.05       1.27 f
+  lead_core/mult_21/U39/CO (FA1D0)                                                0.06       1.33 f
+  lead_core/mult_21/U38/CO (FA1D0)                                                0.06       1.38 f
+  lead_core/mult_21/U37/CO (FA1D0)                                                0.06       1.44 f
+  lead_core/mult_21/U36/CO (FA1D0)                                                0.06       1.49 f
+  lead_core/mult_21/U35/CO (FA1D0)                                                0.06       1.55 f
+  lead_core/mult_21/U34/CO (FA1D0)                                                0.06       1.60 f
+  lead_core/mult_21/U33/CO (FA1D0)                                                0.06       1.66 f
+  lead_core/mult_21/U32/CO (FA1D0)                                                0.06       1.72 f
+  lead_core/mult_21/U31/CO (FA1D0)                                                0.06       1.77 f
+  lead_core/mult_21/U30/CO (FA1D0)                                                0.06       1.83 f
+  lead_core/mult_21/U29/CO (FA1D0)                                                0.06       1.88 f
+  lead_core/mult_21/U28/CO (FA1D0)                                                0.06       1.94 f
+  lead_core/mult_21/U27/CO (FA1D0)                                                0.06       1.99 f
+  lead_core/mult_21/U26/CO (FA1D0)                                                0.06       2.05 f
+  lead_core/mult_21/U25/CO (FA1D0)                                                0.06       2.10 f
+  lead_core/mult_21/U24/CO (FA1D0)                                                0.06       2.16 f
+  lead_core/mult_21/U23/CO (FA1D0)                                                0.06       2.21 f
+  lead_core/mult_21/U22/CO (FA1D0)                                                0.06       2.27 f
+  lead_core/mult_21/U21/CO (FA1D0)                                                0.06       2.32 f
+  lead_core/mult_21/U20/CO (FA1D0)                                                0.06       2.38 f
+  lead_core/mult_21/U19/CO (FA1D0)                                                0.06       2.43 f
+  lead_core/mult_21/U18/CO (FA1D0)                                                0.06       2.49 f
+  lead_core/mult_21/U17/CO (FA1D0)                                                0.06       2.55 f
+  lead_core/mult_21/U16/CO (FA1D0)                                                0.06       2.60 f
+  lead_core/mult_21/U15/CO (FA1D0)                                                0.06       2.66 f
+  lead_core/mult_21/U14/CO (FA1D0)                                                0.06       2.71 f
+  lead_core/mult_21/U13/CO (FA1D0)                                                0.06       2.77 f
+  lead_core/mult_21/U12/CO (FA1D0)                                                0.06       2.82 f
+  lead_core/mult_21/U11/CO (FA1D0)                                                0.06       2.88 f
+  lead_core/mult_21/U10/CO (FA1D0)                                                0.06       2.93 f
+  lead_core/mult_21/U9/CO (FA1D0)                                                 0.06       2.99 f
+  lead_core/mult_21/U8/CO (FA1D0)                                                 0.06       3.04 f
+  lead_core/mult_21/U7/CO (FA1D0)                                                 0.06       3.10 f
+  lead_core/mult_21/U6/CO (FA1D0)                                                 0.06       3.15 f
+  lead_core/mult_21/U5/CO (FA1D0)                                                 0.06       3.21 f
+  lead_core/mult_21/U4/CO (FA1D0)                                                 0.06       3.26 f
+  lead_core/mult_21/U3/CO (FA1D0)                                                 0.06       3.32 f
+  lead_core/mult_21/U2/CO (FA1D0)                                                 0.06       3.38 f
+  lead_core/mult_21/U312/Z (CKXOR2D0)                                             0.08       3.46 r
+  lead_core/mult_21/product[47] (lead_comb_core_DW_mult_uns_1)                    0.00       3.46 r
+  lead_core/mult_23/b[23] (lead_comb_core_DW_mult_uns_0)                          0.00       3.46 r
+  lead_core/mult_23/U580/ZN (INVD1)                                               0.06       3.52 f
+  lead_core/mult_23/U840/ZN (NR2D0)                                               0.07       3.59 r
+  lead_core/mult_23/U160/S (CMPE42D1)                                             0.18       3.77 f
+  lead_core/mult_23/U157/S (CMPE42D1)                                             0.17       3.95 f
+  lead_core/mult_23/U156/S (CMPE42D1)                                             0.14       4.09 f
+  lead_core/mult_23/U77/CO (FA1D0)                                                0.10       4.19 f
+  lead_core/mult_23/U76/CO (FA1D0)                                                0.06       4.24 f
+  lead_core/mult_23/U75/CO (FA1D0)                                                0.06       4.30 f
+  lead_core/mult_23/U74/CO (FA1D0)                                                0.06       4.35 f
+  lead_core/mult_23/U73/CO (FA1D0)                                                0.06       4.41 f
+  lead_core/mult_23/U72/CO (FA1D0)                                                0.06       4.47 f
+  lead_core/mult_23/U71/CO (FA1D0)                                                0.06       4.52 f
+  lead_core/mult_23/U70/CO (FA1D0)                                                0.06       4.58 f
+  lead_core/mult_23/U69/CO (FA1D0)                                                0.06       4.63 f
+  lead_core/mult_23/U68/CO (FA1D0)                                                0.06       4.69 f
+  lead_core/mult_23/U67/CO (FA1D0)                                                0.06       4.74 f
+  lead_core/mult_23/U66/CO (FA1D0)                                                0.06       4.80 f
+  lead_core/mult_23/U65/CO (FA1D0)                                                0.06       4.85 f
+  lead_core/mult_23/U64/CO (FA1D0)                                                0.06       4.91 f
+  lead_core/mult_23/U63/CO (FA1D0)                                                0.06       4.96 f
+  lead_core/mult_23/U62/CO (FA1D0)                                                0.06       5.02 f
+  lead_core/mult_23/U61/CO (FA1D0)                                                0.06       5.07 f
+  lead_core/mult_23/U60/CO (FA1D0)                                                0.06       5.13 f
+  lead_core/mult_23/U59/CO (FA1D0)                                                0.06       5.18 f
+  lead_core/mult_23/U58/CO (FA1D0)                                                0.06       5.24 f
+  lead_core/mult_23/U57/CO (FA1D0)                                                0.06       5.30 f
+  lead_core/mult_23/U56/S (FA1D0)                                                 0.07       5.37 r
+  lead_core/mult_23/product[46] (lead_comb_core_DW_mult_uns_0)                    0.00       5.37 r
+  lead_core/add_26/A[45] (lead_comb_core_DW01_add_1_DW01_add_5)                   0.00       5.37 r
+  lead_core/add_26/U1_45/CO (FA1D0)                                               0.09       5.46 r
+  lead_core/add_26/U1_46/CO (FA1D0)                                               0.05       5.51 r
+  lead_core/add_26/U5/Z (CKXOR2D1)                                                0.05       5.56 f
+  lead_core/add_26/SUM[47] (lead_comb_core_DW01_add_1_DW01_add_5)                 0.00       5.56 f
+  lead_core/shift_out/x[47] (SHIFTER_width73)                                     0.00       5.56 f
+  lead_core/shift_out/U86/ZN (INVD1)                                              0.01       5.58 r
+  lead_core/shift_out/U24/ZN (CKND0)                                              0.01       5.59 f
+  lead_core/shift_out/out0[47] (SHIFTER_width73)                                  0.00       5.59 f
+  lead_core/out0[47] (lead_comb_core)                                             0.00       5.59 f
+  U54/Z (AO22D0)                                                                  0.06       5.65 f
+  fp_wrapper/mantissa_out[22] (FP_DIV_WRAPPER_32)                                 0.00       5.65 f
+  fp_wrapper/shared_wrapper/result_fraction[22] (fp32_normal_finite_wrapper)      0.00       5.65 f
+  fp_wrapper/shared_wrapper/U42/Z (CKBD1)                                         0.03       5.69 f
+  fp_wrapper/shared_wrapper/result[22] (fp32_normal_finite_wrapper)               0.00       5.69 f
+  fp_wrapper/out0[22] (FP_DIV_WRAPPER_32)                                         0.00       5.69 f
+  out0[22] (out)                                                                  0.00       5.69 f
+  data arrival time                                                                          5.69
+
+  clock vclk (rise edge)                                                         10.00      10.00
+  clock network delay (ideal)                                                     0.00      10.00
+  output external delay                                                          -0.02       9.98
+  data required time                                                                         9.98
+  --------------------------------------------------------------------------------------------------
+  data required time                                                                         9.98
+  data arrival time                                                                         -5.69
+  --------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                4.29
+
+
+  Startpoint: x[15] (input port clocked by vclk)
+  Endpoint: out0[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  lead_fp32_paceio_comb ZeroWireload       tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width24_0  ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width24_0 ZeroWireload         tcbn65gplustc_ccs
+  lead_comb_core     ZeroWireload          tcbn65gplustc_ccs
+  lead_fp32_paceio_comb_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_3_DW01_sub_4 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_4_DW01_sub_5 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_cmp_1 ZeroWireload     tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_add_1_DW01_add_5 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width73    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                           Incr       Path
+  --------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                          0.00       0.00
+  clock network delay (ideal)                                                     0.00       0.00
+  input external delay                                                            0.02       0.02 f
+  x[15] (in)                                                                      0.00       0.02 f
+  fp_wrapper/x[15] (FP_DIV_WRAPPER_32)                                            0.00       0.02 f
+  fp_wrapper/shared_wrapper/x[15] (fp32_normal_finite_wrapper)                    0.00       0.02 f
+  fp_wrapper/shared_wrapper/U48/Z (CKBD1)                                         0.03       0.05 f
+  fp_wrapper/shared_wrapper/fraction_x[15] (fp32_normal_finite_wrapper)           0.00       0.05 f
+  fp_wrapper/mantissa_x[15] (FP_DIV_WRAPPER_32)                                   0.00       0.05 f
+  lead_core/x[15] (lead_comb_core)                                                0.00       0.05 f
+  lead_core/norm_a/x[15] (NORMALIZE_width24_0)                                    0.00       0.05 f
+  lead_core/norm_a/shifter/x[15] (SHIFTER_width24_0)                              0.00       0.05 f
+  lead_core/norm_a/shifter/U46/ZN (INVD0)                                         0.02       0.07 r
+  lead_core/norm_a/shifter/U42/ZN (CKND1)                                         0.02       0.09 f
+  lead_core/norm_a/shifter/out0[15] (SHIFTER_width24_0)                           0.00       0.09 f
+  lead_core/norm_a/out0[15] (NORMALIZE_width24_0)                                 0.00       0.09 f
+  lead_core/lt_18/A[16] (lead_comb_core_DW_cmp_1)                                 0.00       0.09 f
+  lead_core/lt_18/U533/ZN (INR2D0)                                                0.04       0.13 f
+  lead_core/lt_18/U532/ZN (AOI21D0)                                               0.06       0.18 r
+  lead_core/lt_18/U465/ZN (INVD1)                                                 0.01       0.20 f
+  lead_core/lt_18/U531/ZN (AOI211D0)                                              0.09       0.28 r
+  lead_core/lt_18/U520/ZN (OAI221D0)                                              0.06       0.35 f
+  lead_core/lt_18/U519/ZN (CKND2D0)                                               0.04       0.38 r
+  lead_core/lt_18/U515/ZN (OAI211D0)                                              0.03       0.42 f
+  lead_core/lt_18/U491/ZN (OAI32D0)                                               0.07       0.49 r
+  lead_core/lt_18/U467/Z (CKBD1)                                                  0.23       0.72 r
+  lead_core/lt_18/GE_LT_GT_LE (lead_comb_core_DW_cmp_1)                           0.00       0.72 r
+  lead_core/U103/Z (CKBD1)                                                        0.05       0.77 r
+  lead_core/U78/ZN (INVD1)                                                        0.10       0.87 f
+  lead_core/U80/Z (AO22D0)                                                        0.18       1.04 f
+  lead_core/mult_21/a[5] (lead_comb_core_DW_mult_uns_1)                           0.00       1.04 f
+  lead_core/mult_21/U42/CO (FA1D0)                                                0.14       1.19 f
+  lead_core/mult_21/U266/Z (AN2D0)                                                0.04       1.22 f
+  lead_core/mult_21/U40/CO (FA1D0)                                                0.05       1.27 f
+  lead_core/mult_21/U39/CO (FA1D0)                                                0.06       1.33 f
+  lead_core/mult_21/U38/CO (FA1D0)                                                0.06       1.38 f
+  lead_core/mult_21/U37/CO (FA1D0)                                                0.06       1.44 f
+  lead_core/mult_21/U36/CO (FA1D0)                                                0.06       1.49 f
+  lead_core/mult_21/U35/CO (FA1D0)                                                0.06       1.55 f
+  lead_core/mult_21/U34/CO (FA1D0)                                                0.06       1.60 f
+  lead_core/mult_21/U33/CO (FA1D0)                                                0.06       1.66 f
+  lead_core/mult_21/U32/CO (FA1D0)                                                0.06       1.72 f
+  lead_core/mult_21/U31/CO (FA1D0)                                                0.06       1.77 f
+  lead_core/mult_21/U30/CO (FA1D0)                                                0.06       1.83 f
+  lead_core/mult_21/U29/CO (FA1D0)                                                0.06       1.88 f
+  lead_core/mult_21/U28/CO (FA1D0)                                                0.06       1.94 f
+  lead_core/mult_21/U27/CO (FA1D0)                                                0.06       1.99 f
+  lead_core/mult_21/U26/CO (FA1D0)                                                0.06       2.05 f
+  lead_core/mult_21/U25/CO (FA1D0)                                                0.06       2.10 f
+  lead_core/mult_21/U24/CO (FA1D0)                                                0.06       2.16 f
+  lead_core/mult_21/U23/CO (FA1D0)                                                0.06       2.21 f
+  lead_core/mult_21/U22/CO (FA1D0)                                                0.06       2.27 f
+  lead_core/mult_21/U21/CO (FA1D0)                                                0.06       2.32 f
+  lead_core/mult_21/U20/CO (FA1D0)                                                0.06       2.38 f
+  lead_core/mult_21/U19/CO (FA1D0)                                                0.06       2.43 f
+  lead_core/mult_21/U18/CO (FA1D0)                                                0.06       2.49 f
+  lead_core/mult_21/U17/CO (FA1D0)                                                0.06       2.55 f
+  lead_core/mult_21/U16/CO (FA1D0)                                                0.06       2.60 f
+  lead_core/mult_21/U15/CO (FA1D0)                                                0.06       2.66 f
+  lead_core/mult_21/U14/CO (FA1D0)                                                0.06       2.71 f
+  lead_core/mult_21/U13/CO (FA1D0)                                                0.06       2.77 f
+  lead_core/mult_21/U12/CO (FA1D0)                                                0.06       2.82 f
+  lead_core/mult_21/U11/CO (FA1D0)                                                0.06       2.88 f
+  lead_core/mult_21/U10/CO (FA1D0)                                                0.06       2.93 f
+  lead_core/mult_21/U9/CO (FA1D0)                                                 0.06       2.99 f
+  lead_core/mult_21/U8/CO (FA1D0)                                                 0.06       3.04 f
+  lead_core/mult_21/U7/CO (FA1D0)                                                 0.06       3.10 f
+  lead_core/mult_21/U6/CO (FA1D0)                                                 0.06       3.15 f
+  lead_core/mult_21/U5/CO (FA1D0)                                                 0.06       3.21 f
+  lead_core/mult_21/U4/CO (FA1D0)                                                 0.06       3.26 f
+  lead_core/mult_21/U3/CO (FA1D0)                                                 0.06       3.32 f
+  lead_core/mult_21/U2/CO (FA1D0)                                                 0.06       3.38 f
+  lead_core/mult_21/U312/Z (CKXOR2D0)                                             0.08       3.46 r
+  lead_core/mult_21/product[47] (lead_comb_core_DW_mult_uns_1)                    0.00       3.46 r
+  lead_core/mult_23/b[23] (lead_comb_core_DW_mult_uns_0)                          0.00       3.46 r
+  lead_core/mult_23/U580/ZN (INVD1)                                               0.06       3.52 f
+  lead_core/mult_23/U840/ZN (NR2D0)                                               0.07       3.59 r
+  lead_core/mult_23/U160/S (CMPE42D1)                                             0.18       3.77 f
+  lead_core/mult_23/U157/S (CMPE42D1)                                             0.17       3.95 f
+  lead_core/mult_23/U156/S (CMPE42D1)                                             0.14       4.09 f
+  lead_core/mult_23/U77/CO (FA1D0)                                                0.10       4.19 f
+  lead_core/mult_23/U76/CO (FA1D0)                                                0.06       4.24 f
+  lead_core/mult_23/U75/CO (FA1D0)                                                0.06       4.30 f
+  lead_core/mult_23/U74/CO (FA1D0)                                                0.06       4.35 f
+  lead_core/mult_23/U73/CO (FA1D0)                                                0.06       4.41 f
+  lead_core/mult_23/U72/CO (FA1D0)                                                0.06       4.47 f
+  lead_core/mult_23/U71/CO (FA1D0)                                                0.06       4.52 f
+  lead_core/mult_23/U70/CO (FA1D0)                                                0.06       4.58 f
+  lead_core/mult_23/U69/CO (FA1D0)                                                0.06       4.63 f
+  lead_core/mult_23/U68/CO (FA1D0)                                                0.06       4.69 f
+  lead_core/mult_23/U67/CO (FA1D0)                                                0.06       4.74 f
+  lead_core/mult_23/U66/CO (FA1D0)                                                0.06       4.80 f
+  lead_core/mult_23/U65/CO (FA1D0)                                                0.06       4.85 f
+  lead_core/mult_23/U64/CO (FA1D0)                                                0.06       4.91 f
+  lead_core/mult_23/U63/CO (FA1D0)                                                0.06       4.96 f
+  lead_core/mult_23/U62/CO (FA1D0)                                                0.06       5.02 f
+  lead_core/mult_23/U61/CO (FA1D0)                                                0.06       5.07 f
+  lead_core/mult_23/U60/CO (FA1D0)                                                0.06       5.13 f
+  lead_core/mult_23/U59/CO (FA1D0)                                                0.06       5.18 f
+  lead_core/mult_23/U58/CO (FA1D0)                                                0.06       5.24 f
+  lead_core/mult_23/U57/CO (FA1D0)                                                0.06       5.30 f
+  lead_core/mult_23/U56/S (FA1D0)                                                 0.07       5.37 r
+  lead_core/mult_23/product[46] (lead_comb_core_DW_mult_uns_0)                    0.00       5.37 r
+  lead_core/add_26/A[45] (lead_comb_core_DW01_add_1_DW01_add_5)                   0.00       5.37 r
+  lead_core/add_26/U1_45/CO (FA1D0)                                               0.09       5.46 r
+  lead_core/add_26/U1_46/CO (FA1D0)                                               0.05       5.51 r
+  lead_core/add_26/U5/Z (CKXOR2D1)                                                0.05       5.56 f
+  lead_core/add_26/SUM[47] (lead_comb_core_DW01_add_1_DW01_add_5)                 0.00       5.56 f
+  lead_core/shift_out/x[47] (SHIFTER_width73)                                     0.00       5.56 f
+  lead_core/shift_out/U86/ZN (INVD1)                                              0.01       5.58 r
+  lead_core/shift_out/U24/ZN (CKND0)                                              0.01       5.59 f
+  lead_core/shift_out/out0[47] (SHIFTER_width73)                                  0.00       5.59 f
+  lead_core/out0[47] (lead_comb_core)                                             0.00       5.59 f
+  U54/Z (AO22D0)                                                                  0.06       5.65 f
+  fp_wrapper/mantissa_out[22] (FP_DIV_WRAPPER_32)                                 0.00       5.65 f
+  fp_wrapper/shared_wrapper/result_fraction[22] (fp32_normal_finite_wrapper)      0.00       5.65 f
+  fp_wrapper/shared_wrapper/U42/Z (CKBD1)                                         0.03       5.69 f
+  fp_wrapper/shared_wrapper/result[22] (fp32_normal_finite_wrapper)               0.00       5.69 f
+  fp_wrapper/out0[22] (FP_DIV_WRAPPER_32)                                         0.00       5.69 f
+  out0[22] (out)                                                                  0.00       5.69 f
+  data arrival time                                                                          5.69
+
+  clock vclk (rise edge)                                                         10.00      10.00
+  clock network delay (ideal)                                                     0.00      10.00
+  output external delay                                                          -0.02       9.98
+  data required time                                                                         9.98
+  --------------------------------------------------------------------------------------------------
+  data required time                                                                         9.98
+  data arrival time                                                                         -5.69
+  --------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                4.29
+
+
+  Startpoint: x[15] (input port clocked by vclk)
+  Endpoint: out0[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  lead_fp32_paceio_comb ZeroWireload       tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width24_0  ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width24_0 ZeroWireload         tcbn65gplustc_ccs
+  lead_comb_core     ZeroWireload          tcbn65gplustc_ccs
+  lead_fp32_paceio_comb_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_3_DW01_sub_4 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_4_DW01_sub_5 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_cmp_1 ZeroWireload     tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_add_1_DW01_add_5 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width73    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                           Incr       Path
+  --------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                          0.00       0.00
+  clock network delay (ideal)                                                     0.00       0.00
+  input external delay                                                            0.02       0.02 f
+  x[15] (in)                                                                      0.00       0.02 f
+  fp_wrapper/x[15] (FP_DIV_WRAPPER_32)                                            0.00       0.02 f
+  fp_wrapper/shared_wrapper/x[15] (fp32_normal_finite_wrapper)                    0.00       0.02 f
+  fp_wrapper/shared_wrapper/U48/Z (CKBD1)                                         0.03       0.05 f
+  fp_wrapper/shared_wrapper/fraction_x[15] (fp32_normal_finite_wrapper)           0.00       0.05 f
+  fp_wrapper/mantissa_x[15] (FP_DIV_WRAPPER_32)                                   0.00       0.05 f
+  lead_core/x[15] (lead_comb_core)                                                0.00       0.05 f
+  lead_core/norm_a/x[15] (NORMALIZE_width24_0)                                    0.00       0.05 f
+  lead_core/norm_a/shifter/x[15] (SHIFTER_width24_0)                              0.00       0.05 f
+  lead_core/norm_a/shifter/U46/ZN (INVD0)                                         0.02       0.07 r
+  lead_core/norm_a/shifter/U42/ZN (CKND1)                                         0.02       0.09 f
+  lead_core/norm_a/shifter/out0[15] (SHIFTER_width24_0)                           0.00       0.09 f
+  lead_core/norm_a/out0[15] (NORMALIZE_width24_0)                                 0.00       0.09 f
+  lead_core/lt_18/A[16] (lead_comb_core_DW_cmp_1)                                 0.00       0.09 f
+  lead_core/lt_18/U533/ZN (INR2D0)                                                0.04       0.13 f
+  lead_core/lt_18/U532/ZN (AOI21D0)                                               0.06       0.18 r
+  lead_core/lt_18/U465/ZN (INVD1)                                                 0.01       0.20 f
+  lead_core/lt_18/U531/ZN (AOI211D0)                                              0.09       0.28 r
+  lead_core/lt_18/U520/ZN (OAI221D0)                                              0.06       0.35 f
+  lead_core/lt_18/U519/ZN (CKND2D0)                                               0.04       0.38 r
+  lead_core/lt_18/U515/ZN (OAI211D0)                                              0.03       0.42 f
+  lead_core/lt_18/U491/ZN (OAI32D0)                                               0.07       0.49 r
+  lead_core/lt_18/U467/Z (CKBD1)                                                  0.23       0.72 r
+  lead_core/lt_18/GE_LT_GT_LE (lead_comb_core_DW_cmp_1)                           0.00       0.72 r
+  lead_core/U103/Z (CKBD1)                                                        0.05       0.77 r
+  lead_core/U78/ZN (INVD1)                                                        0.10       0.87 f
+  lead_core/U80/Z (AO22D0)                                                        0.18       1.04 f
+  lead_core/mult_21/a[5] (lead_comb_core_DW_mult_uns_1)                           0.00       1.04 f
+  lead_core/mult_21/U42/CO (FA1D0)                                                0.14       1.19 f
+  lead_core/mult_21/U266/Z (AN2D0)                                                0.04       1.22 f
+  lead_core/mult_21/U40/CO (FA1D0)                                                0.05       1.27 f
+  lead_core/mult_21/U39/CO (FA1D0)                                                0.06       1.33 f
+  lead_core/mult_21/U38/CO (FA1D0)                                                0.06       1.38 f
+  lead_core/mult_21/U37/CO (FA1D0)                                                0.06       1.44 f
+  lead_core/mult_21/U36/CO (FA1D0)                                                0.06       1.49 f
+  lead_core/mult_21/U35/CO (FA1D0)                                                0.06       1.55 f
+  lead_core/mult_21/U34/CO (FA1D0)                                                0.06       1.60 f
+  lead_core/mult_21/U33/CO (FA1D0)                                                0.06       1.66 f
+  lead_core/mult_21/U32/CO (FA1D0)                                                0.06       1.72 f
+  lead_core/mult_21/U31/CO (FA1D0)                                                0.06       1.77 f
+  lead_core/mult_21/U30/CO (FA1D0)                                                0.06       1.83 f
+  lead_core/mult_21/U29/CO (FA1D0)                                                0.06       1.88 f
+  lead_core/mult_21/U28/CO (FA1D0)                                                0.06       1.94 f
+  lead_core/mult_21/U27/CO (FA1D0)                                                0.06       1.99 f
+  lead_core/mult_21/U26/CO (FA1D0)                                                0.06       2.05 f
+  lead_core/mult_21/U25/CO (FA1D0)                                                0.06       2.10 f
+  lead_core/mult_21/U24/CO (FA1D0)                                                0.06       2.16 f
+  lead_core/mult_21/U23/CO (FA1D0)                                                0.06       2.21 f
+  lead_core/mult_21/U22/CO (FA1D0)                                                0.06       2.27 f
+  lead_core/mult_21/U21/CO (FA1D0)                                                0.06       2.32 f
+  lead_core/mult_21/U20/CO (FA1D0)                                                0.06       2.38 f
+  lead_core/mult_21/U19/CO (FA1D0)                                                0.06       2.43 f
+  lead_core/mult_21/U18/CO (FA1D0)                                                0.06       2.49 f
+  lead_core/mult_21/U17/CO (FA1D0)                                                0.06       2.55 f
+  lead_core/mult_21/U16/CO (FA1D0)                                                0.06       2.60 f
+  lead_core/mult_21/U15/CO (FA1D0)                                                0.06       2.66 f
+  lead_core/mult_21/U14/CO (FA1D0)                                                0.06       2.71 f
+  lead_core/mult_21/U13/CO (FA1D0)                                                0.06       2.77 f
+  lead_core/mult_21/U12/CO (FA1D0)                                                0.06       2.82 f
+  lead_core/mult_21/U11/CO (FA1D0)                                                0.06       2.88 f
+  lead_core/mult_21/U10/CO (FA1D0)                                                0.06       2.93 f
+  lead_core/mult_21/U9/CO (FA1D0)                                                 0.06       2.99 f
+  lead_core/mult_21/U8/CO (FA1D0)                                                 0.06       3.04 f
+  lead_core/mult_21/U7/CO (FA1D0)                                                 0.06       3.10 f
+  lead_core/mult_21/U6/CO (FA1D0)                                                 0.06       3.15 f
+  lead_core/mult_21/U5/CO (FA1D0)                                                 0.06       3.21 f
+  lead_core/mult_21/U4/CO (FA1D0)                                                 0.06       3.26 f
+  lead_core/mult_21/U3/CO (FA1D0)                                                 0.06       3.32 f
+  lead_core/mult_21/U2/CO (FA1D0)                                                 0.06       3.38 f
+  lead_core/mult_21/U312/Z (CKXOR2D0)                                             0.08       3.46 r
+  lead_core/mult_21/product[47] (lead_comb_core_DW_mult_uns_1)                    0.00       3.46 r
+  lead_core/mult_23/b[23] (lead_comb_core_DW_mult_uns_0)                          0.00       3.46 r
+  lead_core/mult_23/U580/ZN (INVD1)                                               0.06       3.52 f
+  lead_core/mult_23/U840/ZN (NR2D0)                                               0.07       3.59 r
+  lead_core/mult_23/U160/S (CMPE42D1)                                             0.18       3.77 f
+  lead_core/mult_23/U157/S (CMPE42D1)                                             0.17       3.95 f
+  lead_core/mult_23/U156/S (CMPE42D1)                                             0.14       4.09 f
+  lead_core/mult_23/U77/CO (FA1D0)                                                0.10       4.19 f
+  lead_core/mult_23/U76/CO (FA1D0)                                                0.06       4.24 f
+  lead_core/mult_23/U75/CO (FA1D0)                                                0.06       4.30 f
+  lead_core/mult_23/U74/CO (FA1D0)                                                0.06       4.35 f
+  lead_core/mult_23/U73/CO (FA1D0)                                                0.06       4.41 f
+  lead_core/mult_23/U72/CO (FA1D0)                                                0.06       4.47 f
+  lead_core/mult_23/U71/CO (FA1D0)                                                0.06       4.52 f
+  lead_core/mult_23/U70/CO (FA1D0)                                                0.06       4.58 f
+  lead_core/mult_23/U69/CO (FA1D0)                                                0.06       4.63 f
+  lead_core/mult_23/U68/CO (FA1D0)                                                0.06       4.69 f
+  lead_core/mult_23/U67/CO (FA1D0)                                                0.06       4.74 f
+  lead_core/mult_23/U66/CO (FA1D0)                                                0.06       4.80 f
+  lead_core/mult_23/U65/CO (FA1D0)                                                0.06       4.85 f
+  lead_core/mult_23/U64/CO (FA1D0)                                                0.06       4.91 f
+  lead_core/mult_23/U63/CO (FA1D0)                                                0.06       4.96 f
+  lead_core/mult_23/U62/CO (FA1D0)                                                0.06       5.02 f
+  lead_core/mult_23/U61/CO (FA1D0)                                                0.06       5.07 f
+  lead_core/mult_23/U60/CO (FA1D0)                                                0.06       5.13 f
+  lead_core/mult_23/U59/CO (FA1D0)                                                0.06       5.18 f
+  lead_core/mult_23/U58/CO (FA1D0)                                                0.06       5.24 f
+  lead_core/mult_23/U57/CO (FA1D0)                                                0.06       5.30 f
+  lead_core/mult_23/U56/S (FA1D0)                                                 0.07       5.37 r
+  lead_core/mult_23/product[46] (lead_comb_core_DW_mult_uns_0)                    0.00       5.37 r
+  lead_core/add_26/A[45] (lead_comb_core_DW01_add_1_DW01_add_5)                   0.00       5.37 r
+  lead_core/add_26/U1_45/CO (FA1D0)                                               0.09       5.46 r
+  lead_core/add_26/U1_46/CO (FA1D0)                                               0.05       5.51 r
+  lead_core/add_26/U5/Z (CKXOR2D1)                                                0.05       5.56 f
+  lead_core/add_26/SUM[47] (lead_comb_core_DW01_add_1_DW01_add_5)                 0.00       5.56 f
+  lead_core/shift_out/x[47] (SHIFTER_width73)                                     0.00       5.56 f
+  lead_core/shift_out/U86/ZN (INVD1)                                              0.01       5.58 r
+  lead_core/shift_out/U24/ZN (CKND0)                                              0.01       5.59 f
+  lead_core/shift_out/out0[47] (SHIFTER_width73)                                  0.00       5.59 f
+  lead_core/out0[47] (lead_comb_core)                                             0.00       5.59 f
+  U54/Z (AO22D0)                                                                  0.06       5.65 f
+  fp_wrapper/mantissa_out[22] (FP_DIV_WRAPPER_32)                                 0.00       5.65 f
+  fp_wrapper/shared_wrapper/result_fraction[22] (fp32_normal_finite_wrapper)      0.00       5.65 f
+  fp_wrapper/shared_wrapper/U42/Z (CKBD1)                                         0.03       5.69 f
+  fp_wrapper/shared_wrapper/result[22] (fp32_normal_finite_wrapper)               0.00       5.69 f
+  fp_wrapper/out0[22] (FP_DIV_WRAPPER_32)                                         0.00       5.69 f
+  out0[22] (out)                                                                  0.00       5.69 f
+  data arrival time                                                                          5.69
+
+  clock vclk (rise edge)                                                         10.00      10.00
+  clock network delay (ideal)                                                     0.00      10.00
+  output external delay                                                          -0.02       9.98
+  data required time                                                                         9.98
+  --------------------------------------------------------------------------------------------------
+  data required time                                                                         9.98
+  data arrival time                                                                         -5.69
+  --------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                4.29
+
+
+  Startpoint: x[15] (input port clocked by vclk)
+  Endpoint: out0[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  lead_fp32_paceio_comb ZeroWireload       tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width24_0  ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width24_0 ZeroWireload         tcbn65gplustc_ccs
+  lead_comb_core     ZeroWireload          tcbn65gplustc_ccs
+  lead_fp32_paceio_comb_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_3_DW01_sub_4 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_4_DW01_sub_5 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_cmp_1 ZeroWireload     tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_add_1_DW01_add_5 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width73    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                           Incr       Path
+  --------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                          0.00       0.00
+  clock network delay (ideal)                                                     0.00       0.00
+  input external delay                                                            0.02       0.02 f
+  x[15] (in)                                                                      0.00       0.02 f
+  fp_wrapper/x[15] (FP_DIV_WRAPPER_32)                                            0.00       0.02 f
+  fp_wrapper/shared_wrapper/x[15] (fp32_normal_finite_wrapper)                    0.00       0.02 f
+  fp_wrapper/shared_wrapper/U48/Z (CKBD1)                                         0.03       0.05 f
+  fp_wrapper/shared_wrapper/fraction_x[15] (fp32_normal_finite_wrapper)           0.00       0.05 f
+  fp_wrapper/mantissa_x[15] (FP_DIV_WRAPPER_32)                                   0.00       0.05 f
+  lead_core/x[15] (lead_comb_core)                                                0.00       0.05 f
+  lead_core/norm_a/x[15] (NORMALIZE_width24_0)                                    0.00       0.05 f
+  lead_core/norm_a/shifter/x[15] (SHIFTER_width24_0)                              0.00       0.05 f
+  lead_core/norm_a/shifter/U46/ZN (INVD0)                                         0.02       0.07 r
+  lead_core/norm_a/shifter/U42/ZN (CKND1)                                         0.02       0.09 f
+  lead_core/norm_a/shifter/out0[15] (SHIFTER_width24_0)                           0.00       0.09 f
+  lead_core/norm_a/out0[15] (NORMALIZE_width24_0)                                 0.00       0.09 f
+  lead_core/lt_18/A[16] (lead_comb_core_DW_cmp_1)                                 0.00       0.09 f
+  lead_core/lt_18/U533/ZN (INR2D0)                                                0.04       0.13 f
+  lead_core/lt_18/U532/ZN (AOI21D0)                                               0.06       0.18 r
+  lead_core/lt_18/U465/ZN (INVD1)                                                 0.01       0.20 f
+  lead_core/lt_18/U531/ZN (AOI211D0)                                              0.09       0.28 r
+  lead_core/lt_18/U520/ZN (OAI221D0)                                              0.06       0.35 f
+  lead_core/lt_18/U519/ZN (CKND2D0)                                               0.04       0.38 r
+  lead_core/lt_18/U515/ZN (OAI211D0)                                              0.03       0.42 f
+  lead_core/lt_18/U491/ZN (OAI32D0)                                               0.07       0.49 r
+  lead_core/lt_18/U467/Z (CKBD1)                                                  0.23       0.72 r
+  lead_core/lt_18/GE_LT_GT_LE (lead_comb_core_DW_cmp_1)                           0.00       0.72 r
+  lead_core/U103/Z (CKBD1)                                                        0.05       0.77 r
+  lead_core/U78/ZN (INVD1)                                                        0.10       0.87 f
+  lead_core/U80/Z (AO22D0)                                                        0.18       1.04 f
+  lead_core/mult_21/a[5] (lead_comb_core_DW_mult_uns_1)                           0.00       1.04 f
+  lead_core/mult_21/U42/CO (FA1D0)                                                0.14       1.19 f
+  lead_core/mult_21/U266/Z (AN2D0)                                                0.04       1.22 f
+  lead_core/mult_21/U40/CO (FA1D0)                                                0.05       1.27 f
+  lead_core/mult_21/U39/CO (FA1D0)                                                0.06       1.33 f
+  lead_core/mult_21/U38/CO (FA1D0)                                                0.06       1.38 f
+  lead_core/mult_21/U37/CO (FA1D0)                                                0.06       1.44 f
+  lead_core/mult_21/U36/CO (FA1D0)                                                0.06       1.49 f
+  lead_core/mult_21/U35/CO (FA1D0)                                                0.06       1.55 f
+  lead_core/mult_21/U34/CO (FA1D0)                                                0.06       1.60 f
+  lead_core/mult_21/U33/CO (FA1D0)                                                0.06       1.66 f
+  lead_core/mult_21/U32/CO (FA1D0)                                                0.06       1.72 f
+  lead_core/mult_21/U31/CO (FA1D0)                                                0.06       1.77 f
+  lead_core/mult_21/U30/CO (FA1D0)                                                0.06       1.83 f
+  lead_core/mult_21/U29/CO (FA1D0)                                                0.06       1.88 f
+  lead_core/mult_21/U28/CO (FA1D0)                                                0.06       1.94 f
+  lead_core/mult_21/U27/CO (FA1D0)                                                0.06       1.99 f
+  lead_core/mult_21/U26/CO (FA1D0)                                                0.06       2.05 f
+  lead_core/mult_21/U25/CO (FA1D0)                                                0.06       2.10 f
+  lead_core/mult_21/U24/CO (FA1D0)                                                0.06       2.16 f
+  lead_core/mult_21/U23/CO (FA1D0)                                                0.06       2.21 f
+  lead_core/mult_21/U22/CO (FA1D0)                                                0.06       2.27 f
+  lead_core/mult_21/U21/CO (FA1D0)                                                0.06       2.32 f
+  lead_core/mult_21/U20/CO (FA1D0)                                                0.06       2.38 f
+  lead_core/mult_21/U19/CO (FA1D0)                                                0.06       2.43 f
+  lead_core/mult_21/U18/CO (FA1D0)                                                0.06       2.49 f
+  lead_core/mult_21/U17/CO (FA1D0)                                                0.06       2.55 f
+  lead_core/mult_21/U16/CO (FA1D0)                                                0.06       2.60 f
+  lead_core/mult_21/U15/CO (FA1D0)                                                0.06       2.66 f
+  lead_core/mult_21/U14/CO (FA1D0)                                                0.06       2.71 f
+  lead_core/mult_21/U13/CO (FA1D0)                                                0.06       2.77 f
+  lead_core/mult_21/U12/CO (FA1D0)                                                0.06       2.82 f
+  lead_core/mult_21/U11/CO (FA1D0)                                                0.06       2.88 f
+  lead_core/mult_21/U10/CO (FA1D0)                                                0.06       2.93 f
+  lead_core/mult_21/U9/CO (FA1D0)                                                 0.06       2.99 f
+  lead_core/mult_21/U8/CO (FA1D0)                                                 0.06       3.04 f
+  lead_core/mult_21/U7/CO (FA1D0)                                                 0.06       3.10 f
+  lead_core/mult_21/U6/CO (FA1D0)                                                 0.06       3.15 f
+  lead_core/mult_21/U5/CO (FA1D0)                                                 0.06       3.21 f
+  lead_core/mult_21/U4/CO (FA1D0)                                                 0.06       3.26 f
+  lead_core/mult_21/U3/CO (FA1D0)                                                 0.06       3.32 f
+  lead_core/mult_21/U2/CO (FA1D0)                                                 0.06       3.38 f
+  lead_core/mult_21/U312/Z (CKXOR2D0)                                             0.08       3.46 r
+  lead_core/mult_21/product[47] (lead_comb_core_DW_mult_uns_1)                    0.00       3.46 r
+  lead_core/mult_23/b[23] (lead_comb_core_DW_mult_uns_0)                          0.00       3.46 r
+  lead_core/mult_23/U580/ZN (INVD1)                                               0.06       3.52 f
+  lead_core/mult_23/U840/ZN (NR2D0)                                               0.07       3.59 r
+  lead_core/mult_23/U160/S (CMPE42D1)                                             0.18       3.77 f
+  lead_core/mult_23/U157/S (CMPE42D1)                                             0.17       3.95 f
+  lead_core/mult_23/U156/S (CMPE42D1)                                             0.14       4.09 f
+  lead_core/mult_23/U77/CO (FA1D0)                                                0.10       4.19 f
+  lead_core/mult_23/U76/CO (FA1D0)                                                0.06       4.24 f
+  lead_core/mult_23/U75/CO (FA1D0)                                                0.06       4.30 f
+  lead_core/mult_23/U74/CO (FA1D0)                                                0.06       4.35 f
+  lead_core/mult_23/U73/CO (FA1D0)                                                0.06       4.41 f
+  lead_core/mult_23/U72/CO (FA1D0)                                                0.06       4.47 f
+  lead_core/mult_23/U71/CO (FA1D0)                                                0.06       4.52 f
+  lead_core/mult_23/U70/CO (FA1D0)                                                0.06       4.58 f
+  lead_core/mult_23/U69/CO (FA1D0)                                                0.06       4.63 f
+  lead_core/mult_23/U68/CO (FA1D0)                                                0.06       4.69 f
+  lead_core/mult_23/U67/CO (FA1D0)                                                0.06       4.74 f
+  lead_core/mult_23/U66/CO (FA1D0)                                                0.06       4.80 f
+  lead_core/mult_23/U65/CO (FA1D0)                                                0.06       4.85 f
+  lead_core/mult_23/U64/CO (FA1D0)                                                0.06       4.91 f
+  lead_core/mult_23/U63/CO (FA1D0)                                                0.06       4.96 f
+  lead_core/mult_23/U62/CO (FA1D0)                                                0.06       5.02 f
+  lead_core/mult_23/U61/CO (FA1D0)                                                0.06       5.07 f
+  lead_core/mult_23/U60/CO (FA1D0)                                                0.06       5.13 f
+  lead_core/mult_23/U59/CO (FA1D0)                                                0.06       5.18 f
+  lead_core/mult_23/U58/CO (FA1D0)                                                0.06       5.24 f
+  lead_core/mult_23/U57/CO (FA1D0)                                                0.06       5.30 f
+  lead_core/mult_23/U56/S (FA1D0)                                                 0.07       5.37 r
+  lead_core/mult_23/product[46] (lead_comb_core_DW_mult_uns_0)                    0.00       5.37 r
+  lead_core/add_26/A[45] (lead_comb_core_DW01_add_1_DW01_add_5)                   0.00       5.37 r
+  lead_core/add_26/U1_45/CO (FA1D0)                                               0.09       5.46 r
+  lead_core/add_26/U1_46/CO (FA1D0)                                               0.05       5.51 r
+  lead_core/add_26/U5/Z (CKXOR2D1)                                                0.05       5.56 f
+  lead_core/add_26/SUM[47] (lead_comb_core_DW01_add_1_DW01_add_5)                 0.00       5.56 f
+  lead_core/shift_out/x[47] (SHIFTER_width73)                                     0.00       5.56 f
+  lead_core/shift_out/U86/ZN (INVD1)                                              0.01       5.58 r
+  lead_core/shift_out/U24/ZN (CKND0)                                              0.01       5.59 f
+  lead_core/shift_out/out0[47] (SHIFTER_width73)                                  0.00       5.59 f
+  lead_core/out0[47] (lead_comb_core)                                             0.00       5.59 f
+  U54/Z (AO22D0)                                                                  0.06       5.65 f
+  fp_wrapper/mantissa_out[22] (FP_DIV_WRAPPER_32)                                 0.00       5.65 f
+  fp_wrapper/shared_wrapper/result_fraction[22] (fp32_normal_finite_wrapper)      0.00       5.65 f
+  fp_wrapper/shared_wrapper/U42/Z (CKBD1)                                         0.03       5.69 f
+  fp_wrapper/shared_wrapper/result[22] (fp32_normal_finite_wrapper)               0.00       5.69 f
+  fp_wrapper/out0[22] (FP_DIV_WRAPPER_32)                                         0.00       5.69 f
+  out0[22] (out)                                                                  0.00       5.69 f
+  data arrival time                                                                          5.69
+
+  clock vclk (rise edge)                                                         10.00      10.00
+  clock network delay (ideal)                                                     0.00      10.00
+  output external delay                                                          -0.02       9.98
+  data required time                                                                         9.98
+  --------------------------------------------------------------------------------------------------
+  data required time                                                                         9.98
+  data arrival time                                                                         -5.69
+  --------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                4.29
+
+
+  Startpoint: x[15] (input port clocked by vclk)
+  Endpoint: out0[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  lead_fp32_paceio_comb ZeroWireload       tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width24_0  ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width24_0 ZeroWireload         tcbn65gplustc_ccs
+  lead_comb_core     ZeroWireload          tcbn65gplustc_ccs
+  lead_fp32_paceio_comb_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_3_DW01_sub_4 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_4_DW01_sub_5 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_cmp_1 ZeroWireload     tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_add_1_DW01_add_5 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width73    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                           Incr       Path
+  --------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                          0.00       0.00
+  clock network delay (ideal)                                                     0.00       0.00
+  input external delay                                                            0.02       0.02 f
+  x[15] (in)                                                                      0.00       0.02 f
+  fp_wrapper/x[15] (FP_DIV_WRAPPER_32)                                            0.00       0.02 f
+  fp_wrapper/shared_wrapper/x[15] (fp32_normal_finite_wrapper)                    0.00       0.02 f
+  fp_wrapper/shared_wrapper/U48/Z (CKBD1)                                         0.03       0.05 f
+  fp_wrapper/shared_wrapper/fraction_x[15] (fp32_normal_finite_wrapper)           0.00       0.05 f
+  fp_wrapper/mantissa_x[15] (FP_DIV_WRAPPER_32)                                   0.00       0.05 f
+  lead_core/x[15] (lead_comb_core)                                                0.00       0.05 f
+  lead_core/norm_a/x[15] (NORMALIZE_width24_0)                                    0.00       0.05 f
+  lead_core/norm_a/shifter/x[15] (SHIFTER_width24_0)                              0.00       0.05 f
+  lead_core/norm_a/shifter/U46/ZN (INVD0)                                         0.02       0.07 r
+  lead_core/norm_a/shifter/U42/ZN (CKND1)                                         0.02       0.09 f
+  lead_core/norm_a/shifter/out0[15] (SHIFTER_width24_0)                           0.00       0.09 f
+  lead_core/norm_a/out0[15] (NORMALIZE_width24_0)                                 0.00       0.09 f
+  lead_core/lt_18/A[16] (lead_comb_core_DW_cmp_1)                                 0.00       0.09 f
+  lead_core/lt_18/U533/ZN (INR2D0)                                                0.04       0.13 f
+  lead_core/lt_18/U532/ZN (AOI21D0)                                               0.06       0.18 r
+  lead_core/lt_18/U465/ZN (INVD1)                                                 0.01       0.20 f
+  lead_core/lt_18/U531/ZN (AOI211D0)                                              0.09       0.28 r
+  lead_core/lt_18/U520/ZN (OAI221D0)                                              0.06       0.35 f
+  lead_core/lt_18/U519/ZN (CKND2D0)                                               0.04       0.38 r
+  lead_core/lt_18/U515/ZN (OAI211D0)                                              0.03       0.42 f
+  lead_core/lt_18/U491/ZN (OAI32D0)                                               0.07       0.49 r
+  lead_core/lt_18/U467/Z (CKBD1)                                                  0.23       0.72 r
+  lead_core/lt_18/GE_LT_GT_LE (lead_comb_core_DW_cmp_1)                           0.00       0.72 r
+  lead_core/U103/Z (CKBD1)                                                        0.05       0.77 r
+  lead_core/U78/ZN (INVD1)                                                        0.10       0.87 f
+  lead_core/U80/Z (AO22D0)                                                        0.18       1.04 f
+  lead_core/mult_21/a[5] (lead_comb_core_DW_mult_uns_1)                           0.00       1.04 f
+  lead_core/mult_21/U42/CO (FA1D0)                                                0.14       1.19 f
+  lead_core/mult_21/U266/Z (AN2D0)                                                0.04       1.22 f
+  lead_core/mult_21/U40/CO (FA1D0)                                                0.05       1.27 f
+  lead_core/mult_21/U39/CO (FA1D0)                                                0.06       1.33 f
+  lead_core/mult_21/U38/CO (FA1D0)                                                0.06       1.38 f
+  lead_core/mult_21/U37/CO (FA1D0)                                                0.06       1.44 f
+  lead_core/mult_21/U36/CO (FA1D0)                                                0.06       1.49 f
+  lead_core/mult_21/U35/CO (FA1D0)                                                0.06       1.55 f
+  lead_core/mult_21/U34/CO (FA1D0)                                                0.06       1.60 f
+  lead_core/mult_21/U33/CO (FA1D0)                                                0.06       1.66 f
+  lead_core/mult_21/U32/CO (FA1D0)                                                0.06       1.72 f
+  lead_core/mult_21/U31/CO (FA1D0)                                                0.06       1.77 f
+  lead_core/mult_21/U30/CO (FA1D0)                                                0.06       1.83 f
+  lead_core/mult_21/U29/CO (FA1D0)                                                0.06       1.88 f
+  lead_core/mult_21/U28/CO (FA1D0)                                                0.06       1.94 f
+  lead_core/mult_21/U27/CO (FA1D0)                                                0.06       1.99 f
+  lead_core/mult_21/U26/CO (FA1D0)                                                0.06       2.05 f
+  lead_core/mult_21/U25/CO (FA1D0)                                                0.06       2.10 f
+  lead_core/mult_21/U24/CO (FA1D0)                                                0.06       2.16 f
+  lead_core/mult_21/U23/CO (FA1D0)                                                0.06       2.21 f
+  lead_core/mult_21/U22/CO (FA1D0)                                                0.06       2.27 f
+  lead_core/mult_21/U21/CO (FA1D0)                                                0.06       2.32 f
+  lead_core/mult_21/U20/CO (FA1D0)                                                0.06       2.38 f
+  lead_core/mult_21/U19/CO (FA1D0)                                                0.06       2.43 f
+  lead_core/mult_21/U18/CO (FA1D0)                                                0.06       2.49 f
+  lead_core/mult_21/U17/CO (FA1D0)                                                0.06       2.55 f
+  lead_core/mult_21/U16/CO (FA1D0)                                                0.06       2.60 f
+  lead_core/mult_21/U15/CO (FA1D0)                                                0.06       2.66 f
+  lead_core/mult_21/U14/CO (FA1D0)                                                0.06       2.71 f
+  lead_core/mult_21/U13/CO (FA1D0)                                                0.06       2.77 f
+  lead_core/mult_21/U12/CO (FA1D0)                                                0.06       2.82 f
+  lead_core/mult_21/U11/CO (FA1D0)                                                0.06       2.88 f
+  lead_core/mult_21/U10/CO (FA1D0)                                                0.06       2.93 f
+  lead_core/mult_21/U9/CO (FA1D0)                                                 0.06       2.99 f
+  lead_core/mult_21/U8/CO (FA1D0)                                                 0.06       3.04 f
+  lead_core/mult_21/U7/CO (FA1D0)                                                 0.06       3.10 f
+  lead_core/mult_21/U6/CO (FA1D0)                                                 0.06       3.15 f
+  lead_core/mult_21/U5/CO (FA1D0)                                                 0.06       3.21 f
+  lead_core/mult_21/U4/CO (FA1D0)                                                 0.06       3.26 f
+  lead_core/mult_21/U3/CO (FA1D0)                                                 0.06       3.32 f
+  lead_core/mult_21/U2/CO (FA1D0)                                                 0.06       3.38 f
+  lead_core/mult_21/U312/Z (CKXOR2D0)                                             0.08       3.46 r
+  lead_core/mult_21/product[47] (lead_comb_core_DW_mult_uns_1)                    0.00       3.46 r
+  lead_core/mult_23/b[23] (lead_comb_core_DW_mult_uns_0)                          0.00       3.46 r
+  lead_core/mult_23/U580/ZN (INVD1)                                               0.06       3.52 f
+  lead_core/mult_23/U840/ZN (NR2D0)                                               0.07       3.59 r
+  lead_core/mult_23/U160/S (CMPE42D1)                                             0.18       3.77 f
+  lead_core/mult_23/U157/S (CMPE42D1)                                             0.17       3.95 f
+  lead_core/mult_23/U156/S (CMPE42D1)                                             0.14       4.09 f
+  lead_core/mult_23/U77/CO (FA1D0)                                                0.10       4.19 f
+  lead_core/mult_23/U76/CO (FA1D0)                                                0.06       4.24 f
+  lead_core/mult_23/U75/CO (FA1D0)                                                0.06       4.30 f
+  lead_core/mult_23/U74/CO (FA1D0)                                                0.06       4.35 f
+  lead_core/mult_23/U73/CO (FA1D0)                                                0.06       4.41 f
+  lead_core/mult_23/U72/CO (FA1D0)                                                0.06       4.47 f
+  lead_core/mult_23/U71/CO (FA1D0)                                                0.06       4.52 f
+  lead_core/mult_23/U70/CO (FA1D0)                                                0.06       4.58 f
+  lead_core/mult_23/U69/CO (FA1D0)                                                0.06       4.63 f
+  lead_core/mult_23/U68/CO (FA1D0)                                                0.06       4.69 f
+  lead_core/mult_23/U67/CO (FA1D0)                                                0.06       4.74 f
+  lead_core/mult_23/U66/CO (FA1D0)                                                0.06       4.80 f
+  lead_core/mult_23/U65/CO (FA1D0)                                                0.06       4.85 f
+  lead_core/mult_23/U64/CO (FA1D0)                                                0.06       4.91 f
+  lead_core/mult_23/U63/CO (FA1D0)                                                0.06       4.96 f
+  lead_core/mult_23/U62/CO (FA1D0)                                                0.06       5.02 f
+  lead_core/mult_23/U61/CO (FA1D0)                                                0.06       5.07 f
+  lead_core/mult_23/U60/CO (FA1D0)                                                0.06       5.13 f
+  lead_core/mult_23/U59/CO (FA1D0)                                                0.06       5.18 f
+  lead_core/mult_23/U58/CO (FA1D0)                                                0.06       5.24 f
+  lead_core/mult_23/U57/CO (FA1D0)                                                0.06       5.30 f
+  lead_core/mult_23/U56/S (FA1D0)                                                 0.07       5.37 r
+  lead_core/mult_23/product[46] (lead_comb_core_DW_mult_uns_0)                    0.00       5.37 r
+  lead_core/add_26/A[45] (lead_comb_core_DW01_add_1_DW01_add_5)                   0.00       5.37 r
+  lead_core/add_26/U1_45/CO (FA1D0)                                               0.09       5.46 r
+  lead_core/add_26/U1_46/CO (FA1D0)                                               0.05       5.51 r
+  lead_core/add_26/U5/Z (CKXOR2D1)                                                0.05       5.56 f
+  lead_core/add_26/SUM[47] (lead_comb_core_DW01_add_1_DW01_add_5)                 0.00       5.56 f
+  lead_core/shift_out/x[47] (SHIFTER_width73)                                     0.00       5.56 f
+  lead_core/shift_out/U86/ZN (INVD1)                                              0.01       5.58 r
+  lead_core/shift_out/U24/ZN (CKND0)                                              0.01       5.59 f
+  lead_core/shift_out/out0[47] (SHIFTER_width73)                                  0.00       5.59 f
+  lead_core/out0[47] (lead_comb_core)                                             0.00       5.59 f
+  U54/Z (AO22D0)                                                                  0.06       5.65 f
+  fp_wrapper/mantissa_out[22] (FP_DIV_WRAPPER_32)                                 0.00       5.65 f
+  fp_wrapper/shared_wrapper/result_fraction[22] (fp32_normal_finite_wrapper)      0.00       5.65 f
+  fp_wrapper/shared_wrapper/U42/Z (CKBD1)                                         0.03       5.69 f
+  fp_wrapper/shared_wrapper/result[22] (fp32_normal_finite_wrapper)               0.00       5.69 f
+  fp_wrapper/out0[22] (FP_DIV_WRAPPER_32)                                         0.00       5.69 f
+  out0[22] (out)                                                                  0.00       5.69 f
+  data arrival time                                                                          5.69
+
+  clock vclk (rise edge)                                                         10.00      10.00
+  clock network delay (ideal)                                                     0.00      10.00
+  output external delay                                                          -0.02       9.98
+  data required time                                                                         9.98
+  --------------------------------------------------------------------------------------------------
+  data required time                                                                         9.98
+  data arrival time                                                                         -5.69
+  --------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                4.29
+
+
+  Startpoint: x[15] (input port clocked by vclk)
+  Endpoint: out0[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  lead_fp32_paceio_comb ZeroWireload       tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width24_0  ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width24_0 ZeroWireload         tcbn65gplustc_ccs
+  lead_comb_core     ZeroWireload          tcbn65gplustc_ccs
+  lead_fp32_paceio_comb_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_3_DW01_sub_4 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_4_DW01_sub_5 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_cmp_1 ZeroWireload     tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_add_1_DW01_add_5 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width73    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                           Incr       Path
+  --------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                          0.00       0.00
+  clock network delay (ideal)                                                     0.00       0.00
+  input external delay                                                            0.02       0.02 f
+  x[15] (in)                                                                      0.00       0.02 f
+  fp_wrapper/x[15] (FP_DIV_WRAPPER_32)                                            0.00       0.02 f
+  fp_wrapper/shared_wrapper/x[15] (fp32_normal_finite_wrapper)                    0.00       0.02 f
+  fp_wrapper/shared_wrapper/U48/Z (CKBD1)                                         0.03       0.05 f
+  fp_wrapper/shared_wrapper/fraction_x[15] (fp32_normal_finite_wrapper)           0.00       0.05 f
+  fp_wrapper/mantissa_x[15] (FP_DIV_WRAPPER_32)                                   0.00       0.05 f
+  lead_core/x[15] (lead_comb_core)                                                0.00       0.05 f
+  lead_core/norm_a/x[15] (NORMALIZE_width24_0)                                    0.00       0.05 f
+  lead_core/norm_a/shifter/x[15] (SHIFTER_width24_0)                              0.00       0.05 f
+  lead_core/norm_a/shifter/U46/ZN (INVD0)                                         0.02       0.07 r
+  lead_core/norm_a/shifter/U42/ZN (CKND1)                                         0.02       0.09 f
+  lead_core/norm_a/shifter/out0[15] (SHIFTER_width24_0)                           0.00       0.09 f
+  lead_core/norm_a/out0[15] (NORMALIZE_width24_0)                                 0.00       0.09 f
+  lead_core/lt_18/A[16] (lead_comb_core_DW_cmp_1)                                 0.00       0.09 f
+  lead_core/lt_18/U533/ZN (INR2D0)                                                0.04       0.13 f
+  lead_core/lt_18/U532/ZN (AOI21D0)                                               0.06       0.18 r
+  lead_core/lt_18/U465/ZN (INVD1)                                                 0.01       0.20 f
+  lead_core/lt_18/U531/ZN (AOI211D0)                                              0.09       0.28 r
+  lead_core/lt_18/U520/ZN (OAI221D0)                                              0.06       0.35 f
+  lead_core/lt_18/U519/ZN (CKND2D0)                                               0.04       0.38 r
+  lead_core/lt_18/U515/ZN (OAI211D0)                                              0.03       0.42 f
+  lead_core/lt_18/U491/ZN (OAI32D0)                                               0.07       0.49 r
+  lead_core/lt_18/U467/Z (CKBD1)                                                  0.23       0.72 r
+  lead_core/lt_18/GE_LT_GT_LE (lead_comb_core_DW_cmp_1)                           0.00       0.72 r
+  lead_core/U103/Z (CKBD1)                                                        0.05       0.77 r
+  lead_core/U78/ZN (INVD1)                                                        0.10       0.87 f
+  lead_core/U80/Z (AO22D0)                                                        0.18       1.04 f
+  lead_core/mult_21/a[5] (lead_comb_core_DW_mult_uns_1)                           0.00       1.04 f
+  lead_core/mult_21/U42/CO (FA1D0)                                                0.14       1.19 f
+  lead_core/mult_21/U266/Z (AN2D0)                                                0.04       1.22 f
+  lead_core/mult_21/U40/CO (FA1D0)                                                0.05       1.27 f
+  lead_core/mult_21/U39/CO (FA1D0)                                                0.06       1.33 f
+  lead_core/mult_21/U38/CO (FA1D0)                                                0.06       1.38 f
+  lead_core/mult_21/U37/CO (FA1D0)                                                0.06       1.44 f
+  lead_core/mult_21/U36/CO (FA1D0)                                                0.06       1.49 f
+  lead_core/mult_21/U35/CO (FA1D0)                                                0.06       1.55 f
+  lead_core/mult_21/U34/CO (FA1D0)                                                0.06       1.60 f
+  lead_core/mult_21/U33/CO (FA1D0)                                                0.06       1.66 f
+  lead_core/mult_21/U32/CO (FA1D0)                                                0.06       1.72 f
+  lead_core/mult_21/U31/CO (FA1D0)                                                0.06       1.77 f
+  lead_core/mult_21/U30/CO (FA1D0)                                                0.06       1.83 f
+  lead_core/mult_21/U29/CO (FA1D0)                                                0.06       1.88 f
+  lead_core/mult_21/U28/CO (FA1D0)                                                0.06       1.94 f
+  lead_core/mult_21/U27/CO (FA1D0)                                                0.06       1.99 f
+  lead_core/mult_21/U26/CO (FA1D0)                                                0.06       2.05 f
+  lead_core/mult_21/U25/CO (FA1D0)                                                0.06       2.10 f
+  lead_core/mult_21/U24/CO (FA1D0)                                                0.06       2.16 f
+  lead_core/mult_21/U23/CO (FA1D0)                                                0.06       2.21 f
+  lead_core/mult_21/U22/CO (FA1D0)                                                0.06       2.27 f
+  lead_core/mult_21/U21/CO (FA1D0)                                                0.06       2.32 f
+  lead_core/mult_21/U20/CO (FA1D0)                                                0.06       2.38 f
+  lead_core/mult_21/U19/CO (FA1D0)                                                0.06       2.43 f
+  lead_core/mult_21/U18/CO (FA1D0)                                                0.06       2.49 f
+  lead_core/mult_21/U17/CO (FA1D0)                                                0.06       2.55 f
+  lead_core/mult_21/U16/CO (FA1D0)                                                0.06       2.60 f
+  lead_core/mult_21/U15/CO (FA1D0)                                                0.06       2.66 f
+  lead_core/mult_21/U14/CO (FA1D0)                                                0.06       2.71 f
+  lead_core/mult_21/U13/CO (FA1D0)                                                0.06       2.77 f
+  lead_core/mult_21/U12/CO (FA1D0)                                                0.06       2.82 f
+  lead_core/mult_21/U11/CO (FA1D0)                                                0.06       2.88 f
+  lead_core/mult_21/U10/CO (FA1D0)                                                0.06       2.93 f
+  lead_core/mult_21/U9/CO (FA1D0)                                                 0.06       2.99 f
+  lead_core/mult_21/U8/CO (FA1D0)                                                 0.06       3.04 f
+  lead_core/mult_21/U7/CO (FA1D0)                                                 0.06       3.10 f
+  lead_core/mult_21/U6/CO (FA1D0)                                                 0.06       3.15 f
+  lead_core/mult_21/U5/CO (FA1D0)                                                 0.06       3.21 f
+  lead_core/mult_21/U4/CO (FA1D0)                                                 0.06       3.26 f
+  lead_core/mult_21/U3/CO (FA1D0)                                                 0.06       3.32 f
+  lead_core/mult_21/U2/CO (FA1D0)                                                 0.06       3.38 f
+  lead_core/mult_21/U312/Z (CKXOR2D0)                                             0.08       3.46 r
+  lead_core/mult_21/product[47] (lead_comb_core_DW_mult_uns_1)                    0.00       3.46 r
+  lead_core/mult_23/b[23] (lead_comb_core_DW_mult_uns_0)                          0.00       3.46 r
+  lead_core/mult_23/U580/ZN (INVD1)                                               0.06       3.52 f
+  lead_core/mult_23/U840/ZN (NR2D0)                                               0.07       3.59 r
+  lead_core/mult_23/U160/S (CMPE42D1)                                             0.18       3.77 f
+  lead_core/mult_23/U157/S (CMPE42D1)                                             0.17       3.95 f
+  lead_core/mult_23/U156/S (CMPE42D1)                                             0.14       4.09 f
+  lead_core/mult_23/U77/CO (FA1D0)                                                0.10       4.19 f
+  lead_core/mult_23/U76/CO (FA1D0)                                                0.06       4.24 f
+  lead_core/mult_23/U75/CO (FA1D0)                                                0.06       4.30 f
+  lead_core/mult_23/U74/CO (FA1D0)                                                0.06       4.35 f
+  lead_core/mult_23/U73/CO (FA1D0)                                                0.06       4.41 f
+  lead_core/mult_23/U72/CO (FA1D0)                                                0.06       4.47 f
+  lead_core/mult_23/U71/CO (FA1D0)                                                0.06       4.52 f
+  lead_core/mult_23/U70/CO (FA1D0)                                                0.06       4.58 f
+  lead_core/mult_23/U69/CO (FA1D0)                                                0.06       4.63 f
+  lead_core/mult_23/U68/CO (FA1D0)                                                0.06       4.69 f
+  lead_core/mult_23/U67/CO (FA1D0)                                                0.06       4.74 f
+  lead_core/mult_23/U66/CO (FA1D0)                                                0.06       4.80 f
+  lead_core/mult_23/U65/CO (FA1D0)                                                0.06       4.85 f
+  lead_core/mult_23/U64/CO (FA1D0)                                                0.06       4.91 f
+  lead_core/mult_23/U63/CO (FA1D0)                                                0.06       4.96 f
+  lead_core/mult_23/U62/CO (FA1D0)                                                0.06       5.02 f
+  lead_core/mult_23/U61/CO (FA1D0)                                                0.06       5.07 f
+  lead_core/mult_23/U60/CO (FA1D0)                                                0.06       5.13 f
+  lead_core/mult_23/U59/CO (FA1D0)                                                0.06       5.18 f
+  lead_core/mult_23/U58/CO (FA1D0)                                                0.06       5.24 f
+  lead_core/mult_23/U57/CO (FA1D0)                                                0.06       5.30 f
+  lead_core/mult_23/U56/S (FA1D0)                                                 0.07       5.37 r
+  lead_core/mult_23/product[46] (lead_comb_core_DW_mult_uns_0)                    0.00       5.37 r
+  lead_core/add_26/A[45] (lead_comb_core_DW01_add_1_DW01_add_5)                   0.00       5.37 r
+  lead_core/add_26/U1_45/CO (FA1D0)                                               0.09       5.46 r
+  lead_core/add_26/U1_46/CO (FA1D0)                                               0.05       5.51 r
+  lead_core/add_26/U5/Z (CKXOR2D1)                                                0.05       5.56 f
+  lead_core/add_26/SUM[47] (lead_comb_core_DW01_add_1_DW01_add_5)                 0.00       5.56 f
+  lead_core/shift_out/x[47] (SHIFTER_width73)                                     0.00       5.56 f
+  lead_core/shift_out/U86/ZN (INVD1)                                              0.01       5.58 r
+  lead_core/shift_out/U24/ZN (CKND0)                                              0.01       5.59 f
+  lead_core/shift_out/out0[47] (SHIFTER_width73)                                  0.00       5.59 f
+  lead_core/out0[47] (lead_comb_core)                                             0.00       5.59 f
+  U54/Z (AO22D0)                                                                  0.06       5.65 f
+  fp_wrapper/mantissa_out[22] (FP_DIV_WRAPPER_32)                                 0.00       5.65 f
+  fp_wrapper/shared_wrapper/result_fraction[22] (fp32_normal_finite_wrapper)      0.00       5.65 f
+  fp_wrapper/shared_wrapper/U42/Z (CKBD1)                                         0.03       5.69 f
+  fp_wrapper/shared_wrapper/result[22] (fp32_normal_finite_wrapper)               0.00       5.69 f
+  fp_wrapper/out0[22] (FP_DIV_WRAPPER_32)                                         0.00       5.69 f
+  out0[22] (out)                                                                  0.00       5.69 f
+  data arrival time                                                                          5.69
+
+  clock vclk (rise edge)                                                         10.00      10.00
+  clock network delay (ideal)                                                     0.00      10.00
+  output external delay                                                          -0.02       9.98
+  data required time                                                                         9.98
+  --------------------------------------------------------------------------------------------------
+  data required time                                                                         9.98
+  data arrival time                                                                         -5.69
+  --------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                4.29
+
+
+  Startpoint: x[15] (input port clocked by vclk)
+  Endpoint: out0[22] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  lead_fp32_paceio_comb ZeroWireload       tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32  ZeroWireload          tcbn65gplustc_ccs
+  SHIFTER_width24_0  ZeroWireload          tcbn65gplustc_ccs
+  NORMALIZE_width24_0 ZeroWireload         tcbn65gplustc_ccs
+  lead_comb_core     ZeroWireload          tcbn65gplustc_ccs
+  lead_fp32_paceio_comb_DW_cmp_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_3_DW01_sub_4 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_4_DW01_sub_5 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_cmp_1 ZeroWireload     tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_sub_2_DW01_sub_3 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  lead_comb_core_DW01_add_1_DW01_add_5 ZeroWireload tcbn65gplustc_ccs
+  SHIFTER_width73    ZeroWireload          tcbn65gplustc_ccs
+
+  Point                                                                           Incr       Path
+  --------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                          0.00       0.00
+  clock network delay (ideal)                                                     0.00       0.00
+  input external delay                                                            0.02       0.02 f
+  x[15] (in)                                                                      0.00       0.02 f
+  fp_wrapper/x[15] (FP_DIV_WRAPPER_32)                                            0.00       0.02 f
+  fp_wrapper/shared_wrapper/x[15] (fp32_normal_finite_wrapper)                    0.00       0.02 f
+  fp_wrapper/shared_wrapper/U48/Z (CKBD1)                                         0.03       0.05 f
+  fp_wrapper/shared_wrapper/fraction_x[15] (fp32_normal_finite_wrapper)           0.00       0.05 f
+  fp_wrapper/mantissa_x[15] (FP_DIV_WRAPPER_32)                                   0.00       0.05 f
+  lead_core/x[15] (lead_comb_core)                                                0.00       0.05 f
+  lead_core/norm_a/x[15] (NORMALIZE_width24_0)                                    0.00       0.05 f
+  lead_core/norm_a/shifter/x[15] (SHIFTER_width24_0)                              0.00       0.05 f
+  lead_core/norm_a/shifter/U46/ZN (INVD0)                                         0.02       0.07 r
+  lead_core/norm_a/shifter/U42/ZN (CKND1)                                         0.02       0.09 f
+  lead_core/norm_a/shifter/out0[15] (SHIFTER_width24_0)                           0.00       0.09 f
+  lead_core/norm_a/out0[15] (NORMALIZE_width24_0)                                 0.00       0.09 f
+  lead_core/lt_18/A[16] (lead_comb_core_DW_cmp_1)                                 0.00       0.09 f
+  lead_core/lt_18/U533/ZN (INR2D0)                                                0.04       0.13 f
+  lead_core/lt_18/U532/ZN (AOI21D0)                                               0.06       0.18 r
+  lead_core/lt_18/U465/ZN (INVD1)                                                 0.01       0.20 f
+  lead_core/lt_18/U531/ZN (AOI211D0)                                              0.09       0.28 r
+  lead_core/lt_18/U520/ZN (OAI221D0)                                              0.06       0.35 f
+  lead_core/lt_18/U519/ZN (CKND2D0)                                               0.04       0.38 r
+  lead_core/lt_18/U515/ZN (OAI211D0)                                              0.03       0.42 f
+  lead_core/lt_18/U491/ZN (OAI32D0)                                               0.07       0.49 r
+  lead_core/lt_18/U467/Z (CKBD1)                                                  0.23       0.72 r
+  lead_core/lt_18/GE_LT_GT_LE (lead_comb_core_DW_cmp_1)                           0.00       0.72 r
+  lead_core/U103/Z (CKBD1)                                                        0.05       0.77 r
+  lead_core/U78/ZN (INVD1)                                                        0.10       0.87 f
+  lead_core/U80/Z (AO22D0)                                                        0.18       1.04 f
+  lead_core/mult_21/a[5] (lead_comb_core_DW_mult_uns_1)                           0.00       1.04 f
+  lead_core/mult_21/U42/CO (FA1D0)                                                0.14       1.19 f
+  lead_core/mult_21/U266/Z (AN2D0)                                                0.04       1.22 f
+  lead_core/mult_21/U40/CO (FA1D0)                                                0.05       1.27 f
+  lead_core/mult_21/U39/CO (FA1D0)                                                0.06       1.33 f
+  lead_core/mult_21/U38/CO (FA1D0)                                                0.06       1.38 f
+  lead_core/mult_21/U37/CO (FA1D0)                                                0.06       1.44 f
+  lead_core/mult_21/U36/CO (FA1D0)                                                0.06       1.49 f
+  lead_core/mult_21/U35/CO (FA1D0)                                                0.06       1.55 f
+  lead_core/mult_21/U34/CO (FA1D0)                                                0.06       1.60 f
+  lead_core/mult_21/U33/CO (FA1D0)                                                0.06       1.66 f
+  lead_core/mult_21/U32/CO (FA1D0)                                                0.06       1.72 f
+  lead_core/mult_21/U31/CO (FA1D0)                                                0.06       1.77 f
+  lead_core/mult_21/U30/CO (FA1D0)                                                0.06       1.83 f
+  lead_core/mult_21/U29/CO (FA1D0)                                                0.06       1.88 f
+  lead_core/mult_21/U28/CO (FA1D0)                                                0.06       1.94 f
+  lead_core/mult_21/U27/CO (FA1D0)                                                0.06       1.99 f
+  lead_core/mult_21/U26/CO (FA1D0)                                                0.06       2.05 f
+  lead_core/mult_21/U25/CO (FA1D0)                                                0.06       2.10 f
+  lead_core/mult_21/U24/CO (FA1D0)                                                0.06       2.16 f
+  lead_core/mult_21/U23/CO (FA1D0)                                                0.06       2.21 f
+  lead_core/mult_21/U22/CO (FA1D0)                                                0.06       2.27 f
+  lead_core/mult_21/U21/CO (FA1D0)                                                0.06       2.32 f
+  lead_core/mult_21/U20/CO (FA1D0)                                                0.06       2.38 f
+  lead_core/mult_21/U19/CO (FA1D0)                                                0.06       2.43 f
+  lead_core/mult_21/U18/CO (FA1D0)                                                0.06       2.49 f
+  lead_core/mult_21/U17/CO (FA1D0)                                                0.06       2.55 f
+  lead_core/mult_21/U16/CO (FA1D0)                                                0.06       2.60 f
+  lead_core/mult_21/U15/CO (FA1D0)                                                0.06       2.66 f
+  lead_core/mult_21/U14/CO (FA1D0)                                                0.06       2.71 f
+  lead_core/mult_21/U13/CO (FA1D0)                                                0.06       2.77 f
+  lead_core/mult_21/U12/CO (FA1D0)                                                0.06       2.82 f
+  lead_core/mult_21/U11/CO (FA1D0)                                                0.06       2.88 f
+  lead_core/mult_21/U10/CO (FA1D0)                                                0.06       2.93 f
+  lead_core/mult_21/U9/CO (FA1D0)                                                 0.06       2.99 f
+  lead_core/mult_21/U8/CO (FA1D0)                                                 0.06       3.04 f
+  lead_core/mult_21/U7/CO (FA1D0)                                                 0.06       3.10 f
+  lead_core/mult_21/U6/CO (FA1D0)                                                 0.06       3.15 f
+  lead_core/mult_21/U5/CO (FA1D0)                                                 0.06       3.21 f
+  lead_core/mult_21/U4/CO (FA1D0)                                                 0.06       3.26 f
+  lead_core/mult_21/U3/CO (FA1D0)                                                 0.06       3.32 f
+  lead_core/mult_21/U2/CO (FA1D0)                                                 0.06       3.38 f
+  lead_core/mult_21/U312/Z (CKXOR2D0)                                             0.08       3.46 r
+  lead_core/mult_21/product[47] (lead_comb_core_DW_mult_uns_1)                    0.00       3.46 r
+  lead_core/mult_23/b[23] (lead_comb_core_DW_mult_uns_0)                          0.00       3.46 r
+  lead_core/mult_23/U580/ZN (INVD1)                                               0.06       3.52 f
+  lead_core/mult_23/U840/ZN (NR2D0)                                               0.07       3.59 r
+  lead_core/mult_23/U160/S (CMPE42D1)                                             0.18       3.77 f
+  lead_core/mult_23/U157/S (CMPE42D1)                                             0.17       3.95 f
+  lead_core/mult_23/U156/S (CMPE42D1)                                             0.14       4.09 f
+  lead_core/mult_23/U77/CO (FA1D0)                                                0.10       4.19 f
+  lead_core/mult_23/U76/CO (FA1D0)                                                0.06       4.24 f
+  lead_core/mult_23/U75/CO (FA1D0)                                                0.06       4.30 f
+  lead_core/mult_23/U74/CO (FA1D0)                                                0.06       4.35 f
+  lead_core/mult_23/U73/CO (FA1D0)                                                0.06       4.41 f
+  lead_core/mult_23/U72/CO (FA1D0)                                                0.06       4.47 f
+  lead_core/mult_23/U71/CO (FA1D0)                                                0.06       4.52 f
+  lead_core/mult_23/U70/CO (FA1D0)                                                0.06       4.58 f
+  lead_core/mult_23/U69/CO (FA1D0)                                                0.06       4.63 f
+  lead_core/mult_23/U68/CO (FA1D0)                                                0.06       4.69 f
+  lead_core/mult_23/U67/CO (FA1D0)                                                0.06       4.74 f
+  lead_core/mult_23/U66/CO (FA1D0)                                                0.06       4.80 f
+  lead_core/mult_23/U65/CO (FA1D0)                                                0.06       4.85 f
+  lead_core/mult_23/U64/CO (FA1D0)                                                0.06       4.91 f
+  lead_core/mult_23/U63/CO (FA1D0)                                                0.06       4.96 f
+  lead_core/mult_23/U62/CO (FA1D0)                                                0.06       5.02 f
+  lead_core/mult_23/U61/CO (FA1D0)                                                0.06       5.07 f
+  lead_core/mult_23/U60/CO (FA1D0)                                                0.06       5.13 f
+  lead_core/mult_23/U59/CO (FA1D0)                                                0.06       5.18 f
+  lead_core/mult_23/U58/CO (FA1D0)                                                0.06       5.24 f
+  lead_core/mult_23/U57/CO (FA1D0)                                                0.06       5.30 f
+  lead_core/mult_23/U56/S (FA1D0)                                                 0.07       5.37 r
+  lead_core/mult_23/product[46] (lead_comb_core_DW_mult_uns_0)                    0.00       5.37 r
+  lead_core/add_26/A[45] (lead_comb_core_DW01_add_1_DW01_add_5)                   0.00       5.37 r
+  lead_core/add_26/U1_45/CO (FA1D0)                                               0.09       5.46 r
+  lead_core/add_26/U1_46/CO (FA1D0)                                               0.05       5.51 r
+  lead_core/add_26/U5/Z (CKXOR2D1)                                                0.05       5.56 f
+  lead_core/add_26/SUM[47] (lead_comb_core_DW01_add_1_DW01_add_5)                 0.00       5.56 f
+  lead_core/shift_out/x[47] (SHIFTER_width73)                                     0.00       5.56 f
+  lead_core/shift_out/U86/ZN (INVD1)                                              0.01       5.58 r
+  lead_core/shift_out/U24/ZN (CKND0)                                              0.01       5.59 f
+  lead_core/shift_out/out0[47] (SHIFTER_width73)                                  0.00       5.59 f
+  lead_core/out0[47] (lead_comb_core)                                             0.00       5.59 f
+  U54/Z (AO22D0)                                                                  0.06       5.65 f
+  fp_wrapper/mantissa_out[22] (FP_DIV_WRAPPER_32)                                 0.00       5.65 f
+  fp_wrapper/shared_wrapper/result_fraction[22] (fp32_normal_finite_wrapper)      0.00       5.65 f
+  fp_wrapper/shared_wrapper/U42/Z (CKBD1)                                         0.03       5.69 f
+  fp_wrapper/shared_wrapper/result[22] (fp32_normal_finite_wrapper)               0.00       5.69 f
+  fp_wrapper/out0[22] (FP_DIV_WRAPPER_32)                                         0.00       5.69 f
+  out0[22] (out)                                                                  0.00       5.69 f
+  data arrival time                                                                          5.69
+
+  clock vclk (rise edge)                                                         10.00      10.00
+  clock network delay (ideal)                                                     0.00      10.00
+  output external delay                                                          -0.02       9.98
+  data required time                                                                         9.98
+  --------------------------------------------------------------------------------------------------
+  data required time                                                                         9.98
+  data arrival time                                                                         -5.69
+  --------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                4.29
+
+
+1

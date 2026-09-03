@@ -1,0 +1,897 @@
+/////////////////////////////////////////////////////////////
+// Created by: Synopsys DC Expert(TM) in wire load mode
+// Version   : U-2022.12-SP7
+// Date      : Thu Sep  3 12:28:56 2026
+/////////////////////////////////////////////////////////////
+
+
+module oadm_multilevel_rounding_lut_0 ( level, index, value_low, x_error, 
+        y_error );
+  input [1:0] level;
+  input [2:0] index;
+  input [3:0] value_low;
+  output [1:0] x_error;
+  output [1:0] y_error;
+  wire   n103, n104, n108, n109, n1, n18, n30;
+
+  OA21D0 U1 ( .A1(n103), .A2(n104), .B(value_low[0]), .Z(x_error[0]) );
+  INR2D0 U2 ( .A1(index[1]), .B1(n30), .ZN(n109) );
+  ND4D0 U3 ( .A1(value_low[1]), .A2(index[0]), .A3(value_low[2]), .A4(index[2]), .ZN(n30) );
+  NR2D0 U4 ( .A1(value_low[1]), .A2(value_low[2]), .ZN(n18) );
+  INR4D0 U5 ( .A1(n1), .B1(index[1]), .B2(index[0]), .B3(value_low[3]), .ZN(
+        n108) );
+  CKND0 U6 ( .I(index[2]), .ZN(n1) );
+  AO22D0 U7 ( .A1(n108), .A2(n18), .B1(n109), .B2(value_low[3]), .Z(n104) );
+  CKXOR2D0 U8 ( .A1(value_low[1]), .A2(n1), .Z(n103) );
+endmodule
+
+
+module oadm_multilevel_rounding_lut_1 ( level, index, value_low, x_error, 
+        y_error );
+  input [1:0] level;
+  input [2:0] index;
+  input [3:0] value_low;
+  output [1:0] x_error;
+  output [1:0] y_error;
+  wire   n1, n23, n142, n143, n147, n148, n222;
+
+  OA21D1 U1 ( .A1(n148), .A2(n147), .B(value_low[0]), .Z(x_error[0]) );
+  INR2D0 U2 ( .A1(index[1]), .B1(n222), .ZN(n142) );
+  ND4D0 U3 ( .A1(value_low[1]), .A2(index[0]), .A3(value_low[2]), .A4(index[2]), .ZN(n222) );
+  NR2D0 U4 ( .A1(value_low[1]), .A2(value_low[2]), .ZN(n23) );
+  INR4D0 U5 ( .A1(n1), .B1(index[1]), .B2(index[0]), .B3(value_low[3]), .ZN(
+        n143) );
+  CKND0 U6 ( .I(index[2]), .ZN(n1) );
+  AO22D0 U7 ( .A1(n143), .A2(n23), .B1(n142), .B2(value_low[3]), .Z(n147) );
+  CKXOR2D0 U8 ( .A1(value_low[1]), .A2(n1), .Z(n148) );
+endmodule
+
+
+module oadm_fixed_plane_centered_LEVEL1_DW01_sub_0 ( A, B, CI, DIFF, CO );
+  input [28:0] A;
+  input [28:0] B;
+  output [28:0] DIFF;
+  input CI;
+  output CO;
+  wire   DIFF_26_, DIFF_25_, n16, n27;
+  wire   [26:1] carry;
+
+  FA1D0 U2_1 ( .A(A[1]), .B(n27), .CI(carry[1]), .CO(carry[2]), .S(DIFF[1]) );
+  FA1D0 U2_2 ( .A(A[2]), .B(1'b1), .CI(carry[2]), .CO(carry[3]), .S(DIFF[2])
+         );
+  INVD1 U49 ( .I(B[1]), .ZN(n27) );
+  XNR2D1 U53 ( .A1(carry[10]), .A2(A[10]), .ZN(DIFF[10]) );
+  XNR2D1 U54 ( .A1(carry[11]), .A2(A[11]), .ZN(DIFF[11]) );
+  XNR2D1 U55 ( .A1(carry[12]), .A2(A[12]), .ZN(DIFF[12]) );
+  XNR2D1 U56 ( .A1(carry[13]), .A2(A[13]), .ZN(DIFF[13]) );
+  XNR2D1 U57 ( .A1(carry[14]), .A2(A[14]), .ZN(DIFF[14]) );
+  XNR2D1 U58 ( .A1(carry[15]), .A2(A[15]), .ZN(DIFF[15]) );
+  XNR2D1 U59 ( .A1(carry[16]), .A2(A[16]), .ZN(DIFF[16]) );
+  XNR2D1 U60 ( .A1(carry[17]), .A2(A[17]), .ZN(DIFF[17]) );
+  XNR2D1 U61 ( .A1(carry[18]), .A2(A[18]), .ZN(DIFF[18]) );
+  XNR2D1 U62 ( .A1(carry[19]), .A2(A[19]), .ZN(DIFF[19]) );
+  XNR2D1 U63 ( .A1(carry[20]), .A2(A[20]), .ZN(DIFF[20]) );
+  XNR2D1 U64 ( .A1(carry[21]), .A2(A[21]), .ZN(DIFF[21]) );
+  XNR2D1 U65 ( .A1(carry[22]), .A2(A[22]), .ZN(DIFF[22]) );
+  XNR2D1 U66 ( .A1(carry[23]), .A2(A[23]), .ZN(DIFF[23]) );
+  XNR2D1 U67 ( .A1(carry[24]), .A2(A[24]), .ZN(DIFF[24]) );
+  XNR2D1 U70 ( .A1(carry[3]), .A2(A[3]), .ZN(DIFF[3]) );
+  XNR2D1 U71 ( .A1(carry[4]), .A2(A[4]), .ZN(DIFF[4]) );
+  XNR2D1 U72 ( .A1(carry[5]), .A2(A[5]), .ZN(DIFF[5]) );
+  XNR2D1 U73 ( .A1(carry[6]), .A2(A[6]), .ZN(DIFF[6]) );
+  XNR2D1 U74 ( .A1(carry[7]), .A2(A[7]), .ZN(DIFF[7]) );
+  XNR2D1 U75 ( .A1(carry[8]), .A2(A[8]), .ZN(DIFF[8]) );
+  XNR2D1 U76 ( .A1(carry[9]), .A2(A[9]), .ZN(DIFF[9]) );
+  OR2D0 U4 ( .A1(carry[23]), .A2(A[23]), .Z(carry[24]) );
+  CKXOR2D0 U5 ( .A1(A[0]), .A2(B[0]), .Z(DIFF[0]) );
+  OR2D0 U6 ( .A1(carry[22]), .A2(A[22]), .Z(carry[23]) );
+  OR2D0 U7 ( .A1(carry[21]), .A2(A[21]), .Z(carry[22]) );
+  OR2D0 U8 ( .A1(carry[20]), .A2(A[20]), .Z(carry[21]) );
+  OR2D0 U9 ( .A1(carry[19]), .A2(A[19]), .Z(carry[20]) );
+  OR2D0 U10 ( .A1(carry[18]), .A2(A[18]), .Z(carry[19]) );
+  OR2D0 U11 ( .A1(carry[17]), .A2(A[17]), .Z(carry[18]) );
+  OR2D0 U12 ( .A1(carry[16]), .A2(A[16]), .Z(carry[17]) );
+  OR2D0 U13 ( .A1(carry[15]), .A2(A[15]), .Z(carry[16]) );
+  OR2D0 U14 ( .A1(carry[14]), .A2(A[14]), .Z(carry[15]) );
+  OR2D0 U15 ( .A1(carry[13]), .A2(A[13]), .Z(carry[14]) );
+  OR2D0 U16 ( .A1(carry[12]), .A2(A[12]), .Z(carry[13]) );
+  OR2D0 U17 ( .A1(carry[11]), .A2(A[11]), .Z(carry[12]) );
+  OR2D0 U18 ( .A1(carry[10]), .A2(A[10]), .Z(carry[11]) );
+  OR2D0 U19 ( .A1(carry[9]), .A2(A[9]), .Z(carry[10]) );
+  OR2D0 U20 ( .A1(carry[8]), .A2(A[8]), .Z(carry[9]) );
+  OR2D0 U21 ( .A1(carry[7]), .A2(A[7]), .Z(carry[8]) );
+  OR2D0 U22 ( .A1(carry[6]), .A2(A[6]), .Z(carry[7]) );
+  OR2D0 U23 ( .A1(carry[5]), .A2(A[5]), .Z(carry[6]) );
+  OR2D0 U24 ( .A1(carry[4]), .A2(A[4]), .Z(carry[5]) );
+  OR2D0 U25 ( .A1(carry[3]), .A2(A[3]), .Z(carry[4]) );
+  IND2D0 U26 ( .A1(A[0]), .B1(B[0]), .ZN(carry[1]) );
+endmodule
+
+
+module oadm_fixed_plane_centered_LEVEL1_DW_mult_tc_1 ( a, b, product );
+  input [21:0] a;
+  input [5:0] b;
+  output [27:0] product;
+  wire   n17, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29, n30,
+         n31, n32, n33, n34, n35, n36, n37, n38, n39, n40, n43, n45, n46, n47,
+         n48, n49, n51, n52, n54, n55, n56, n57, n58, n59, n60, n61, n62, n63,
+         n64, n65, n66, n67, n68, n69, n70, n71, n72, n73, n74, n75, n76, n77,
+         n78, n79, n80, n81, n82, n83, n84, n85, n86, n87, n88, n89, n95, n96,
+         n97, n98, n99, n100, n101, n102, n103, n104, n105, n106, n107, n108,
+         n109, n110, n111, n112, n113, n114, n116, n300, n301, n302, n303,
+         n304, n305, n306, n307, n308, n309, n310, n311, n312, n313, n314,
+         n315, n316, n317, n318, n320, n321, n322, n323, n324, n325, n326,
+         n327, n328, n329, n330, n331, n332, n333, n334, n335, n336, n337,
+         n338, n339, n340, n341, n342, n343, n344, n345, n348;
+
+  FA1D0 U18 ( .A(n342), .B(n43), .CI(n18), .CO(n17), .S(product[26]) );
+  FA1D0 U19 ( .A(n45), .B(n322), .CI(n19), .CO(n18), .S(product[25]) );
+  FA1D0 U20 ( .A(n47), .B(n46), .CI(n20), .CO(n19), .S(product[24]) );
+  FA1D0 U21 ( .A(n51), .B(n48), .CI(n21), .CO(n20), .S(product[23]) );
+  FA1D0 U22 ( .A(n52), .B(n54), .CI(n22), .CO(n21), .S(product[22]) );
+  FA1D0 U23 ( .A(n56), .B(n55), .CI(n23), .CO(n22), .S(product[21]) );
+  FA1D0 U24 ( .A(n58), .B(n57), .CI(n24), .CO(n23), .S(product[20]) );
+  FA1D0 U25 ( .A(n60), .B(n59), .CI(n25), .CO(n24), .S(product[19]) );
+  FA1D0 U26 ( .A(n62), .B(n61), .CI(n26), .CO(n25), .S(product[18]) );
+  FA1D0 U27 ( .A(n64), .B(n63), .CI(n27), .CO(n26), .S(product[17]) );
+  FA1D0 U28 ( .A(n66), .B(n65), .CI(n28), .CO(n27), .S(product[16]) );
+  FA1D0 U29 ( .A(n68), .B(n67), .CI(n29), .CO(n28), .S(product[15]) );
+  FA1D0 U30 ( .A(n70), .B(n69), .CI(n30), .CO(n29), .S(product[14]) );
+  FA1D0 U31 ( .A(n72), .B(n71), .CI(n31), .CO(n30), .S(product[13]) );
+  FA1D0 U32 ( .A(n74), .B(n73), .CI(n32), .CO(n31), .S(product[12]) );
+  FA1D0 U33 ( .A(n76), .B(n75), .CI(n33), .CO(n32), .S(product[11]) );
+  FA1D0 U34 ( .A(n78), .B(n77), .CI(n34), .CO(n33), .S(product[10]) );
+  FA1D0 U35 ( .A(n80), .B(n79), .CI(n35), .CO(n34), .S(product[9]) );
+  FA1D0 U36 ( .A(n82), .B(n81), .CI(n36), .CO(n35), .S(product[8]) );
+  FA1D0 U37 ( .A(n84), .B(n83), .CI(n37), .CO(n36), .S(product[7]) );
+  FA1D0 U38 ( .A(n86), .B(n85), .CI(n38), .CO(n37), .S(product[6]) );
+  FA1D0 U39 ( .A(n88), .B(n87), .CI(n39), .CO(n38), .S(product[5]) );
+  FA1D0 U45 ( .A(n95), .B(n49), .CI(n323), .CO(n45), .S(n46) );
+  FA1D0 U46 ( .A(n116), .B(n96), .CI(n321), .CO(n47), .S(n48) );
+  INVD1 U222 ( .I(n43), .ZN(n322) );
+  INVD1 U224 ( .I(n49), .ZN(n321) );
+  INVD1 U225 ( .I(n116), .ZN(n323) );
+  CKXOR2D1 U228 ( .A1(b[3]), .A2(a[3]), .Z(n301) );
+  CKXOR2D1 U229 ( .A1(b[3]), .A2(a[4]), .Z(n302) );
+  INVD1 U230 ( .I(a[0]), .ZN(n345) );
+  INVD1 U231 ( .I(a[1]), .ZN(n324) );
+  CKXOR2D1 U232 ( .A1(b[3]), .A2(a[5]), .Z(n303) );
+  INVD1 U233 ( .I(a[2]), .ZN(n332) );
+  CKXOR2D1 U234 ( .A1(b[3]), .A2(a[6]), .Z(n304) );
+  INVD1 U235 ( .I(a[3]), .ZN(n331) );
+  CKXOR2D1 U236 ( .A1(b[3]), .A2(a[7]), .Z(n305) );
+  INVD1 U237 ( .I(a[4]), .ZN(n330) );
+  CKXOR2D1 U238 ( .A1(b[3]), .A2(a[8]), .Z(n306) );
+  INVD1 U239 ( .I(a[5]), .ZN(n329) );
+  CKXOR2D1 U240 ( .A1(b[3]), .A2(a[9]), .Z(n307) );
+  INVD1 U241 ( .I(a[6]), .ZN(n328) );
+  CKXOR2D1 U242 ( .A1(b[3]), .A2(a[10]), .Z(n308) );
+  INVD1 U243 ( .I(a[7]), .ZN(n327) );
+  CKXOR2D1 U244 ( .A1(b[3]), .A2(a[11]), .Z(n309) );
+  INVD1 U245 ( .I(a[8]), .ZN(n326) );
+  CKXOR2D1 U246 ( .A1(b[3]), .A2(a[12]), .Z(n310) );
+  INVD1 U247 ( .I(a[9]), .ZN(n325) );
+  CKXOR2D1 U248 ( .A1(b[3]), .A2(a[13]), .Z(n311) );
+  INVD1 U249 ( .I(a[10]), .ZN(n341) );
+  CKXOR2D1 U250 ( .A1(b[3]), .A2(a[14]), .Z(n312) );
+  INVD1 U251 ( .I(a[11]), .ZN(n340) );
+  CKXOR2D1 U252 ( .A1(b[3]), .A2(a[15]), .Z(n313) );
+  INVD1 U253 ( .I(a[12]), .ZN(n339) );
+  CKXOR2D1 U254 ( .A1(b[3]), .A2(a[16]), .Z(n314) );
+  INVD1 U255 ( .I(a[13]), .ZN(n338) );
+  CKXOR2D1 U256 ( .A1(b[3]), .A2(a[17]), .Z(n315) );
+  INVD1 U257 ( .I(a[14]), .ZN(n337) );
+  CKXOR2D1 U258 ( .A1(b[3]), .A2(a[18]), .Z(n316) );
+  INVD1 U259 ( .I(a[15]), .ZN(n336) );
+  CKXOR2D1 U260 ( .A1(b[3]), .A2(a[19]), .Z(n317) );
+  INVD1 U261 ( .I(a[16]), .ZN(n335) );
+  CKXOR2D1 U262 ( .A1(b[3]), .A2(a[20]), .Z(n318) );
+  INVD1 U263 ( .I(a[17]), .ZN(n334) );
+  INVD1 U264 ( .I(a[18]), .ZN(n333) );
+  INVD1 U265 ( .I(a[21]), .ZN(n342) );
+  INVD1 U266 ( .I(a[19]), .ZN(n344) );
+  INVD1 U267 ( .I(a[20]), .ZN(n343) );
+  AN2D0 U268 ( .A1(n40), .A2(n89), .Z(n39) );
+  CKXOR2D0 U269 ( .A1(n40), .A2(n89), .Z(product[4]) );
+  AN2D0 U272 ( .A1(n300), .A2(n114), .Z(n88) );
+  CKXOR2D0 U273 ( .A1(n300), .A2(n114), .Z(n89) );
+  AN2D0 U274 ( .A1(n301), .A2(n113), .Z(n86) );
+  CKXOR2D0 U275 ( .A1(n301), .A2(n113), .Z(n87) );
+  AN2D0 U276 ( .A1(n302), .A2(n112), .Z(n84) );
+  CKXOR2D0 U277 ( .A1(n302), .A2(n112), .Z(n85) );
+  AN2D0 U278 ( .A1(n303), .A2(n111), .Z(n82) );
+  CKXOR2D0 U279 ( .A1(n303), .A2(n111), .Z(n83) );
+  AN2D0 U280 ( .A1(n304), .A2(n110), .Z(n80) );
+  CKXOR2D0 U281 ( .A1(n304), .A2(n110), .Z(n81) );
+  AN2D0 U282 ( .A1(n305), .A2(n109), .Z(n78) );
+  CKXOR2D0 U283 ( .A1(n305), .A2(n109), .Z(n79) );
+  AN2D0 U284 ( .A1(n306), .A2(n108), .Z(n76) );
+  CKXOR2D0 U285 ( .A1(n306), .A2(n108), .Z(n77) );
+  AN2D0 U286 ( .A1(n307), .A2(n107), .Z(n74) );
+  CKXOR2D0 U287 ( .A1(n307), .A2(n107), .Z(n75) );
+  AN2D0 U288 ( .A1(n308), .A2(n106), .Z(n72) );
+  CKXOR2D0 U289 ( .A1(n308), .A2(n106), .Z(n73) );
+  AN2D0 U290 ( .A1(n309), .A2(n105), .Z(n70) );
+  CKXOR2D0 U291 ( .A1(n309), .A2(n105), .Z(n71) );
+  AN2D0 U292 ( .A1(n310), .A2(n104), .Z(n68) );
+  CKXOR2D0 U293 ( .A1(n310), .A2(n104), .Z(n69) );
+  AN2D0 U294 ( .A1(n311), .A2(n103), .Z(n66) );
+  CKXOR2D0 U295 ( .A1(n311), .A2(n103), .Z(n67) );
+  AN2D0 U296 ( .A1(n312), .A2(n102), .Z(n64) );
+  CKXOR2D0 U297 ( .A1(n312), .A2(n102), .Z(n65) );
+  AN2D0 U298 ( .A1(n313), .A2(n101), .Z(n62) );
+  CKXOR2D0 U299 ( .A1(n313), .A2(n101), .Z(n63) );
+  AN2D0 U300 ( .A1(n314), .A2(n100), .Z(n60) );
+  CKXOR2D0 U301 ( .A1(n314), .A2(n100), .Z(n61) );
+  AN2D0 U302 ( .A1(n315), .A2(n99), .Z(n58) );
+  CKXOR2D0 U303 ( .A1(n315), .A2(n99), .Z(n59) );
+  AN2D0 U304 ( .A1(n316), .A2(n98), .Z(n56) );
+  CKXOR2D0 U305 ( .A1(n316), .A2(n98), .Z(n57) );
+  AN2D0 U306 ( .A1(n317), .A2(n97), .Z(n54) );
+  CKXOR2D0 U307 ( .A1(n317), .A2(n97), .Z(n55) );
+  OR2D0 U308 ( .A1(n321), .A2(n318), .Z(n51) );
+  XNR2D0 U309 ( .A1(n321), .A2(n318), .ZN(n52) );
+  CKND0 U310 ( .I(n17), .ZN(product[27]) );
+  OAI22D0 U311 ( .A1(n320), .A2(n337), .B1(b[3]), .B2(n336), .ZN(n99) );
+  OAI22D0 U312 ( .A1(n336), .A2(n320), .B1(b[3]), .B2(n335), .ZN(n98) );
+  OAI22D0 U313 ( .A1(n320), .A2(n335), .B1(b[3]), .B2(n334), .ZN(n97) );
+  OAI22D0 U314 ( .A1(n320), .A2(n333), .B1(b[3]), .B2(n344), .ZN(n96) );
+  OAI22D0 U315 ( .A1(n320), .A2(n344), .B1(b[3]), .B2(n343), .ZN(n95) );
+  OAI22D0 U316 ( .A1(n320), .A2(n334), .B1(b[3]), .B2(n333), .ZN(n49) );
+  OAI22D0 U317 ( .A1(n320), .A2(n343), .B1(b[3]), .B2(n342), .ZN(n43) );
+  XNR2D0 U319 ( .A1(b[3]), .A2(n342), .ZN(n116) );
+  NR2D0 U320 ( .A1(b[3]), .A2(n345), .ZN(n114) );
+  OAI22D0 U321 ( .A1(n320), .A2(n345), .B1(b[3]), .B2(n324), .ZN(n113) );
+  OAI22D0 U322 ( .A1(n320), .A2(n324), .B1(b[3]), .B2(n332), .ZN(n112) );
+  OAI22D0 U323 ( .A1(n320), .A2(n332), .B1(b[3]), .B2(n331), .ZN(n111) );
+  OAI22D0 U324 ( .A1(n320), .A2(n331), .B1(b[3]), .B2(n330), .ZN(n110) );
+  OAI22D0 U325 ( .A1(n320), .A2(n330), .B1(b[3]), .B2(n329), .ZN(n109) );
+  OAI22D0 U326 ( .A1(n320), .A2(n329), .B1(b[3]), .B2(n328), .ZN(n108) );
+  OAI22D0 U327 ( .A1(n320), .A2(n328), .B1(b[3]), .B2(n327), .ZN(n107) );
+  OAI22D0 U328 ( .A1(n320), .A2(n327), .B1(b[3]), .B2(n326), .ZN(n106) );
+  OAI22D0 U329 ( .A1(n320), .A2(n326), .B1(b[3]), .B2(n325), .ZN(n105) );
+  OAI22D0 U330 ( .A1(n320), .A2(n325), .B1(b[3]), .B2(n341), .ZN(n104) );
+  OAI22D0 U331 ( .A1(n320), .A2(n341), .B1(b[3]), .B2(n340), .ZN(n103) );
+  OAI22D0 U332 ( .A1(n320), .A2(n340), .B1(b[3]), .B2(n339), .ZN(n102) );
+  OAI22D0 U333 ( .A1(n320), .A2(n339), .B1(b[3]), .B2(n338), .ZN(n101) );
+  OAI22D0 U334 ( .A1(n320), .A2(n338), .B1(b[3]), .B2(n337), .ZN(n100) );
+  CKND0 U223 ( .I(a[1]), .ZN(n348) );
+  AN3D0 U226 ( .A1(n348), .A2(n345), .A3(b[3]), .Z(n40) );
+  XNR2D0 U227 ( .A1(a[2]), .A2(n320), .ZN(n300) );
+  CKND0 U270 ( .I(b[3]), .ZN(n320) );
+endmodule
+
+
+module oadm_fixed_plane_centered_LEVEL1_DW01_add_5_DW01_add_7 ( A, B, CI, SUM, 
+        CO );
+  input [27:0] A;
+  input [27:0] B;
+  output [27:0] SUM;
+  input CI;
+  output CO;
+  wire   n1;
+  wire   [27:2] carry;
+
+  FA1D0 U1_1 ( .A(A[1]), .B(B[1]), .CI(n1), .CO(carry[2]), .S(SUM[1]) );
+  FA1D0 U1_2 ( .A(A[2]), .B(B[2]), .CI(carry[2]), .CO(carry[3]), .S(SUM[2]) );
+  FA1D0 U1_3 ( .A(A[3]), .B(B[3]), .CI(carry[3]), .CO(carry[4]), .S(SUM[3]) );
+  FA1D0 U1_4 ( .A(A[4]), .B(B[4]), .CI(carry[4]), .CO(carry[5]), .S(SUM[4]) );
+  FA1D0 U1_5 ( .A(A[5]), .B(B[5]), .CI(carry[5]), .CO(carry[6]), .S(SUM[5]) );
+  FA1D0 U1_6 ( .A(A[6]), .B(B[6]), .CI(carry[6]), .CO(carry[7]), .S(SUM[6]) );
+  FA1D0 U1_7 ( .A(A[7]), .B(B[7]), .CI(carry[7]), .CO(carry[8]), .S(SUM[7]) );
+  FA1D0 U1_8 ( .A(A[8]), .B(B[8]), .CI(carry[8]), .CO(carry[9]), .S(SUM[8]) );
+  FA1D0 U1_9 ( .A(A[9]), .B(B[9]), .CI(carry[9]), .CO(carry[10]), .S(SUM[9])
+         );
+  FA1D0 U1_10 ( .A(A[10]), .B(B[10]), .CI(carry[10]), .CO(carry[11]), .S(
+        SUM[10]) );
+  FA1D0 U1_11 ( .A(A[11]), .B(B[11]), .CI(carry[11]), .CO(carry[12]), .S(
+        SUM[11]) );
+  FA1D0 U1_12 ( .A(A[12]), .B(B[12]), .CI(carry[12]), .CO(carry[13]), .S(
+        SUM[12]) );
+  FA1D0 U1_13 ( .A(A[13]), .B(B[13]), .CI(carry[13]), .CO(carry[14]), .S(
+        SUM[13]) );
+  FA1D0 U1_14 ( .A(A[14]), .B(B[14]), .CI(carry[14]), .CO(carry[15]), .S(
+        SUM[14]) );
+  FA1D0 U1_15 ( .A(A[15]), .B(B[15]), .CI(carry[15]), .CO(carry[16]), .S(
+        SUM[15]) );
+  FA1D0 U1_16 ( .A(A[16]), .B(B[16]), .CI(carry[16]), .CO(carry[17]), .S(
+        SUM[16]) );
+  FA1D0 U1_17 ( .A(A[17]), .B(B[17]), .CI(carry[17]), .CO(carry[18]), .S(
+        SUM[17]) );
+  FA1D0 U1_18 ( .A(A[18]), .B(B[18]), .CI(carry[18]), .CO(carry[19]), .S(
+        SUM[18]) );
+  FA1D0 U1_19 ( .A(A[19]), .B(B[19]), .CI(carry[19]), .CO(carry[20]), .S(
+        SUM[19]) );
+  FA1D0 U1_20 ( .A(A[20]), .B(B[20]), .CI(carry[20]), .CO(carry[21]), .S(
+        SUM[20]) );
+  FA1D0 U1_21 ( .A(A[21]), .B(B[21]), .CI(carry[21]), .CO(carry[22]), .S(
+        SUM[21]) );
+  FA1D0 U1_22 ( .A(A[22]), .B(B[22]), .CI(carry[22]), .CO(carry[23]), .S(
+        SUM[22]) );
+  FA1D0 U1_24 ( .A(A[24]), .B(B[24]), .CI(carry[24]), .CO(carry[25]), .S(
+        SUM[24]) );
+  FA1D0 U1_23 ( .A(A[23]), .B(B[23]), .CI(carry[23]), .CO(carry[24]), .S(
+        SUM[23]) );
+  XOR3D1 U1_27 ( .A1(A[27]), .A2(B[27]), .A3(carry[27]), .Z(SUM[27]) );
+  FA1D0 U1_25 ( .A(A[25]), .B(B[25]), .CI(carry[25]), .CO(carry[26]), .S(
+        SUM[25]) );
+  FA1D0 U1_26 ( .A(A[26]), .B(B[26]), .CI(carry[26]), .CO(carry[27]), .S(
+        SUM[26]) );
+  AN2XD1 U1 ( .A1(B[0]), .A2(A[0]), .Z(n1) );
+  CKXOR2D1 U2 ( .A1(B[0]), .A2(A[0]), .Z(SUM[0]) );
+endmodule
+
+
+module oadm_fixed_plane_centered_LEVEL1_DW_mult_tc_0 ( a, b, product );
+  input [21:0] a;
+  input [5:0] b;
+  output [27:0] product;
+  wire   n17, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29, n30,
+         n31, n32, n33, n34, n35, n36, n37, n38, n39, n40, n43, n45, n46, n47,
+         n48, n49, n51, n52, n54, n55, n56, n57, n58, n59, n60, n61, n62, n63,
+         n64, n65, n66, n67, n68, n69, n70, n71, n72, n73, n74, n75, n76, n77,
+         n78, n79, n80, n81, n82, n83, n84, n85, n86, n87, n88, n89, n95, n96,
+         n97, n98, n99, n100, n101, n102, n103, n104, n105, n106, n107, n108,
+         n109, n110, n111, n112, n113, n114, n116, n300, n301, n302, n303,
+         n304, n305, n306, n307, n308, n309, n310, n311, n312, n313, n314,
+         n315, n316, n317, n318, n320, n321, n322, n323, n324, n325, n326,
+         n327, n328, n329, n330, n331, n332, n333, n334, n335, n336, n337,
+         n338, n339, n340, n341, n342, n343, n344, n345, n348;
+
+  FA1D0 U18 ( .A(n342), .B(n43), .CI(n18), .CO(n17), .S(product[26]) );
+  FA1D0 U19 ( .A(n45), .B(n341), .CI(n19), .CO(n18), .S(product[25]) );
+  FA1D0 U20 ( .A(n47), .B(n46), .CI(n20), .CO(n19), .S(product[24]) );
+  FA1D0 U21 ( .A(n51), .B(n48), .CI(n21), .CO(n20), .S(product[23]) );
+  FA1D0 U22 ( .A(n52), .B(n54), .CI(n22), .CO(n21), .S(product[22]) );
+  FA1D0 U23 ( .A(n56), .B(n55), .CI(n23), .CO(n22), .S(product[21]) );
+  FA1D0 U24 ( .A(n58), .B(n57), .CI(n24), .CO(n23), .S(product[20]) );
+  FA1D0 U25 ( .A(n60), .B(n59), .CI(n25), .CO(n24), .S(product[19]) );
+  FA1D0 U26 ( .A(n62), .B(n61), .CI(n26), .CO(n25), .S(product[18]) );
+  FA1D0 U27 ( .A(n64), .B(n63), .CI(n27), .CO(n26), .S(product[17]) );
+  FA1D0 U28 ( .A(n66), .B(n65), .CI(n28), .CO(n27), .S(product[16]) );
+  FA1D0 U29 ( .A(n68), .B(n67), .CI(n29), .CO(n28), .S(product[15]) );
+  FA1D0 U30 ( .A(n70), .B(n69), .CI(n30), .CO(n29), .S(product[14]) );
+  FA1D0 U31 ( .A(n72), .B(n71), .CI(n31), .CO(n30), .S(product[13]) );
+  FA1D0 U32 ( .A(n74), .B(n73), .CI(n32), .CO(n31), .S(product[12]) );
+  FA1D0 U33 ( .A(n76), .B(n75), .CI(n33), .CO(n32), .S(product[11]) );
+  FA1D0 U34 ( .A(n78), .B(n77), .CI(n34), .CO(n33), .S(product[10]) );
+  FA1D0 U35 ( .A(n80), .B(n79), .CI(n35), .CO(n34), .S(product[9]) );
+  FA1D0 U36 ( .A(n82), .B(n81), .CI(n36), .CO(n35), .S(product[8]) );
+  FA1D0 U37 ( .A(n84), .B(n83), .CI(n37), .CO(n36), .S(product[7]) );
+  FA1D0 U38 ( .A(n86), .B(n85), .CI(n38), .CO(n37), .S(product[6]) );
+  FA1D0 U39 ( .A(n88), .B(n87), .CI(n39), .CO(n38), .S(product[5]) );
+  FA1D0 U45 ( .A(n95), .B(n49), .CI(n340), .CO(n45), .S(n46) );
+  FA1D0 U46 ( .A(n116), .B(n96), .CI(n330), .CO(n47), .S(n48) );
+  INVD1 U223 ( .I(n43), .ZN(n341) );
+  INVD1 U225 ( .I(n49), .ZN(n330) );
+  INVD1 U226 ( .I(n116), .ZN(n340) );
+  CKXOR2D1 U228 ( .A1(b[3]), .A2(a[3]), .Z(n301) );
+  CKXOR2D1 U229 ( .A1(b[3]), .A2(a[4]), .Z(n302) );
+  CKXOR2D1 U230 ( .A1(b[3]), .A2(a[5]), .Z(n303) );
+  INVD1 U231 ( .I(a[0]), .ZN(n345) );
+  INVD1 U232 ( .I(a[1]), .ZN(n321) );
+  CKXOR2D1 U233 ( .A1(b[3]), .A2(a[6]), .Z(n304) );
+  INVD1 U234 ( .I(a[2]), .ZN(n329) );
+  CKXOR2D1 U235 ( .A1(b[3]), .A2(a[7]), .Z(n305) );
+  INVD1 U236 ( .I(a[3]), .ZN(n328) );
+  CKXOR2D1 U237 ( .A1(b[3]), .A2(a[8]), .Z(n306) );
+  CKXOR2D1 U238 ( .A1(b[3]), .A2(a[9]), .Z(n307) );
+  INVD1 U239 ( .I(a[4]), .ZN(n327) );
+  CKXOR2D1 U240 ( .A1(b[3]), .A2(a[10]), .Z(n308) );
+  INVD1 U241 ( .I(a[5]), .ZN(n326) );
+  CKXOR2D1 U242 ( .A1(b[3]), .A2(a[11]), .Z(n309) );
+  INVD1 U243 ( .I(a[6]), .ZN(n325) );
+  CKXOR2D1 U244 ( .A1(b[3]), .A2(a[12]), .Z(n310) );
+  INVD1 U245 ( .I(a[7]), .ZN(n324) );
+  CKXOR2D1 U246 ( .A1(b[3]), .A2(a[13]), .Z(n311) );
+  INVD1 U247 ( .I(a[8]), .ZN(n323) );
+  CKXOR2D1 U248 ( .A1(b[3]), .A2(a[14]), .Z(n312) );
+  INVD1 U249 ( .I(a[9]), .ZN(n322) );
+  CKXOR2D1 U250 ( .A1(b[3]), .A2(a[15]), .Z(n313) );
+  INVD1 U251 ( .I(a[10]), .ZN(n339) );
+  CKXOR2D1 U252 ( .A1(b[3]), .A2(a[16]), .Z(n314) );
+  INVD1 U253 ( .I(a[11]), .ZN(n338) );
+  CKXOR2D1 U254 ( .A1(b[3]), .A2(a[17]), .Z(n315) );
+  INVD1 U255 ( .I(a[12]), .ZN(n337) );
+  CKXOR2D1 U256 ( .A1(b[3]), .A2(a[18]), .Z(n316) );
+  INVD1 U257 ( .I(a[13]), .ZN(n336) );
+  CKXOR2D1 U258 ( .A1(b[3]), .A2(a[19]), .Z(n317) );
+  INVD1 U259 ( .I(a[14]), .ZN(n335) );
+  CKXOR2D1 U260 ( .A1(b[3]), .A2(a[20]), .Z(n318) );
+  INVD1 U261 ( .I(a[15]), .ZN(n334) );
+  INVD1 U262 ( .I(a[16]), .ZN(n333) );
+  INVD1 U263 ( .I(a[17]), .ZN(n332) );
+  INVD1 U264 ( .I(a[18]), .ZN(n331) );
+  INVD1 U265 ( .I(a[21]), .ZN(n342) );
+  INVD1 U266 ( .I(a[19]), .ZN(n344) );
+  INVD1 U267 ( .I(a[20]), .ZN(n343) );
+  AN2D0 U268 ( .A1(n40), .A2(n89), .Z(n39) );
+  CKXOR2D0 U269 ( .A1(n40), .A2(n89), .Z(product[4]) );
+  AN2D0 U272 ( .A1(n300), .A2(n114), .Z(n88) );
+  CKXOR2D0 U273 ( .A1(n300), .A2(n114), .Z(n89) );
+  AN2D0 U274 ( .A1(n301), .A2(n113), .Z(n86) );
+  CKXOR2D0 U275 ( .A1(n301), .A2(n113), .Z(n87) );
+  AN2D0 U276 ( .A1(n302), .A2(n112), .Z(n84) );
+  CKXOR2D0 U277 ( .A1(n302), .A2(n112), .Z(n85) );
+  AN2D0 U278 ( .A1(n303), .A2(n111), .Z(n82) );
+  CKXOR2D0 U279 ( .A1(n303), .A2(n111), .Z(n83) );
+  AN2D0 U280 ( .A1(n304), .A2(n110), .Z(n80) );
+  CKXOR2D0 U281 ( .A1(n304), .A2(n110), .Z(n81) );
+  AN2D0 U282 ( .A1(n305), .A2(n109), .Z(n78) );
+  CKXOR2D0 U283 ( .A1(n305), .A2(n109), .Z(n79) );
+  AN2D0 U284 ( .A1(n306), .A2(n108), .Z(n76) );
+  CKXOR2D0 U285 ( .A1(n306), .A2(n108), .Z(n77) );
+  AN2D0 U286 ( .A1(n307), .A2(n107), .Z(n74) );
+  CKXOR2D0 U287 ( .A1(n307), .A2(n107), .Z(n75) );
+  AN2D0 U288 ( .A1(n308), .A2(n106), .Z(n72) );
+  CKXOR2D0 U289 ( .A1(n308), .A2(n106), .Z(n73) );
+  AN2D0 U290 ( .A1(n309), .A2(n105), .Z(n70) );
+  CKXOR2D0 U291 ( .A1(n309), .A2(n105), .Z(n71) );
+  AN2D0 U292 ( .A1(n310), .A2(n104), .Z(n68) );
+  CKXOR2D0 U293 ( .A1(n310), .A2(n104), .Z(n69) );
+  AN2D0 U294 ( .A1(n311), .A2(n103), .Z(n66) );
+  CKXOR2D0 U295 ( .A1(n311), .A2(n103), .Z(n67) );
+  AN2D0 U296 ( .A1(n312), .A2(n102), .Z(n64) );
+  CKXOR2D0 U297 ( .A1(n312), .A2(n102), .Z(n65) );
+  AN2D0 U298 ( .A1(n313), .A2(n101), .Z(n62) );
+  CKXOR2D0 U299 ( .A1(n313), .A2(n101), .Z(n63) );
+  AN2D0 U300 ( .A1(n314), .A2(n100), .Z(n60) );
+  CKXOR2D0 U301 ( .A1(n314), .A2(n100), .Z(n61) );
+  AN2D0 U302 ( .A1(n315), .A2(n99), .Z(n58) );
+  CKXOR2D0 U303 ( .A1(n315), .A2(n99), .Z(n59) );
+  AN2D0 U304 ( .A1(n316), .A2(n98), .Z(n56) );
+  CKXOR2D0 U305 ( .A1(n316), .A2(n98), .Z(n57) );
+  AN2D0 U306 ( .A1(n317), .A2(n97), .Z(n54) );
+  CKXOR2D0 U307 ( .A1(n317), .A2(n97), .Z(n55) );
+  OR2D0 U308 ( .A1(n330), .A2(n318), .Z(n51) );
+  XNR2D0 U309 ( .A1(n330), .A2(n318), .ZN(n52) );
+  CKND0 U310 ( .I(n17), .ZN(product[27]) );
+  OAI22D0 U311 ( .A1(n320), .A2(n335), .B1(b[3]), .B2(n334), .ZN(n99) );
+  OAI22D0 U312 ( .A1(n334), .A2(n320), .B1(b[3]), .B2(n333), .ZN(n98) );
+  OAI22D0 U313 ( .A1(n320), .A2(n333), .B1(b[3]), .B2(n332), .ZN(n97) );
+  OAI22D0 U314 ( .A1(n320), .A2(n331), .B1(b[3]), .B2(n344), .ZN(n96) );
+  OAI22D0 U315 ( .A1(n320), .A2(n344), .B1(b[3]), .B2(n343), .ZN(n95) );
+  OAI22D0 U316 ( .A1(n320), .A2(n332), .B1(b[3]), .B2(n331), .ZN(n49) );
+  OAI22D0 U317 ( .A1(n320), .A2(n343), .B1(b[3]), .B2(n342), .ZN(n43) );
+  XNR2D0 U319 ( .A1(b[3]), .A2(n342), .ZN(n116) );
+  NR2D0 U320 ( .A1(b[3]), .A2(n345), .ZN(n114) );
+  OAI22D0 U321 ( .A1(n320), .A2(n345), .B1(b[3]), .B2(n321), .ZN(n113) );
+  OAI22D0 U322 ( .A1(n320), .A2(n321), .B1(b[3]), .B2(n329), .ZN(n112) );
+  OAI22D0 U323 ( .A1(n320), .A2(n329), .B1(b[3]), .B2(n328), .ZN(n111) );
+  OAI22D0 U324 ( .A1(n320), .A2(n328), .B1(b[3]), .B2(n327), .ZN(n110) );
+  OAI22D0 U325 ( .A1(n320), .A2(n327), .B1(b[3]), .B2(n326), .ZN(n109) );
+  OAI22D0 U326 ( .A1(n320), .A2(n326), .B1(b[3]), .B2(n325), .ZN(n108) );
+  OAI22D0 U327 ( .A1(n320), .A2(n325), .B1(b[3]), .B2(n324), .ZN(n107) );
+  OAI22D0 U328 ( .A1(n320), .A2(n324), .B1(b[3]), .B2(n323), .ZN(n106) );
+  OAI22D0 U329 ( .A1(n320), .A2(n323), .B1(b[3]), .B2(n322), .ZN(n105) );
+  OAI22D0 U330 ( .A1(n320), .A2(n322), .B1(b[3]), .B2(n339), .ZN(n104) );
+  OAI22D0 U331 ( .A1(n320), .A2(n339), .B1(b[3]), .B2(n338), .ZN(n103) );
+  OAI22D0 U332 ( .A1(n320), .A2(n338), .B1(b[3]), .B2(n337), .ZN(n102) );
+  OAI22D0 U333 ( .A1(n320), .A2(n337), .B1(b[3]), .B2(n336), .ZN(n101) );
+  OAI22D0 U334 ( .A1(n320), .A2(n336), .B1(b[3]), .B2(n335), .ZN(n100) );
+  CKND0 U222 ( .I(a[1]), .ZN(n348) );
+  AN3D0 U224 ( .A1(n348), .A2(n345), .A3(b[3]), .Z(n40) );
+  XNR2D0 U227 ( .A1(a[2]), .A2(n320), .ZN(n300) );
+  CKND0 U270 ( .I(b[3]), .ZN(n320) );
+endmodule
+
+
+module oadm_fixed_plane_centered_LEVEL1 ( x_mantissa, y_mantissa, divide_mode, 
+        plane_exact );
+  input [23:0] x_mantissa;
+  input [23:0] y_mantissa;
+  output [28:0] plane_exact;
+  input divide_mode;
+  wire   x_residual_wide_21_, y_residual_wide_21_, x_rounding_error_0_,
+         y_side_x_error_0_, N22, N23, N24, N25, N26, N27, N28, N29, N30, N31,
+         N32, N33, N34, N35, N36, N37, N38, N39, N40, N41, N42, N43, N44, N45,
+         N46, N47, N48, n430, y_residual_product_9_, y_residual_product_8_,
+         y_residual_product_7_, y_residual_product_6_, y_residual_product_5_,
+         y_residual_product_4_, y_residual_product_27_, y_residual_product_26_,
+         y_residual_product_25_, y_residual_product_24_,
+         y_residual_product_23_, y_residual_product_22_,
+         y_residual_product_21_, y_residual_product_20_,
+         y_residual_product_19_, y_residual_product_18_,
+         y_residual_product_17_, y_residual_product_16_,
+         y_residual_product_15_, y_residual_product_14_,
+         y_residual_product_13_, y_residual_product_12_,
+         y_residual_product_11_, y_residual_product_10_,
+         x_residual_product_27_, x_residual_product_26_,
+         x_residual_product_25_, x_residual_product_24_,
+         x_residual_product_23_, N15, add_0_root_add_0_root_add_44_2_carry_8_,
+         n3, n4, n11, n12;
+  wire   [9:5] midpoint_product;
+  wire   [1:0] correction;
+  wire   [28:0] centered_plane;
+  wire   [25:21] r432_carry;
+  wire   SYNOPSYS_UNCONNECTED__0, SYNOPSYS_UNCONNECTED__1, 
+        SYNOPSYS_UNCONNECTED__2, SYNOPSYS_UNCONNECTED__3, 
+        SYNOPSYS_UNCONNECTED__4, SYNOPSYS_UNCONNECTED__5, 
+        SYNOPSYS_UNCONNECTED__6, SYNOPSYS_UNCONNECTED__7, 
+        SYNOPSYS_UNCONNECTED__8, SYNOPSYS_UNCONNECTED__9, 
+        SYNOPSYS_UNCONNECTED__10, SYNOPSYS_UNCONNECTED__11, 
+        SYNOPSYS_UNCONNECTED__12, SYNOPSYS_UNCONNECTED__13;
+
+  XNR2D1 U20 ( .A1(n430), .A2(x_rounding_error_0_), .ZN(correction[0]) );
+  oadm_multilevel_rounding_lut_0 x_rounding_lut ( .level({1'b0, 1'b0}), 
+        .index(y_mantissa[22:20]), .value_low(x_mantissa[3:0]), .x_error({
+        SYNOPSYS_UNCONNECTED__0, x_rounding_error_0_}) );
+  oadm_multilevel_rounding_lut_1 y_rounding_lut ( .level({1'b0, 1'b0}), 
+        .index(x_mantissa[22:20]), .value_low(y_mantissa[3:0]), .x_error({
+        SYNOPSYS_UNCONNECTED__1, y_side_x_error_0_}) );
+  oadm_fixed_plane_centered_LEVEL1_DW01_sub_0 sub_70 ( .A({centered_plane[28], 
+        centered_plane[28], centered_plane[26:0]}), .B({n11, n11, n11, n11, 
+        n11, n11, n11, n11, n11, n11, n11, n11, n11, n11, n11, n11, n11, n11, 
+        n11, n11, n11, n11, n11, n11, n11, n11, 1'b0, correction}), .CI(n11), 
+        .DIFF({SYNOPSYS_UNCONNECTED__2, SYNOPSYS_UNCONNECTED__3, 
+        SYNOPSYS_UNCONNECTED__4, SYNOPSYS_UNCONNECTED__5, plane_exact[24:0]})
+         );
+  oadm_fixed_plane_centered_LEVEL1_DW_mult_tc_1 mult_33 ( .a({
+        y_residual_wide_21_, y_mantissa[20:0]}), .b({n11, n12, x_mantissa[22], 
+        n12, n11, n11}), .product({y_residual_product_27_, 
+        y_residual_product_26_, y_residual_product_25_, y_residual_product_24_, 
+        y_residual_product_23_, y_residual_product_22_, y_residual_product_21_, 
+        y_residual_product_20_, y_residual_product_19_, y_residual_product_18_, 
+        y_residual_product_17_, y_residual_product_16_, y_residual_product_15_, 
+        y_residual_product_14_, y_residual_product_13_, y_residual_product_12_, 
+        y_residual_product_11_, y_residual_product_10_, y_residual_product_9_, 
+        y_residual_product_8_, y_residual_product_7_, y_residual_product_6_, 
+        y_residual_product_5_, y_residual_product_4_, SYNOPSYS_UNCONNECTED__6, 
+        SYNOPSYS_UNCONNECTED__7, SYNOPSYS_UNCONNECTED__8, 
+        SYNOPSYS_UNCONNECTED__9}) );
+  oadm_fixed_plane_centered_LEVEL1_DW01_add_5_DW01_add_7 add_0_root_add_67_3 ( 
+        .A({y_residual_product_27_, y_residual_product_27_, 
+        y_residual_product_27_, y_residual_product_27_, y_residual_product_27_, 
+        y_residual_product_26_, y_residual_product_25_, y_residual_product_24_, 
+        y_residual_product_23_, y_residual_product_22_, y_residual_product_21_, 
+        y_residual_product_20_, y_residual_product_19_, y_residual_product_18_, 
+        y_residual_product_17_, y_residual_product_16_, y_residual_product_15_, 
+        y_residual_product_14_, y_residual_product_13_, y_residual_product_12_, 
+        y_residual_product_11_, y_residual_product_10_, y_residual_product_9_, 
+        y_residual_product_8_, y_residual_product_7_, y_residual_product_6_, 
+        y_residual_product_5_, y_residual_product_4_}), .B({N48, N48, N47, N46, 
+        N45, N44, N43, N42, N41, N40, N39, N38, N37, N36, N35, N34, N33, N32, 
+        N31, N30, N29, N28, N27, N26, N25, N24, N23, N22}), .CI(n11), .SUM({
+        centered_plane[28], centered_plane[26:0]}) );
+  oadm_fixed_plane_centered_LEVEL1_DW_mult_tc_0 mult_31 ( .a({
+        x_residual_wide_21_, x_mantissa[20:0]}), .b({n11, n12, y_mantissa[22], 
+        n12, n11, n11}), .product({x_residual_product_27_, 
+        x_residual_product_26_, x_residual_product_25_, x_residual_product_24_, 
+        x_residual_product_23_, N40, N39, N38, N37, N36, N35, N34, N33, N32, 
+        N31, N30, N29, N28, N27, N26, N25, N24, N23, N22, 
+        SYNOPSYS_UNCONNECTED__10, SYNOPSYS_UNCONNECTED__11, 
+        SYNOPSYS_UNCONNECTED__12, SYNOPSYS_UNCONNECTED__13}) );
+  INVD1 U4 ( .I(x_residual_product_23_), .ZN(N41) );
+  FA1D0 U8 ( .A(midpoint_product[8]), .B(x_residual_product_27_), .CI(
+        r432_carry[23]), .CO(r432_carry[24]), .S(N45) );
+  FA1D0 U10 ( .A(midpoint_product[9]), .B(x_residual_product_27_), .CI(
+        r432_carry[24]), .CO(r432_carry[25]), .S(N46) );
+  ND2D1 U11 ( .A1(n3), .A2(n4), .ZN(midpoint_product[9]) );
+  FA1D0 U14 ( .A(midpoint_product[7]), .B(x_residual_product_26_), .CI(
+        r432_carry[22]), .CO(r432_carry[23]), .S(N44) );
+  FA1D0 U15 ( .A(1'b0), .B(x_residual_product_25_), .CI(r432_carry[21]), .CO(
+        r432_carry[22]), .S(N43) );
+  FA1D0 U17 ( .A(midpoint_product[5]), .B(x_residual_product_24_), .CI(
+        x_residual_product_23_), .CO(r432_carry[21]), .S(N42) );
+  INVD1 U25 ( .I(x_mantissa[21]), .ZN(x_residual_wide_21_) );
+  INVD1 U26 ( .I(y_mantissa[21]), .ZN(y_residual_wide_21_) );
+  TIEH U59 ( .Z(n12) );
+  TIEL U60 ( .ZN(n11) );
+  XNR2D1 U61 ( .A1(N15), .A2(midpoint_product[5]), .ZN(midpoint_product[7]) );
+  XNR2D1 U62 ( .A1(add_0_root_add_0_root_add_44_2_carry_8_), .A2(N15), .ZN(
+        midpoint_product[8]) );
+  CKXOR2D1 U64 ( .A1(r432_carry[25]), .A2(x_residual_product_27_), .Z(N47) );
+  CKXOR2D1 U66 ( .A1(y_mantissa[22]), .A2(x_mantissa[22]), .Z(
+        midpoint_product[5]) );
+  INR2D0 U3 ( .A1(x_residual_product_27_), .B1(r432_carry[25]), .ZN(N48) );
+  CKND0 U5 ( .I(n4), .ZN(N15) );
+  CKND2D0 U6 ( .A1(x_mantissa[22]), .A2(y_mantissa[22]), .ZN(n4) );
+  CKND0 U7 ( .I(n3), .ZN(add_0_root_add_0_root_add_44_2_carry_8_) );
+  NR2D0 U9 ( .A1(N15), .A2(midpoint_product[5]), .ZN(n3) );
+  INR2D0 U13 ( .A1(x_rounding_error_0_), .B1(n430), .ZN(correction[1]) );
+  CKND0 U16 ( .I(y_side_x_error_0_), .ZN(n430) );
+endmodule
+
+
+module fp32_normal_finite_wrapper_DW01_add_3_DW01_add_11 ( A, B, CI, SUM, CO
+ );
+  input [7:0] A;
+  input [7:0] B;
+  output [7:0] SUM;
+  input CI;
+  output CO;
+  wire   n1;
+  wire   [7:2] carry;
+
+  XOR3D1 U1_7 ( .A1(A[7]), .A2(B[7]), .A3(carry[7]), .Z(SUM[7]) );
+  FA1D0 U1_5 ( .A(A[5]), .B(B[5]), .CI(carry[5]), .CO(carry[6]), .S(SUM[5]) );
+  FA1D0 U1_4 ( .A(A[4]), .B(B[4]), .CI(carry[4]), .CO(carry[5]), .S(SUM[4]) );
+  FA1D0 U1_3 ( .A(A[3]), .B(B[3]), .CI(carry[3]), .CO(carry[4]), .S(SUM[3]) );
+  FA1D0 U1_2 ( .A(A[2]), .B(B[2]), .CI(carry[2]), .CO(carry[3]), .S(SUM[2]) );
+  FA1D0 U1_1 ( .A(A[1]), .B(B[1]), .CI(n1), .CO(carry[2]), .S(SUM[1]) );
+  FA1D0 U1_6 ( .A(A[6]), .B(B[6]), .CI(carry[6]), .CO(carry[7]), .S(SUM[6]) );
+  AN2D1 U1 ( .A1(B[0]), .A2(A[0]), .Z(n1) );
+  CKXOR2D1 U2 ( .A1(B[0]), .A2(A[0]), .Z(SUM[0]) );
+endmodule
+
+
+module fp32_normal_finite_wrapper ( x, y, divide_mode, fraction_x, fraction_y, 
+        result_fraction, exponent_adjust, result );
+  input [31:0] x;
+  input [31:0] y;
+  output [22:0] fraction_x;
+  output [22:0] fraction_y;
+  input [22:0] result_fraction;
+  input [2:0] exponent_adjust;
+  output [31:0] result;
+  input divide_mode;
+  wire   N42, N41, N40, N39, N38, N37, N36, N35, N34, N33, N32, N31, N30, N29,
+         N28, N27, n1, n4, n5, n6, n7, n8, n79, n80;
+  wire   [7:2] add_0_root_add_0_root_add_25_2_carry;
+
+  CKXOR2D1 U2 ( .A1(y[31]), .A2(x[31]), .Z(result[31]) );
+  fp32_normal_finite_wrapper_DW01_add_3_DW01_add_11 add_1_root_add_0_root_add_25_2 ( 
+        .A(x[30:23]), .B({N42, N41, N40, N39, N38, N37, N36, N35}), .CI(n79), 
+        .SUM({N34, N33, N32, N31, N30, N29, N28, N27}) );
+  AN2XD1 U3 ( .A1(exponent_adjust[0]), .A2(N27), .Z(n1) );
+  FA1D0 U6 ( .A(N28), .B(exponent_adjust[1]), .CI(n1), .CO(
+        add_0_root_add_0_root_add_25_2_carry[2]), .S(result[24]) );
+  FA1D0 U7 ( .A(N29), .B(exponent_adjust[2]), .CI(
+        add_0_root_add_0_root_add_25_2_carry[2]), .CO(
+        add_0_root_add_0_root_add_25_2_carry[3]), .S(result[25]) );
+  FA1D0 U8 ( .A(N30), .B(exponent_adjust[2]), .CI(
+        add_0_root_add_0_root_add_25_2_carry[3]), .CO(
+        add_0_root_add_0_root_add_25_2_carry[4]), .S(result[26]) );
+  FA1D0 U9 ( .A(N31), .B(exponent_adjust[2]), .CI(
+        add_0_root_add_0_root_add_25_2_carry[4]), .CO(
+        add_0_root_add_0_root_add_25_2_carry[5]), .S(result[27]) );
+  FA1D0 U10 ( .A(N32), .B(exponent_adjust[2]), .CI(
+        add_0_root_add_0_root_add_25_2_carry[5]), .CO(
+        add_0_root_add_0_root_add_25_2_carry[6]), .S(result[28]) );
+  FA1D0 U11 ( .A(N33), .B(exponent_adjust[2]), .CI(
+        add_0_root_add_0_root_add_25_2_carry[6]), .CO(
+        add_0_root_add_0_root_add_25_2_carry[7]), .S(result[29]) );
+  CKBD1 U12 ( .I(result_fraction[22]), .Z(result[22]) );
+  CKBD1 U13 ( .I(result_fraction[21]), .Z(result[21]) );
+  CKBD1 U14 ( .I(result_fraction[3]), .Z(result[3]) );
+  CKBD1 U15 ( .I(result_fraction[4]), .Z(result[4]) );
+  CKBD1 U16 ( .I(result_fraction[5]), .Z(result[5]) );
+  CKBD1 U17 ( .I(result_fraction[6]), .Z(result[6]) );
+  CKBD1 U18 ( .I(result_fraction[7]), .Z(result[7]) );
+  CKBD1 U19 ( .I(result_fraction[8]), .Z(result[8]) );
+  CKBD1 U20 ( .I(result_fraction[9]), .Z(result[9]) );
+  CKBD1 U21 ( .I(result_fraction[10]), .Z(result[10]) );
+  CKBD1 U22 ( .I(result_fraction[11]), .Z(result[11]) );
+  CKBD1 U23 ( .I(result_fraction[12]), .Z(result[12]) );
+  CKBD1 U24 ( .I(result_fraction[13]), .Z(result[13]) );
+  CKBD1 U25 ( .I(result_fraction[14]), .Z(result[14]) );
+  CKBD1 U26 ( .I(result_fraction[15]), .Z(result[15]) );
+  CKBD1 U27 ( .I(result_fraction[16]), .Z(result[16]) );
+  CKBD1 U28 ( .I(result_fraction[17]), .Z(result[17]) );
+  CKBD1 U29 ( .I(result_fraction[18]), .Z(result[18]) );
+  CKBD1 U30 ( .I(result_fraction[19]), .Z(result[19]) );
+  CKBD1 U31 ( .I(result_fraction[20]), .Z(result[20]) );
+  CKBD1 U32 ( .I(result_fraction[2]), .Z(result[2]) );
+  CKBD1 U33 ( .I(result_fraction[1]), .Z(result[1]) );
+  CKBD1 U34 ( .I(result_fraction[0]), .Z(result[0]) );
+  XOR3D1 U43 ( .A1(N34), .A2(exponent_adjust[2]), .A3(
+        add_0_root_add_0_root_add_25_2_carry[7]), .Z(result[30]) );
+  CKBD1 U44 ( .I(y[22]), .Z(fraction_y[22]) );
+  CKBD1 U48 ( .I(x[0]), .Z(fraction_x[0]) );
+  CKBD1 U49 ( .I(x[22]), .Z(fraction_x[22]) );
+  CKBD1 U52 ( .I(y[0]), .Z(fraction_y[0]) );
+  CKBD1 U54 ( .I(y[1]), .Z(fraction_y[1]) );
+  CKBD1 U55 ( .I(y[2]), .Z(fraction_y[2]) );
+  CKBD1 U56 ( .I(y[3]), .Z(fraction_y[3]) );
+  CKBD1 U57 ( .I(y[4]), .Z(fraction_y[4]) );
+  CKBD1 U59 ( .I(y[5]), .Z(fraction_y[5]) );
+  CKBD1 U60 ( .I(y[6]), .Z(fraction_y[6]) );
+  CKBD1 U61 ( .I(y[7]), .Z(fraction_y[7]) );
+  CKBD1 U62 ( .I(y[8]), .Z(fraction_y[8]) );
+  CKBD1 U63 ( .I(y[9]), .Z(fraction_y[9]) );
+  CKBD1 U64 ( .I(y[10]), .Z(fraction_y[10]) );
+  CKBD1 U65 ( .I(y[11]), .Z(fraction_y[11]) );
+  CKBD1 U66 ( .I(y[12]), .Z(fraction_y[12]) );
+  CKBD1 U67 ( .I(y[13]), .Z(fraction_y[13]) );
+  CKBD1 U68 ( .I(y[14]), .Z(fraction_y[14]) );
+  CKBD1 U69 ( .I(y[15]), .Z(fraction_y[15]) );
+  CKBD1 U70 ( .I(y[16]), .Z(fraction_y[16]) );
+  CKBD1 U71 ( .I(y[17]), .Z(fraction_y[17]) );
+  CKBD1 U72 ( .I(y[18]), .Z(fraction_y[18]) );
+  CKBD1 U73 ( .I(y[19]), .Z(fraction_y[19]) );
+  AN2XD1 U74 ( .A1(y[23]), .A2(y[24]), .Z(n4) );
+  AN2XD1 U75 ( .A1(n4), .A2(y[25]), .Z(n5) );
+  AN2XD1 U76 ( .A1(n5), .A2(y[26]), .Z(n6) );
+  AN2XD1 U77 ( .A1(n6), .A2(y[27]), .Z(n7) );
+  AN2XD1 U78 ( .A1(n7), .A2(y[28]), .Z(n8) );
+  CKBD1 U86 ( .I(x[21]), .Z(fraction_x[21]) );
+  CKBD1 U87 ( .I(x[20]), .Z(fraction_x[20]) );
+  CKBD1 U88 ( .I(x[19]), .Z(fraction_x[19]) );
+  CKBD1 U89 ( .I(x[18]), .Z(fraction_x[18]) );
+  CKBD1 U90 ( .I(x[17]), .Z(fraction_x[17]) );
+  CKBD1 U91 ( .I(x[16]), .Z(fraction_x[16]) );
+  CKBD1 U92 ( .I(x[15]), .Z(fraction_x[15]) );
+  CKBD1 U93 ( .I(x[14]), .Z(fraction_x[14]) );
+  CKBD1 U94 ( .I(x[13]), .Z(fraction_x[13]) );
+  CKBD1 U95 ( .I(x[12]), .Z(fraction_x[12]) );
+  CKBD1 U96 ( .I(x[11]), .Z(fraction_x[11]) );
+  CKBD1 U97 ( .I(x[10]), .Z(fraction_x[10]) );
+  CKBD1 U98 ( .I(x[9]), .Z(fraction_x[9]) );
+  CKBD1 U99 ( .I(x[8]), .Z(fraction_x[8]) );
+  CKBD1 U100 ( .I(x[7]), .Z(fraction_x[7]) );
+  CKBD1 U101 ( .I(x[6]), .Z(fraction_x[6]) );
+  CKBD1 U102 ( .I(x[5]), .Z(fraction_x[5]) );
+  CKBD1 U103 ( .I(x[4]), .Z(fraction_x[4]) );
+  CKBD1 U104 ( .I(x[3]), .Z(fraction_x[3]) );
+  CKBD1 U105 ( .I(x[2]), .Z(fraction_x[2]) );
+  CKBD1 U106 ( .I(x[1]), .Z(fraction_x[1]) );
+  CKBD1 U107 ( .I(y[21]), .Z(fraction_y[21]) );
+  CKBD1 U108 ( .I(y[20]), .Z(fraction_y[20]) );
+  TIEL U109 ( .ZN(n79) );
+  CKXOR2D1 U112 ( .A1(exponent_adjust[0]), .A2(N27), .Z(result[23]) );
+  CKXOR2D1 U113 ( .A1(y[23]), .A2(y[24]), .Z(N36) );
+  CKXOR2D1 U114 ( .A1(n4), .A2(y[25]), .Z(N37) );
+  CKXOR2D1 U115 ( .A1(n5), .A2(y[26]), .Z(N38) );
+  CKXOR2D1 U116 ( .A1(n6), .A2(y[27]), .Z(N39) );
+  CKXOR2D1 U117 ( .A1(n7), .A2(y[28]), .Z(N40) );
+  CKXOR2D1 U118 ( .A1(n8), .A2(y[29]), .Z(N41) );
+  CKND0 U119 ( .I(y[23]), .ZN(N35) );
+  CKXOR2D0 U4 ( .A1(y[30]), .A2(n80), .Z(N42) );
+  CKND2D0 U5 ( .A1(y[29]), .A2(n8), .ZN(n80) );
+endmodule
+
+
+module oadm_multilevel_opt_FIXED_LEVEL1 ( x, y, level, divide_mode, result );
+  input [31:0] x;
+  input [31:0] y;
+  input [1:0] level;
+  output [31:0] result;
+  input divide_mode;
+  wire   coefficient_5_, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16,
+         n17, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29, n30,
+         n31, n32, n33, n34, n35, n36, n37, n38, n39, n40, n41, n42, n43, n44,
+         n45, n46, n47, n48, n49, n50, n51, n52, n53, n1, n2, n54, n55;
+  wire   [22:0] x_mantissa;
+  wire   [21:0] y_mantissa;
+  wire   [24:0] plane_full;
+  wire   [22:0] normalized_fraction;
+  wire   [2:0] exponent_adjust;
+  wire   SYNOPSYS_UNCONNECTED__0, SYNOPSYS_UNCONNECTED__1, 
+        SYNOPSYS_UNCONNECTED__2, SYNOPSYS_UNCONNECTED__3;
+
+  oadm_fixed_plane_centered_LEVEL1 fixed_centered_plane_plane ( .x_mantissa({
+        1'b0, x_mantissa}), .y_mantissa({1'b0, coefficient_5_, y_mantissa}), 
+        .divide_mode(1'b0), .plane_exact({SYNOPSYS_UNCONNECTED__0, 
+        SYNOPSYS_UNCONNECTED__1, SYNOPSYS_UNCONNECTED__2, 
+        SYNOPSYS_UNCONNECTED__3, plane_full}) );
+  fp32_normal_finite_wrapper fp_wrapper ( .x(x), .y(y), .divide_mode(1'b0), 
+        .fraction_x(x_mantissa), .fraction_y({coefficient_5_, y_mantissa}), 
+        .result_fraction(normalized_fraction), .exponent_adjust({
+        exponent_adjust[2], exponent_adjust[2], exponent_adjust[0]}), .result(
+        result) );
+  ND2D1 U3 ( .A1(n12), .A2(n1), .ZN(exponent_adjust[2]) );
+  ND2D1 U4 ( .A1(n7), .A2(n12), .ZN(exponent_adjust[0]) );
+  ND3D1 U8 ( .A1(n29), .A2(n28), .A3(n7), .ZN(n1) );
+  OAI221D0 U9 ( .A1(n28), .A2(n54), .B1(n7), .B2(n29), .C(n30), .ZN(
+        normalized_fraction[22]) );
+  OA22D0 U10 ( .A1(n2), .A2(n31), .B1(n12), .B2(n32), .Z(n30) );
+  OAI221D0 U11 ( .A1(n32), .A2(n6), .B1(n7), .B2(n28), .C(n33), .ZN(
+        normalized_fraction[21]) );
+  OA22D0 U12 ( .A1(n1), .A2(n34), .B1(n12), .B2(n31), .Z(n33) );
+  OAI221D0 U13 ( .A1(n21), .A2(n6), .B1(n7), .B2(n19), .C(n24), .ZN(
+        normalized_fraction[3]) );
+  OA22D0 U14 ( .A1(n10), .A2(n25), .B1(n12), .B2(n23), .Z(n24) );
+  OAI221D0 U15 ( .A1(n19), .A2(n54), .B1(n7), .B2(n17), .C(n22), .ZN(
+        normalized_fraction[4]) );
+  OA22D0 U16 ( .A1(n1), .A2(n23), .B1(n12), .B2(n21), .Z(n22) );
+  OAI221D0 U17 ( .A1(n17), .A2(n55), .B1(n7), .B2(n15), .C(n20), .ZN(
+        normalized_fraction[5]) );
+  OA22D0 U18 ( .A1(n2), .A2(n21), .B1(n12), .B2(n19), .Z(n20) );
+  OAI221D0 U19 ( .A1(n15), .A2(n6), .B1(n7), .B2(n11), .C(n18), .ZN(
+        normalized_fraction[6]) );
+  OA22D0 U20 ( .A1(n10), .A2(n19), .B1(n12), .B2(n17), .Z(n18) );
+  OAI221D0 U21 ( .A1(n11), .A2(n54), .B1(n7), .B2(n13), .C(n16), .ZN(
+        normalized_fraction[7]) );
+  OA22D0 U22 ( .A1(n1), .A2(n17), .B1(n12), .B2(n15), .Z(n16) );
+  OAI221D0 U23 ( .A1(n13), .A2(n55), .B1(n7), .B2(n5), .C(n14), .ZN(
+        normalized_fraction[8]) );
+  OA22D0 U24 ( .A1(n2), .A2(n15), .B1(n12), .B2(n11), .Z(n14) );
+  OAI221D0 U25 ( .A1(n5), .A2(n6), .B1(n7), .B2(n8), .C(n9), .ZN(
+        normalized_fraction[9]) );
+  OA22D0 U26 ( .A1(n10), .A2(n11), .B1(n12), .B2(n13), .Z(n9) );
+  OAI221D0 U27 ( .A1(n8), .A2(n54), .B1(n7), .B2(n50), .C(n53), .ZN(
+        normalized_fraction[10]) );
+  OA22D0 U28 ( .A1(n2), .A2(n13), .B1(n12), .B2(n5), .Z(n53) );
+  OAI221D0 U29 ( .A1(n50), .A2(n6), .B1(n7), .B2(n48), .C(n52), .ZN(
+        normalized_fraction[11]) );
+  OA22D0 U30 ( .A1(n10), .A2(n5), .B1(n12), .B2(n8), .Z(n52) );
+  OAI221D0 U31 ( .A1(n48), .A2(n6), .B1(n7), .B2(n46), .C(n51), .ZN(
+        normalized_fraction[12]) );
+  OA22D0 U32 ( .A1(n10), .A2(n8), .B1(n12), .B2(n50), .Z(n51) );
+  OAI221D0 U33 ( .A1(n46), .A2(n54), .B1(n7), .B2(n44), .C(n49), .ZN(
+        normalized_fraction[13]) );
+  OA22D0 U34 ( .A1(n2), .A2(n50), .B1(n12), .B2(n48), .Z(n49) );
+  OAI221D0 U35 ( .A1(n44), .A2(n55), .B1(n7), .B2(n42), .C(n47), .ZN(
+        normalized_fraction[14]) );
+  OA22D0 U36 ( .A1(n10), .A2(n48), .B1(n12), .B2(n46), .Z(n47) );
+  OAI221D0 U37 ( .A1(n42), .A2(n6), .B1(n7), .B2(n40), .C(n45), .ZN(
+        normalized_fraction[15]) );
+  OA22D0 U38 ( .A1(n1), .A2(n46), .B1(n12), .B2(n44), .Z(n45) );
+  OAI221D0 U39 ( .A1(n40), .A2(n54), .B1(n7), .B2(n38), .C(n43), .ZN(
+        normalized_fraction[16]) );
+  OA22D0 U40 ( .A1(n2), .A2(n44), .B1(n12), .B2(n42), .Z(n43) );
+  OAI221D0 U41 ( .A1(n38), .A2(n55), .B1(n7), .B2(n36), .C(n41), .ZN(
+        normalized_fraction[17]) );
+  OA22D0 U42 ( .A1(n10), .A2(n42), .B1(n12), .B2(n40), .Z(n41) );
+  OAI221D0 U43 ( .A1(n36), .A2(n6), .B1(n7), .B2(n34), .C(n39), .ZN(
+        normalized_fraction[18]) );
+  OA22D0 U44 ( .A1(n1), .A2(n40), .B1(n12), .B2(n38), .Z(n39) );
+  OAI221D0 U45 ( .A1(n34), .A2(n54), .B1(n7), .B2(n31), .C(n37), .ZN(
+        normalized_fraction[19]) );
+  OA22D0 U46 ( .A1(n2), .A2(n38), .B1(n12), .B2(n36), .Z(n37) );
+  OAI221D0 U47 ( .A1(n31), .A2(n55), .B1(n7), .B2(n32), .C(n35), .ZN(
+        normalized_fraction[20]) );
+  OA22D0 U48 ( .A1(n10), .A2(n36), .B1(n12), .B2(n34), .Z(n35) );
+  OAI221D0 U49 ( .A1(n23), .A2(n55), .B1(n7), .B2(n21), .C(n26), .ZN(
+        normalized_fraction[2]) );
+  OA22D0 U50 ( .A1(n12), .A2(n25), .B1(n2), .B2(n27), .Z(n26) );
+  ND3D1 U51 ( .A1(n29), .A2(n28), .A3(n7), .ZN(n2) );
+  ND3D1 U52 ( .A1(n29), .A2(n28), .A3(n7), .ZN(n10) );
+  OAI222D0 U53 ( .A1(n25), .A2(n54), .B1(n27), .B2(n12), .C1(n7), .C2(n23), 
+        .ZN(normalized_fraction[1]) );
+  OAI22D1 U57 ( .A1(n7), .A2(n25), .B1(n27), .B2(n55), .ZN(
+        normalized_fraction[0]) );
+  CKND2D0 U5 ( .A1(plane_full[23]), .A2(n7), .ZN(n54) );
+  CKND2D0 U6 ( .A1(plane_full[23]), .A2(n7), .ZN(n6) );
+  CKND2D0 U7 ( .A1(plane_full[23]), .A2(n7), .ZN(n55) );
+  ND3D1 U54 ( .A1(plane_full[22]), .A2(n29), .A3(n7), .ZN(n12) );
+  INVD1 U55 ( .I(plane_full[24]), .ZN(n7) );
+  CKND1 U56 ( .I(plane_full[2]), .ZN(n23) );
+  CKND1 U58 ( .I(plane_full[1]), .ZN(n25) );
+  CKND1 U59 ( .I(plane_full[3]), .ZN(n21) );
+  CKND1 U60 ( .I(plane_full[4]), .ZN(n19) );
+  CKND1 U61 ( .I(plane_full[5]), .ZN(n17) );
+  CKND1 U62 ( .I(plane_full[6]), .ZN(n15) );
+  CKND1 U63 ( .I(plane_full[7]), .ZN(n11) );
+  CKND1 U64 ( .I(plane_full[8]), .ZN(n13) );
+  CKND1 U65 ( .I(plane_full[9]), .ZN(n5) );
+  CKND1 U66 ( .I(plane_full[10]), .ZN(n8) );
+  CKND1 U67 ( .I(plane_full[11]), .ZN(n50) );
+  CKND1 U68 ( .I(plane_full[12]), .ZN(n48) );
+  CKND1 U69 ( .I(plane_full[13]), .ZN(n46) );
+  CKND1 U70 ( .I(plane_full[14]), .ZN(n44) );
+  CKND1 U71 ( .I(plane_full[15]), .ZN(n42) );
+  CKND1 U72 ( .I(plane_full[16]), .ZN(n40) );
+  CKND1 U73 ( .I(plane_full[17]), .ZN(n38) );
+  CKND1 U74 ( .I(plane_full[18]), .ZN(n36) );
+  CKND1 U75 ( .I(plane_full[19]), .ZN(n34) );
+  CKND1 U76 ( .I(plane_full[20]), .ZN(n31) );
+  INVD1 U77 ( .I(plane_full[0]), .ZN(n27) );
+  INVD1 U78 ( .I(plane_full[21]), .ZN(n32) );
+  INVD1 U79 ( .I(plane_full[23]), .ZN(n29) );
+  CKND1 U80 ( .I(plane_full[22]), .ZN(n28) );
+endmodule
+
+
+module oadm_fixed_l1_opt ( x, y, divide_mode, result );
+  input [31:0] x;
+  input [31:0] y;
+  output [31:0] result;
+  input divide_mode;
+
+
+  oadm_multilevel_opt_FIXED_LEVEL1 impl ( .x(x), .y(y), .level({1'b0, 1'b0}), 
+        .divide_mode(1'b0), .result(result) );
+endmodule
+
+
+module oadm_fixed_l1_mul_canonical ( x, y, result );
+  input [31:0] x;
+  input [31:0] y;
+  output [31:0] result;
+
+
+  oadm_fixed_l1_opt impl ( .x(x), .y(y), .divide_mode(1'b0), .result(result)
+         );
+endmodule
+

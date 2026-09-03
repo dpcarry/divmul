@@ -1,0 +1,756 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : oadm_fixed_l2_mul_root_opt
+Version: U-2022.12-SP7
+Date   : Thu Sep  3 12:58:56 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l2_mul_root_opt ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                   Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                  0.00       0.00
+  clock network delay (ideal)                                                                             0.00       0.00
+  input external delay                                                                                    0.02       0.02 f
+  y[22] (in)                                                                                              0.00       0.02 f
+  impl/y[22] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                             0.00       0.02 f
+  impl/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                      0.00       0.02 f
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                           0.10       0.12 f
+  impl/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                             0.00       0.12 f
+  impl/plane/y_mantissa[22] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                        0.00       0.12 f
+  impl/plane/mult_33/b[3] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)             0.00       0.12 f
+  impl/plane/mult_33/U151/ZN (IND2D0)                                                                     0.11       0.23 f
+  impl/plane/mult_33/U125/ZN (OAI22D0)                                                                    0.07       0.30 r
+  impl/plane/mult_33/U26/S (HA1D0)                                                                        0.07       0.38 f
+  impl/plane/mult_33/U12/CO (FA1D0)                                                                       0.10       0.48 f
+  impl/plane/mult_33/U11/CO (FA1D0)                                                                       0.06       0.53 f
+  impl/plane/mult_33/U10/CO (FA1D0)                                                                       0.06       0.59 f
+  impl/plane/mult_33/U9/CO (FA1D0)                                                                        0.06       0.64 f
+  impl/plane/mult_33/U8/CO (FA1D0)                                                                        0.06       0.70 f
+  impl/plane/mult_33/U7/CO (FA1D0)                                                                        0.06       0.75 f
+  impl/plane/mult_33/U6/CO (FA1D0)                                                                        0.06       0.81 f
+  impl/plane/mult_33/U5/CO (FA1D0)                                                                        0.06       0.86 f
+  impl/plane/mult_33/U4/CO (FA1D0)                                                                        0.06       0.92 f
+  impl/plane/mult_33/U3/CO (FA1D0)                                                                        0.06       0.98 f
+  impl/plane/mult_33/U2/S (FA1D0)                                                                         0.08       1.05 r
+  impl/plane/mult_33/product[13] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)      0.00       1.05 r
+  impl/plane/U25/CO (FA1D0)                                                                               0.08       1.14 r
+  impl/plane/U24/S (FA1D0)                                                                                0.07       1.21 r
+  impl/plane/U21/CO (FA1D0)                                                                               0.09       1.30 r
+  impl/plane/U20/CO (FA1D0)                                                                               0.05       1.35 r
+  impl/plane/U18/Z (XOR3D1)                                                                               0.08       1.43 f
+  impl/plane/plane_value[24] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                       0.00       1.43 f
+  impl/U6/ZN (NR3D0)                                                                                      0.18       1.61 r
+  impl/U4/ZN (INVD1)                                                                                      0.03       1.64 f
+  impl/U3/ZN (IND2D1)                                                                                     0.08       1.72 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                         0.00       1.72 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                          0.10       1.81 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                          0.05       1.86 r
+  impl/fp_wrapper/U42/CO (FA1D0)                                                                          0.05       1.92 r
+  impl/fp_wrapper/U43/CO (FA1D0)                                                                          0.05       1.97 r
+  impl/fp_wrapper/U44/CO (FA1D0)                                                                          0.05       2.02 r
+  impl/fp_wrapper/U45/CO (FA1D0)                                                                          0.05       2.07 r
+  impl/fp_wrapper/U55/Z (XOR3D1)                                                                          0.08       2.15 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                 0.00       2.15 f
+  impl/result[30] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                        0.00       2.15 f
+  result[30] (out)                                                                                        0.00       2.15 f
+  data arrival time                                                                                                  2.15
+
+  clock vclk (rise edge)                                                                                 10.00      10.00
+  clock network delay (ideal)                                                                             0.00      10.00
+  output external delay                                                                                  -0.02       9.98
+  data required time                                                                                                 9.98
+  --------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                 9.98
+  data arrival time                                                                                                 -2.15
+  --------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                        7.83
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l2_mul_root_opt ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                   Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                  0.00       0.00
+  clock network delay (ideal)                                                                             0.00       0.00
+  input external delay                                                                                    0.02       0.02 f
+  y[22] (in)                                                                                              0.00       0.02 f
+  impl/y[22] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                             0.00       0.02 f
+  impl/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                      0.00       0.02 f
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                           0.10       0.12 f
+  impl/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                             0.00       0.12 f
+  impl/plane/y_mantissa[22] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                        0.00       0.12 f
+  impl/plane/mult_33/b[3] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)             0.00       0.12 f
+  impl/plane/mult_33/U151/ZN (IND2D0)                                                                     0.11       0.23 f
+  impl/plane/mult_33/U125/ZN (OAI22D0)                                                                    0.07       0.30 r
+  impl/plane/mult_33/U26/S (HA1D0)                                                                        0.07       0.38 f
+  impl/plane/mult_33/U12/CO (FA1D0)                                                                       0.10       0.48 f
+  impl/plane/mult_33/U11/CO (FA1D0)                                                                       0.06       0.53 f
+  impl/plane/mult_33/U10/CO (FA1D0)                                                                       0.06       0.59 f
+  impl/plane/mult_33/U9/CO (FA1D0)                                                                        0.06       0.64 f
+  impl/plane/mult_33/U8/CO (FA1D0)                                                                        0.06       0.70 f
+  impl/plane/mult_33/U7/CO (FA1D0)                                                                        0.06       0.75 f
+  impl/plane/mult_33/U6/CO (FA1D0)                                                                        0.06       0.81 f
+  impl/plane/mult_33/U5/CO (FA1D0)                                                                        0.06       0.86 f
+  impl/plane/mult_33/U4/CO (FA1D0)                                                                        0.06       0.92 f
+  impl/plane/mult_33/U3/CO (FA1D0)                                                                        0.06       0.98 f
+  impl/plane/mult_33/U2/S (FA1D0)                                                                         0.08       1.05 r
+  impl/plane/mult_33/product[13] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)      0.00       1.05 r
+  impl/plane/U25/CO (FA1D0)                                                                               0.08       1.14 r
+  impl/plane/U24/CO (FA1D0)                                                                               0.05       1.19 r
+  impl/plane/U23/S (FA1D0)                                                                                0.07       1.26 r
+  impl/plane/U20/CO (FA1D0)                                                                               0.09       1.35 r
+  impl/plane/U18/Z (XOR3D1)                                                                               0.08       1.43 f
+  impl/plane/plane_value[24] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                       0.00       1.43 f
+  impl/U6/ZN (NR3D0)                                                                                      0.18       1.61 r
+  impl/U4/ZN (INVD1)                                                                                      0.03       1.64 f
+  impl/U3/ZN (IND2D1)                                                                                     0.08       1.72 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                         0.00       1.72 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                          0.10       1.81 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                          0.05       1.86 r
+  impl/fp_wrapper/U42/CO (FA1D0)                                                                          0.05       1.92 r
+  impl/fp_wrapper/U43/CO (FA1D0)                                                                          0.05       1.97 r
+  impl/fp_wrapper/U44/CO (FA1D0)                                                                          0.05       2.02 r
+  impl/fp_wrapper/U45/CO (FA1D0)                                                                          0.05       2.07 r
+  impl/fp_wrapper/U55/Z (XOR3D1)                                                                          0.08       2.15 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                 0.00       2.15 f
+  impl/result[30] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                        0.00       2.15 f
+  result[30] (out)                                                                                        0.00       2.15 f
+  data arrival time                                                                                                  2.15
+
+  clock vclk (rise edge)                                                                                 10.00      10.00
+  clock network delay (ideal)                                                                             0.00      10.00
+  output external delay                                                                                  -0.02       9.98
+  data required time                                                                                                 9.98
+  --------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                 9.98
+  data arrival time                                                                                                 -2.15
+  --------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                        7.83
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l2_mul_root_opt ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                   Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                  0.00       0.00
+  clock network delay (ideal)                                                                             0.00       0.00
+  input external delay                                                                                    0.02       0.02 f
+  y[22] (in)                                                                                              0.00       0.02 f
+  impl/y[22] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                             0.00       0.02 f
+  impl/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                      0.00       0.02 f
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                           0.10       0.12 f
+  impl/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                             0.00       0.12 f
+  impl/plane/y_mantissa[22] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                        0.00       0.12 f
+  impl/plane/mult_33/b[3] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)             0.00       0.12 f
+  impl/plane/mult_33/U151/ZN (IND2D0)                                                                     0.11       0.23 f
+  impl/plane/mult_33/U125/ZN (OAI22D0)                                                                    0.07       0.30 r
+  impl/plane/mult_33/U26/S (HA1D0)                                                                        0.07       0.38 f
+  impl/plane/mult_33/U12/CO (FA1D0)                                                                       0.10       0.48 f
+  impl/plane/mult_33/U11/CO (FA1D0)                                                                       0.06       0.53 f
+  impl/plane/mult_33/U10/CO (FA1D0)                                                                       0.06       0.59 f
+  impl/plane/mult_33/U9/CO (FA1D0)                                                                        0.06       0.64 f
+  impl/plane/mult_33/U8/CO (FA1D0)                                                                        0.06       0.70 f
+  impl/plane/mult_33/U7/CO (FA1D0)                                                                        0.06       0.75 f
+  impl/plane/mult_33/U6/CO (FA1D0)                                                                        0.06       0.81 f
+  impl/plane/mult_33/U5/CO (FA1D0)                                                                        0.06       0.86 f
+  impl/plane/mult_33/U4/CO (FA1D0)                                                                        0.06       0.92 f
+  impl/plane/mult_33/U3/CO (FA1D0)                                                                        0.06       0.98 f
+  impl/plane/mult_33/U2/S (FA1D0)                                                                         0.08       1.05 r
+  impl/plane/mult_33/product[13] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)      0.00       1.05 r
+  impl/plane/U25/CO (FA1D0)                                                                               0.08       1.14 r
+  impl/plane/U24/S (FA1D0)                                                                                0.07       1.21 r
+  impl/plane/U21/CO (FA1D0)                                                                               0.09       1.30 r
+  impl/plane/U20/CO (FA1D0)                                                                               0.05       1.35 r
+  impl/plane/U18/Z (XOR3D1)                                                                               0.08       1.43 f
+  impl/plane/plane_value[24] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                       0.00       1.43 f
+  impl/U6/ZN (NR3D0)                                                                                      0.18       1.61 r
+  impl/U4/ZN (INVD1)                                                                                      0.03       1.63 f
+  impl/U3/ZN (IND2D1)                                                                                     0.08       1.72 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                         0.00       1.72 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                          0.10       1.81 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                          0.05       1.86 r
+  impl/fp_wrapper/U42/CO (FA1D0)                                                                          0.05       1.92 r
+  impl/fp_wrapper/U43/CO (FA1D0)                                                                          0.05       1.97 r
+  impl/fp_wrapper/U44/CO (FA1D0)                                                                          0.05       2.02 r
+  impl/fp_wrapper/U45/CO (FA1D0)                                                                          0.05       2.07 r
+  impl/fp_wrapper/U55/Z (XOR3D1)                                                                          0.08       2.15 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                 0.00       2.15 f
+  impl/result[30] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                        0.00       2.15 f
+  result[30] (out)                                                                                        0.00       2.15 f
+  data arrival time                                                                                                  2.15
+
+  clock vclk (rise edge)                                                                                 10.00      10.00
+  clock network delay (ideal)                                                                             0.00      10.00
+  output external delay                                                                                  -0.02       9.98
+  data required time                                                                                                 9.98
+  --------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                 9.98
+  data arrival time                                                                                                 -2.15
+  --------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                        7.83
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l2_mul_root_opt ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                   Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                  0.00       0.00
+  clock network delay (ideal)                                                                             0.00       0.00
+  input external delay                                                                                    0.02       0.02 f
+  y[22] (in)                                                                                              0.00       0.02 f
+  impl/y[22] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                             0.00       0.02 f
+  impl/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                      0.00       0.02 f
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                           0.10       0.12 f
+  impl/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                             0.00       0.12 f
+  impl/plane/y_mantissa[22] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                        0.00       0.12 f
+  impl/plane/mult_33/b[3] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)             0.00       0.12 f
+  impl/plane/mult_33/U151/ZN (IND2D0)                                                                     0.11       0.23 f
+  impl/plane/mult_33/U125/ZN (OAI22D0)                                                                    0.07       0.30 r
+  impl/plane/mult_33/U26/S (HA1D0)                                                                        0.07       0.38 f
+  impl/plane/mult_33/U12/CO (FA1D0)                                                                       0.10       0.48 f
+  impl/plane/mult_33/U11/CO (FA1D0)                                                                       0.06       0.53 f
+  impl/plane/mult_33/U10/CO (FA1D0)                                                                       0.06       0.59 f
+  impl/plane/mult_33/U9/CO (FA1D0)                                                                        0.06       0.64 f
+  impl/plane/mult_33/U8/CO (FA1D0)                                                                        0.06       0.70 f
+  impl/plane/mult_33/U7/CO (FA1D0)                                                                        0.06       0.75 f
+  impl/plane/mult_33/U6/CO (FA1D0)                                                                        0.06       0.81 f
+  impl/plane/mult_33/U5/CO (FA1D0)                                                                        0.06       0.86 f
+  impl/plane/mult_33/U4/CO (FA1D0)                                                                        0.06       0.92 f
+  impl/plane/mult_33/U3/CO (FA1D0)                                                                        0.06       0.98 f
+  impl/plane/mult_33/U2/S (FA1D0)                                                                         0.08       1.05 r
+  impl/plane/mult_33/product[13] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)      0.00       1.05 r
+  impl/plane/U25/CO (FA1D0)                                                                               0.08       1.14 r
+  impl/plane/U24/S (FA1D0)                                                                                0.07       1.21 r
+  impl/plane/U21/CO (FA1D0)                                                                               0.09       1.30 r
+  impl/plane/U20/CO (FA1D0)                                                                               0.05       1.35 r
+  impl/plane/U18/Z (XOR3D1)                                                                               0.08       1.43 f
+  impl/plane/plane_value[24] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                       0.00       1.43 f
+  impl/U6/ZN (NR3D0)                                                                                      0.18       1.61 r
+  impl/U4/ZN (INVD1)                                                                                      0.03       1.64 f
+  impl/U3/ZN (IND2D1)                                                                                     0.08       1.72 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                         0.00       1.72 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                          0.10       1.81 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                          0.05       1.86 r
+  impl/fp_wrapper/U42/CO (FA1D0)                                                                          0.05       1.92 r
+  impl/fp_wrapper/U43/CO (FA1D0)                                                                          0.05       1.97 r
+  impl/fp_wrapper/U44/CO (FA1D0)                                                                          0.05       2.02 r
+  impl/fp_wrapper/U45/CO (FA1D0)                                                                          0.05       2.07 r
+  impl/fp_wrapper/U55/Z (XOR3D1)                                                                          0.08       2.15 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                 0.00       2.15 f
+  impl/result[30] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                        0.00       2.15 f
+  result[30] (out)                                                                                        0.00       2.15 f
+  data arrival time                                                                                                  2.15
+
+  clock vclk (rise edge)                                                                                 10.00      10.00
+  clock network delay (ideal)                                                                             0.00      10.00
+  output external delay                                                                                  -0.02       9.98
+  data required time                                                                                                 9.98
+  --------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                 9.98
+  data arrival time                                                                                                 -2.15
+  --------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                        7.83
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l2_mul_root_opt ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                   Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                  0.00       0.00
+  clock network delay (ideal)                                                                             0.00       0.00
+  input external delay                                                                                    0.02       0.02 f
+  y[22] (in)                                                                                              0.00       0.02 f
+  impl/y[22] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                             0.00       0.02 f
+  impl/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                      0.00       0.02 f
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                           0.10       0.12 f
+  impl/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                             0.00       0.12 f
+  impl/plane/y_mantissa[22] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                        0.00       0.12 f
+  impl/plane/mult_33/b[3] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)             0.00       0.12 f
+  impl/plane/mult_33/U151/ZN (IND2D0)                                                                     0.11       0.23 f
+  impl/plane/mult_33/U125/ZN (OAI22D0)                                                                    0.07       0.30 r
+  impl/plane/mult_33/U26/S (HA1D0)                                                                        0.07       0.38 f
+  impl/plane/mult_33/U12/CO (FA1D0)                                                                       0.10       0.48 f
+  impl/plane/mult_33/U11/CO (FA1D0)                                                                       0.06       0.53 f
+  impl/plane/mult_33/U10/CO (FA1D0)                                                                       0.06       0.59 f
+  impl/plane/mult_33/U9/CO (FA1D0)                                                                        0.06       0.64 f
+  impl/plane/mult_33/U8/CO (FA1D0)                                                                        0.06       0.70 f
+  impl/plane/mult_33/U7/CO (FA1D0)                                                                        0.06       0.75 f
+  impl/plane/mult_33/U6/CO (FA1D0)                                                                        0.06       0.81 f
+  impl/plane/mult_33/U5/CO (FA1D0)                                                                        0.06       0.86 f
+  impl/plane/mult_33/U4/CO (FA1D0)                                                                        0.06       0.92 f
+  impl/plane/mult_33/U3/CO (FA1D0)                                                                        0.06       0.98 f
+  impl/plane/mult_33/U2/S (FA1D0)                                                                         0.08       1.05 r
+  impl/plane/mult_33/product[13] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)      0.00       1.05 r
+  impl/plane/U25/CO (FA1D0)                                                                               0.08       1.14 r
+  impl/plane/U24/S (FA1D0)                                                                                0.07       1.21 r
+  impl/plane/U21/CO (FA1D0)                                                                               0.09       1.30 r
+  impl/plane/U20/CO (FA1D0)                                                                               0.05       1.35 r
+  impl/plane/U18/Z (XOR3D1)                                                                               0.08       1.43 f
+  impl/plane/plane_value[24] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                       0.00       1.43 f
+  impl/U6/ZN (NR3D0)                                                                                      0.18       1.61 r
+  impl/U4/ZN (INVD1)                                                                                      0.03       1.64 f
+  impl/U3/ZN (IND2D1)                                                                                     0.08       1.72 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                         0.00       1.72 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                          0.10       1.81 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                          0.05       1.86 r
+  impl/fp_wrapper/U42/CO (FA1D0)                                                                          0.05       1.92 r
+  impl/fp_wrapper/U43/CO (FA1D0)                                                                          0.05       1.97 r
+  impl/fp_wrapper/U44/CO (FA1D0)                                                                          0.05       2.02 r
+  impl/fp_wrapper/U45/CO (FA1D0)                                                                          0.05       2.07 r
+  impl/fp_wrapper/U55/Z (XOR3D1)                                                                          0.08       2.15 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                 0.00       2.15 f
+  impl/result[30] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                        0.00       2.15 f
+  result[30] (out)                                                                                        0.00       2.15 f
+  data arrival time                                                                                                  2.15
+
+  clock vclk (rise edge)                                                                                 10.00      10.00
+  clock network delay (ideal)                                                                             0.00      10.00
+  output external delay                                                                                  -0.02       9.98
+  data required time                                                                                                 9.98
+  --------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                 9.98
+  data arrival time                                                                                                 -2.15
+  --------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                        7.83
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l2_mul_root_opt ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                   Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                  0.00       0.00
+  clock network delay (ideal)                                                                             0.00       0.00
+  input external delay                                                                                    0.02       0.02 f
+  y[22] (in)                                                                                              0.00       0.02 f
+  impl/y[22] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                             0.00       0.02 f
+  impl/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                      0.00       0.02 f
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                           0.10       0.12 f
+  impl/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                             0.00       0.12 f
+  impl/plane/y_mantissa[22] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                        0.00       0.12 f
+  impl/plane/mult_33/b[3] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)             0.00       0.12 f
+  impl/plane/mult_33/U151/ZN (IND2D0)                                                                     0.11       0.23 f
+  impl/plane/mult_33/U125/ZN (OAI22D0)                                                                    0.07       0.30 r
+  impl/plane/mult_33/U26/S (HA1D0)                                                                        0.07       0.38 f
+  impl/plane/mult_33/U12/CO (FA1D0)                                                                       0.10       0.48 f
+  impl/plane/mult_33/U11/CO (FA1D0)                                                                       0.06       0.53 f
+  impl/plane/mult_33/U10/CO (FA1D0)                                                                       0.06       0.59 f
+  impl/plane/mult_33/U9/CO (FA1D0)                                                                        0.06       0.64 f
+  impl/plane/mult_33/U8/CO (FA1D0)                                                                        0.06       0.70 f
+  impl/plane/mult_33/U7/CO (FA1D0)                                                                        0.06       0.75 f
+  impl/plane/mult_33/U6/CO (FA1D0)                                                                        0.06       0.81 f
+  impl/plane/mult_33/U5/CO (FA1D0)                                                                        0.06       0.86 f
+  impl/plane/mult_33/U4/CO (FA1D0)                                                                        0.06       0.92 f
+  impl/plane/mult_33/U3/CO (FA1D0)                                                                        0.06       0.98 f
+  impl/plane/mult_33/U2/S (FA1D0)                                                                         0.08       1.05 r
+  impl/plane/mult_33/product[13] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)      0.00       1.05 r
+  impl/plane/U25/CO (FA1D0)                                                                               0.08       1.14 r
+  impl/plane/U24/S (FA1D0)                                                                                0.07       1.21 r
+  impl/plane/U21/CO (FA1D0)                                                                               0.09       1.30 r
+  impl/plane/U20/CO (FA1D0)                                                                               0.05       1.35 r
+  impl/plane/U18/Z (XOR3D1)                                                                               0.08       1.43 f
+  impl/plane/plane_value[24] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                       0.00       1.43 f
+  impl/U6/ZN (NR3D0)                                                                                      0.18       1.61 r
+  impl/U4/ZN (INVD1)                                                                                      0.03       1.64 f
+  impl/U3/ZN (IND2D1)                                                                                     0.08       1.72 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                         0.00       1.72 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                          0.10       1.81 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                          0.05       1.86 r
+  impl/fp_wrapper/U42/CO (FA1D0)                                                                          0.05       1.92 r
+  impl/fp_wrapper/U43/CO (FA1D0)                                                                          0.05       1.97 r
+  impl/fp_wrapper/U44/CO (FA1D0)                                                                          0.05       2.02 r
+  impl/fp_wrapper/U45/CO (FA1D0)                                                                          0.05       2.07 r
+  impl/fp_wrapper/U55/Z (XOR3D1)                                                                          0.08       2.15 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                 0.00       2.15 f
+  impl/result[30] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                        0.00       2.15 f
+  result[30] (out)                                                                                        0.00       2.15 f
+  data arrival time                                                                                                  2.15
+
+  clock vclk (rise edge)                                                                                 10.00      10.00
+  clock network delay (ideal)                                                                             0.00      10.00
+  output external delay                                                                                  -0.02       9.98
+  data required time                                                                                                 9.98
+  --------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                 9.98
+  data arrival time                                                                                                 -2.15
+  --------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                        7.83
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l2_mul_root_opt ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                   Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                  0.00       0.00
+  clock network delay (ideal)                                                                             0.00       0.00
+  input external delay                                                                                    0.02       0.02 f
+  y[22] (in)                                                                                              0.00       0.02 f
+  impl/y[22] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                             0.00       0.02 f
+  impl/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                      0.00       0.02 f
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                           0.10       0.12 f
+  impl/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                             0.00       0.12 f
+  impl/plane/y_mantissa[22] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                        0.00       0.12 f
+  impl/plane/mult_33/b[3] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)             0.00       0.12 f
+  impl/plane/mult_33/U151/ZN (IND2D0)                                                                     0.11       0.23 f
+  impl/plane/mult_33/U125/ZN (OAI22D0)                                                                    0.07       0.30 r
+  impl/plane/mult_33/U26/S (HA1D0)                                                                        0.07       0.38 f
+  impl/plane/mult_33/U12/CO (FA1D0)                                                                       0.10       0.48 f
+  impl/plane/mult_33/U11/CO (FA1D0)                                                                       0.06       0.53 f
+  impl/plane/mult_33/U10/CO (FA1D0)                                                                       0.06       0.59 f
+  impl/plane/mult_33/U9/CO (FA1D0)                                                                        0.06       0.64 f
+  impl/plane/mult_33/U8/CO (FA1D0)                                                                        0.06       0.70 f
+  impl/plane/mult_33/U7/CO (FA1D0)                                                                        0.06       0.75 f
+  impl/plane/mult_33/U6/CO (FA1D0)                                                                        0.06       0.81 f
+  impl/plane/mult_33/U5/CO (FA1D0)                                                                        0.06       0.86 f
+  impl/plane/mult_33/U4/CO (FA1D0)                                                                        0.06       0.92 f
+  impl/plane/mult_33/U3/CO (FA1D0)                                                                        0.06       0.98 f
+  impl/plane/mult_33/U2/S (FA1D0)                                                                         0.08       1.05 r
+  impl/plane/mult_33/product[13] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)      0.00       1.05 r
+  impl/plane/U25/CO (FA1D0)                                                                               0.08       1.14 r
+  impl/plane/U24/S (FA1D0)                                                                                0.07       1.21 r
+  impl/plane/U21/CO (FA1D0)                                                                               0.09       1.30 r
+  impl/plane/U20/CO (FA1D0)                                                                               0.05       1.35 r
+  impl/plane/U18/Z (XOR3D1)                                                                               0.08       1.43 f
+  impl/plane/plane_value[24] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                       0.00       1.43 f
+  impl/U6/ZN (NR3D0)                                                                                      0.18       1.61 r
+  impl/U4/ZN (INVD1)                                                                                      0.03       1.64 f
+  impl/U3/ZN (IND2D1)                                                                                     0.08       1.72 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                         0.00       1.72 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                          0.10       1.81 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                          0.05       1.86 r
+  impl/fp_wrapper/U42/CO (FA1D0)                                                                          0.05       1.92 r
+  impl/fp_wrapper/U43/CO (FA1D0)                                                                          0.05       1.97 r
+  impl/fp_wrapper/U44/CO (FA1D0)                                                                          0.05       2.02 r
+  impl/fp_wrapper/U45/CO (FA1D0)                                                                          0.05       2.07 r
+  impl/fp_wrapper/U55/Z (XOR3D1)                                                                          0.08       2.15 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                 0.00       2.15 f
+  impl/result[30] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                        0.00       2.15 f
+  result[30] (out)                                                                                        0.00       2.15 f
+  data arrival time                                                                                                  2.15
+
+  clock vclk (rise edge)                                                                                 10.00      10.00
+  clock network delay (ideal)                                                                             0.00      10.00
+  output external delay                                                                                  -0.02       9.98
+  data required time                                                                                                 9.98
+  --------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                 9.98
+  data arrival time                                                                                                 -2.15
+  --------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                        7.83
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l2_mul_root_opt ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                   Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                  0.00       0.00
+  clock network delay (ideal)                                                                             0.00       0.00
+  input external delay                                                                                    0.02       0.02 f
+  y[22] (in)                                                                                              0.00       0.02 f
+  impl/y[22] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                             0.00       0.02 f
+  impl/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                      0.00       0.02 f
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                           0.10       0.12 f
+  impl/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                             0.00       0.12 f
+  impl/plane/y_mantissa[22] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                        0.00       0.12 f
+  impl/plane/mult_33/b[3] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)             0.00       0.12 f
+  impl/plane/mult_33/U151/ZN (IND2D0)                                                                     0.11       0.23 f
+  impl/plane/mult_33/U125/ZN (OAI22D0)                                                                    0.07       0.30 r
+  impl/plane/mult_33/U26/S (HA1D0)                                                                        0.07       0.38 f
+  impl/plane/mult_33/U12/CO (FA1D0)                                                                       0.10       0.48 f
+  impl/plane/mult_33/U11/CO (FA1D0)                                                                       0.06       0.53 f
+  impl/plane/mult_33/U10/CO (FA1D0)                                                                       0.06       0.59 f
+  impl/plane/mult_33/U9/CO (FA1D0)                                                                        0.06       0.64 f
+  impl/plane/mult_33/U8/CO (FA1D0)                                                                        0.06       0.70 f
+  impl/plane/mult_33/U7/CO (FA1D0)                                                                        0.06       0.75 f
+  impl/plane/mult_33/U6/CO (FA1D0)                                                                        0.06       0.81 f
+  impl/plane/mult_33/U5/CO (FA1D0)                                                                        0.06       0.86 f
+  impl/plane/mult_33/U4/CO (FA1D0)                                                                        0.06       0.92 f
+  impl/plane/mult_33/U3/CO (FA1D0)                                                                        0.06       0.98 f
+  impl/plane/mult_33/U2/S (FA1D0)                                                                         0.08       1.05 r
+  impl/plane/mult_33/product[13] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)      0.00       1.05 r
+  impl/plane/U25/CO (FA1D0)                                                                               0.08       1.14 r
+  impl/plane/U24/S (FA1D0)                                                                                0.07       1.21 r
+  impl/plane/U21/CO (FA1D0)                                                                               0.09       1.30 r
+  impl/plane/U20/CO (FA1D0)                                                                               0.05       1.35 r
+  impl/plane/U18/Z (XOR3D1)                                                                               0.08       1.43 f
+  impl/plane/plane_value[24] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                       0.00       1.43 f
+  impl/U6/ZN (NR3D0)                                                                                      0.18       1.61 r
+  impl/U4/ZN (INVD1)                                                                                      0.03       1.64 f
+  impl/U3/ZN (IND2D1)                                                                                     0.08       1.72 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                         0.00       1.72 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                          0.10       1.81 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                          0.05       1.86 r
+  impl/fp_wrapper/U42/CO (FA1D0)                                                                          0.05       1.92 r
+  impl/fp_wrapper/U43/CO (FA1D0)                                                                          0.05       1.97 r
+  impl/fp_wrapper/U44/CO (FA1D0)                                                                          0.05       2.02 r
+  impl/fp_wrapper/U45/CO (FA1D0)                                                                          0.05       2.07 r
+  impl/fp_wrapper/U55/Z (XOR3D1)                                                                          0.08       2.15 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                 0.00       2.15 f
+  impl/result[30] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                        0.00       2.15 f
+  result[30] (out)                                                                                        0.00       2.15 f
+  data arrival time                                                                                                  2.15
+
+  clock vclk (rise edge)                                                                                 10.00      10.00
+  clock network delay (ideal)                                                                             0.00      10.00
+  output external delay                                                                                  -0.02       9.98
+  data required time                                                                                                 9.98
+  --------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                 9.98
+  data arrival time                                                                                                 -2.15
+  --------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                        7.83
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l2_mul_root_opt ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                   Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                  0.00       0.00
+  clock network delay (ideal)                                                                             0.00       0.00
+  input external delay                                                                                    0.02       0.02 f
+  y[22] (in)                                                                                              0.00       0.02 f
+  impl/y[22] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                             0.00       0.02 f
+  impl/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                      0.00       0.02 f
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                           0.10       0.12 f
+  impl/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                             0.00       0.12 f
+  impl/plane/y_mantissa[22] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                        0.00       0.12 f
+  impl/plane/mult_33/b[3] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)             0.00       0.12 f
+  impl/plane/mult_33/U151/ZN (IND2D0)                                                                     0.11       0.23 f
+  impl/plane/mult_33/U125/ZN (OAI22D0)                                                                    0.07       0.30 r
+  impl/plane/mult_33/U26/S (HA1D0)                                                                        0.07       0.38 f
+  impl/plane/mult_33/U12/CO (FA1D0)                                                                       0.10       0.48 f
+  impl/plane/mult_33/U11/CO (FA1D0)                                                                       0.06       0.53 f
+  impl/plane/mult_33/U10/CO (FA1D0)                                                                       0.06       0.59 f
+  impl/plane/mult_33/U9/CO (FA1D0)                                                                        0.06       0.64 f
+  impl/plane/mult_33/U8/CO (FA1D0)                                                                        0.06       0.70 f
+  impl/plane/mult_33/U7/CO (FA1D0)                                                                        0.06       0.75 f
+  impl/plane/mult_33/U6/CO (FA1D0)                                                                        0.06       0.81 f
+  impl/plane/mult_33/U5/CO (FA1D0)                                                                        0.06       0.86 f
+  impl/plane/mult_33/U4/CO (FA1D0)                                                                        0.06       0.92 f
+  impl/plane/mult_33/U3/CO (FA1D0)                                                                        0.06       0.98 f
+  impl/plane/mult_33/U2/S (FA1D0)                                                                         0.08       1.05 r
+  impl/plane/mult_33/product[13] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)      0.00       1.05 r
+  impl/plane/U25/CO (FA1D0)                                                                               0.08       1.14 r
+  impl/plane/U24/S (FA1D0)                                                                                0.07       1.21 r
+  impl/plane/U21/CO (FA1D0)                                                                               0.09       1.30 r
+  impl/plane/U20/CO (FA1D0)                                                                               0.05       1.35 r
+  impl/plane/U18/Z (XOR3D1)                                                                               0.08       1.43 f
+  impl/plane/plane_value[24] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                       0.00       1.43 f
+  impl/U6/ZN (NR3D0)                                                                                      0.18       1.61 r
+  impl/U4/ZN (INVD1)                                                                                      0.03       1.63 f
+  impl/U3/ZN (IND2D1)                                                                                     0.08       1.72 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                         0.00       1.72 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                          0.10       1.81 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                          0.05       1.86 r
+  impl/fp_wrapper/U42/CO (FA1D0)                                                                          0.05       1.92 r
+  impl/fp_wrapper/U43/CO (FA1D0)                                                                          0.05       1.97 r
+  impl/fp_wrapper/U44/CO (FA1D0)                                                                          0.05       2.02 r
+  impl/fp_wrapper/U45/CO (FA1D0)                                                                          0.05       2.07 r
+  impl/fp_wrapper/U55/Z (XOR3D1)                                                                          0.08       2.15 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                 0.00       2.15 f
+  impl/result[30] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                        0.00       2.15 f
+  result[30] (out)                                                                                        0.00       2.15 f
+  data arrival time                                                                                                  2.15
+
+  clock vclk (rise edge)                                                                                 10.00      10.00
+  clock network delay (ideal)                                                                             0.00      10.00
+  output external delay                                                                                  -0.02       9.98
+  data required time                                                                                                 9.98
+  --------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                 9.98
+  data arrival time                                                                                                 -2.15
+  --------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                        7.83
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  oadm_fixed_l2_mul_root_opt ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                   Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                  0.00       0.00
+  clock network delay (ideal)                                                                             0.00       0.00
+  input external delay                                                                                    0.02       0.02 f
+  y[22] (in)                                                                                              0.00       0.02 f
+  impl/y[22] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                             0.00       0.02 f
+  impl/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                      0.00       0.02 f
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                           0.10       0.12 f
+  impl/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                             0.00       0.12 f
+  impl/plane/y_mantissa[22] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                        0.00       0.12 f
+  impl/plane/mult_33/b[3] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)             0.00       0.12 f
+  impl/plane/mult_33/U151/ZN (IND2D0)                                                                     0.11       0.23 f
+  impl/plane/mult_33/U125/ZN (OAI22D0)                                                                    0.07       0.30 r
+  impl/plane/mult_33/U26/S (HA1D0)                                                                        0.07       0.38 f
+  impl/plane/mult_33/U12/CO (FA1D0)                                                                       0.10       0.48 f
+  impl/plane/mult_33/U11/CO (FA1D0)                                                                       0.06       0.53 f
+  impl/plane/mult_33/U10/CO (FA1D0)                                                                       0.06       0.59 f
+  impl/plane/mult_33/U9/CO (FA1D0)                                                                        0.06       0.64 f
+  impl/plane/mult_33/U8/CO (FA1D0)                                                                        0.06       0.70 f
+  impl/plane/mult_33/U7/CO (FA1D0)                                                                        0.06       0.75 f
+  impl/plane/mult_33/U6/CO (FA1D0)                                                                        0.06       0.81 f
+  impl/plane/mult_33/U5/CO (FA1D0)                                                                        0.06       0.86 f
+  impl/plane/mult_33/U4/CO (FA1D0)                                                                        0.06       0.92 f
+  impl/plane/mult_33/U3/CO (FA1D0)                                                                        0.06       0.98 f
+  impl/plane/mult_33/U2/S (FA1D0)                                                                         0.08       1.05 r
+  impl/plane/mult_33/product[13] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12_DW_mult_tc_1)      0.00       1.05 r
+  impl/plane/U25/CO (FA1D0)                                                                               0.08       1.14 r
+  impl/plane/U24/CO (FA1D0)                                                                               0.05       1.19 r
+  impl/plane/U23/S (FA1D0)                                                                                0.07       1.26 r
+  impl/plane/U20/CO (FA1D0)                                                                               0.09       1.35 r
+  impl/plane/U18/Z (XOR3D1)                                                                               0.08       1.43 f
+  impl/plane/plane_value[24] (oadm_fixed_mul_plane_root_opt_LEVEL2_RESIDUAL_DROP12)                       0.00       1.43 f
+  impl/U6/ZN (NR3D0)                                                                                      0.18       1.61 r
+  impl/U4/ZN (INVD1)                                                                                      0.03       1.63 f
+  impl/U3/ZN (IND2D1)                                                                                     0.08       1.72 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                         0.00       1.72 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                          0.10       1.81 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                          0.05       1.86 r
+  impl/fp_wrapper/U42/CO (FA1D0)                                                                          0.05       1.92 r
+  impl/fp_wrapper/U43/CO (FA1D0)                                                                          0.05       1.97 r
+  impl/fp_wrapper/U44/CO (FA1D0)                                                                          0.05       2.02 r
+  impl/fp_wrapper/U45/CO (FA1D0)                                                                          0.05       2.07 r
+  impl/fp_wrapper/U55/Z (XOR3D1)                                                                          0.08       2.15 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                 0.00       2.15 f
+  impl/result[30] (oadm_fixed_mul_root_opt_LEVEL2_RESIDUAL_DROP12)                                        0.00       2.15 f
+  result[30] (out)                                                                                        0.00       2.15 f
+  data arrival time                                                                                                  2.15
+
+  clock vclk (rise edge)                                                                                 10.00      10.00
+  clock network delay (ideal)                                                                             0.00      10.00
+  output external delay                                                                                  -0.02       9.98
+  data required time                                                                                                 9.98
+  --------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                 9.98
+  data arrival time                                                                                                 -2.15
+  --------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                        7.83
+
+
+1
