@@ -1,0 +1,442 @@
+ILAFD: Accuracy-Configurable Floating-Point Divider Using an
+Approximate Reciprocal and an Iterative Logarithmic Multiplier
+                                   James Oelund                                                                        Sunwoong Kim
+                            University of Washington                                                               University of Washington
+                            Bothell, Washington, USA                                                               Bothell, Washington, USA
+                                jioelund@uw.edu                                                                       sunwoong@uw.edu
+
+ABSTRACT                                                                                          1   INTRODUCTION
+Approximate computing provides benefits in the logic area, latency,                               Some real-world applications do not require exact results, and
+and/or power without significantly affecting the outputs of some ap-                              always-accurate arithmetic is wasteful [3, 22]. Allowing small com-
+plications. Various approximate computing techniques have been                                    putation errors often leads to advantages in logic area, latency,
+applied for floating-point (FP) dividers that are expensive com-                                  and/or power. This practical technique known as approximate com-
+pared to other FP operators. Since the accuracy requirement varies                                puting is widely used. For example, small errors in image/video
+depending on the application, this paper proposes an accuracy-                                    processing are undetectable by the human visual system [6, 7, 11, 15–
+configurable approximate FP divider design. This design computes                                  17, 19, 23]. Machine learning inference is often tolerant of errors,
+the reciprocal of a divisor in a hardware-friendly way. To correct                                and an output inference class is not significantly affected by small
+approximation errors, multiple error biases are calculated based on                               errors [7, 9, 13, 16].
+error analysis and stored in a lookup table. The calculated reciprocal                               A floating-point (FP) divider performs division between real num-
+is multiplied by a dividend. For accuracy-configurability, an iter-                               bers. It contains an integer divider called the mantissa divider, which
+ative logarithmic FP multiplier is adopted. Compared to previous                                  occupies the majority of the FP divider logic area [16, 19]. Specifi-
+approximate designs, our proposed design achieves a significantly                                 cally, the IEEE 754 single-precision FP (SPFP) and double-precision
+higher level of accuracy by increasing the number of iterations, at                               FP (DPFP) standard formats require 23-bit and 52-bit unsigned in-
+the cost of a slight increase in hardware resources. Compared to                                  teger dividers, respectively [4]. There have been several studies to
+the state-of-art Xilinx LogiCORE IP design for accurate FP division,                              optimize the large integer dividers or replace them with simpler
+the proposed approximate design reduces the number of lookup                                      operators, based on approximate computing techniques. One of
+table blocks by 53% and the number of flip-flops by 90% in a field-                               the methods is Mitchell’s division algorithm [12]. It approximately
+programmable gate array. In JPEG compression, the conventional                                    converts division into a combination of addition, subtraction, and
+exact FP multiplier/divider and the proposed design with the num-                                 shift operations on the logarithmic number system (LNS) domain.
+ber of iterations of 4 show almost the same peak signal-to-noise                                  This hardware-friendly nature has made the algorithm popular in
+ratio values.                                                                                     custom hardware designs.
+                                                                                                     An approximate divider trades off accuracy with resource effi-
+CCS CONCEPTS                                                                                      ciency, and thus several error correction (EC) methods have been
+• Hardware → Arithmetic and datapath circuits; Hardware                                           presented to mitigate generated errors. In general, EC methods have
+accelerators; • Theory of computation → Approximation algo-                                       low computational complexity to maintain the gain of approximate
+rithms analysis.                                                                                  dividers. In particular, there are one or a few modes, and the values
+                                                                                                  of relevant parameters, such as the number of truncation bits, are
+                                                                                                  fixed at design time. For example, FaNZeD applies a pre-obtained
+KEYWORDS                                                                                          negative error bias to Mitchell’s divider and adjusts the accuracy
+approximate computing; field-programmable gate arrays; floating-                                  level by changing the number of truncation bits at design time [16].
+point; iterative architecture; logarithmic divider                                                However, required accuracy ranges are different depending on a
+                                                                                                  specific application, and even within the same application, they
+ACM Reference Format:
+James Oelund and Sunwoong Kim. 2023. ILAFD: Accuracy-Configurable                                 may vary over time. Therefore, it is important to give dynamic
+Floating-Point Divider Using an Approximate Reciprocal and an Iterative                           configurability to an approximate divider at runtime [11].
+Logarithmic Multiplier. In Proceedings of the Great Lakes Symposium on VLSI                          Despite the widespread use of FP division in recent applications,
+2023 (GLSVLSI ’23), June 5–7, 2023, Knoxville, TN, USA. ACM, New York, NY,                        approximate FP dividers have received less attention compared
+USA, 6 pages. https://doi.org/10.1145/3583781.3590262                                             to approximate FP multipliers [6–8, 11, 15, 19]. An area-efficient
+                                                                                                  approximate FP divider has advantages over a fixed-point divider
+                                                                                                  due to its wide dynamic range.
+Permission to make digital or hard copies of part or all of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed                The contributions of this paper are as follows:
+for profit or commercial advantage and that copies bear this notice and the full citation
+on the first page. Copyrights for third-party components of this work must be honored.                • We extend the existing iterative logarithmic FP multiplier
+For all other uses, contact the owner/author(s).                                                        design [10] to an FP divider, which we refer to as the iterative
+GLSVLSI ’23, June 5–7, 2023, Knoxville, TN, USA                                                         logarithmic approximate FP divider (ILAFD). In particular,
+© 2023 Copyright held by the owner/author(s).
+ACM ISBN 979-8-4007-0125-2/23/06.                                                                       the approximate reciprocal of a divisor is calculated in a
+https://doi.org/10.1145/3583781.3590262                                                                 lightweight way and multiplied by a dividend.
+
+
+
+
+                                                                                            639
+GLSVLSI ’23, June 5–7, 2023, Knoxville, TN, USA                                                                                       James Oelund & Sunwoong Kim
+
+                                                                                                         𝑥1              1 + 𝑟1
+      • We propose a novel EC method based on approximation error                                            = 2𝑙1 −𝑙2 ·        .                      (4)
+                                                                                                         𝑥2              1 + 𝑟2
+        analysis. Multiple error biases are calculated and stored in a
+                                                                                    Mitchell’s multiplication/division algorithm uses the approxima-
+        lookup table, and a method to reduce the lookup table size
+                                                                                 tion of a logarithm log2 (1 + 𝑟 ) ≈ 𝑟 [12]. Specifically, multiplication
+        is additionally proposed.
+                                                                                 in the LNS domain is approximated as follows:
+      • We propose a hardware architecture of ILAFD for a field-
+        programmable gate array (FPGA) and evaluate the design in                               log2 (𝑥 1 · 𝑥 2 ) ≈ 𝑙 1 + 𝑙 2 + log2 (1 + 𝑟 1 + 𝑟 2 ).         (5)
+        terms of accuracy, logic area, and latency. In addition, the re-
+        sults of applying ILAFD to JPEG compression are presented.               Applying the antilogarithm to (5) provides the following approxi-
+   The remainder of this paper is organized as follows. Section 2                mate equation.
+                                                                                                    (
+introduces the background for this paper. The baseline of our area-                                   2𝑙1 +𝑙2 · (1 + 𝑟 1 + 𝑟 2 ), 𝑟1 + 𝑟2 < 1
+efficient approximate reciprocal calculation method is presented                         𝑥 1 · 𝑥 2 ≈ 𝑙 +𝑙 +1                                     (6)
+                                                                                                      2 1 2 · (𝑟 1 + 𝑟 2 ),       𝑟 1 + 𝑟 2 ≥ 1.
+in Section 3. Section 4 shows the proposed lookup table-based
+EC method to improve the accuracy of the baseline. The hardware                  Using the same approach, the approximate division equations in
+architecture of ILAFD is outlined in Section 5. The evaluation results           the LNS domain and the antilogarithm domain are derived as (7)
+are shown in Section 6, and Section 7 concludes this paper.                      and (8), respectively.
+                                                                                                        𝑥1
+2 BACKGROUND                                                                                    log2 ( ) ≈ 𝑙 1 − 𝑙 2 + log2 (1 + 𝑟 1 − 𝑟 2 ),     (7)
+                                                                                                        𝑥2
+2.1 IEEE Standard for Floating-Point Arithmetic                                                   (
+                                                                                            𝑥1      2𝑙1 −𝑙2 −1 · (2 + 𝑟 1 − 𝑟 2 ), 𝑟1 − 𝑟2 < 0
+The IEEE 754 FP formats are a common standard for the represen-                                ≈ 𝑙 −𝑙                                             (8)
+tation of real numbers in binary [4]. In particular, SPFP and DPFP
+                                                                                            𝑥2      2 1   2 · (1 + 𝑟 1 − 𝑟 2 ),    𝑟 1 − 𝑟 2 ≥ 0.
+are among the most widely used. They consist of three primary                       Although Mitchell’s algorithm offers benefits, such as small hard-
+components: a bit to represent the sign (a zero for positive and a               ware, it results in a large error. To solve this problem, various EC
+one for negative values), a range of bits to represent the exponent,             methods have been proposed. Iteration-based methods correct er-
+and a range of bits to represent the mantissa (fractional portion).              rors by reusing the same hardware [1, 10, 14]. They produce small
+Although not stored as a value, the formats define the mantissa as               errors in systems where operands do not come in every cycle. In
+consisting of a leading bit 1, meaning the mantissa represents val-              addition, they adjust latency and accuracy at runtime by changing
+ues ranging from one to two. The representation of a real number                 the number of iterations. Babić et al. proposed an iterative method
+𝑥 in an FP format is then expressed as follows:                                  for logarithmic integer multiplication [1]. The error of Mitchell’s
+                                                                                 multiplication algorithm during the first iteration is 2𝑙1 +𝑙2 · 𝑟 1 · 𝑟 2 ,
+                       𝑥 = (−1)𝑠 × 2𝑒 −𝑏𝑖𝑎𝑠 × (1.𝑓 ),                (1)         which is the difference between (3) and (6). During the second iter-
+where 𝑠 represents the sign value, 𝑒 represents the exponent value,              ation, 2𝑙1 · 𝑟 1 (= 𝑥 1 − 2𝑙1 ) and 2𝑙2 · 𝑟 2 (= 𝑥 2 − 2𝑙2 ) are used as operands,
+and the fraction 𝑓 lies in the range 0 ≤ 𝑓 < 1. Because the bits com-            and the multiplier repeats the calculation in (6). Since the product
+prising the exponent value do not include a sign bit, the exponent               of the second iteration is an approximation of the error of the first
+acts as an unsigned integer. The 𝑏𝑖𝑎𝑠 constant used in (1) allows                iteration, adding up the two products reduces the total error. If the
+for the expression of negative exponent values. The 𝑏𝑖𝑎𝑠 value is                product for the 𝑖-th iteration is denoted by 𝑃𝑖 (𝑥 1 · 𝑥 2 ), the final
+defined based on the number of bits used to represent the exponent,              multiplication result with 𝑛 iterations is calculated as follows:
+as half the range of possible exponent values.                                                                          𝑛
+                                                                                                                       ∑︁
+   Although other number formats have been devised which allow                                             𝑥1 · 𝑥2 ≈         𝑃𝑖 (𝑥 1 · 𝑥 2 ).                  (9)
+for variable bit ranges to represent the exponent and mantissa, the                                                    𝑖=1
+IEEE 754 FP formats all use a fixed number of bits for both values,                  Recent works extend Babić et al.’s approach to the IEEE 754
+which enables simple hardware. For example, SPFP uses 8 bits for                 SPFP format and the posit format [10, 14]. To this end, separate
+the exponent and 23 bits for the mantissa.                                       logic for components of those formats is generated, which is not
+                                                                                 required for integer multiplication. In Kim and Rutenbar’s work, on
+2.2     Logarithmic Multiplication and Division                                  which our ILAFD design is based, only a single operand is approxi-
+Moving multiplication and division to the LNS domain provides                    mated to reduce hardware resources (e.g., leading one detector), and
+an opportunity to replace the expensive operations with cheaper                  lightweight methods to mitigate the increase in error from this mod-
+addition, subtraction, and shift operations. In the LNS domain, a                ification are proposed. For more details about these optimization
+number 𝑥 is represented as follows:                                              techniques, refer to [10].
+
+                          log2 (𝑥) = 𝑙 + log2 (1 + 𝑟 ),              (2)         3    BASELINE FOR CALCULATING
+where 𝑙 is the integer portion of the logarithm and 𝑟 is a real number
+                                                                                      APPROXIMATE RECIPROCALS
+satisfying 0 ≤ 𝑟 < 1. Multiplication and division between 𝑥 1 and                This section proposes a lightweight method to compute an approx-
+𝑥 2 are then represented as follows:                                             imate reciprocal of an FP number. Suppose that an FP number 𝑦
+                                                                                 has exponent 𝑒 1 and fraction 𝑓1 and that 1/𝑦 has exponent 𝑒 2 and
+                    𝑥 1 · 𝑥 2 = 2𝑙1 +𝑙2 · (1 + 𝑟 1 ) · (1 + 𝑟 2 ),   (3)         fraction 𝑓2 . Based on that 𝑦 · (1/𝑦) = 1 and that the FP number
+
+
+
+
+                                                                           640
+ILAFD: Accuracy-Configurable Floating-Point Divider Using an Approximate Reciprocal and an Iterative Logarithmic Multiplier GLSVLSI ’23, June 5–7, 2023, Knoxville, TN, USA
+
+
+of 1 has an exponent of 𝑏𝑖𝑎𝑠 and a mantissa of 1.0, the following                            Table 1: Lookup Table Values for Our Variable EC (ℎ = 4)
+equations are derived after normalization.
+                         𝑒 1 + 𝑒 2 + 1 − 𝑏𝑖𝑎𝑠 = 𝑏𝑖𝑎𝑠,                       (10)                𝑖         EC-val[𝑖]          𝑖         EC-val[𝑖]
+                                                                                                0     0.0144042968750        8     0.0811767578125
+                          (1 + 𝑓1 ) · (1 + 𝑓2 )/2 = 1.                      (11)                1     0.0385742187500        9     0.0755615234375
+                                                                                                2     0.0567626953125       10     0.0679931640625
+After transposing, (10) and (11) are converted into (12) and (13),
+                                                                                                3     0.0699462890625       11     0.0587158203125
+respectively.
+                                                                                                4     0.0787353515625       12     0.0478515625000
+                           𝑒 2 = 2 · 𝑏𝑖𝑎𝑠 − 1 − 𝑒 1,                        (12)                5     0.0837402343750       13     0.0356445312500
+                                                                                                6     0.0855712890625       14     0.0222167968750
+                             1 + 𝑓2 = 2/(1 + 𝑓1 ).                          (13)                7     0.0845947265625       15     0.0075683593750∗
+                                                                                                ∗ Approximated to 0 to eliminate underflow cases.
+Since 2·𝑏𝑖𝑎𝑠 −1 is a constant, a subtraction operation is only needed
+to compute 𝑒 2 . On the other hand, the mantissa computation of 1/𝑦
+requires a division operation. To remove this division operation, a
+variant of the Taylor series is applied, and the right-hand side of
+(13) is approximated as follows:
+                   2/(1 + 𝑓1 ) ≈ 2 · (1 − 𝑓1 /2) = 2 − 𝑓1 .                 (14)
+In the binary number system, 2 − 𝑓1 is calculated in two steps:
+flipping bits of 𝑓1 (with the hidden bit of 0) and adding 1. We omit
+the second step because it has little effect on the approximation
+error. In summary, the approximate fraction of 1/𝑦 is computed by
+simply negating the fraction of 𝑦.
+
+4    VARIABLE ERROR CORRECTION
+In this section, the EC method that works in tandem with the                             Figure 1: Overall architecture of ILAFD for the SPFP format.
+baseline is proposed. Using the baseline method alone is a fast and
+area-efficient solution but does not provide the accuracy needed to                      these EC values are coded as binary numbers. Exceptionally, for
+properly utilize the functionality of the iterative multiplier. Over                     mantissa values in the index range of 15, EC is omitted. This is done
+the range of all possible values for the input mantissa, the mean                        to avoid the need for underflow detection, as the mean error of the
+error in the mantissa of the approximate reciprocal, denoted by                          reciprocal approximation for fraction values starting with 11112 is
+𝐸𝑟𝑐𝑝 , is calculated using (15).                                                         relatively low. Also, all EC values in the table are left shifted by 1
+                          1 1
+                            ∫
+                                               2                                         due to the normalization of the baseline. Using this EC approach in
+                  𝐸𝑟𝑐𝑝 =         (2 − 𝑓1 ) −        𝑑 𝑓1 .       (15)                    combination with the baseline allows for a closer approximation
+                          2 0                1 + 𝑓1
+                                                                                         to the true reciprocal curve over the range of all possible input
+Compared to the expected value of mantissas of correct reciprocals,                      mantissa values than would be possible with a single EC value.
+the error rate is 8.3%.                                                                     As an example of how the proposed EC method functions, con-
+   The error in the baseline always has a positive value. As pre-                        sider an SPFP number of 0.574711 for the divisor, with a mantissa of
+sented in [16], shifting approximation errors by a constant EC value                     (1).0010011001002 (last 11 bits truncated). The true reciprocal of this
+reduces the mean error. Specifically, if the calculated EC value from                    SPFP number is 1.740004976 (rounded). The baseline results in a
+(15) is subtracted from approximation errors of the baseline, the                        mantissa of (1).1101100110112 , corresponding to a decimal value of
+error rate is reduced from 8.3% to 3.4%.                                                 1.850341797 (rounded). Because the most significant four bits of the
+   To achieve higher accuracy beyond this static EC method, a                            original fraction are 00102 , the EC value from index 2 is used from
+different amount for EC is selected based on the most significant ℎ                      the table. After the EC value of 0.113525390625 (=EC-val[2]≪1) is
+bits of the fraction, which serve as an index for a lookup table. For                    subtracted from the baseline calculation, the approximate recipro-
+instance, if the ℎ value is 4, this method results in a possible choice                  cal becomes 1.736816406375, which means that the error decreases
+of sixteen different EC values from the table. To determine the EC                       from 6.34% to 0.18%.
+values for the lookup table, the mean error for each of the possible
+indexed ranges, denoted by 𝐸𝑟𝑐𝑝   ′ , is calculated as follows:
+                                                                                         5     OVERALL HARDWARE ARCHITECTURE
+                             ∫ 𝑖+1
+                 ′                2ℎ               2                                     Figure 1 shows the overall architecture of ILAFD for the IEEE
+               𝐸𝑟𝑐𝑝  = 2ℎ−1          (2 − 𝑓1 ) −        𝑑 𝑓1 ,     (16)                  754 SPFP format, which performs multiplication as well. Although
+                                𝑖
+                                ℎ
+                                                 1 + 𝑓1
+                                  2
+                                                                                         we explain the architecture with the SPFP format, the proposed
+where 0 ≤ 𝑖 < 2ℎ represents the value of the most significant ℎ bits                     approach is applicable to other FP formats. The logic blocks for
+of the fraction.                                                                         approximate reciprocal calculation are contained within the dotted
+   Table 1 shows the EC values used in the lookup table, based                           rectangle. When a divisor enters, an unsigned integer subtractor
+on (16), when the ℎ value is 4. In the hardware implementation,                          computes the exponent of the reciprocal, based on (12). For the
+
+
+
+
+                                                                                   641
+GLSVLSI ’23, June 5–7, 2023, Knoxville, TN, USA                                                                                 James Oelund & Sunwoong Kim
+
+
+                                                                                   Table 2: Accuracy Comparison of Approximate SPFP Dividers
+
+                                                                                                                             Correct rate (%)
+                                                                                                           𝑛
+                                                                                                              err<0.5      err<1.0 err<5.0        err<10.0
+                                                                                    Mitchell [12]†        -    12.02         20.65     64.50        93.82
+                                                                                    FaNZeD [16]†          -     8.91         17.90     87.02       100.00
+                                                                                    FPAD-L4A3 [7]†        -    14.11         26.82     96.27       100.00
+                                                                                    LPCAD-K3 [19]† -           53.87         74.25     99.96       100.00
+                                                                                                          2    23.53         43.03     95.42       100.00
+Figure 2: Correct rates of the proposed approximate recipro-
+                                                                                                          3    54.30         82.43    100.00       100.00
+cal calculation method itself without EC (baseline) and with                        ILAFD-EC(4,10)
+                                                                                                          4    66.50         89.68    100.00       100.00
+EC using parameters (ℎ, 𝑝).
+                                                                                                          5    67.10         89.75    100.00       100.00
+                                                                                                          2    28.37         48.59     95.75       100.00
+fraction, the least significant 𝑡 bits are truncated (TRNC) to reduce
+                                                                                                          3    73.42         93.51    100.00       100.00
+hardware resources. The value of 𝑡 is determined at design time. It                 ILAFD-EC(5,10)
+                                                                                                          4    90.33         98.97    100.00       100.00
+is set to 11 based on [10], which has little effect on the accuracy
+                                                                                                          5    91.30         98.98    100.00       100.00
+level. As described in Section 3, the fraction of the reciprocal of a
+                                                                                                          2    31.36         50.15     95.79       100.00
+divisor is first computed using negation. The most significant ℎ bits
+                                                                                                          3    81.40         95.00    100.00       100.00
+of the fraction of the divisor are entered into the lookup table as an              ILAFD-EC(6,10)
+                                                                                                          4    99.14        100.00    100.00       100.00
+index. To reduce the lookup table size, truncation is applied to EC
+                                                                                                          5    99.50        100.00    100.00       100.00
+values, and each EC value is represented using 𝑝 bits. Consequently,                † 11-bit truncation is applied.
+the size of the lookup table is 2ℎ × 𝑝 bits. In our design, the lookup
+table is implemented using logic. The EC value corresponding to
+the index is read and then subtracted from the negated fraction.                   Specifically, the correct rate is 2% in the range err<0.5. Adding the
+   Depending on the type of operation (i.e., multiplication or divi-               proposed EC method to the baseline significantly increases correct
+sion), either the original operand with truncation (e    𝑦 in this figure)         rates. In particular, increasing the ℎ value, which provides more EC
+                                  1 ) is selected. The iterative logarith-         values, has a huge impact. When the ℎ value is 4, the correct rates
+or the approximate reciprocal ( e     𝑦                                            in the range err<0.5 are 67%. When this value increases to 5, the
+mic SPFP multiplier design then multiplies it by another truncated                 correct rates in the same error range becomes 90%. Finally, setting
+operand (e
+         𝑥 ) according to the number of iterations entered. Basically,             the ℎ value to 6 increases the correct rates in the error range to 99%.
+the multiplier design is the same as [10], but there is a modification:                Reducing the 𝑝 value from 12 to 10 does not significantly affect
+the operand selector (OPS) in the multiplier design is moved ahead                 the correct rate of a reciprocal. Specifically, the decrease is less than
+of operand registers to shorten the critical path delay.                           0.1%. However, as the 𝑝 value decreases from 10 to 8, the decrease in
+                                                                                   the correct rate becomes 2%, which is a relatively large increase, and
+6     EVALUATION                                                                   thus 10 is chosen as the 𝑝 value in the hardware implementation.
+This section evaluates the accuracy of ILAFD. In addition, the FPGA                    Table 2 shows the correct rate results of ILAFD. For compari-
+implementation results are presented. Lastly, we demonstrate the                   son, Mitchell’s divider [12], of which the formula is shown in (8),
+effectiveness of ILAFD in JPEG compression.                                        FaNZeD [16], FPAD [7], and LPCAD [19] are used. FaNZeD is al-
+                                                                                   most the same as Mitchell’s divider but subtracts an analytically
+6.1     Accuracy                                                                   deduced error bias from the result of Mitchell’s divider. Specifically,
+To measure the accuracy, the correct rate used in [1, 10] is calculated.           2𝑙1 −𝑙2 ·𝜖 is subtracted from (8), and the value of 𝜖 is 2 −5 + 2 −7 . FPAD
+Specifically, an error in percentage, denoted by 𝑒𝑟𝑟 , is calculated by            approximates the reciprocal of a divisor as the sum of 𝐴+1 powers
+dividing the absolute difference between the exact and approximate                 of two. In particular, like ILAFD, 2𝐿 cases are created using the most
+results by the exact result. After executing 200 million divisions with            significant 𝐿 bits of the fraction of a divisor, and different powers
+random SPFP numbers, it is checked which range the calculated                      of two are used for each case. In this section, the 𝐿 and 𝐴 values are
+error value falls into. We use err<0.5%, <1.0%, <5.0%, and <10.0%                  set to 4 and 3, respectively. LPCAD is a logarithmic FP divider. It
+as ranges. Percent signs for the ranges are omitted from the rest                  approximates log2 ( 1+𝑟    1
+                                                                                                          1+𝑟 2 ) to a piecewise linear function. In addition,
+of this paper. Finally, the correct rate in percentage is obtained by              depending on the value of the most significant 𝐾 bits of the fraction
+                                                                                   of a divisor, 1+𝑟 1 is approximated by a different constant. The 𝐾
+dividing the count value for each error range by 200 million.                                         2
+    Figure 2 shows the correct rates of the proposed approximate                   value used in this section is 3. There is a modification to these
+reciprocal calculation method itself without EC (baseline) and with                previous works: 11-bit truncation that is used in ILAFD is applied
+EC, depending on the error range. As explained in Sections 4 and                   for a fair comparison. ILAFD uses the (ℎ, 𝑝) values of (4, 10), (5, 10),
+5, the proposed EC method uses two parameters, ℎ and 𝑝, and the                    and (6, 10) for EC. Unlike the previous non-iterative SPFP dividers,
+notation EC(ℎ, 𝑝) is used in this section. To save space, only nine                it uses iterations in the multiplier, and the number of iterations 𝑛 is
+combinations of ℎ and 𝑝 values are presented: the ℎ values of 4, 5,                shown in the second column of Table 2.
+and 6 and the 𝑝 values of 8, 10, and 12. As shown in the first set                     Mitchell’s divider that does not use EC shows the lowest correct
+of bar graphs, the baseline produces large approximation errors.                   rates in divisions. FaNZeD improves the correct rates in the ranges
+
+
+
+
+                                                                             642
+ILAFD: Accuracy-Configurable Floating-Point Divider Using an Approximate Reciprocal and an Iterative Logarithmic Multiplier GLSVLSI ’23, June 5–7, 2023, Knoxville, TN, USA
+
+
+                                                          Table 3: FPGA Implementation Results
+
+                                        LogiCORE       FaNZeD‡                FPAD-L4A3‡         LPCAD-K3‡          SAADI-EC           ILAFD
+                                           [20]          [16]                      [7]               [19]               [11]         EC(6, 10)
+                       Format              SPFP          SPFP                     SPFP               SPFP           8-bit fixed         SPFP
+                       Architecture Pipelined Single-cycle                    Single-cycle       Single-cycle        Iterative        Iterative
+                       𝑓𝑚𝑎𝑥 (MHz)          >770           750                      500                570               340              650
+                       LUT                  761           115                      279                111               323              357
+                       FF                  1,387           22                       33                 26                38              144
+                       Latency           28 cycles      1 cycle                  1 cycle            1 cycle         𝑛+2 cycles       𝑛+3 cycles
+                       ‡ 11-bit truncation is applied.
+
+err<5.0 and err<10.0 to 87% and 100%, respectively. However, in the                      not utilize a digital signal processing (DSP) slice with a high-speed
+ranges err<0.5 and err<1.0, it performs worse on correct rates be-                       multiplier block. For a fair comparison, the previous designs were
+cause the error bias value greater than an approximation error value                     implemented without using DSP slices. Note that the number of
+is often subtracted. FPAD shows a correct rate of 96% in the range                       DSP slices is usually more limited than the number of LUTs, so op-
+err<5.0 due to multiple approximation options. However, each ap-                         erators using only LUTs and FFs benefit from scalability in FPGAs.
+proximation option is not elaborated, so the correct rates do not                           The LogiCORE IP design uses the largest number of LUTs, espe-
+increase significantly in the ranges err<0.5 and err<1.0 compared to                     cially for the mantissa division, in Table 3. In addition, it requires
+Mitchell’s divider and FaNZeD. LPCAD, which performs piecewise                           the largest number of FFs and the longest latency due to a large
+approximation with multiple approximation options, significantly                         number of pipeline stages. These are wasteful in applications that do
+improves the correct rates of the aforementioned previous dividers                       not require high throughput and accurate computation. The three
+in the ranges err<0.5 and err<1.0.                                                       previous approximate SPFP divider designs based on single-cycle
+   For ILAFD, the approximation error of a reciprocal decreases                          architectures utilize relatively small hardware resources, specifi-
+as the value of ℎ increases, as shown in Figure 2. It results in the                     cally consuming on average 47% of the LUTs and 19% of the FFs
+increase of correct rates in divisions. Note that ℎ values greater                       of the ILAFD design. However, as shown in Table 2, these designs
+than 6 do not significantly change correct rates. The correct rates in                   show lower accuracy than ILAFD when the 𝑛 value exceeds 2, and
+divisions are improved as the 𝑛 value increases. When the value of                       are unable to adjust accuracy dynamically.
+𝑛 is greater than 2, ILAFD always shows higher correct rates than                           The number of LUTs and the latency of SAADI-EC are similar to
+LPCAD. The correct rates of ILAFD converge when the 𝑛 value                              those of the proposed design. However, SAADI-EC uses relatively
+reaches 5, and they are almost the same as ideal values that are the                     many LUTs, considering that the bit-width of operands is 8 and
+correct rates of our approximate reciprocals.                                            fixed-point division is performed. This is because SAADI-EC uses
+                                                                                         iterations for approximate reciprocal calculations and still needs an
+6.2     Hardware Implementation                                                          expensive real number multiplier. Typically, the number of hard-
+Table 3 shows the FPGA implementation results of real number                             ware resources of a real number multiplier is greater than that of a
+divider designs. All designs were described using the Verilog hard-                      reciprocal calculator in FPGAs [21].
+ware description language. Xilinx Vivado Design Suite (2020.1) was
+used for synthesis and place-and-route stages targeting the same                         6.3     Case Study: JPEG Compression
+Xilinx Virtex UltraScale+ FPGA (xcvu9p) device that has 1M lookup                        JPEG compression is utilized to assess ILAFD in an application
+table blocks (LUTs) and 2M flip-flops (FFs).                                             where a certain degree of error tolerance is acceptable. Specifically,
+   As a previous design for comparison, the state-of-art Xilinx Logi-                    the conventional IEEE 754 SPFP multiplier and divider for discrete
+CORE IP of an SPFP divider was used [20]. This design performs                           cosine transform and scaling in JPEG are replaced by ILAFD. For
+exact division except for rounding errors and is based on a pipelined                    implementation, the TooJpeg open-source library is used [2]. Six
+architecture. Other previous SPFP divider designs are FaNZeD,                            popular 512×512-sized images with three color components are
+FPAD, and LPCAD, which are introduced in the previous subsection.                        used as inputs to the JPEG: airplane, house, lake, lenna, mandrill,
+They are based on single-cycle architectures. Note that Mitchell’s                       and pepper [5, 18]. The value of the quality level, which is one of
+divider is almost identical to FaNZeD, so its FPGA implementation                        the JPEG parameters, is set to 90 (%). This value causes data loss
+results are not shown in Table 3. Another previous divider design is                     but guarantees a very high-quality image.
+the work of Melchert et al., called SAADI-EC [11]. This design uses                         To measure the similarity between the original uncompressed
+iterations to compute the approximate reciprocal of a divisor and                        images and the compressed images, the peak signal-to-noise ratio
+multiplies it by the dividend. A division result is scaled to correct                    (PSNR) values were calculated, which are shown in Table 4. For
+approximation errors. SAADI-EC is identical to the proposed ILAFD                        comparison, the PSNR results when the conventional SPFP multi-
+design in that it uses iterations at runtime to trade off accuracy with                  plier and divider are used are presented in the second column of the
+latency. However, it performs fixed-point division, and iterations                       table. When ILAFD is used, the PSNR values increase as the number
+are exploited for not multiplication but reciprocal calculation.                         of iterations 𝑛 increases. In particular, when the 𝑛 value is 4, the
+   The ILAFD design uses 6 and 10 for the ℎ and 𝑝 values, respec-                        PSNR values are almost the same as when using the conventional
+tively. It uses shifters for multiplication and division, so it does                     SPFP multiplier and divider. Figure 3 shows the resulting images
+
+
+
+
+                                                                                   643
+GLSVLSI ’23, June 5–7, 2023, Knoxville, TN, USA                                                                                    James Oelund & Sunwoong Kim
+
+
+Table 4: PSNR (dB) Results of the JPEG Compressed Images                      grant funded by the Korea government (MSIT) (No. 2020-0-00840,
+                                                                              Development and Library Implementation of Fully Homomorphic
+                     IEEE 754                 ILAFD-EC(6,10)                  Machine Learning Algorithms supporting Neural Network Learn-
+      Image                                                                   ing over Encrypted Data).
+                    SPFP Conv.        𝑛=2       𝑛=3 𝑛=4 𝑛=5
+      airplane         38.54          35.41     38.37 38.53 38.54
+      house            36.47          34.56     36.39 36.47 36.47             REFERENCES
+      lake             32.85          31.64     32.79 32.84 32.85              [1] Zdenka Babić, Aleksej Avramović, and Patricio Bulić. 2011. An iterative logarith-
+                                                                                   mic multiplier. Microprocessors and Microsystems 35, 1 (2011), 23–33.
+      lenna            36.25          34.61     36.18 36.24 36.25              [2] Stephan Brumme. 2019. A JPEG encoder in a single C++ file. https://github.com/
+      mandrill         31.33          30.58     31.30 31.33 31.33                  stbrumme/toojpeg
+      pepper           34.40          33.01     34.33 34.39 34.40              [3] Jie Han and Michael Orshansky. 2013. Approximate computing: An emerging
+                                                                                   paradigm for energy-efficient design. In 2013 18th IEEE European Test Symposium
+      Average          34.97          33.30     34.89 34.97 34.97                  (ETS). IEEE, 1–6.
+                                                                               [4] IEEE. 2019. IEEE Standard for Floating-Point Arithmetic. IEEE Std. 754-2019
+                                                                                   (Revision of IEEE 754-2008) (2019), 1–84.
+                                                                               [5] ImageProcessingPlace. 2008.            Image Databases.              https://www.
+                                                                                   imageprocessingplace.com/root_files_V3/image_databases.htm
+                                                                               [6] Mohsen Imani, Ricardo Garcia, Andrew Huang, and Tajana Rosing. 2019. Cade:
+                                                                                   Configurable approximate divider for energy efficiency. In 2019 Design, Automa-
+                                                                                   tion & Test in Europe Conference & Exhibition (DATE). IEEE, 586–589.
+                                                                               [7] Chandan Kumar Jha, Kailash Prasad, Vibhor Kumar Srivastava, and Joycee Mekie.
+                                                                                   2020. FPAD: a multistage approximation methodology for designing floating
+        (a)                 (b)                   (c)         (d)                  point approximate dividers. In 2020 IEEE International Symposium on Circuits and
+                                                                                   Systems (ISCAS). IEEE, 1–5.
+                                                                               [8] Honglan Jiang, Cong Liu, Leibo Liu, Fabrizio Lombardi, and Jie Han. 2017. A
+                                                                                   review, classification, and comparative evaluation of approximate arithmetic
+                                                                                   circuits. ACM Journal on Emerging Technologies in Computing Systems (JETC) 13,
+                                                                                   4 (2017), 1–34.
+                                                                               [9] Sunwoong Kim and Rob Rutenbar. 2018. Accelerator Design with Effective
+                                                                                   Resource Utilization for Binary Convolutional Neural Networks on an FPGA. In
+                                                                                   2018 IEEE 26th Annual International Symposium on Field-Programmable Custom
+        (e)                 (f)                   (g)         (h)                  Computing Machines (FCCM). IEEE, 218–218.
+                                                                              [10] Sunwoong Kim and Rob A Rutenbar. 2019. An area-efficient iterative single-
+                                                                                   precision floating-point multiplier architecture for FPGA. In Proceedings of the
+                                                                                   2019 on Great Lakes Symposium on VLSI. 87–92.
+Figure 3: Resulting images from JPEG using ILAFD. (a) air-                    [11] Jackson Melchert, Setareh Behroozi, Jingjie Li, and Younghyun Kim. 2019. SAADI-
+plane with 𝑛 of 2 (b) airplane with 𝑛 of 3 (c) airplane with 𝑛 of                  EC: A quality-configurable approximate divider for energy efficiency. IEEE
+                                                                                   Transactions on Very Large Scale Integration (VLSI) Systems 27, 11 (2019), 2680–
+4 (d) airplane with 𝑛 of 5 (e) mandrill with 𝑛 of 2 (f) mandrill                   2692.
+with 𝑛 of 3 (g) mandrill with 𝑛 of 4 (h) mandrill with 𝑛 of 5.                [12] John N Mitchell. 1962. Computer multiplication and division using binary loga-
+                                                                                   rithms. IRE Transactions on Electronic Computers 4 (1962), 512–517.
+for airplane and mandrill, where the JPEG shows the highest and               [13] Raul Murillo, Alberto A Del Barrio, Guillermo Botella, Min Soo Kim, HyunJin Kim,
+                                                                                   and Nader Bagherzadeh. 2021. PLAM: A posit logarithm-approximate multiplier.
+lowest PSNR values, respectively.                                                  IEEE Transactions on Emerging Topics in Computing 10, 4 (2021), 2079–2085.
+                                                                              [14] Cameron James Norris and Sunwoong Kim. 2021. An approximate and iterative
+7    CONCLUSION                                                                    posit multiplier architecture for FPGAs. In 2021 IEEE International Symposium on
+                                                                                   Circuits and Systems (ISCAS). IEEE, 1–5.
+In this paper, we presented an accuracy-configurable FP divider               [15] Omkar G Ratnaparkhi and Madhav Rao. 2022. LEAD: Logarithmic Exponent
+                                                                                   Approximate Divider For Image Quantization Application. In Proceedings of the
+design for an FPGA. It computes an approximate reciprocal of a                     Great Lakes Symposium on VLSI 2022. 437–442.
+divisor in a lightweight way and corrects errors using multiple               [16] Hassaan Saadat, Haris Javaid, and Sri Parameswaran. 2019. Approximate integer
+EC values stored in a lookup table. The computed reciprocal is                     and floating-point dividers with near-zero error bias. In Proceedings of the 56th
+                                                                                   Annual Design Automation Conference 2019. 1–6.
+multiplied by a dividend using the existing iterative logarithmic             [17] Shaghayegh Vahdat, Mehdi Kamal, Ali Afzali-Kusha, Massoud Pedram, and
+FP multiplier. Since the number of iterations is configurable at                   Zainalabedin Navabi. 2017. TruncApp: A truncation-based approximate divider
+runtime, trading off accuracy with latency is available depending                  for energy efficient DSP applications. In Design, Automation & Test in Europe
+                                                                                   Conference & Exhibition (DATE), 2017. IEEE, 1635–1638.
+on the applications. The ILAFD design outperforms the previous                [18] Allan G Weber. 2006. The USC-SIPI image database: Version 5. http://sipi. usc.
+approximate FP divider designs based on single-cycle architectures                 edu/database/ (2006).
+                                                                              [19] Yong Wu, Honglan Jiang, Zining Ma, Pengfei Gou, Yong Lu, Jie Han, Shouyi Yin,
+in terms of accuracy when the 𝑛 value exceeds 2, at the cost of                    Shaojun Wei, and Leibo Liu. 2022. An Energy-Efficient Approximate Divider
+a slight increase in hardware resources. Compared to the Xilinx                    Based on Logarithmic Conversion and Piecewise Constant Approximation. IEEE
+LogiCORE IP design of an SPFP divider, which performs exact                        Transactions on Circuits and Systems I: Regular Papers 69, 7 (2022), 2655–2668.
+                                                                              [20] Xilinx. 2020.      LogiCORE IP Floating-Point Operator v7.1 Product Guide
+division, the ILAFD design reduces the number of LUTs, number of                   (PG060). https://www.xilinx.com/support/documentation/ip_documentation/
+FFs, and latency by 53%, 90%, and 71%, respectively. To the best of                floating_point/v7_1/pg060-floating-point.pdf
+the authors’ knowledge, this is the first work that uses an iterative         [21] Xilinx. 2020. Performance and Resource Utilization for Floating-point v7.1. https:
+                                                                                   //www.xilinx.com/htmldocs/ip_docs/pru_files/floating-point.html
+logarithmic FP multiplier design for approximate FP divisions.                [22] Qiang Xu, Todd Mytkowicz, and Nam Sung Kim. 2015. Approximate computing:
+                                                                                   A survey. IEEE Design & Test 33, 1 (2015), 8–22.
+ACKNOWLEDGMENTS                                                               [23] Reza Zendegani, Mehdi Kamal, Arash Fayyazi, Ali Afzali-Kusha, Saeed Safari, and
+                                                                                   Massoud Pedram. 2016. SEERAD: A high speed yet energy-efficient rounding-
+We thank Dr. Rob Rutenbar, Dr. Jung Hee Cheon, Wonhee Cho,                         based approximate divider. In 2016 Design, Automation & Test in Europe Conference
+                                                                                   & Exhibition (DATE). IEEE, 1481–1484.
+and Keewoo Lee. This work was supported by Institute of Informa-
+tion & Communications Technology Planning & Evaluation (IITP)
+
+
+
+
+                                                                        644
+

@@ -1,0 +1,996 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : oadm_fixed_l0_divmul_correction_chain
+Version: U-2022.12-SP7
+Date   : Thu Sep  3 21:15:31 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: y[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_l0_divmul_correction_chain ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_4 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_3 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[1] (in)                                                                                              0.01       0.03 r
+  impl/y[1] (oadm_fixed_divmul_correction_chain_LEVEL0)                                                  0.00       0.03 r
+  impl/fp_wrapper/y[1] (fp32_normal_finite_wrapper)                                                      0.00       0.03 r
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                          0.05       0.07 r
+  impl/fp_wrapper/fraction_y[1] (fp32_normal_finite_wrapper)                                             0.00       0.07 r
+  impl/sub_2_root_sub_39_2/B[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                   0.00       0.07 r
+  impl/sub_2_root_sub_39_2/U5/ZN (INVD1)                                                                 0.02       0.09 f
+  impl/sub_2_root_sub_39_2/U2_1/S (FA1D0)                                                                0.09       0.19 f
+  impl/sub_2_root_sub_39_2/DIFF[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/A[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)        0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_1/CO (FA1D0)                                                    0.10       0.29 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_2/CO (FA1D0)                                                    0.06       0.34 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_3/CO (FA1D0)                                                    0.06       0.40 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_4/CO (FA1D0)                                                    0.06       0.45 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_5/CO (FA1D0)                                                    0.06       0.51 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_6/CO (FA1D0)                                                    0.06       0.57 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_7/S (FA1D0)                                                     0.07       0.63 r
+  impl/add_0_root_sub_0_root_sub_39_2/SUM[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)      0.00       0.63 r
+  impl/U59/Z (AO22D0)                                                                                    0.07       0.70 r
+  impl/mult_158/a[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                           0.00       0.70 r
+  impl/mult_158/U56/S (FA1D0)                                                                            0.11       0.81 f
+  impl/mult_158/U26/CO (FA1D0)                                                                           0.10       0.91 f
+  impl/mult_158/U25/CO (FA1D0)                                                                           0.06       0.97 f
+  impl/mult_158/U24/CO (FA1D0)                                                                           0.06       1.02 f
+  impl/mult_158/U23/CO (FA1D0)                                                                           0.06       1.08 f
+  impl/mult_158/U22/CO (FA1D0)                                                                           0.06       1.14 f
+  impl/mult_158/U21/CO (FA1D0)                                                                           0.06       1.19 f
+  impl/mult_158/U20/CO (FA1D0)                                                                           0.06       1.25 f
+  impl/mult_158/U19/CO (FA1D0)                                                                           0.06       1.30 f
+  impl/mult_158/U18/CO (FA1D0)                                                                           0.06       1.36 f
+  impl/mult_158/U17/CO (FA1D0)                                                                           0.06       1.41 f
+  impl/mult_158/U16/CO (FA1D0)                                                                           0.06       1.47 f
+  impl/mult_158/U15/CO (FA1D0)                                                                           0.06       1.52 f
+  impl/mult_158/U14/CO (FA1D0)                                                                           0.06       1.58 f
+  impl/mult_158/U13/CO (FA1D0)                                                                           0.06       1.63 f
+  impl/mult_158/U12/CO (FA1D0)                                                                           0.06       1.69 f
+  impl/mult_158/U11/CO (FA1D0)                                                                           0.06       1.74 f
+  impl/mult_158/U10/CO (FA1D0)                                                                           0.06       1.80 f
+  impl/mult_158/U9/CO (FA1D0)                                                                            0.06       1.85 f
+  impl/mult_158/U8/CO (FA1D0)                                                                            0.06       1.91 f
+  impl/mult_158/U7/CO (FA1D0)                                                                            0.06       1.97 f
+  impl/mult_158/U6/CO (FA1D0)                                                                            0.06       2.02 f
+  impl/mult_158/U5/CO (FA1D0)                                                                            0.06       2.08 f
+  impl/mult_158/U4/CO (FA1D0)                                                                            0.06       2.13 f
+  impl/mult_158/U3/CO (FA1D0)                                                                            0.05       2.18 f
+  impl/mult_158/U119/Z (XOR4D0)                                                                          0.11       2.29 f
+  impl/mult_158/product[31] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                    0.00       2.29 f
+  impl/U58/ZN (AOI22D1)                                                                                  0.11       2.40 r
+  impl/U7/Z (CKBD1)                                                                                      0.10       2.50 r
+  impl/U6/ZN (IND3D1)                                                                                    0.17       2.67 f
+  impl/U4/ZN (ND2D1)                                                                                     0.19       2.86 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                        0.00       2.86 r
+  impl/fp_wrapper/U36/CO (FA1D0)                                                                         0.11       2.98 r
+  impl/fp_wrapper/U37/CO (FA1D0)                                                                         0.05       3.03 r
+  impl/fp_wrapper/U38/CO (FA1D0)                                                                         0.05       3.08 r
+  impl/fp_wrapper/U39/CO (FA1D0)                                                                         0.05       3.13 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                         0.05       3.19 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                         0.05       3.24 r
+  impl/fp_wrapper/U51/Z (XOR3D1)                                                                         0.07       3.31 f
+  impl/fp_wrapper/U49/Z (AO22D0)                                                                         0.08       3.38 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                0.00       3.38 f
+  impl/result[30] (oadm_fixed_divmul_correction_chain_LEVEL0)                                            0.00       3.38 f
+  result[30] (out)                                                                                       0.00       3.38 f
+  data arrival time                                                                                                 3.38
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -3.38
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       6.60
+
+
+  Startpoint: y[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_l0_divmul_correction_chain ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_4 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_3 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[1] (in)                                                                                              0.01       0.03 r
+  impl/y[1] (oadm_fixed_divmul_correction_chain_LEVEL0)                                                  0.00       0.03 r
+  impl/fp_wrapper/y[1] (fp32_normal_finite_wrapper)                                                      0.00       0.03 r
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                          0.05       0.07 r
+  impl/fp_wrapper/fraction_y[1] (fp32_normal_finite_wrapper)                                             0.00       0.07 r
+  impl/sub_2_root_sub_39_2/B[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                   0.00       0.07 r
+  impl/sub_2_root_sub_39_2/U5/ZN (INVD1)                                                                 0.02       0.09 f
+  impl/sub_2_root_sub_39_2/U2_1/S (FA1D0)                                                                0.09       0.19 f
+  impl/sub_2_root_sub_39_2/DIFF[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/A[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)        0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_1/CO (FA1D0)                                                    0.10       0.29 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_2/CO (FA1D0)                                                    0.06       0.34 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_3/CO (FA1D0)                                                    0.06       0.40 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_4/CO (FA1D0)                                                    0.06       0.45 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_5/CO (FA1D0)                                                    0.06       0.51 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_6/CO (FA1D0)                                                    0.06       0.57 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_7/S (FA1D0)                                                     0.07       0.63 r
+  impl/add_0_root_sub_0_root_sub_39_2/SUM[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)      0.00       0.63 r
+  impl/U59/Z (AO22D0)                                                                                    0.07       0.70 r
+  impl/mult_158/a[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                           0.00       0.70 r
+  impl/mult_158/U56/S (FA1D0)                                                                            0.11       0.81 f
+  impl/mult_158/U26/CO (FA1D0)                                                                           0.10       0.91 f
+  impl/mult_158/U25/CO (FA1D0)                                                                           0.06       0.97 f
+  impl/mult_158/U24/CO (FA1D0)                                                                           0.06       1.02 f
+  impl/mult_158/U23/CO (FA1D0)                                                                           0.06       1.08 f
+  impl/mult_158/U22/CO (FA1D0)                                                                           0.06       1.14 f
+  impl/mult_158/U21/CO (FA1D0)                                                                           0.06       1.19 f
+  impl/mult_158/U20/CO (FA1D0)                                                                           0.06       1.25 f
+  impl/mult_158/U19/CO (FA1D0)                                                                           0.06       1.30 f
+  impl/mult_158/U18/CO (FA1D0)                                                                           0.06       1.36 f
+  impl/mult_158/U17/CO (FA1D0)                                                                           0.06       1.41 f
+  impl/mult_158/U16/CO (FA1D0)                                                                           0.06       1.47 f
+  impl/mult_158/U15/CO (FA1D0)                                                                           0.06       1.52 f
+  impl/mult_158/U14/CO (FA1D0)                                                                           0.06       1.58 f
+  impl/mult_158/U13/CO (FA1D0)                                                                           0.06       1.63 f
+  impl/mult_158/U12/CO (FA1D0)                                                                           0.06       1.69 f
+  impl/mult_158/U11/CO (FA1D0)                                                                           0.06       1.74 f
+  impl/mult_158/U10/CO (FA1D0)                                                                           0.06       1.80 f
+  impl/mult_158/U9/CO (FA1D0)                                                                            0.06       1.85 f
+  impl/mult_158/U8/CO (FA1D0)                                                                            0.06       1.91 f
+  impl/mult_158/U7/CO (FA1D0)                                                                            0.06       1.97 f
+  impl/mult_158/U6/CO (FA1D0)                                                                            0.06       2.02 f
+  impl/mult_158/U5/CO (FA1D0)                                                                            0.06       2.08 f
+  impl/mult_158/U4/CO (FA1D0)                                                                            0.06       2.13 f
+  impl/mult_158/U3/CO (FA1D0)                                                                            0.05       2.18 f
+  impl/mult_158/U119/Z (XOR4D0)                                                                          0.11       2.29 f
+  impl/mult_158/product[31] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                    0.00       2.29 f
+  impl/U58/ZN (AOI22D1)                                                                                  0.11       2.40 r
+  impl/U7/Z (CKBD1)                                                                                      0.10       2.50 r
+  impl/U6/ZN (IND3D1)                                                                                    0.17       2.67 f
+  impl/U4/ZN (ND2D1)                                                                                     0.19       2.86 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                        0.00       2.86 r
+  impl/fp_wrapper/U36/CO (FA1D0)                                                                         0.11       2.98 r
+  impl/fp_wrapper/U37/CO (FA1D0)                                                                         0.05       3.03 r
+  impl/fp_wrapper/U38/CO (FA1D0)                                                                         0.05       3.08 r
+  impl/fp_wrapper/U39/CO (FA1D0)                                                                         0.05       3.13 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                         0.05       3.19 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                         0.05       3.24 r
+  impl/fp_wrapper/U51/Z (XOR3D1)                                                                         0.07       3.31 f
+  impl/fp_wrapper/U49/Z (AO22D0)                                                                         0.08       3.38 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                0.00       3.38 f
+  impl/result[30] (oadm_fixed_divmul_correction_chain_LEVEL0)                                            0.00       3.38 f
+  result[30] (out)                                                                                       0.00       3.38 f
+  data arrival time                                                                                                 3.38
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -3.38
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       6.60
+
+
+  Startpoint: y[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_l0_divmul_correction_chain ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_4 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_3 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[1] (in)                                                                                              0.01       0.03 r
+  impl/y[1] (oadm_fixed_divmul_correction_chain_LEVEL0)                                                  0.00       0.03 r
+  impl/fp_wrapper/y[1] (fp32_normal_finite_wrapper)                                                      0.00       0.03 r
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                          0.05       0.07 r
+  impl/fp_wrapper/fraction_y[1] (fp32_normal_finite_wrapper)                                             0.00       0.07 r
+  impl/sub_2_root_sub_39_2/B[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                   0.00       0.07 r
+  impl/sub_2_root_sub_39_2/U5/ZN (INVD1)                                                                 0.02       0.09 f
+  impl/sub_2_root_sub_39_2/U2_1/S (FA1D0)                                                                0.09       0.19 f
+  impl/sub_2_root_sub_39_2/DIFF[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/A[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)        0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_1/CO (FA1D0)                                                    0.10       0.29 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_2/CO (FA1D0)                                                    0.06       0.34 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_3/CO (FA1D0)                                                    0.06       0.40 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_4/CO (FA1D0)                                                    0.06       0.45 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_5/CO (FA1D0)                                                    0.06       0.51 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_6/CO (FA1D0)                                                    0.06       0.57 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_7/S (FA1D0)                                                     0.07       0.63 r
+  impl/add_0_root_sub_0_root_sub_39_2/SUM[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)      0.00       0.63 r
+  impl/U59/Z (AO22D0)                                                                                    0.07       0.70 r
+  impl/mult_158/a[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                           0.00       0.70 r
+  impl/mult_158/U56/S (FA1D0)                                                                            0.11       0.81 f
+  impl/mult_158/U26/CO (FA1D0)                                                                           0.10       0.91 f
+  impl/mult_158/U25/CO (FA1D0)                                                                           0.06       0.97 f
+  impl/mult_158/U24/CO (FA1D0)                                                                           0.06       1.02 f
+  impl/mult_158/U23/CO (FA1D0)                                                                           0.06       1.08 f
+  impl/mult_158/U22/CO (FA1D0)                                                                           0.06       1.14 f
+  impl/mult_158/U21/CO (FA1D0)                                                                           0.06       1.19 f
+  impl/mult_158/U20/CO (FA1D0)                                                                           0.06       1.25 f
+  impl/mult_158/U19/CO (FA1D0)                                                                           0.06       1.30 f
+  impl/mult_158/U18/CO (FA1D0)                                                                           0.06       1.36 f
+  impl/mult_158/U17/CO (FA1D0)                                                                           0.06       1.41 f
+  impl/mult_158/U16/CO (FA1D0)                                                                           0.06       1.47 f
+  impl/mult_158/U15/CO (FA1D0)                                                                           0.06       1.52 f
+  impl/mult_158/U14/CO (FA1D0)                                                                           0.06       1.58 f
+  impl/mult_158/U13/CO (FA1D0)                                                                           0.06       1.63 f
+  impl/mult_158/U12/CO (FA1D0)                                                                           0.06       1.69 f
+  impl/mult_158/U11/CO (FA1D0)                                                                           0.06       1.74 f
+  impl/mult_158/U10/CO (FA1D0)                                                                           0.06       1.80 f
+  impl/mult_158/U9/CO (FA1D0)                                                                            0.06       1.85 f
+  impl/mult_158/U8/CO (FA1D0)                                                                            0.06       1.91 f
+  impl/mult_158/U7/CO (FA1D0)                                                                            0.06       1.97 f
+  impl/mult_158/U6/CO (FA1D0)                                                                            0.06       2.02 f
+  impl/mult_158/U5/CO (FA1D0)                                                                            0.06       2.08 f
+  impl/mult_158/U4/CO (FA1D0)                                                                            0.06       2.13 f
+  impl/mult_158/U3/CO (FA1D0)                                                                            0.05       2.18 f
+  impl/mult_158/U119/Z (XOR4D0)                                                                          0.11       2.29 f
+  impl/mult_158/product[31] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                    0.00       2.29 f
+  impl/U58/ZN (AOI22D1)                                                                                  0.11       2.40 r
+  impl/U7/Z (CKBD1)                                                                                      0.10       2.50 r
+  impl/U6/ZN (IND3D1)                                                                                    0.17       2.67 f
+  impl/U4/ZN (ND2D1)                                                                                     0.19       2.86 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                        0.00       2.86 r
+  impl/fp_wrapper/U36/CO (FA1D0)                                                                         0.11       2.98 r
+  impl/fp_wrapper/U37/CO (FA1D0)                                                                         0.05       3.03 r
+  impl/fp_wrapper/U38/CO (FA1D0)                                                                         0.05       3.08 r
+  impl/fp_wrapper/U39/CO (FA1D0)                                                                         0.05       3.13 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                         0.05       3.19 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                         0.05       3.24 r
+  impl/fp_wrapper/U51/Z (XOR3D1)                                                                         0.07       3.31 f
+  impl/fp_wrapper/U49/Z (AO22D0)                                                                         0.08       3.38 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                0.00       3.38 f
+  impl/result[30] (oadm_fixed_divmul_correction_chain_LEVEL0)                                            0.00       3.38 f
+  result[30] (out)                                                                                       0.00       3.38 f
+  data arrival time                                                                                                 3.38
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -3.38
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       6.60
+
+
+  Startpoint: y[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_l0_divmul_correction_chain ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_4 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_3 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[1] (in)                                                                                              0.01       0.03 r
+  impl/y[1] (oadm_fixed_divmul_correction_chain_LEVEL0)                                                  0.00       0.03 r
+  impl/fp_wrapper/y[1] (fp32_normal_finite_wrapper)                                                      0.00       0.03 r
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                          0.05       0.07 r
+  impl/fp_wrapper/fraction_y[1] (fp32_normal_finite_wrapper)                                             0.00       0.07 r
+  impl/sub_2_root_sub_39_2/B[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                   0.00       0.07 r
+  impl/sub_2_root_sub_39_2/U5/ZN (INVD1)                                                                 0.02       0.09 f
+  impl/sub_2_root_sub_39_2/U2_1/S (FA1D0)                                                                0.09       0.19 f
+  impl/sub_2_root_sub_39_2/DIFF[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/A[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)        0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_1/CO (FA1D0)                                                    0.10       0.29 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_2/CO (FA1D0)                                                    0.06       0.34 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_3/CO (FA1D0)                                                    0.06       0.40 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_4/CO (FA1D0)                                                    0.06       0.45 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_5/CO (FA1D0)                                                    0.06       0.51 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_6/CO (FA1D0)                                                    0.06       0.57 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_7/S (FA1D0)                                                     0.07       0.63 r
+  impl/add_0_root_sub_0_root_sub_39_2/SUM[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)      0.00       0.63 r
+  impl/U59/Z (AO22D0)                                                                                    0.07       0.70 r
+  impl/mult_158/a[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                           0.00       0.70 r
+  impl/mult_158/U56/S (FA1D0)                                                                            0.11       0.81 f
+  impl/mult_158/U26/CO (FA1D0)                                                                           0.10       0.91 f
+  impl/mult_158/U25/CO (FA1D0)                                                                           0.06       0.97 f
+  impl/mult_158/U24/CO (FA1D0)                                                                           0.06       1.02 f
+  impl/mult_158/U23/CO (FA1D0)                                                                           0.06       1.08 f
+  impl/mult_158/U22/CO (FA1D0)                                                                           0.06       1.14 f
+  impl/mult_158/U21/CO (FA1D0)                                                                           0.06       1.19 f
+  impl/mult_158/U20/CO (FA1D0)                                                                           0.06       1.25 f
+  impl/mult_158/U19/CO (FA1D0)                                                                           0.06       1.30 f
+  impl/mult_158/U18/CO (FA1D0)                                                                           0.06       1.36 f
+  impl/mult_158/U17/CO (FA1D0)                                                                           0.06       1.41 f
+  impl/mult_158/U16/CO (FA1D0)                                                                           0.06       1.47 f
+  impl/mult_158/U15/CO (FA1D0)                                                                           0.06       1.52 f
+  impl/mult_158/U14/CO (FA1D0)                                                                           0.06       1.58 f
+  impl/mult_158/U13/CO (FA1D0)                                                                           0.06       1.63 f
+  impl/mult_158/U12/CO (FA1D0)                                                                           0.06       1.69 f
+  impl/mult_158/U11/CO (FA1D0)                                                                           0.06       1.74 f
+  impl/mult_158/U10/CO (FA1D0)                                                                           0.06       1.80 f
+  impl/mult_158/U9/CO (FA1D0)                                                                            0.06       1.85 f
+  impl/mult_158/U8/CO (FA1D0)                                                                            0.06       1.91 f
+  impl/mult_158/U7/CO (FA1D0)                                                                            0.06       1.97 f
+  impl/mult_158/U6/CO (FA1D0)                                                                            0.06       2.02 f
+  impl/mult_158/U5/CO (FA1D0)                                                                            0.06       2.08 f
+  impl/mult_158/U4/CO (FA1D0)                                                                            0.06       2.13 f
+  impl/mult_158/U3/CO (FA1D0)                                                                            0.05       2.18 f
+  impl/mult_158/U119/Z (XOR4D0)                                                                          0.11       2.29 f
+  impl/mult_158/product[31] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                    0.00       2.29 f
+  impl/U58/ZN (AOI22D1)                                                                                  0.11       2.40 r
+  impl/U7/Z (CKBD1)                                                                                      0.10       2.50 r
+  impl/U6/ZN (IND3D1)                                                                                    0.17       2.67 f
+  impl/U4/ZN (ND2D1)                                                                                     0.19       2.86 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                        0.00       2.86 r
+  impl/fp_wrapper/U36/CO (FA1D0)                                                                         0.11       2.98 r
+  impl/fp_wrapper/U37/CO (FA1D0)                                                                         0.05       3.03 r
+  impl/fp_wrapper/U38/CO (FA1D0)                                                                         0.05       3.08 r
+  impl/fp_wrapper/U39/CO (FA1D0)                                                                         0.05       3.13 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                         0.05       3.19 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                         0.05       3.24 r
+  impl/fp_wrapper/U51/Z (XOR3D1)                                                                         0.07       3.31 f
+  impl/fp_wrapper/U49/Z (AO22D0)                                                                         0.08       3.38 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                0.00       3.38 f
+  impl/result[30] (oadm_fixed_divmul_correction_chain_LEVEL0)                                            0.00       3.38 f
+  result[30] (out)                                                                                       0.00       3.38 f
+  data arrival time                                                                                                 3.38
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -3.38
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       6.60
+
+
+  Startpoint: y[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_l0_divmul_correction_chain ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_4 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_3 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[1] (in)                                                                                              0.01       0.03 r
+  impl/y[1] (oadm_fixed_divmul_correction_chain_LEVEL0)                                                  0.00       0.03 r
+  impl/fp_wrapper/y[1] (fp32_normal_finite_wrapper)                                                      0.00       0.03 r
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                          0.05       0.07 r
+  impl/fp_wrapper/fraction_y[1] (fp32_normal_finite_wrapper)                                             0.00       0.07 r
+  impl/sub_2_root_sub_39_2/B[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                   0.00       0.07 r
+  impl/sub_2_root_sub_39_2/U5/ZN (INVD1)                                                                 0.02       0.09 f
+  impl/sub_2_root_sub_39_2/U2_1/S (FA1D0)                                                                0.09       0.19 f
+  impl/sub_2_root_sub_39_2/DIFF[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/A[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)        0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_1/CO (FA1D0)                                                    0.10       0.29 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_2/CO (FA1D0)                                                    0.06       0.34 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_3/CO (FA1D0)                                                    0.06       0.40 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_4/CO (FA1D0)                                                    0.06       0.45 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_5/CO (FA1D0)                                                    0.06       0.51 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_6/CO (FA1D0)                                                    0.06       0.57 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_7/S (FA1D0)                                                     0.07       0.63 r
+  impl/add_0_root_sub_0_root_sub_39_2/SUM[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)      0.00       0.63 r
+  impl/U59/Z (AO22D0)                                                                                    0.07       0.70 r
+  impl/mult_158/a[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                           0.00       0.70 r
+  impl/mult_158/U56/S (FA1D0)                                                                            0.11       0.81 f
+  impl/mult_158/U26/CO (FA1D0)                                                                           0.10       0.91 f
+  impl/mult_158/U25/CO (FA1D0)                                                                           0.06       0.97 f
+  impl/mult_158/U24/CO (FA1D0)                                                                           0.06       1.02 f
+  impl/mult_158/U23/CO (FA1D0)                                                                           0.06       1.08 f
+  impl/mult_158/U22/CO (FA1D0)                                                                           0.06       1.14 f
+  impl/mult_158/U21/CO (FA1D0)                                                                           0.06       1.19 f
+  impl/mult_158/U20/CO (FA1D0)                                                                           0.06       1.25 f
+  impl/mult_158/U19/CO (FA1D0)                                                                           0.06       1.30 f
+  impl/mult_158/U18/CO (FA1D0)                                                                           0.06       1.36 f
+  impl/mult_158/U17/CO (FA1D0)                                                                           0.06       1.41 f
+  impl/mult_158/U16/CO (FA1D0)                                                                           0.06       1.47 f
+  impl/mult_158/U15/CO (FA1D0)                                                                           0.06       1.52 f
+  impl/mult_158/U14/CO (FA1D0)                                                                           0.06       1.58 f
+  impl/mult_158/U13/CO (FA1D0)                                                                           0.06       1.63 f
+  impl/mult_158/U12/CO (FA1D0)                                                                           0.06       1.69 f
+  impl/mult_158/U11/CO (FA1D0)                                                                           0.06       1.74 f
+  impl/mult_158/U10/CO (FA1D0)                                                                           0.06       1.80 f
+  impl/mult_158/U9/CO (FA1D0)                                                                            0.06       1.85 f
+  impl/mult_158/U8/CO (FA1D0)                                                                            0.06       1.91 f
+  impl/mult_158/U7/CO (FA1D0)                                                                            0.06       1.97 f
+  impl/mult_158/U6/CO (FA1D0)                                                                            0.06       2.02 f
+  impl/mult_158/U5/CO (FA1D0)                                                                            0.06       2.08 f
+  impl/mult_158/U4/CO (FA1D0)                                                                            0.06       2.13 f
+  impl/mult_158/U3/CO (FA1D0)                                                                            0.05       2.18 f
+  impl/mult_158/U119/Z (XOR4D0)                                                                          0.11       2.29 f
+  impl/mult_158/product[31] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                    0.00       2.29 f
+  impl/U58/ZN (AOI22D1)                                                                                  0.11       2.40 r
+  impl/U7/Z (CKBD1)                                                                                      0.10       2.50 r
+  impl/U6/ZN (IND3D1)                                                                                    0.17       2.67 f
+  impl/U4/ZN (ND2D1)                                                                                     0.19       2.86 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                        0.00       2.86 r
+  impl/fp_wrapper/U36/CO (FA1D0)                                                                         0.11       2.98 r
+  impl/fp_wrapper/U37/CO (FA1D0)                                                                         0.05       3.03 r
+  impl/fp_wrapper/U38/CO (FA1D0)                                                                         0.05       3.08 r
+  impl/fp_wrapper/U39/CO (FA1D0)                                                                         0.05       3.13 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                         0.05       3.19 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                         0.05       3.24 r
+  impl/fp_wrapper/U51/Z (XOR3D1)                                                                         0.07       3.31 f
+  impl/fp_wrapper/U49/Z (AO22D0)                                                                         0.08       3.38 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                0.00       3.38 f
+  impl/result[30] (oadm_fixed_divmul_correction_chain_LEVEL0)                                            0.00       3.38 f
+  result[30] (out)                                                                                       0.00       3.38 f
+  data arrival time                                                                                                 3.38
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -3.38
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       6.60
+
+
+  Startpoint: y[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_l0_divmul_correction_chain ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_4 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_3 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[1] (in)                                                                                              0.01       0.03 r
+  impl/y[1] (oadm_fixed_divmul_correction_chain_LEVEL0)                                                  0.00       0.03 r
+  impl/fp_wrapper/y[1] (fp32_normal_finite_wrapper)                                                      0.00       0.03 r
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                          0.05       0.07 r
+  impl/fp_wrapper/fraction_y[1] (fp32_normal_finite_wrapper)                                             0.00       0.07 r
+  impl/sub_2_root_sub_39_2/B[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                   0.00       0.07 r
+  impl/sub_2_root_sub_39_2/U5/ZN (INVD1)                                                                 0.02       0.09 f
+  impl/sub_2_root_sub_39_2/U2_1/S (FA1D0)                                                                0.09       0.19 f
+  impl/sub_2_root_sub_39_2/DIFF[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/A[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)        0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_1/CO (FA1D0)                                                    0.10       0.29 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_2/CO (FA1D0)                                                    0.06       0.34 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_3/CO (FA1D0)                                                    0.06       0.40 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_4/CO (FA1D0)                                                    0.06       0.45 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_5/CO (FA1D0)                                                    0.06       0.51 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_6/CO (FA1D0)                                                    0.06       0.57 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_7/S (FA1D0)                                                     0.07       0.63 r
+  impl/add_0_root_sub_0_root_sub_39_2/SUM[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)      0.00       0.63 r
+  impl/U59/Z (AO22D0)                                                                                    0.07       0.70 r
+  impl/mult_158/a[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                           0.00       0.70 r
+  impl/mult_158/U56/S (FA1D0)                                                                            0.11       0.81 f
+  impl/mult_158/U26/CO (FA1D0)                                                                           0.10       0.91 f
+  impl/mult_158/U25/CO (FA1D0)                                                                           0.06       0.97 f
+  impl/mult_158/U24/CO (FA1D0)                                                                           0.06       1.02 f
+  impl/mult_158/U23/CO (FA1D0)                                                                           0.06       1.08 f
+  impl/mult_158/U22/CO (FA1D0)                                                                           0.06       1.14 f
+  impl/mult_158/U21/CO (FA1D0)                                                                           0.06       1.19 f
+  impl/mult_158/U20/CO (FA1D0)                                                                           0.06       1.25 f
+  impl/mult_158/U19/CO (FA1D0)                                                                           0.06       1.30 f
+  impl/mult_158/U18/CO (FA1D0)                                                                           0.06       1.36 f
+  impl/mult_158/U17/CO (FA1D0)                                                                           0.06       1.41 f
+  impl/mult_158/U16/CO (FA1D0)                                                                           0.06       1.47 f
+  impl/mult_158/U15/CO (FA1D0)                                                                           0.06       1.52 f
+  impl/mult_158/U14/CO (FA1D0)                                                                           0.06       1.58 f
+  impl/mult_158/U13/CO (FA1D0)                                                                           0.06       1.63 f
+  impl/mult_158/U12/CO (FA1D0)                                                                           0.06       1.69 f
+  impl/mult_158/U11/CO (FA1D0)                                                                           0.06       1.74 f
+  impl/mult_158/U10/CO (FA1D0)                                                                           0.06       1.80 f
+  impl/mult_158/U9/CO (FA1D0)                                                                            0.06       1.85 f
+  impl/mult_158/U8/CO (FA1D0)                                                                            0.06       1.91 f
+  impl/mult_158/U7/CO (FA1D0)                                                                            0.06       1.97 f
+  impl/mult_158/U6/CO (FA1D0)                                                                            0.06       2.02 f
+  impl/mult_158/U5/CO (FA1D0)                                                                            0.06       2.08 f
+  impl/mult_158/U4/CO (FA1D0)                                                                            0.06       2.13 f
+  impl/mult_158/U3/CO (FA1D0)                                                                            0.05       2.18 f
+  impl/mult_158/U119/Z (XOR4D0)                                                                          0.11       2.29 f
+  impl/mult_158/product[31] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                    0.00       2.29 f
+  impl/U58/ZN (AOI22D1)                                                                                  0.11       2.40 r
+  impl/U7/Z (CKBD1)                                                                                      0.10       2.50 r
+  impl/U6/ZN (IND3D1)                                                                                    0.17       2.67 f
+  impl/U4/ZN (ND2D1)                                                                                     0.19       2.86 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                        0.00       2.86 r
+  impl/fp_wrapper/U36/CO (FA1D0)                                                                         0.11       2.98 r
+  impl/fp_wrapper/U37/CO (FA1D0)                                                                         0.05       3.03 r
+  impl/fp_wrapper/U38/CO (FA1D0)                                                                         0.05       3.08 r
+  impl/fp_wrapper/U39/CO (FA1D0)                                                                         0.05       3.13 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                         0.05       3.19 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                         0.05       3.24 r
+  impl/fp_wrapper/U51/Z (XOR3D1)                                                                         0.07       3.31 f
+  impl/fp_wrapper/U49/Z (AO22D0)                                                                         0.08       3.38 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                0.00       3.38 f
+  impl/result[30] (oadm_fixed_divmul_correction_chain_LEVEL0)                                            0.00       3.38 f
+  result[30] (out)                                                                                       0.00       3.38 f
+  data arrival time                                                                                                 3.38
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -3.38
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       6.60
+
+
+  Startpoint: y[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_l0_divmul_correction_chain ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_4 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_3 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[1] (in)                                                                                              0.01       0.03 r
+  impl/y[1] (oadm_fixed_divmul_correction_chain_LEVEL0)                                                  0.00       0.03 r
+  impl/fp_wrapper/y[1] (fp32_normal_finite_wrapper)                                                      0.00       0.03 r
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                          0.05       0.07 r
+  impl/fp_wrapper/fraction_y[1] (fp32_normal_finite_wrapper)                                             0.00       0.07 r
+  impl/sub_2_root_sub_39_2/B[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                   0.00       0.07 r
+  impl/sub_2_root_sub_39_2/U5/ZN (INVD1)                                                                 0.02       0.09 f
+  impl/sub_2_root_sub_39_2/U2_1/S (FA1D0)                                                                0.09       0.19 f
+  impl/sub_2_root_sub_39_2/DIFF[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/A[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)        0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_1/CO (FA1D0)                                                    0.10       0.29 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_2/CO (FA1D0)                                                    0.06       0.34 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_3/CO (FA1D0)                                                    0.06       0.40 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_4/CO (FA1D0)                                                    0.06       0.45 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_5/CO (FA1D0)                                                    0.06       0.51 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_6/CO (FA1D0)                                                    0.06       0.57 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_7/S (FA1D0)                                                     0.07       0.63 r
+  impl/add_0_root_sub_0_root_sub_39_2/SUM[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)      0.00       0.63 r
+  impl/U59/Z (AO22D0)                                                                                    0.07       0.70 r
+  impl/mult_158/a[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                           0.00       0.70 r
+  impl/mult_158/U56/S (FA1D0)                                                                            0.11       0.81 f
+  impl/mult_158/U26/CO (FA1D0)                                                                           0.10       0.91 f
+  impl/mult_158/U25/CO (FA1D0)                                                                           0.06       0.97 f
+  impl/mult_158/U24/CO (FA1D0)                                                                           0.06       1.02 f
+  impl/mult_158/U23/CO (FA1D0)                                                                           0.06       1.08 f
+  impl/mult_158/U22/CO (FA1D0)                                                                           0.06       1.14 f
+  impl/mult_158/U21/CO (FA1D0)                                                                           0.06       1.19 f
+  impl/mult_158/U20/CO (FA1D0)                                                                           0.06       1.25 f
+  impl/mult_158/U19/CO (FA1D0)                                                                           0.06       1.30 f
+  impl/mult_158/U18/CO (FA1D0)                                                                           0.06       1.36 f
+  impl/mult_158/U17/CO (FA1D0)                                                                           0.06       1.41 f
+  impl/mult_158/U16/CO (FA1D0)                                                                           0.06       1.47 f
+  impl/mult_158/U15/CO (FA1D0)                                                                           0.06       1.52 f
+  impl/mult_158/U14/CO (FA1D0)                                                                           0.06       1.58 f
+  impl/mult_158/U13/CO (FA1D0)                                                                           0.06       1.63 f
+  impl/mult_158/U12/CO (FA1D0)                                                                           0.06       1.69 f
+  impl/mult_158/U11/CO (FA1D0)                                                                           0.06       1.74 f
+  impl/mult_158/U10/CO (FA1D0)                                                                           0.06       1.80 f
+  impl/mult_158/U9/CO (FA1D0)                                                                            0.06       1.85 f
+  impl/mult_158/U8/CO (FA1D0)                                                                            0.06       1.91 f
+  impl/mult_158/U7/CO (FA1D0)                                                                            0.06       1.97 f
+  impl/mult_158/U6/CO (FA1D0)                                                                            0.06       2.02 f
+  impl/mult_158/U5/CO (FA1D0)                                                                            0.06       2.08 f
+  impl/mult_158/U4/CO (FA1D0)                                                                            0.06       2.13 f
+  impl/mult_158/U3/CO (FA1D0)                                                                            0.05       2.18 f
+  impl/mult_158/U119/Z (XOR4D0)                                                                          0.11       2.29 f
+  impl/mult_158/product[31] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                    0.00       2.29 f
+  impl/U58/ZN (AOI22D1)                                                                                  0.11       2.40 r
+  impl/U7/Z (CKBD1)                                                                                      0.10       2.50 r
+  impl/U6/ZN (IND3D1)                                                                                    0.17       2.67 f
+  impl/U4/ZN (ND2D1)                                                                                     0.19       2.86 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                        0.00       2.86 r
+  impl/fp_wrapper/U36/CO (FA1D0)                                                                         0.11       2.98 r
+  impl/fp_wrapper/U37/CO (FA1D0)                                                                         0.05       3.03 r
+  impl/fp_wrapper/U38/CO (FA1D0)                                                                         0.05       3.08 r
+  impl/fp_wrapper/U39/CO (FA1D0)                                                                         0.05       3.13 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                         0.05       3.19 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                         0.05       3.24 r
+  impl/fp_wrapper/U51/Z (XOR3D1)                                                                         0.07       3.31 f
+  impl/fp_wrapper/U49/Z (AO22D0)                                                                         0.08       3.38 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                0.00       3.38 f
+  impl/result[30] (oadm_fixed_divmul_correction_chain_LEVEL0)                                            0.00       3.38 f
+  result[30] (out)                                                                                       0.00       3.38 f
+  data arrival time                                                                                                 3.38
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -3.38
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       6.60
+
+
+  Startpoint: y[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_l0_divmul_correction_chain ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_4 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_3 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[1] (in)                                                                                              0.01       0.03 r
+  impl/y[1] (oadm_fixed_divmul_correction_chain_LEVEL0)                                                  0.00       0.03 r
+  impl/fp_wrapper/y[1] (fp32_normal_finite_wrapper)                                                      0.00       0.03 r
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                          0.05       0.07 r
+  impl/fp_wrapper/fraction_y[1] (fp32_normal_finite_wrapper)                                             0.00       0.07 r
+  impl/sub_2_root_sub_39_2/B[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                   0.00       0.07 r
+  impl/sub_2_root_sub_39_2/U5/ZN (INVD1)                                                                 0.02       0.09 f
+  impl/sub_2_root_sub_39_2/U2_1/S (FA1D0)                                                                0.09       0.19 f
+  impl/sub_2_root_sub_39_2/DIFF[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/A[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)        0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_1/CO (FA1D0)                                                    0.10       0.29 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_2/CO (FA1D0)                                                    0.06       0.34 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_3/CO (FA1D0)                                                    0.06       0.40 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_4/CO (FA1D0)                                                    0.06       0.45 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_5/CO (FA1D0)                                                    0.06       0.51 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_6/CO (FA1D0)                                                    0.06       0.57 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_7/S (FA1D0)                                                     0.07       0.63 r
+  impl/add_0_root_sub_0_root_sub_39_2/SUM[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)      0.00       0.63 r
+  impl/U59/Z (AO22D0)                                                                                    0.07       0.70 r
+  impl/mult_158/a[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                           0.00       0.70 r
+  impl/mult_158/U56/S (FA1D0)                                                                            0.11       0.81 f
+  impl/mult_158/U26/CO (FA1D0)                                                                           0.10       0.91 f
+  impl/mult_158/U25/CO (FA1D0)                                                                           0.06       0.97 f
+  impl/mult_158/U24/CO (FA1D0)                                                                           0.06       1.02 f
+  impl/mult_158/U23/CO (FA1D0)                                                                           0.06       1.08 f
+  impl/mult_158/U22/CO (FA1D0)                                                                           0.06       1.14 f
+  impl/mult_158/U21/CO (FA1D0)                                                                           0.06       1.19 f
+  impl/mult_158/U20/CO (FA1D0)                                                                           0.06       1.25 f
+  impl/mult_158/U19/CO (FA1D0)                                                                           0.06       1.30 f
+  impl/mult_158/U18/CO (FA1D0)                                                                           0.06       1.36 f
+  impl/mult_158/U17/CO (FA1D0)                                                                           0.06       1.41 f
+  impl/mult_158/U16/CO (FA1D0)                                                                           0.06       1.47 f
+  impl/mult_158/U15/CO (FA1D0)                                                                           0.06       1.52 f
+  impl/mult_158/U14/CO (FA1D0)                                                                           0.06       1.58 f
+  impl/mult_158/U13/CO (FA1D0)                                                                           0.06       1.63 f
+  impl/mult_158/U12/CO (FA1D0)                                                                           0.06       1.69 f
+  impl/mult_158/U11/CO (FA1D0)                                                                           0.06       1.74 f
+  impl/mult_158/U10/CO (FA1D0)                                                                           0.06       1.80 f
+  impl/mult_158/U9/CO (FA1D0)                                                                            0.06       1.85 f
+  impl/mult_158/U8/CO (FA1D0)                                                                            0.06       1.91 f
+  impl/mult_158/U7/CO (FA1D0)                                                                            0.06       1.97 f
+  impl/mult_158/U6/CO (FA1D0)                                                                            0.06       2.02 f
+  impl/mult_158/U5/CO (FA1D0)                                                                            0.06       2.08 f
+  impl/mult_158/U4/CO (FA1D0)                                                                            0.06       2.13 f
+  impl/mult_158/U3/CO (FA1D0)                                                                            0.05       2.18 f
+  impl/mult_158/U119/Z (XOR4D0)                                                                          0.11       2.29 f
+  impl/mult_158/product[31] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                    0.00       2.29 f
+  impl/U58/ZN (AOI22D1)                                                                                  0.11       2.40 r
+  impl/U7/Z (CKBD1)                                                                                      0.10       2.50 r
+  impl/U6/ZN (IND3D1)                                                                                    0.17       2.67 f
+  impl/U4/ZN (ND2D1)                                                                                     0.19       2.86 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                        0.00       2.86 r
+  impl/fp_wrapper/U36/CO (FA1D0)                                                                         0.11       2.98 r
+  impl/fp_wrapper/U37/CO (FA1D0)                                                                         0.05       3.03 r
+  impl/fp_wrapper/U38/CO (FA1D0)                                                                         0.05       3.08 r
+  impl/fp_wrapper/U39/CO (FA1D0)                                                                         0.05       3.13 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                         0.05       3.19 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                         0.05       3.24 r
+  impl/fp_wrapper/U51/Z (XOR3D1)                                                                         0.07       3.31 f
+  impl/fp_wrapper/U49/Z (AO22D0)                                                                         0.08       3.38 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                0.00       3.38 f
+  impl/result[30] (oadm_fixed_divmul_correction_chain_LEVEL0)                                            0.00       3.38 f
+  result[30] (out)                                                                                       0.00       3.38 f
+  data arrival time                                                                                                 3.38
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -3.38
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       6.60
+
+
+  Startpoint: y[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_l0_divmul_correction_chain ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_4 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_3 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[1] (in)                                                                                              0.01       0.03 r
+  impl/y[1] (oadm_fixed_divmul_correction_chain_LEVEL0)                                                  0.00       0.03 r
+  impl/fp_wrapper/y[1] (fp32_normal_finite_wrapper)                                                      0.00       0.03 r
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                          0.05       0.07 r
+  impl/fp_wrapper/fraction_y[1] (fp32_normal_finite_wrapper)                                             0.00       0.07 r
+  impl/sub_2_root_sub_39_2/B[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                   0.00       0.07 r
+  impl/sub_2_root_sub_39_2/U5/ZN (INVD1)                                                                 0.02       0.09 f
+  impl/sub_2_root_sub_39_2/U2_1/S (FA1D0)                                                                0.09       0.19 f
+  impl/sub_2_root_sub_39_2/DIFF[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/A[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)        0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_1/CO (FA1D0)                                                    0.10       0.29 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_2/CO (FA1D0)                                                    0.06       0.34 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_3/CO (FA1D0)                                                    0.06       0.40 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_4/CO (FA1D0)                                                    0.06       0.45 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_5/CO (FA1D0)                                                    0.06       0.51 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_6/CO (FA1D0)                                                    0.06       0.57 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_7/S (FA1D0)                                                     0.07       0.63 r
+  impl/add_0_root_sub_0_root_sub_39_2/SUM[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)      0.00       0.63 r
+  impl/U59/Z (AO22D0)                                                                                    0.07       0.70 r
+  impl/mult_158/a[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                           0.00       0.70 r
+  impl/mult_158/U56/S (FA1D0)                                                                            0.11       0.81 f
+  impl/mult_158/U26/CO (FA1D0)                                                                           0.10       0.91 f
+  impl/mult_158/U25/CO (FA1D0)                                                                           0.06       0.97 f
+  impl/mult_158/U24/CO (FA1D0)                                                                           0.06       1.02 f
+  impl/mult_158/U23/CO (FA1D0)                                                                           0.06       1.08 f
+  impl/mult_158/U22/CO (FA1D0)                                                                           0.06       1.14 f
+  impl/mult_158/U21/CO (FA1D0)                                                                           0.06       1.19 f
+  impl/mult_158/U20/CO (FA1D0)                                                                           0.06       1.25 f
+  impl/mult_158/U19/CO (FA1D0)                                                                           0.06       1.30 f
+  impl/mult_158/U18/CO (FA1D0)                                                                           0.06       1.36 f
+  impl/mult_158/U17/CO (FA1D0)                                                                           0.06       1.41 f
+  impl/mult_158/U16/CO (FA1D0)                                                                           0.06       1.47 f
+  impl/mult_158/U15/CO (FA1D0)                                                                           0.06       1.52 f
+  impl/mult_158/U14/CO (FA1D0)                                                                           0.06       1.58 f
+  impl/mult_158/U13/CO (FA1D0)                                                                           0.06       1.63 f
+  impl/mult_158/U12/CO (FA1D0)                                                                           0.06       1.69 f
+  impl/mult_158/U11/CO (FA1D0)                                                                           0.06       1.74 f
+  impl/mult_158/U10/CO (FA1D0)                                                                           0.06       1.80 f
+  impl/mult_158/U9/CO (FA1D0)                                                                            0.06       1.85 f
+  impl/mult_158/U8/CO (FA1D0)                                                                            0.06       1.91 f
+  impl/mult_158/U7/CO (FA1D0)                                                                            0.06       1.97 f
+  impl/mult_158/U6/CO (FA1D0)                                                                            0.06       2.02 f
+  impl/mult_158/U5/CO (FA1D0)                                                                            0.06       2.08 f
+  impl/mult_158/U4/CO (FA1D0)                                                                            0.06       2.13 f
+  impl/mult_158/U3/CO (FA1D0)                                                                            0.05       2.18 f
+  impl/mult_158/U119/Z (XOR4D0)                                                                          0.11       2.29 f
+  impl/mult_158/product[31] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                    0.00       2.29 f
+  impl/U58/ZN (AOI22D1)                                                                                  0.11       2.40 r
+  impl/U7/Z (CKBD1)                                                                                      0.10       2.50 r
+  impl/U6/ZN (IND3D1)                                                                                    0.17       2.67 f
+  impl/U4/ZN (ND2D1)                                                                                     0.19       2.86 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                        0.00       2.86 r
+  impl/fp_wrapper/U36/CO (FA1D0)                                                                         0.11       2.98 r
+  impl/fp_wrapper/U37/CO (FA1D0)                                                                         0.05       3.03 r
+  impl/fp_wrapper/U38/CO (FA1D0)                                                                         0.05       3.08 r
+  impl/fp_wrapper/U39/CO (FA1D0)                                                                         0.05       3.13 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                         0.05       3.19 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                         0.05       3.24 r
+  impl/fp_wrapper/U51/Z (XOR3D1)                                                                         0.07       3.31 f
+  impl/fp_wrapper/U49/Z (AO22D0)                                                                         0.08       3.38 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                0.00       3.38 f
+  impl/result[30] (oadm_fixed_divmul_correction_chain_LEVEL0)                                            0.00       3.38 f
+  result[30] (out)                                                                                       0.00       3.38 f
+  data arrival time                                                                                                 3.38
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -3.38
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       6.60
+
+
+  Startpoint: y[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_l0_divmul_correction_chain ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_4 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_3 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                  Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                 0.00       0.00
+  clock network delay (ideal)                                                                            0.00       0.00
+  input external delay                                                                                   0.02       0.02 r
+  y[1] (in)                                                                                              0.01       0.03 r
+  impl/y[1] (oadm_fixed_divmul_correction_chain_LEVEL0)                                                  0.00       0.03 r
+  impl/fp_wrapper/y[1] (fp32_normal_finite_wrapper)                                                      0.00       0.03 r
+  impl/fp_wrapper/U52/Z (CKBD1)                                                                          0.05       0.07 r
+  impl/fp_wrapper/fraction_y[1] (fp32_normal_finite_wrapper)                                             0.00       0.07 r
+  impl/sub_2_root_sub_39_2/B[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                   0.00       0.07 r
+  impl/sub_2_root_sub_39_2/U5/ZN (INVD1)                                                                 0.02       0.09 f
+  impl/sub_2_root_sub_39_2/U2_1/S (FA1D0)                                                                0.09       0.19 f
+  impl/sub_2_root_sub_39_2/DIFF[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_sub_1)                0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/A[1] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)        0.00       0.19 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_1/CO (FA1D0)                                                    0.10       0.29 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_2/CO (FA1D0)                                                    0.06       0.34 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_3/CO (FA1D0)                                                    0.06       0.40 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_4/CO (FA1D0)                                                    0.06       0.45 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_5/CO (FA1D0)                                                    0.06       0.51 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_6/CO (FA1D0)                                                    0.06       0.57 f
+  impl/add_0_root_sub_0_root_sub_39_2/U1_7/S (FA1D0)                                                     0.07       0.63 r
+  impl/add_0_root_sub_0_root_sub_39_2/SUM[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW01_add_0)      0.00       0.63 r
+  impl/U59/Z (AO22D0)                                                                                    0.07       0.70 r
+  impl/mult_158/a[7] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                           0.00       0.70 r
+  impl/mult_158/U56/S (FA1D0)                                                                            0.11       0.81 f
+  impl/mult_158/U26/CO (FA1D0)                                                                           0.10       0.91 f
+  impl/mult_158/U25/CO (FA1D0)                                                                           0.06       0.97 f
+  impl/mult_158/U24/CO (FA1D0)                                                                           0.06       1.02 f
+  impl/mult_158/U23/CO (FA1D0)                                                                           0.06       1.08 f
+  impl/mult_158/U22/CO (FA1D0)                                                                           0.06       1.14 f
+  impl/mult_158/U21/CO (FA1D0)                                                                           0.06       1.19 f
+  impl/mult_158/U20/CO (FA1D0)                                                                           0.06       1.25 f
+  impl/mult_158/U19/CO (FA1D0)                                                                           0.06       1.30 f
+  impl/mult_158/U18/CO (FA1D0)                                                                           0.06       1.36 f
+  impl/mult_158/U17/CO (FA1D0)                                                                           0.06       1.41 f
+  impl/mult_158/U16/CO (FA1D0)                                                                           0.06       1.47 f
+  impl/mult_158/U15/CO (FA1D0)                                                                           0.06       1.52 f
+  impl/mult_158/U14/CO (FA1D0)                                                                           0.06       1.58 f
+  impl/mult_158/U13/CO (FA1D0)                                                                           0.06       1.63 f
+  impl/mult_158/U12/CO (FA1D0)                                                                           0.06       1.69 f
+  impl/mult_158/U11/CO (FA1D0)                                                                           0.06       1.74 f
+  impl/mult_158/U10/CO (FA1D0)                                                                           0.06       1.80 f
+  impl/mult_158/U9/CO (FA1D0)                                                                            0.06       1.85 f
+  impl/mult_158/U8/CO (FA1D0)                                                                            0.06       1.91 f
+  impl/mult_158/U7/CO (FA1D0)                                                                            0.06       1.97 f
+  impl/mult_158/U6/CO (FA1D0)                                                                            0.06       2.02 f
+  impl/mult_158/U5/CO (FA1D0)                                                                            0.06       2.08 f
+  impl/mult_158/U4/CO (FA1D0)                                                                            0.06       2.13 f
+  impl/mult_158/U3/CO (FA1D0)                                                                            0.05       2.18 f
+  impl/mult_158/U119/Z (XOR4D0)                                                                          0.11       2.29 f
+  impl/mult_158/product[31] (oadm_fixed_divmul_correction_chain_LEVEL0_DW_mult_uns_0)                    0.00       2.29 f
+  impl/U58/ZN (AOI22D1)                                                                                  0.11       2.40 r
+  impl/U7/Z (CKBD1)                                                                                      0.10       2.50 r
+  impl/U6/ZN (IND3D1)                                                                                    0.17       2.67 f
+  impl/U4/ZN (ND2D1)                                                                                     0.19       2.86 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                        0.00       2.86 r
+  impl/fp_wrapper/U36/CO (FA1D0)                                                                         0.11       2.98 r
+  impl/fp_wrapper/U37/CO (FA1D0)                                                                         0.05       3.03 r
+  impl/fp_wrapper/U38/CO (FA1D0)                                                                         0.05       3.08 r
+  impl/fp_wrapper/U39/CO (FA1D0)                                                                         0.05       3.13 r
+  impl/fp_wrapper/U40/CO (FA1D0)                                                                         0.05       3.19 r
+  impl/fp_wrapper/U41/CO (FA1D0)                                                                         0.05       3.24 r
+  impl/fp_wrapper/U51/Z (XOR3D1)                                                                         0.07       3.31 f
+  impl/fp_wrapper/U49/Z (AO22D0)                                                                         0.08       3.38 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                0.00       3.38 f
+  impl/result[30] (oadm_fixed_divmul_correction_chain_LEVEL0)                                            0.00       3.38 f
+  result[30] (out)                                                                                       0.00       3.38 f
+  data arrival time                                                                                                 3.38
+
+  clock vclk (rise edge)                                                                                10.00      10.00
+  clock network delay (ideal)                                                                            0.00      10.00
+  output external delay                                                                                 -0.02       9.98
+  data required time                                                                                                9.98
+  -------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                9.98
+  data arrival time                                                                                                -3.38
+  -------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                       6.60
+
+
+1

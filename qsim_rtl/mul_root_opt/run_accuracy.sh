@@ -2,7 +2,8 @@
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)
-OUT="$ROOT/qsim_rtl/mul_root_opt/logs"
+OUT=${OUT_DIR:-"$ROOT/qsim_rtl/mul_root_opt/logs"}
+RANDOM_VECTORS=${RANDOM_VECTORS:-200000}
 mkdir -p "$OUT"
 
 OADM=(
@@ -28,18 +29,20 @@ for level in 0 1 2 3; do
         >"$OUT/l${level}_build.log" 2>&1
     make -C "$build" -f Vmul_root_opt_compare.mk \
         >>"$OUT/l${level}_build.log" 2>&1
-    "$build/Vmul_root_opt_compare" "$level" 200000 >"$OUT/l${level}.log"
+    "$build/Vmul_root_opt_compare" "$level" "$RANDOM_VECTORS" \
+        >"$OUT/l${level}.log"
     rm -rf "$build"
     trap - EXIT
 done
 
 {
-    echo "level,design,vectors,mae,mred,rmse,mean_error,max_abs"
+    echo "level,design,vectors,mae,mred,rmse,mean_error,max_abs,max_rel,worst_x,worst_y,worst_result"
     awk '/^METRICS / {
         for (i=1;i<=NF;i++) { split($i,a,"="); v[a[1]]=a[2] }
         print v["level"] "," v["design"] "," v["vectors"] "," \
               v["mae"] "," v["mred"] "," v["rmse"] "," \
-              v["mean_error"] "," v["max_abs"]
+              v["mean_error"] "," v["max_abs"] "," v["max_rel"] "," \
+              v["worst_x"] "," v["worst_y"] "," v["worst_result"]
         delete v
     }' "$OUT"/l[0-3].log
 } >"$OUT/mul_root_opt_accuracy.csv"

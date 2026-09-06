@@ -1,0 +1,119 @@
+--- PACE/L1/Mantissa_Div_L1.v
++++ generated_l1
+@@ -1,6 +1,7 @@
+ 
+ 
+-module Mantissa_Div_L1 #(
++module pace_ztrunc_l1 #(
++    parameter DROP = 0,
+     parameter MANTISSA_WIDTH = 23,
+     parameter Level = 1
+ )
+@@ -13,7 +14,13 @@
+ 
+     wire [MANTISSA_WIDTH: 0]x_sub_y,y_sub_x;
+ 
+-    assign x_sub_y= Mantissa_X - Mantissa_Y;
++    // Full input difference first; floor to the selected signed binary grid.
++    wire signed [MANTISSA_WIDTH+1:0] z_full =
++        $signed({2'b00, Mantissa_X}) - $signed({2'b00, Mantissa_Y});
++    wire signed [MANTISSA_WIDTH+1:0] z_quant = (z_full >>> DROP) <<< DROP;
++    // An extra sign bit is needed when z_quant=-1 and -z_quant=+1.
++    wire signed [MANTISSA_WIDTH+1:0] z_negative = -z_quant;
++    assign x_sub_y = z_quant[MANTISSA_WIDTH:0];
+     //assign y_sub_x= -x_sub_y;
+ 
+     wire [MANTISSA_WIDTH+1 : 0] L1_p1, L1_p2, L1_c;
+--- PACE/L2/Mantissa_Div_L2.v
++++ generated_l2
+@@ -1,6 +1,7 @@
+ 
+ 
+-module Mantissa_Div_L2 #(
++module pace_ztrunc_l2 #(
++    parameter DROP = 0,
+     parameter MANTISSA_WIDTH = 23,
+     parameter Level = 1
+ )
+@@ -13,10 +14,16 @@
+ 
+     wire [MANTISSA_WIDTH: 0]x_sub_y,y_sub_x;
+     wire sign_xsuby,sign_ysubx;
+-    assign x_sub_y= Mantissa_X - Mantissa_Y;
+-    assign y_sub_x= Mantissa_Y - Mantissa_X;
++    // Full input difference first; floor to the selected signed binary grid.
++    wire signed [MANTISSA_WIDTH+1:0] z_full =
++        $signed({2'b00, Mantissa_X}) - $signed({2'b00, Mantissa_Y});
++    wire signed [MANTISSA_WIDTH+1:0] z_quant = (z_full >>> DROP) <<< DROP;
++    // An extra sign bit is needed when z_quant=-1 and -z_quant=+1.
++    wire signed [MANTISSA_WIDTH+1:0] z_negative = -z_quant;
++    assign x_sub_y = z_quant[MANTISSA_WIDTH:0];
++    assign y_sub_x = z_negative[MANTISSA_WIDTH:0];
+     assign sign_xsuby=x_sub_y[MANTISSA_WIDTH];
+-    assign sign_ysubx=y_sub_x[MANTISSA_WIDTH];
++    assign sign_ysubx=z_negative[MANTISSA_WIDTH+1];
+ 
+     wire [MANTISSA_WIDTH+1 : 0] L1_p1, L1_p2, L1_c;
+     //wire [MANTISSA_WIDTH+3 : 0] L1_Res;
+--- PACE/L3/Mantissa_Div_L3.v
++++ generated_l3
+@@ -1,6 +1,7 @@
+ 
+ 
+-module Mantissa_Div_L3 #(
++module pace_ztrunc_l3 #(
++    parameter DROP = 0,
+     parameter MANTISSA_WIDTH = 23
+ )
+ (
+@@ -14,10 +15,16 @@
+ // -------------------Pre_process----------------------
+     wire [MANTISSA_WIDTH: 0]x_sub_y,y_sub_x;
+     wire sign_xsuby,sign_ysubx;
+-    assign x_sub_y= Mantissa_X - Mantissa_Y;
+-    assign y_sub_x= Mantissa_Y - Mantissa_X;
++    // Full input difference first; floor to the selected signed binary grid.
++    wire signed [MANTISSA_WIDTH+1:0] z_full =
++        $signed({2'b00, Mantissa_X}) - $signed({2'b00, Mantissa_Y});
++    wire signed [MANTISSA_WIDTH+1:0] z_quant = (z_full >>> DROP) <<< DROP;
++    // An extra sign bit is needed when z_quant=-1 and -z_quant=+1.
++    wire signed [MANTISSA_WIDTH+1:0] z_negative = -z_quant;
++    assign x_sub_y = z_quant[MANTISSA_WIDTH:0];
++    assign y_sub_x = z_negative[MANTISSA_WIDTH:0];
+     assign sign_xsuby=x_sub_y[MANTISSA_WIDTH];
+-    assign sign_ysubx=y_sub_x[MANTISSA_WIDTH];
++    assign sign_ysubx=z_negative[MANTISSA_WIDTH+1];
+ 
+ //////////////////// PP Production ///////////////////////
+ // ------------------------L1--------------------------
+--- PACE/L4/Mantissa_Div_L4_Kec.v
++++ generated_l4
+@@ -1,6 +1,7 @@
+ 
+ 
+-module Mantissa_Div_L4_Kec #(
++module pace_ztrunc_l4 #(
++    parameter DROP = 0,
+     parameter MANTISSA_WIDTH = 23
+ )
+ (
+@@ -14,10 +15,16 @@
+ // -------------------Pre_process----------------------
+     wire [MANTISSA_WIDTH: 0]x_sub_y,y_sub_x;
+     wire sign_xsuby,sign_ysubx;
+-    assign x_sub_y= Mantissa_X - Mantissa_Y;
+-    assign y_sub_x= Mantissa_Y - Mantissa_X;
++    // Full input difference first; floor to the selected signed binary grid.
++    wire signed [MANTISSA_WIDTH+1:0] z_full =
++        $signed({2'b00, Mantissa_X}) - $signed({2'b00, Mantissa_Y});
++    wire signed [MANTISSA_WIDTH+1:0] z_quant = (z_full >>> DROP) <<< DROP;
++    // An extra sign bit is needed when z_quant=-1 and -z_quant=+1.
++    wire signed [MANTISSA_WIDTH+1:0] z_negative = -z_quant;
++    assign x_sub_y = z_quant[MANTISSA_WIDTH:0];
++    assign y_sub_x = z_negative[MANTISSA_WIDTH:0];
+     assign sign_xsuby=x_sub_y[MANTISSA_WIDTH];
+-    assign sign_ysubx=y_sub_x[MANTISSA_WIDTH];
++    assign sign_ysubx=z_negative[MANTISSA_WIDTH+1];
+ 
+ 
+ 

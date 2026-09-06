@@ -1,0 +1,558 @@
+                                          FairPrune: Achieving Fairness Through Pruning
+                                               for Dermatological Disease Diagnosis
+
+                                          Yawen Wu1∗ , Dewen Zeng2∗ , Xiaowei Xu3 , Yiyu Shi2(B) , and Jingtong Hu1(B)
+                                                           1
+                                                             University of Pittsburgh, Pittsburgh, PA, USA
+                                                                     {yawen.wu, jthu}@pitt.edu
+arXiv:2203.02110v1 [eess.IV] 4 Mar 2022
+
+
+
+
+                                                          2
+                                                            University of Notre Dame, Notre Dame, IN, USA
+                                                                       {dzeng2, yshi4}@nd.edu
+                                                     3
+                                                       Guangdong Provincial People’s Hospital, Guangzhou, China
+                                                                              xxu8@nd.edu
+                                                    * Equal contributions. Listing order determined by coin flipping.
+
+
+
+                                                Abstract. Many works have shown that deep learning-based medical
+                                                image classification models can exhibit bias toward certain demographic
+                                                attributes like race, gender, and age. Existing bias mitigation methods
+                                                primarily focus on learning debiased models, which may not necessarily
+                                                guarantee all sensitive information can be removed and usually comes
+                                                with considerable accuracy degradation on both privileged and unprivi-
+                                                leged groups. To tackle this issue, we propose a method, FairPrune, that
+                                                achieves fairness by pruning. Conventionally, pruning is used to reduce
+                                                the model size for efficient inference. However, we show that pruning
+                                                can also be a powerful tool to achieve fairness. Our observation is that
+                                                during pruning, each parameter in the model has different importance
+                                                for different groups’ accuracy. By pruning the parameters based on this
+                                                importance difference, we can reduce the accuracy difference between the
+                                                privileged group and the unprivileged group to improve fairness without
+                                                a large accuracy drop. To this end, we use the second derivative of the
+                                                parameters of a pre-trained model to quantify the importance of each pa-
+                                                rameter with respect to the model accuracy for each group. Experiments
+                                                on two skin lesion diagnosis datasets over multiple sensitive attributes
+                                                demonstrate that our method can greatly improve fairness while keeping
+                                                the average accuracy of both groups as high as possible.
+
+
+                                          1   Introduction
+                                          In AI-assisted medical image analysis, deep neural networks (DNNs) tend to
+                                          capture relevant statistical information such as colors and textures from the
+                                          training data. This data-driven paradigm can help the network learn task-specific
+                                          features for high accuracy on the target task. However, to maximize the accuracy,
+                                          the network may use the information present in some data but not in other
+                                          data, and thus show discrimination towards certain demographics (i.e. skin tone
+                                          or gender). For example, [4,23] demonstrate that the network learned on the
+                                          CelebA dataset [16] turns to perform better on the female group when the task is
+                                          predicting facial attributes such as wavy hair and smiling. Dermatological disease
+2      Y. Wu, D. Zeng et al.
+
+classification networks trained on two public dermatology datasets Fitzpatrick-
+17k and ISIC 2018 Challenge have been reported to be biased across different
+skin tones [7,12]. However, no solution is proposed to mitigate the bias in these
+works. An X-ray computer-aided diagnosis (CAD) system was found to exhibit
+disparities across genders [13]. Once these biased models are deployed in the
+real-world system, they could be harmful to both individuals and society. For
+example, AI algorithms could misdiagnose people with different demographic
+groups, leading to increased health care disparities. This leads to a variety of
+research techniques that aim to alleviate the biased in DNNs.
+    One of the most widely used bias mitigation methods is adversarial train-
+ing [11,21,6,1,24]. Normally, an adversarial network is added to the tail of an
+encoder or a classifier to predict the protected attributes and form a minimax
+game: maximize the network’s ability to predict the class while minimizing the
+adversarial network’s ability to predict the protected attributes. In this way, the
+model will be able to learn fair features that are irrelevant to the protected at-
+tributes. However, as mentioned in [22], the main drawback of this method is
+that even if the target protected attribute has been removed, the combination of
+other features may still be a proxy of this protected attribute. In addition, forc-
+ing the model to ignore the protected attribute relevant features may harm its
+classification accuracy as those features may contain important information for
+the final prediction [22]. Fairness through explanation is another bias mitigation
+technique [17,9,18], this technique requires fine-grained feature-level annotation
+as the domain knowledge to train the model to only focus on bias-unrelated
+features in the original input. Such suppression of sensitive information can also
+potentially remove useful information and thus greatly degrade the classifica-
+tion performance. Therefore, to achieve fairness, these state-of-the-art (SOTA)
+methods usually need to sacrifice considerable accuracy for both groups.
+    To avoid this, we introduce FairPrune, a technique to achieve fairness via
+pruning. Conventionally, pruning is used to reduce the model size for efficient
+inference. However, one interesting thing we found is that pruning can be a
+powerful tool for fairness. Our work is motivated by the observation that during
+pruning, the parameter that is important for one demographic group may be
+unimportant for another. By controlling the parameters to prune, we can reduce
+the accuracy difference between the privileged group and the unprivileged group
+to improve fairness while keeping their overall accuracy as high as possible. To
+this end, we utilize the saliency of each parameter (computed based on the sec-
+ond derivative [14]) to quantify its importance regarding the model accuracy.
+Specifically, we compute the saliencies of all parameters for each demographic
+group, which will then be used to prune the parameters that show large impor-
+tance differences for these two groups to mitigate biases. Besides, the trade-off
+between fairness improvement and accuracy drop can be adjusted to satisfy dif-
+ferent user requirements. As a byproduct, FairPrune can also reduce the network
+size for efficient deployment. We evaluate FairPrune on two skin lesion analysis
+datasets over two sensitive attributes and show improved fairness with a lower
+accuracy drop over SOTA methods for fairness.
+                              FairPrune: Achieving Fairness Through Pruning            3
+
+2     Related Work
+
+Existing bias mitigation methods can be generally categorized into three groups:
+pre-processing, in-processing, and post-processing.
+    For pre-processing methods, a straightforward solution is to remove the sen-
+sitive information from the training data. One could also assign different weights
+to different data samples to suppress the sensitive information during training
+[10]. These pre-processing techniques are not suitable for dermatological data
+because the sensitive information exists in the target (i.e., diseased area), which
+is necessary for diagnosis purposes and cannot be removed.
+    In-processing bias mitigation methods usually involve modifying the train-
+ing loss function to regularize the model for fairness. For example, [15] added a
+task-specific prior to implicitly regularizing the model not to pay attention to the
+sensitive related information for its prediction. Adversarial training [24,20,21,11]
+achieve fairness by removing sensitive information with an adversarial learner.
+However, these methods can not explicitly protect the unprivileged group when
+enforcing the fairness constraints, and the accuracy of both groups will drop. In-
+stead, our method can protect the accuracy of one group when achieving fairness
+goals, resulting in high overall accuracy and fairness simultaneously.
+    As for post-processing techniques, during the inference-time, calibration is
+performed by taking the model’s prediction and the sensitive attribute as input
+[8,25,5]. The goal is to enforce the prediction distribution to match the training
+distribution or a specific fairness metric. While these methods show effectiveness
+for bias mitigation, they need access to the sensitive attribute for inference, which
+may not be available for disease diagnosis when taking images as input. Different
+from these methods, our method modifies the pre-trained model only based on
+the training set. During inference, the sensitive attribute is not needed.
+
+
+3     Method
+
+3.1   Problem Definition
+
+Given a dataset D = {xi , yi , ci }, i ∈ 1, ..., N where xi is the input image, yi is the
+class label, ci is the sensitive attribute (e.g., skin tone, gender, age), and a pre-
+trained classification model fθ (·) with parameters θ that maps the input xi to the
+final prediction yˆi = fθ (xi ). Our goal is to reduce the discrimination in fθ (·) with
+respect to the sensitive attribute c by only modifying some of the parameters
+in fθ (·) without further finetuning. In this paper, we only consider the binary
+sensitive attribute (i.e., ci ∈ {0, 1}). ci = 0 represents unprivileged samples (the
+model shows discrimination against), while ci = 1 represents privileged samples.
+
+
+3.2   Pruning for Fairness
+
+Saliency reflects the accuracy drop after pruning. Given the pre-trained
+model fθ and its objective function E, the change of the objective function after
+4             Y. Wu, D. Zeng et al.
+
+                                                                                            Saliency
+                                                                                    light
+
+                              pretrained model
+                                                                                                                  ( ′, )
+                                                                          pruning
+                                                            ( , )                                           to prune
+                                                     cross entropy loss             dark
+    dark or light
+                                                                                                                  ( ′, )
+    compute second derivative ℎ w.r.t each weight
+                        1        2           ′,
+                    =     ℎ          =               −    ( , )                                             to prune
+                        2
+                                                  (1) the computation of saliency
+
+     light
+
+     dark
+                                                                                            N-1
+          0
+                                                          parameter index                                              saliency
+                                         (2) Saliency distributions for different groups               Zoomed view       map
+
+
+Fig. 1: Illustration of (1) saliency computation and (2) the parameters’ saliency
+distribution for dark and light skin tone groups on the Fitzpatrick-17k dataset.
+The x-axis is the index of parameters in the first layer of the VGG-11, the
+color represents the normalized saliency for each demographic group. The blue
+boxes highlight those parameters that have relatively low saliency for the light
+(unprivileged group) but high saliency for the dark (privileged group).
+
+
+
+pruning parameters Θ can be approximated by a Taylor series [14]:
+  ∆E = E(D|Θ = 0) − E(D)
+           X          1X            1X                          1X                                                                (1)
+      =−      gi θi +     hii θi2 +    hij θi θj + O(||Θ||3 ) =     hii θi2 .
+            i
+                      2 i
+                                    2                           2 i        i6=j
+            ∂E
+where gi = ∂θ i
+                 is the gradient of E with respect to θi , which is close to 0 because
+we assume the pre-trained model has converged and the objective function is at
+                              2
+its local minimum. hii = ∂∂2 θEi is the element at row i and column i of second
+derivative Hessian matrix H. The approximation assumes that ∆E caused by
+pruning several parameters is the sum of ∆E caused by pruning each parameter
+individually, so the third term is neglected. 12 hii θi2 is called the saliency of θi ,
+which represents the increase of error after pruning this parameter.
+Using saliency to achieve group fairness. Our idea is based on our empirical
+observation that in a pre-trained network, the importance (saliency) of some
+parameters can be totally different for different demographic groups. That is,
+some parameters may have a small saliency for one group but a large saliency
+for another group. For example, Fig. 1 shows a dermatological disease diagnosis
+model pre-trained by vanilla training and is biased for patients with light skin
+tone, which is the unprivileged group. In the coordinate, we show the saliency
+distribution of the parameters in the first layer of VGG-11 for both dark and light
+groups. The x-axis represents parameter indices, where one coordinate shows
+the same parameter for both the light and the dark groups. The color denotes
+                            FairPrune: Achieving Fairness Through Pruning        5
+
+normalized saliency for both groups. It can be seen that there exist differences
+between the distribution of saliency for these two groups. In the blue boxes, we
+highlight those parameters with low saliency for the light group but high saliency
+for the dark group. By pruning these parameters, the accuracy difference of the
+privileged group (dark) and the unprivileged group (light) can be reduced. In
+this way, the model is pruned to be fair for the unprivileged group.
+    To identify those parameters to prune, we propose a fairness-aware saliency
+computation method to identify the parameters which are unimportant for the
+unprivileged group but important for the privileged group. The importance of
+each parameter for fairness is quantified by integrating the saliency of the un-
+privileged group and the saliency of the privileged group weighted by a negative
+scalar. To be specific, we formulate a multi-objective optimization problem:
+                        min ∆Ec=0 (Θ), max ∆Ec=1 (Θ).                          (2)
+where ∆Ec=0 (Θ) and ∆Ec=0 (Θ) are the error changes of unprivileged group
+c = 0 and privileged group c = 1 after pruning parameters Θ, respectively.
+    To solve this problem, Eq.(2) can be transformed intoXa single objective as:
+                   min J = ∆Ec=0 (Θ) − β∆Ec=1 (Θ) =          si ,              (3)
+                    Θ
+                                                          i
+                      1                  1            1 2 0
+                si = ( h0ii θi2 ) − β · ( h1ii θi2 ) = θm (hii − β · h1ii ).    (4)
+                      2                  2            2
+where β is a hyper-parameter controlling the trade-off between minimizing ∆Ec=0
+and maximizing ∆Ec=1 . θi is the parameter of the model and can be treated as
+a constant. si is the saliency of parameter θi for achieving the fairness objec-
+tive, where a smaller value represents a larger benefit when we prune it since a
+smaller si contributes to minimizing the objective J. hcii , c ∈ {0, 1} is the Hes-
+sian element of θi for demographic group c, which is the juncture to inject the
+information of each group into the pruning process to achieve fairness.
+
+
+3.3   Pruning Recipe
+
+FairPrune prunes a pre-trained model by the following iterative steps.
+ 1. Sample mini-batches {B 0 } and {B 1 } from the unprivileged group and priv-
+    ileged group, respectively.
+ 2. For each pair of mini-batches (B 0 , B 1 ), compute the second derivatives hii
+    for each parameter, and compute parameter salience si .
+ 3. After several mini-batches, average the saliency of each parameter over the
+    mini-batches. Remove p% parameters with the smallest saliency.
+ 4. Repeat steps 1-3 until the target fairness metric is achieved.
+
+
+4     Experiments and Results
+
+Fairness Metrics. We use multi-class equalized opportunity (Eopp) and equal-
+ized Odds (Eodd) [8] to evaluate the fairness of the model. The Eopp0 is the
+True Negative Rate difference between two groups, the Eopp1 is the True Posi-
+tive Rate difference between two groups, while the Eodd is the summation of the
+6        Y. Wu, D. Zeng et al.
+
+True Positive Rate difference and False Positive Rate difference. Suppose T Pkc ,
+F Nkc , T Nkc , and F Pkc are the True Positive, False Negative, True Negative, and
+False Positive of class k and group c, then the True Positive Rate, True Nega-
+tive Rate, and False Positive Rate of class k and group c can be computed by
+                TPc                     T Nc                          F Pkc
+T P Rkc = T P c +Fk N c , T N Rkc = T N c +Fk P c , and F P Rkc = T N c +F  Pkc , respectively.
+                k    k                  k      k                      k
+The EOpp and Eodd can be computed by the following equations:
+                    XK                                       X K
+         EOpp0 =          |T N Rk1 − T N Rk0 |, EOpp1 =          |T P Rk1 − T P Rk0 |.     (5)
+                    k=1                                      k=1
+                             K
+                             X
+                  EOdd =           |T P Rk1 − T P Rk0 + F P Rk1 − F P Rk0 |.               (6)
+                             k=1
+Dataset and Preprocessing. The proposed methods are evaluated on two
+dermatology datasets for disease classification, including the Fitzpatrick-17k [7]
+and ISIC 2019 challenge [2,19] datasets. The Fitzpatrick-17k contains 16,577
+images in 114 skin conditions. The skin tones are categorized in six levels from
+1 to 6, where a smaller value represents lighter skin and a larger value means
+darker skin. We categorize the skin tones into two groups, where types 1 to 3 are
+light skin and types 4 to 6 are dark skin. The ISIC 2019 dataset contains 25,331
+dermoscopic images in 9 diagnostic categories. Since skin tones are not provided
+by this dataset, we use the gender label to group the data as female and male.
+Pre-training Details. We use VGG-11 as the backbone. On both datasets, we
+resize all the images to 128×128. Data augmentation includes random horizontal
+flipping, vertical flipping, rotation, scaling, and autoaugment [3]. We randomly
+split the dataset into training (60%), validation (20%), and test (20%) partitions.
+The model is pre-trained for 200 epochs with the Adam optimizer. The batch
+size is 256 and the learning rate is 1e-4 decayed by a factor of 10 at epoch 160.
+Pruning Details. On the Fitzpatrick-17k dataset, the batch size for computing
+the saliency is 2. The saliency of each parameter is averaged every 500 mini-
+batches to prune 5% of the parameters in each pruning iteration. On the ISIC
+2019 dataset, the batch size for computing the saliency is 64. The saliency of each
+parameter is averaged every 200 mini-batches to prune 10% of the parameters.
+Grid search is used to find the best hyper-parameter β and pruning ratio with
+the optimal accuracy and fairness tradeoff on the validation set for each dataset.
+The pre-training and pruning are performed on one Nvidia V100 GPU.
+Baselines. We compare FairPrune with multiple baselines. Vanilla is standard
+training without fairness constraints. AdvConf and AdvRev are two adversarial
+training based de-biasing methods. AdvConf [1,20] employs a uniform confusion
+loss to minimize the classifier’s ability for predicting the sensitive attribute. Ad-
+vRev [24] de-biases the model by maximizing the loss of predicting the sensitive
+attribute with loss reversal and gradient projection. DomainIndep [22] trains
+multiple classifiers, one classifier for each group to explicitly encode separate
+group information. OBD [14] is the pruning-based method, which uses all train-
+ing data to compute the saliency without fairness constraints.
+Results on Fitzpatrick-17k Dataset. Table 1 shows the accuracy and fairness
+results of all methods. For accuracy metrics, we report the precision, recall,
+                                FairPrune: Achieving Fairness Through Pruning                          7
+
+
+Table 1: Results of accuracy and fairness of different methods on Fitzpatrick-17k
+dataset, using skin tone as the sensitive attribute. The dark skin is the privileged
+group with higher accuracy by vanilla training. (pr is the pruning ratio).
+                                            Accuracy                           Fairness
+ Method             Skin Tone   Precision    Recall    F1-score   Eopp0 (×10−3 ) ↓   Eopp1 ↓   Eodd ↓
+                     Dark        0.563        0.581     0.546
+                     Light       0.482        0.495     0.473
+ Vanilla             Avg. ↑      0.523        0.538     0.510          1.331          0.361    0.182
+                     Diff. ↓     0.081        0.086     0.073
+                     Dark        0.506        0.562     0.506
+                     Light       0.427        0.464     0.426
+ AdvConf [24]        Avg. ↑      0.467        0.513     0.466          1.106          0.339    0.169
+                     Diff. ↓     0.079        0.098     0.080
+                     Dark        0.514        0.545     0.503
+                     Light       0.489        0.469     0.457
+ AdvRev [20]         Avg. ↑      0.502        0.507     0.480          1.127          0.334    0.166
+                     Diff. ↓     0.025        0.076     0.046
+                     Dark        0.547        0.567     0.532
+                     Light       0.455        0.480     0.451
+ DomainIndep [22]    Avg. ↑      0.501        0.523     0.492          1.210          0.344    0.172
+                     Diff. ↓     0.025        0.076     0.046
+                     Dark        0.557        0.570     0.536
+ OBD [14]            Light       0.488        0.494     0.475
+                                                                       1.244          0.360    0.180
+ (pr=35%)            Avg. ↑      0.523        0.532     0.506
+                     Diff. ↓     0.069        0.076     0.061
+                     Dark        0.567       0.519      0.507
+ FairPrune           Light       0.496       0.477      0.459
+                                                                       0.846         0.330     0.165
+ (pr=35%, β=0.33)    Avg. ↑      0.531       0.498      0.483
+                     Diff. ↓     0.071       0.042      0.048
+
+
+
+
+and F1-score. From the table, we can see that when achieving a similar level of
+fairness, FairPrune shows better mean accuracy and a smaller accuracy difference
+in terms of F1-score compared with two adversarial training baselines AdvConf
+and AdvRev. This is because Fairprune can almost keep the accuracy of the
+unprivileged group unchanged when balancing the accuracy of two groups. We
+can also observe that although vanilla OBD has better overall accuracy than
+FairPrune, it does not show significant fairness improvements.
+Results on ISIC 2019 Dataset. Table 2 shows the comparison of accuracy and
+fairness results of all methods. FairPrune achieves significantly better fairness
+while preserving accuracy. First, our FairPrune method achieves significantly
+better fairness than the baselines. Our FairPrune method achieves 21.0 × 10−3
+Eopp1 and 28.8 × 10−3 Eodd, which are 57.7% and 48.3% lower than 49.7 × 10−3
+and 55.8×10−3 achieved by the best baseline. Second, the accuracy of FairPrune
+is comparable to the Vanilla method without fairness constraints, while the F1-
+score difference between two groups of our method is only 0.003, an order of
+magnitude lower than the Vanilla training and other methods.
+Ablation Study. In this section, we discuss how the hyper-parameter β and
+pruning rate will affect the performance of FairPrune. We apply FairPrune to
+the model pre-trained on the Fitzpatrick-17k dataset and change β defined in
+Eq.(4) to see how the accuracy and fairness performance change. After that, we
+fix β and change the pruning ratio from 0 to 80% and repeat the evaluation.
+8             Y. Wu, D. Zeng et al.
+
+
+Table 2: Results of accuracy and fairness of different methods on ISIC 2019
+dataset, using gender as the sensitive attribute. The female group is the privi-
+leged group with higher accuracy by vanilla training. (pr is the pruning ratio).
+                                        Accuracy                        Fairness
+    Method            Gender Precision Recall F1-score Eopp0(×10−3 )↓ Eopp1(×10−3 )↓ Eodd(×10−3 )↓
+                      Female    0.758     0.733    0.744
+                       Male     0.766     0.684    0.716
+    Vanilla           Avg ↑     0.762     0.709    0.730    6.1           49.7           55.8
+                       Diff ↓   0.008     0.049    0.028
+                      Female    0.691     0.688    0.686
+                       Male     0.681     0.656    0.665
+    AdvConf [24]      Avg ↑     0.686     0.672    0.675   4.0            75.1           79.1
+                       Diff ↓   0.010     0.032    0.021
+                      Female    0.638     0.714    0.670
+                       Male     0.642     0.666    0.650
+    AdvRev [20]       Avg ↑     0.640     0.690    0.660    5.0           59.2           64.2
+                       Diff ↓   0.004     0.048    0.020
+                     Female     0.782     0.693    0.729
+                      Male      0.783     0.653    0.697
+    DomainIndep [22] Avg ↑      0.782     0.673    0.713    5.0           74.7           79.7
+                      Diff ↓    0.001     0.040    0.032
+                      Female    0.771     0.734    0.749
+    OBD [14]           Male     0.762     0.678    0.711
+                                                            6.1           55.5           61.6
+    (pr=50%)          Avg ↑     0.767     0.706    0.730
+                       Diff ↓   0.009     0.056    0.038
+                      Female    0.754    0.674     0.707
+    FairPrune          Male     0.762    0.675     0.710
+                                                            7.8           21.0           28.8
+    (pr=50%, β=0.2)   Avg ↑     0.758    0.675     0.709
+                       Diff ↓   0.008    0.001     0.003
+
+
+
+
+    In Fig. 2(a), we show the accuracy (F1-Score) and fairness (Eopp1) trade-off
+by varying β under a fixed pruning ratio of 35%. Points on the upper left of
+this figure represent better fairness (smaller Eopp1) and higher accuracy (larger
+F1-score). With varying β, our methods achieve consistent better fairness and
+accuracy trade-off. We can see that when achieving the same fairness, FairPrune
+has higher accuracy than the baselines. At the same accuracy, FairPrune can
+also show better fairness than the baselines. Therefore, by tuning β, the trade-off
+between fairness and accuracy can be adjusted to satisfy the user requirement.
+    Fig. 2(b) and Fig. 2(c) show the effect of the pruning ratio on accuracy and
+fairness, respectively. It can be seen that the mean recall drops slowly and then
+quickly, as well as the fairness metrics Eopp1. Although the fairness improvement
+can be larger at a larger pruning ratio (e.g., pruning ratio = 0.8), the accuracy
+may also be lower. Therefore, we suggest that the optimal pruning ratio usually
+exists at a lower pruning ratio where we do not see a significant accuracy drop
+on both groups but better fairness.
+
+
+5       Conclusion
+
+In this paper, we propose FairPrune, a method to achieve fairness by pruning.
+Based on our observation that each model parameter has different importance for
+different groups’ accuracy, by pruning the parameters based on this importance
+                                                                 FairPrune: Achieving Fairness Through Pruning                                                         9
+
+                                                                                                                            0.175
+
+Mean F1-score
+                0.50                                                       0.5
+
+
+
+
+                                                             Mean recall
+                0.48                                                                                                        0.150
+                                                                           0.4
+
+
+
+
+                                                                                                                    Eodds
+                                                                                                                            0.125
+                0.46
+                                                                           0.3         baseline                             0.100         baseline
+                0.44                           AdvConf
+                                               AdvRev                                   =0.1                                0.075
+                                                                                                                                           =0.1
+                                                                           0.2          =0.3                                               =0.3
+                0.42                           DomainIndep
+                                               Vanilla                     0.1          =0.5                                0.050          =0.5
+                0.40
+                       0.28   0.30   0.32   0.34   0.36   0.38                   0.0     0.2      0.4   0.6   0.8                   0.0     0.2      0.4   0.6   0.8
+                                     Eopp1                                               Pruning ratio                                      Pruning ratio
+                                       (a)                                                        (b)                                                (c)
+
+    Fig. 2: Ablation study on hyper-parameter β and pruning ratio for skin tone
+    fairness on Fitzpatrick-17k dataset.
+
+
+    difference, we can reduce the accuracy difference between the privileged group
+    and the unprivileged group to improve fairness without a large accuracy drop. We
+    evaluate our method on two skin lesion analysis datasets over multiple sensitive
+    attributes. The experiment results show that FairPrune can greatly improve
+    fairness while keeping the average accuracy of both groups as high as possible.
+
+
+    References
+
+     1. Alvi, M., Zisserman, A., Nellåker, C.: Turning a blind eye: Explicit removal of
+        biases and variation from deep neural network embeddings. In: Proceedings of the
+        European Conference on Computer Vision (ECCV) Workshops. pp. 0–0 (2018)
+     2. Combalia, M., Codella, N.C., Rotemberg, V., Helba, B., Vilaplana, V., Reiter, O.,
+        Carrera, C., Barreiro, A., Halpern, A.C., Puig, S., et al.: Bcn20000: Dermoscopic
+        lesions in the wild. arXiv preprint arXiv:1908.02288 (2019)
+     3. Cubuk, E.D., Zoph, B., Mane, D., Vasudevan, V., Le, Q.V.: Autoaugment: Learning
+        augmentation policies from data. arXiv preprint arXiv:1805.09501 (2018)
+     4. Du, M., Mukherjee, S., Wang, G., Tang, R., Awadallah, A., Hu, X.: Fairness via
+        representation neutralization. Advances in Neural Information Processing Systems
+        34 (2021)
+     5. Du, M., Yang, F., Zou, N., Hu, X.: Fairness in deep learning: A computational
+        perspective. IEEE Intelligent Systems 36(4), 25–34 (2020)
+     6. Elazar, Y., Goldberg, Y.: Adversarial removal of demographic attributes from text
+        data. In: Proceedings of the 2018 Conference on Empirical Methods in Natural
+        Language Processing. pp. 11–21 (2018)
+     7. Groh, M., Harris, C., Soenksen, L., Lau, F., Han, R., Kim, A., Koochek, A., Badri,
+        O.: Evaluating deep neural networks trained on clinical images in dermatology
+        with the fitzpatrick 17k dataset. In: Proceedings of the IEEE/CVF Conference on
+        Computer Vision and Pattern Recognition. pp. 1820–1828 (2021)
+     8. Hardt, M., Price, E., Srebro, N.: Equality of opportunity in supervised learning.
+        Advances in neural information processing systems 29 (2016)
+     9. Hendricks, L.A., Burns, K., Saenko, K., Darrell, T., Rohrbach, A.: Women also
+        snowboard: Overcoming bias in captioning models. In: Proceedings of the European
+        Conference on Computer Vision (ECCV). pp. 771–787 (2018)
+    10. Kamiran, F., Calders, T.: Data preprocessing techniques for classification without
+        discrimination. Knowledge and information systems 33(1), 1–33 (2012)
+10      Y. Wu, D. Zeng et al.
+
+11. Kim, B., Kim, H., Kim, K., Kim, S., Kim, J.: Learning not to learn: Training deep
+    neural networks with biased data. In: Proceedings of the IEEE/CVF Conference
+    on Computer Vision and Pattern Recognition. pp. 9012–9020 (2019)
+12. Kinyanjui, N.M., Odonga, T., Cintas, C., Codella, N.C., Panda, R., Sattigeri, P.,
+    Varshney, K.R.: Fairness of classifiers across skin tones in dermatology. In: Inter-
+    national Conference on Medical Image Computing and Computer-Assisted Inter-
+    vention. pp. 320–329. Springer (2020)
+13. Larrazabal, A.J., Nieto, N., Peterson, V., Milone, D.H., Ferrante, E.: Gender im-
+    balance in medical imaging datasets produces biased classifiers for computer-aided
+    diagnosis. Proceedings of the National Academy of Sciences 117(23), 12592–12594
+    (2020)
+14. LeCun, Y., Denker, J., Solla, S.: Optimal brain damage. Advances in neural infor-
+    mation processing systems 2 (1989)
+15. Liu, F., Avci, B.: Incorporating priors with feature attribution on text classifica-
+    tion. In: Proceedings of the 57th Annual Meeting of the Association for Computa-
+    tional Linguistics. pp. 6274–6283 (2019)
+16. Liu, Z., Luo, P., Wang, X., Tang, X.: Deep learning face attributes in the wild. In:
+    Proceedings of International Conference on Computer Vision (ICCV) (December
+    2015)
+17. Rieger, L., Singh, C., Murdoch, W., Yu, B.: Interpretations are useful: penaliz-
+    ing explanations to align neural networks with prior knowledge. In: International
+    conference on machine learning. pp. 8116–8126. PMLR (2020)
+18. Singh, K.K., Mahajan, D., Grauman, K., Lee, Y.J., Feiszli, M., Ghadiyaram, D.:
+    Don’t judge an object by its context: learning to overcome contextual bias. In: Pro-
+    ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recogni-
+    tion. pp. 11070–11078 (2020)
+19. Tschandl, P., Rosendahl, C., Kittler, H.: The ham10000 dataset, a large collection
+    of multi-source dermatoscopic images of common pigmented skin lesions. Scientific
+    data 5(1), 1–9 (2018)
+20. Tzeng, E., Hoffman, J., Darrell, T., Saenko, K.: Simultaneous deep transfer across
+    domains and tasks. In: Proceedings of the IEEE international conference on com-
+    puter vision. pp. 4068–4076 (2015)
+21. Wang, T., Zhao, J., Yatskar, M., Chang, K.W., Ordonez, V.: Balanced datasets are
+    not enough: Estimating and mitigating gender bias in deep image representations.
+    In: Proceedings of the IEEE/CVF International Conference on Computer Vision.
+    pp. 5310–5319 (2019)
+22. Wang, Z., Qinami, K., Karakozis, I.C., Genova, K., Nair, P., Hata, K., Russakovsky,
+    O.: Towards fairness in visual recognition: Effective strategies for bias mitigation.
+    In: Proceedings of the IEEE/CVF conference on computer vision and pattern
+    recognition. pp. 8919–8928 (2020)
+23. Xu, T., White, J., Kalkan, S., Gunes, H.: Investigating bias and fairness in facial
+    expression recognition. In: European Conference on Computer Vision. pp. 506–523.
+    Springer (2020)
+24. Zhang, B.H., Lemoine, B., Mitchell, M.: Mitigating unwanted biases with adver-
+    sarial learning. In: Proceedings of the 2018 AAAI/ACM Conference on AI, Ethics,
+    and Society. pp. 335–340 (2018)
+25. Zhao, J., Wang, T., Yatskar, M., Ordonez, V., Chang, K.W.: Men also like shop-
+    ping: Reducing gender bias amplification using corpus-level constraints. arXiv
+    preprint arXiv:1707.09457 (2017)
+

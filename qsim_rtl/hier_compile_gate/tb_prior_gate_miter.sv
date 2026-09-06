@@ -22,6 +22,15 @@ module tb_prior_gate_miter;
 `elsif DESIGN_LEAD
     lead_fp32_paceio_comb rtl_dut (.x(x), .y(y), .out(rtl_out));
     lead_fp32_paceio_comb_gate gate_dut (.x(x), .y(y), .out0(gate_out));
+`elsif DESIGN_PLSAD_M4
+    plsad_m4_fp32_paceio rtl_dut (.x(x), .y(y), .out(rtl_out));
+    plsad_m4_fp32_paceio_gate gate_dut (.x(x), .y(y), .out0(gate_out));
+`elsif DESIGN_PLSAD_M6
+    plsad_m6_fp32_paceio rtl_dut (.x(x), .y(y), .out(rtl_out));
+    plsad_m6_fp32_paceio_gate gate_dut (.x(x), .y(y), .out0(gate_out));
+`elsif DESIGN_PLSAD_M8
+    plsad_m8_fp32_paceio rtl_dut (.x(x), .y(y), .out(rtl_out));
+    plsad_m8_fp32_paceio_gate gate_dut (.x(x), .y(y), .out0(gate_out));
 `else
     initial $fatal(1, "A DESIGN_* macro is required");
 `endif

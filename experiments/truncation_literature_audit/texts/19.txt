@@ -1,0 +1,797 @@
+2680                                         IEEE TRANSACTIONS ON VERY LARGE SCALE INTEGRATION (VLSI) SYSTEMS, VOL. 27, NO. 11, NOVEMBER 2019
+
+
+
+
+   SAADI-EC: A Quality-Configurable Approximate
+          Divider for Energy Efficiency
+           Jackson Melchert, Setareh Behroozi , Student Member, IEEE, Jingjie Li , Student Member, IEEE,
+                                                      and Younghyun Kim , Member, IEEE
+
+
+
+   Abstract— Energy efficiency is one of the most crucial                                                     I. I NTRODUCTION
+constraints that dictate performance, lifetime, form factor, and
+cost in modern computing system design. However, the energy
+efficiency improvement driven by semiconductor technology
+scaling is coming to an end with the prediction of the end
+                                                                                   E     NERGY efficiency is a daunting challenge in comput-
+                                                                                         ing system design, and energy-efficient arithmetic units
+                                                                                   are key building blocks toward this goal. Researchers have
+of Moore’s law in the near future. Approximate computing is                        sought to develop fast and low-power arithmetic algorithms
+a new paradigm to accomplish energy-efficient computing in                         and circuit implementations, and, as a result, various designs
+this twilight of Moore’s law by relaxing exactness requirement
+of computation results for intrinsically error-resilient applica-                  have been proposed to improve performance and reduce the
+tions, such as some machine learning and signal processing.                        power consumption of arithmetic operations. In the traditional
+In this paper, we propose an approximate binary divider design                     computing paradigm, arithmetic operations are expected to be
+that features dynamic configurability of accuracy and energy                       always accurate, thus arithmetic units are designed to produce
+consumption. Conventional approximate binary dividers lack                         exact results at all times. Although some applications require
+runtime energy-quality scalability, which is the key to maxi-
+mizing energy efficiency while meeting the dynamically varying                     the arithmetic operation results to be perfectly accurate, some
+accuracy requirements of the application. Our divider, named                       applications are more forgiving and do not need that level
+Scalable Accuracy Approximate Divider with Error Compensa-                         of accuracy, depending on the context. For such applications,
+tion (SAADI-EC), supports dynamic energy-quality scalability by                    using always-accurate arithmetic units is waste of energy
+the incremental approximation of the reciprocal of the divisor                     without any quality gain.
+using Taylor series expansion. As a result, the speed and energy
+efficiency of division can be dynamically traded for accuracy                         Approximate computing is an emerging computing para-
+by controlling the number of iterations for the approximation.                     digm to accomplish energy-efficient computing by relaxing
+In addition, SAADI-EC corrects the approximation error using                       accuracy requirements for the applications that do not always
+simple, yet effective error compensation hardware to greatly                       demand exact computation results [2]–[4]. Applications, such
+improve the accuracy compared to the base implementation,                          as machine learning and image processing, are resilient to
+SAADI. For the 8-bit approximation of 32-bit/16-bit division,
+the average accuracy of SAADI-EC can be adjusted from 94.2%                        small computation errors due to the absence of a unique golden
+to 99.6% by varying latency and energy 7×. In terms of                             outcome, intrinsic noise and redundancy of the input, or the
+energy × delay cost, our design costs up to 87% less than                          self-healing nature of the algorithm [3]. Approximate comput-
+other approximate binary dividers for the same accuracy level.                     ing aggressively exploits the error resiliency by producing just
+We evaluate the accuracy and energy consumption of SAADI-EC                        good enough results rather than exact results at much lower
+for various design parameters and demonstrate its efficacy for
+low-power signal processing applications including k-means color                   power consumption, latency, logic area, or a combination of
+quantization, JPEG image compression, and image division for                       them. Adopting this broad approach, approximate arithmetic
+video sequences.                                                                   units have been proposed to produce approximate arithmetic
+  Index Terms— Approximate computing, arithmetic logic unit,                       results that are not exact but good enough for the target
+energy-quality scaling, low-power system.                                          application. Many approximate adders [5] and approximate
+                                                                                   multipliers [6], [7] have been proven to save power and
+                                                                                   improve performance at the cost of minor accuracy loss.
+                                                                                      Division is an arithmetic operation crucial in signal process-
+  Manuscript received February 18, 2019; revised May 21, 2019; accepted
+June 8, 2019. Date of publication July 19, 2019; date of current version           ing. A hardware divider is a costly module in terms of latency
+October 23, 2019. This work was supported in part by NSF under Award CNS-          and energy consumption due to the high complexity of division
+1845469, in part by the Wisconsin Alumni Research Foundation (WARF),               algorithms. For example, the integer divider instruction (IDIV)
+and in part by the Office of the Vice Chancellor for Research and Graduate
+Education (OVCRGE). The preliminary version of this paper was presented            of the AMD 12-h family has a latency of 9–17 cycles for a
+at the Asia and South Pacific Design Automation Conference (ASP-DAC),              16-bit division and 9–25 cycles for a 32-bit division, while
+January 2019. (Corresponding author: Younghyun Kim.)                               the integer multiplier instruction (IMUL) for the same widths
+  The authors are with the Department of Electrical and Computer
+Engineering, University of Wisconsin–Madison, Madison, WI 53706 USA                takes only three cycles [8]. As another example, on FPGAs,
+(e-mail: jmelchert@wisc.edu; jingjie.li@wisc.edu; sbehroozi@wisc.edu;              a single-precision floating point divider requires 1.35×–3×
+younghyun.kim@wisc.edu).                                                           more hardware resources and is 27% slower than the same
+  Color versions of one or more of the figures in this article are available
+online at http://ieeexplore.ieee.org.                                              precision multiplier [9]. Despite the lack of energy-efficient
+  Digital Object Identifier 10.1109/TVLSI.2019.2926083                             and fast hardware dividers, the design of dividers with these
+                         1063-8210 © 2019 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+                              See http://www.ieee.org/publications_standards/publications/rights/index.html for more information.
+
+       Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+MELCHERT et al.: SAADI-EC                                                                                                                                    2681
+
+
+
+characteristics has received less attention, mainly due to rela-                    2) We introduce an efficient method, which is new in
+tively low utilization compared to other arithmetic operations.                        SAADI-EC, that compensates for the negatively biased
+However, as distributed signal processing becomes more and                             errors introduced in the reciprocal approximation by
+more pervasive, the division is playing an increasingly impor-                         finite-order truncations of Taylor series.
+tant role in low-power systems, and the need for an energy-                         3) We present a low-power hardware architecture of
+efficient divider is increasing. As a result, several approximate                      SAADI-EC and analyze the tradeoff between accuracy
+divider designs have been recently proposed based on round-                            and energy efficiency. We evaluate the accuracy and
+ing [10], truncation [11], [12], and lookup tables (LUTs) [13].                        energy consumption of SAADI-EC for different design-
+   Unfortunately, these prior approximate dividers support only                        time parameters as well as runtime parameters.
+a single level of accuracy and lack dynamic quality configura-                      4) We demonstrate the application of SAADI-EC to:
+bility. The accuracy level in these designs is determined by a                         a) k-means clustering, b) JPEG image compression, and
+hardware design parameter fixed at design time, such as the                            c) an image division algorithm for video sequences
+size of LUT or the number of truncated bits. Once the design                           with dynamic accuracy requirements. We illustrate the
+parameter has been fixed, there is no control knob for adjusting                       superiority of runtime accuracy scaling by comparing
+the accuracy at runtime, and there is no power/performance                             the area, energy, and delay of the resulting system with
+benefit from sacrificing accuracy further. However, the accu-                          SAADI-EC compared to its base implementation and
+racy requirement for arithmetic operations is not constant                             other approximate dividers.
+because the impact of approximation to the final quality at
+the application level is highly input-dependent [14]. Moreover,
+                                                                                                           II. R ELATED W ORK
+the application-level quality requirement may change over
+time. Therefore, approximate computing hardware needs to                            In the past, researchers have developed various approxi-
+provide a control knob to the application for the feedback                       mate computing techniques, ranging from approximate logic
+control of the application-level quality requirement [15].                       circuits [16], [17] to approximate algorithms and applica-
+Having no dynamic quality-control knob, the existing approx-                     tions [18], [19]. The notion of approximate computing has
+imate dividers need to be designed to meet the most strict                       been adopted to noncompute components, such as memory
+accuracy requirement predicted at design time, and as a result,                  [20]–[24], sensors [14], [25], bus interfaces [26]–[29], and
+the potential of energy savings and performance improvement                      wireless communication [30], [31].
+is not fully exploited when the actual accuracy requirement is                      To improve the energy efficiency of arithmetic operations,
+less strict.                                                                     various approximate arithmetic units have been proposed.
+   In this paper, we propose a novel approximate divider design                  Approximate arithmetic operations can be realized by scaling
+called Scalable Accuracy Approximate Divider with Error                          down the supply voltage below the level that guarantees
+Compensation (SAADI-EC), which is capable of dynamically                         the Boolean correctness of the circuit or by implementing
+trading accuracy for latency. SAADI-EC is based on our pre-                      only partially correct Boolean logic using a fewer number of
+vious approximate divider design SAADI [1], which finds the                      transistors [5]. Truncating operands and using a narrow-width
+approximate reciprocal of the divisor and multiplies it by the                   arithmetic unit is a widely adopted approach [7], [11], [12].
+dividend to obtain the division result. The iterative reciprocal                    More recently, approximate multipliers with runtime
+approximation process, where the accuracy gradually increases                    adjustable accuracy through dynamically adjusting the partial
+as more iterations are performed, enables the dynamic energy-                    product perforation and rounding have been proposed [32].
+quality tradeoff. The number of iterations can be dynamically                    These types of designs allow for application dependent energy
+adjusted by the application for energy-quality scaling—the                       savings and energy-error tradeoff optimization. Some works
+application can either obtain high-accuracy division results at                  deeply explore the energy-accuracy tradeoff curve, high-
+the cost of a higher latency and energy consumption or reduce                    lighting the necessity of multiple configurations of approx-
+latency and improve energy efficiency by sacrificing accuracy.                   imate arithmetic blocks for the largest energy savings [33].
+As compared to its base implementation (SAADI), SAADI-EC                         In stochastic computing, numbers are represented as a
+has novel error compensation logic to greatly improve the                        stream of bits which can be processed using a simple AND
+accuracy of the approximate division. To compensate for                          gate or a multiplexer instead of a binary multiplier or an
+approximation error of finite-order truncation of Taylor series,                 adder [34], [35].
+the approximate quotient is multiplied by a constant in a LUT                       Approximate dividers have been studied relatively recently
+indexed by the number of iterations.                                             compared to other arithmetic units such as adders [5] and
+   In summary, the contributions of this paper are as                            multipliers [6], [7]. An approximate divider design presented
+follows.                                                                         in [13] calculates the quotient using a 2-D LUT indexed by
+   1) We introduce an approximate divider, named                                 the operands. The accuracy is determined by the granularity
+       SAADI-EC, which features dynamic energy-quality                           of the LUT and hence is fixed at design time. Another design
+       scalability. SAADI-EC performs division by multiplying                    presented in [11] normalizes the operands to remove leading
+       the dividend by the approximate reciprocal of the                         zeros and takes only a small number of the most relevant bits.
+       divisor. The accuracy of division can be dynamically                      The truncated dividend is then divided by the truncated divisor
+       controlled by adjusting the number of iterations for                      using a narrow-width precise divider. A more recent design,
+       reciprocal approximation.                                                 called AAXD [36], compares the magnitudes of the dividend
+
+     Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+2682                                         IEEE TRANSACTIONS ON VERY LARGE SCALE INTEGRATION (VLSI) SYSTEMS, VOL. 27, NO. 11, NOVEMBER 2019
+
+
+
+and the divisor to address the overflow problems of [11].                            When a moderate-accuracy quotient is good enough, using
+In both [11] and [36], the accuracy is preset by the divider                       such a time-consuming functional iteration algorithm may
+width, which is not dynamically adjustable. SEERAD [10],                           be a waste of time and energy. Approximate multiplicative
+TruncApp [12], and PLApp [37] are multiplicative dividers,                         dividers discussed in Section II obtain an approximation of
+where the reciprocal of the divisor is obtained first and                          the reciprocal instead of the exact reciprocal to save energy.
+then subsequently multiplied by the dividend. In SEERAD,                           However, their fixed-accuracy approximation may not always
+the reciprocal is approximated using a table indexed by the                        produce results with just good enough accuracy at minimal
+upper bits of the divisor, wherein TruncApp, the reciprocal                        power consumption. We address this challenge by accuracy-
+is obtained by simple bit manipulations such as inversion,                         adaptive reciprocal approximation based on incremental Taylor
+truncation, and concatenation. In PLApp, the reciprocal is                         series expansion. Taylor series expansion is a widely used
+approximated using a piecewise linear function and rounding                        approach to find an approximate reciprocal. More specifically,
+rather than truncation. In all three designs, the accuracy is                      the Taylor series expansion of R(b) = 1/b is
+determined at design time and not configurable at runtime.                                                  ∞
+                                                                                            1    
+In INZeD [38], the error introduced by the approximate divider                      R(b) =     =  (−x)i = 1 − x + x 2 − x 3 + x 4 − · · ·
+is corrected in order to minimize the overall error bias. This                             1+x
+                                                                                                            i=0
+helps to improve the average accuracy and allows for error                                                                                                     (3)
+cancellation in applications prone to error accumulation. Our
+proposed design, SAADI-EC, uses error correction to achieve                        where x = b − 1. This series always converges since
+low error bias as well. In summary, to the best of our                             −0.5 ≤ x < 0 for normalized b such that 0.5 ≤ b < 1.
+knowledge, SAADI-EC (and SAADI) is the first approximate                             Note that the contribution of each term to accuracy improve-
+divider that supports dynamic accuracy configuration.                              ment exponentially decreases as the order increases. Typically,
+                                                                                   a good reciprocal approximation can be obtained by adding
+                                                                                   up the first few low-order terms, and if higher accuracy is
+              III. P ROPOSED A PPROXIMATE D IVIDER
+                                                                                   required, more high-order terms can be added to incrementally
+  In this section, we introduce our divider design, SAADI-EC                       improve the accuracy. Let R̃t (b) denote the tth-order approx-
+and present detailed hardware implementation. We also intro-                       imation of R(b), such that
+duce our error compensation hardware and analyze the
+accuracy of the proposed design.                                                                
+                                                                                                t
+                                                                                    R̃t (b) =         |x|i = 1 + |x| + |x|2 + |x|3 + |x|4 + · · · + |x|t
+                                                                                                i=0
+A. Proposed Approximate Division                                                                                                                               (4)
+  The proposed design, SAADI-EC, falls into a category of                          which takes t − 1 multiplications. The result is a tradeoff
+multiplicative division algorithms, where the reciprocal of the                    between higher accuracy and longer latency. This tradeoff can
+divisor is obtained first and then multiplied by the dividend.                     be exploited by the application depending on its accuracy
+We first describe the basics of multiplicative division [39]                       requirements and latency constraints. Finally, the tth-order
+before we describe our approach.                                                   approximate quotient Q̃ t is then obtained as
+  Let A and B be the dividend and the divisor, respectively.
+They can be represented in a normalized form as                                                           Q̃ t = 2ea −eb × a × R̃t (b).                        (5)
+                   A = 2ea × a and B = 2eb × b                              (1)
+                                                                                   B. Error Compensation
+where 0.5 ≤ a < 1 and 0.5 ≤ b < 1, and ea , and eb represent
+                                                                                      To improve the approximation accuracy of the base imple-
+the position of the leading 1 bit if A and B were represented as
+                                                                                   mentation we introduce novel logic for error compensation
+binary numbers, respectively. During normalization, a and b
+                                                                                   in SAADI-EC. As shown in (4), all terms in the reciprocal
+are truncated to n bits, where n is the width of multiplier,
+                                                                                   approximation are positive, meaning the resulting approxima-
+which is determined at design time. Then, the quotient, Q,
+                                                                                   tion error is always negative for a finite t. Therefore, this error
+of division A/B is
+                                                                                   can be mitigated by scaling the quotient of SAADI-EC by a
+               A               a                                                   positive compensation factor, c. The new scaled quotient Q̃ C
+           Q=     = 2ea −eb × = 2ea −eb × a × R(b)             (2)                                                                                  t
+               B               b                                                   is given by
+where R(b) is the reciprocal of b, i.e., R(b) = 1/b. Instead
+                                                                                                                     t = Q̃ t × c.
+                                                                                                                  Q̃ C                                         (6)
+of computing a/b directly, the multiplicative division first
+finds R(b) and then multiplies it by a, followed by a shift                        Because 0 < |x| ≤ 0.5, and t is always positive, the minimum
+operation for denormalization. The key to fast division is                         possible error for R̃t (b) is 0% when |x| is very small and
+finding the reciprocal as quickly as possible. However, finding                    t is very large. Therefore, the minimum value of c is 1,
+an accurate reciprocal is almost as complex as the division                        equivalent to no error compensation. The maximum possible
+itself. Therefore, it is typical that an approximate reciprocal                    error for R̃t (b) is 25%, when |x| = 0.5 and t = 1. Therefore,
+is obtained initially, and then a functional iteration algorithm,                  the maximum value of c is 1.333.
+such as the Newton–Raphson method, is used to converge to                             Fig. 1 shows how the approximation error of Q̃ t decreases
+the accurate reciprocal.                                                           as t increases. In addition, as t increases, the error distribution
+
+       Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+MELCHERT et al.: SAADI-EC                                                                                                                                     2683
+
+
+
+                                                                                                                     TABLE I
+                                                                                   S CALING FACTOR c AND THE R ESULTING E RROR C OMPENSATION VALUE
+                                                                                      s FOR A LL VALUES OF t AT n = [4, 8, 12, 16]. N OTE T HAT n = 4 AND
+                                                                                       t = 3 H AS N O E NTRY S INCE THE A CCURACY S ATURATES AT t = 2
+
+
+
+
+Fig. 1. Error distribution of the approximated quotient with t = [1, 2, 3, 4].
+                                                                                  and left-shifting to make the most significant bit (MSB) 1. If B
+                                                                                  is a power of 2, the division is done by a simple shift operation.
+                                                                                  We do not show this in the diagram for simplicity. The 2’s
+                                                                                  complement block converts b to |x|. A single-cycle multiplier
+                                                                                  first computes |x| · |x| = |x|2 , and the output is fed back to
+                                                                                  the multiplier again to subsequently obtain |x|3 , |x|4 , . . . |x|t
+                                                                                  over t − 1 cycles. Note that the output of the n-bit multiplier
+                                                                                  is truncated from 2n bits to n bits because it is going to be
+                                                                                  fed back to itself. The results are added up by the accumulator
+                                                                                  block in the same cycle to calculate |x| + |x|2 + · · · + |x|t .
+                                                                                     The output of the accumulator is R̃t (b) − 1, thus it is added
+                                                                                  to 1 before being multiplied by a.
+                                                                                     In the tth cycle, R̃t (b) is multiplied by a, and the output is
+                                                                                  denormalized using a barrel shifter to obtain the approximate
+                                                                                  quotient Q̃.
+                                                                                     Finally, the error compensation discussed in Section III-B
+                                                                                  is performed. We simplify the error compensation logic by
+                                                                                  replacing the costly multiplication in (6) by a simple table
+                                                                                  look-up and an addition. For a given n, which is a design
+                                                                                  parameter, the appropriate scaling factor c is calculated for
+Fig. 2.   Hardware architecture and control FSM of SAADI-EC.
+                                                                                  1 ≤ t ≤ n − 1 by finding the scaling factor that minimized
+                                                                                  the mean absolute error (MAE) of Q̃ t over a large sample of
+                                                                                  inputs. Error compensation is then done by adding a bit-shifted
+gets more closely centered around 0%. For each value of t,                        value of Q̃ t to itself, i.e.,
+the error distribution is different, so a unique scaling factor
+                                                                                                         t = Q̃ t × c ≈ Q̃ t + Q̃ t /2
+                                                                                                      Q̃ C                             s
+                                                                                                                                                              (7)
+should be determined at each t to minimize the error. We dis-
+cuss how this error compensation is implemented without                           where the integer bit-shift amount s is given by
+using a costly floating point multiplier in Section III-C.
+                                                                                                       s = −Round(log2 (c − 1)).                              (8)
+C. Hardware Architecture                                                          This simple error compensation hardware is composed of only
+  Fig. 2 shows the hardware architecture and a simplified                         a shifter, an adder, and an LUT holding the n − 1 values of
+diagram of a finite-state machine (FSM) to control the hard-                      s corresponding to all possible values of t at a given n. The
+ware. Fig. 3 shows the computation flow of SAADI-EC. First,                       values of c and s for all values of t at n = [4, 8, 12, 16] are
+the dividend A and the divisor B are normalized to a and b                        given in Table I.
+by the normalizer blocks, respectively, and truncated to n bits.                    The width of the all the normalized numbers, such as a, b,
+Normalization is done by finding the position of the leading 1                    |x|, |x|i , etc., is n bits. The accumulator needs to be wider
+
+      Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+2684                                         IEEE TRANSACTIONS ON VERY LARGE SCALE INTEGRATION (VLSI) SYSTEMS, VOL. 27, NO. 11, NOVEMBER 2019
+
+
+
+
+Fig. 3.   Hardware block usage and data flow (t ≥ 2).
+
+
+
+than |x|i since the accumulation can generate a carryout. The                      at runtime. When high-accuracy division is required, the appli-
+maximum value in the accumulator is 1, since the maximum                           cation can increase t, and when low-accuracy division is suf-
+value of R̃t (b) is 2 when |x| = 0.5. Therefore, the width of the                  ficient, it can decrease t to save energy. Although SAADI-EC
+accumulator needs to be only 1 bit wider than the multiplier,                      enables division operations to be performed at the opti-
+thus n+1 bits. After adding 1 to the accumulator output, R̃t (b)                   mal accuracy level, finding the optimal accuracy is highly
+becomes n + 2 bits, thus it is right-shifted by two bits to fit                    application-dependent, which is out of the scope of this paper.
+into the n-bit multiplier.                                                         In this section, we analyze how t affects the error rate and
+   The reciprocal approximation requires up to t − 1 mul-                          energy consumption.
+tiplications, and a × R̃t (b) requires another multiplication.                        The loss of accuracy in SAADI-EC is caused by the
+Therefore, the maximum latency of one division operation is                        following factors.
+t multiplications. Iterations for reciprocal approximation can                        1) 1 : The input operands A and B are truncated to n bits
+be terminated earlier to reduce latency at the cost of accuracy                           during normalization.
+loss, and we discuss this tradeoff in Section III-D.                                  2) 2 : The approximate reciprocal R̃t (b) is the sum of a
+   To save area, the normalization of A and B can be done by                              limited number of |x|i terms.
+a shared normalizer since the normalization of A is required                          3) 3 : Each |x|i term is computed using a statically trun-
+only after R̃t (b) is obtained. Similarly, the multiplications for                        cated multiplier that truncates 2n-bit results to n bits.
+reciprocal approximation and the multiplication of a × R̃t (b)                        4) 4 : The approximate reciprocal R̃t (b) is truncated from
+can be done by a single shared multiplier. Therefore, the major                           n + 2 bits to n bits before multiplied by a, and the result
+hardware components of SAADI-EC include one n-bit nor-                                    is truncated to n bits.
+malizer, one n-bit multiplier, one (n + 1)-bit accumulator, one                       The sign of 1 is input-dependent. Truncating A contributes
+log2 n-bit adder, two n-bit barrel shifters, one LUT with n −1                     to negative factors of 1 since the truncation results in a smaller
+entries, one 2n-bit adder, and a few multiplexers and registers.                   dividend, while truncating B has the reverse effect, as a smaller
+The usage of the shared hardware blocks is shown in Fig. 3.                        divisor produces a larger quotient. The error due to a finite-
+The area and power consumption of SAADI-EC are evaluated                           order approximation (2 ) is the runtime-adjustable error factor
+in Section IV-B.                                                                   that we exploit for accuracy–latency tradeoff such that
+   The proposed divider can be extended to compute signed                                                       ∞
+                                                                                                                
+division with the addition of minimal extra hardware. In the                       2 = R̃t (b)− R(b) = −               |x|i = −|x|t +1 −|x|t +2 −· · · .      (9)
+normalization blocks, the sign bit of the dividend and divisor                                                 i=t +1
+need to be stripped off. If the sign bit was a 1 (i.e., negative),
+                                                                                   Note that 2 is always negative, and the magnitude decreases
+then the sign of the operand needs to be inverted using a 2’s
+                                                                                   as t increases. Due to the accuracy loss in the multiplier (3 ),
+complement block. At the end of the division, the sign bit
+                                                                                   |x|i eventually becomes zero even if x is nonzero. Note that
+is added back to the quotient and the quotient is inverted if
+                                                                                   multiplying |x| ≤ 0.5 retires at least one bit per multiplication
+necessary.
+                                                                                   cycle, thus |x|i becomes zero within n cycles. Therefore, only
+                                                                                   up to |x|n−1 , which is obtained at (n − 2)th cycle, contributes
+D. Accuracy and Latency Tradeoff                                                   to R̃t (b), hence the effective range of t for accuracy–latency
+  Unlike prior approximate dividers whose division accu-                           tradeoff is 1 ≤ t ≤ n − 1, considering one additional cycle at
+racy is fixed at design time, SAADI-EC provides a flexible                         the end for a × R̃t (b). Increasing t beyond n −1 only increases
+energy-quality tradeoff that can be selected by the application                    latency but does not improve accuracy (n = 4 is an exception,
+
+       Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+MELCHERT et al.: SAADI-EC                                                                                                                                    2685
+
+
+
+
+                                                                                 Fig. 5.   Example of division operation 190/11 for n = 8.
+
+
+                                                                                 Since the exact quotient (Q) is 17.2727, the approximation
+                                                                                 error is −10.26%. As more iterations take place, the accuracy
+                                                                                 of R̃t (b) and Q̃ t gradually increases. The convergence of |x|i
+                                                                                 to zero takes five multiplications, and the error of the quotient
+                                                                                 after convergence is −0.86%. Note that R̃t (b) converges to
+                                                                                 1.44531 after three iterations and does not improve further
+Fig. 4.    Error distribution of approximate quotient for varying t with
+                                                                                 since the |x|5 is already too small and truncated by the
+and without error compensation. The dotted line represents the mean error.       accumulator. Therefore, it takes four multiplications (three
+(a) Before error compensation. (b) After full precision (floating point) error   for |x|2 , |x|3 , and |x|4 , and one for R̃4 (b) × a) to reach
+compensation. (c) After proposed error compensation.
+                                                                                 this result. The value of the scaling factor c that minimizes
+                                                                                 the MAE over all inputs at n = 8 and t = 4 is 1.0116,
+where the accuracy saturates at t = 2 due to narrow multiplier                   and the resulting full-precision error-compensated quotient is
+width). On the other hand, decreasing t below n − 1 may                          17.1250 × 1.0115 = 17.3225. According to (8), this error
+terminate the reciprocal approximation for slow-converging                       compensation scaling factor can be approximated as the shift
+|x|i and increases the average error rate. The error induced by                  value, s, of 6. Therefore, the error corrected quotient Q̃ C is
+the truncation in the multiplier and the accumulator (3 and 4 )                17.1250 +17.1250/26 = 17.3926, and the final approximation
+is always negative since it results in an under-approximated                     error is 0.68%.
+reciprocal and thus an underapproximated quotient.
+   The error compensation discussed in Section III-B mitigates                                IV. E VALUATION AND D ISCUSSION
+the error introduced by 2 , 3 , and 4 . For a given n, a unique                  We evaluate the accuracy and latency of SAADI-EC imple-
+scaling factor c is determined for each t and is chosen to                       mented in Verilog HDL and present the accuracy–latency
+minimize the MAE over all inputs. Fig. 4 shows an example                        tradeoff for various design-time and runtime parameters.
+of the effect of error compensation on the error distribution                    SAADI-EC is compared with other approximate dividers:
+of SAADI-EC. In this example, n = 6 and t = [2, 3, 4].                           SEERAD [10], TruncApp [12], AAXD [36], and PLApp [37].
+Without error compensation, Fig. 4(a) shows that resulting                       We also implemented an equivalent MATLAB model of
+error measurements are negatively biased. The mean error                         SAADI-EC for application-level quality evaluation: 1) color
+becomes closer to 0 as t increases, but the majority of                          quantization using k-means clustering; 2) JPEG compression
+error measurements are negative. Fig. 4(b) shows the error                       is used as image processing applications, and the results
+distribution after full precision error compensation according                   are compared with those of an exact divider; and 3) image
+to (6). The error distributions have been shifted so that their                  division for change detection is then used as an application that
+mean is much closer to 0. Finally, Fig. 4(c) shows the result of                 has a dynamic accuracy requirement, and the results of this
+our simplified error compensation according to (7). The error                    experiment are compared against other proposed approximate
+distributions do not vary significantly from the full precision                  dividers.
+error compensation.
+   Fig. 5 shows an example of a division operation for                           A. Accuracy and Latency
+A/B = 190/11 and n = 8. The initial normalization and                              We first evaluate the arithmetic accuracy of SAADI-EC
+2’s complement conversion produces |x| = 0.31250. After the                      for various parameters by feeding it one million random
+first iteration, the approximate reciprocal is R̃1 (b) = 1.31250,                combinations of dividends and divisors uniformly distributed
+and the resultant approximate quotient is Q̃ 1 = 15.5000.                        within the entire range. As discussed in Section III-D,
+
+     Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+2686                                         IEEE TRANSACTIONS ON VERY LARGE SCALE INTEGRATION (VLSI) SYSTEMS, VOL. 27, NO. 11, NOVEMBER 2019
+
+
+
+
+Fig. 6. Error distribution of approximate quotient for varying n with and
+without error compensation. (a) Before error compensation. (b) After error         Fig. 7.    Average number of iterations and MAE for varying n and t.
+compensation.                                                                      (a) Average number of iterations for varying n and t. (b) MAE for varying n
+                                                                                   and t.
+the accuracy of SAADI-EC is determined by a design parame-                                                           TABLE II
+ter n, i.e., the width of the truncated operands, and a runtime                     A REA , D ELAY, P OWER , E NERGY P ER C YCLE , M INIMUM AND M AXIMUM
+parameter t, i.e., the order of reciprocal approximation. For                              A CCURACY, AND E NERGY P ER O PERATION FOR VARYING n
+                                                                                                        AND A CCURACY R EQUIREMENT
+a consistent and fair comparison with the previous designs,
+we assume 2K /K division, where the width of the dividend is
+twice the width of the divisor, and K MSBs of the dividend is
+smaller than the divisor to prevent overflow [40]. In this paper,
+we assume 32-bit dividends and 16-bit divisors. Note that this
+is for a fair comparison, and SAADI-EC is not restricted to
+any specific dividend-divisor bit ratio.
+   Fig. 6(a) shows the distribution of approximate division
+errors before error compensation for n = [4, 6, 8, . . . , 16],
+while t is set to n − 1 to guarantee the convergence of
+|x|i to zero. In the figure, each curve shows the maximum,
+75th percentile, median, 25th percentile, and minimum error.
+We can observe that the error rate rapidly decreases as n
+increases. Overall, as previously discussed in Section III-D,
+the errors are negatively biased since the combination of the                      iteration counts at t = n − 1 are highlighted for each n. When
+negative error factors 2 , 3 , and 4 is more significant than 1 ,              t = n − 1, it takes about n/2 cycles on average to reach
+which is the only factor that can be positive. Fig. 6(c) shows                     the maximum accuracy. This means that the actual average
+the result of error compensation on the error distribution. The                    number of iterations to reach the maximum accuracy is smaller
+error distribution is centered much more closely around 0,                         than n − 1.
+and the rate of positive errors and negative errors are very                          Fig. 7(b) shows how MAE varies with t and n for n = [4, 8,
+similar. Consequently, the maximum and minimum errors are                          12, 16] and 1 ≤ t ≤ n −1. We observe that, as n increases, not
+also shifted to a higher value than before error compensation,                     only does the maximum accuracy increase, but the speed of
+and the average error and maximum error magnitude decrease                         accuracy improvement also increases. As shown in Fig. 7(b),
+across all inputs. The results show that n ≥ 6 produces very                       the n = 8 curve has a steeper slope than the n = 4 curve.
+good approximate results with only a few percents maximum
+error.                                                                             B. Area and Power Consumption
+   Fig. 7(a) illustrates the average number of iterations required                   We synthesized the Verilog description of SAADI-EC using
+to reach the maximum accuracy, up to a maximum of t.                               Synopsis Design Compiler, targeting the NanGate 45-nm
+As described in Section III-D, the maximum number of                               CMOS Technology [41]. We adopt a single-cycle multiplier as
+effective iterations (that improves accuracy) is n − 1, and                        the base arithmetic unit. Table II reports the area, delay, power,
+
+       Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+MELCHERT et al.: SAADI-EC                                                                                                                                    2687
+
+
+
+                                TABLE III
+      C OMPARISON W ITH P REVIOUSLY P ROPOSED A PPROXIMATE
+                D IVIDERS AND AN E XACT D IVIDER
+
+
+
+
+                                                                                 Fig. 8. EDP-MAE tradeoff comparison. TruncApp, SEERAD, AAXD, and
+                                                                                 PLApp have a single EDP-MAE point per accuracy level. SAADI-EC and
+                                                                                 SAADI have a flexible EDP-MAE curve per accuracy level.
+
+
+                                                                                 than the other multiplicative dividers because it uses a divider
+                                                                                 as the base arithmetic unit. PLApp has two configuration
+                                                                                 parameters: the first is specifying the number of subintervals
+                                                                                 used for the reciprocal approximation, while the second is for
+                                                                                 the rounding width. The MAE of this divider ranges from
+                                                                                 2.82% to 0.18%. This design achieves a comparable MAE to
+                                                                                 AAXD at a much lower delay. The MAE, delay, and energy
+                                                                                 of SAADI-EC and SAADI are presented by upper bound and
+                                                                                 lower bound since they are a function of t. Although the
+                                                                                 previous dividers exhibit lower MAEs for some low accuracy
+                                                                                 levels, SAADI-EC outperforms others for higher accuracy
+                                                                                 levels, and, moreover, it is scalable.
+                                                                                    We also analyze the performance of SAADI-EC with a
+                                                                                 pipelined architecture (SAADI-EC-P in Table III). Our basic
+                                                                                 design can be divided into three stages, one with the nor-
+                                                                                 malizing blocks, one with the multiplier and accumulator
+                                                                                 blocks, and one with the shifting and error compensation
+energy per cycle, minimum and maximum accuracy, and                              blocks. Without pipelining, for a single division operation, all
+energy per operation for different n and accuracy requirements.                  stages need be fully complete before a new operation can be
+Some accuracies that cannot be achieved due to the narrow                        introduced into the first stage, resulting in the under-utilization
+multipliers are indicated with an “×” mark. Note that the                        of hardware as well as a low throughput. To address these
+same accuracy requirement can be met by multiple designs,                        problems, multiple copies of the multiply-and-accumulate
+but a narrow (low n) design is more energy-efficient than a                      stage can be introduced to realize pipelined operation as well
+wide (high n) design. For example, a 99% accuracy can be                         as hardware to schedule the division operations. This will also
+achieved by 8-, 12-, and 16-bit SAADI-ECs. While the 8-bit                       improve energy efficiency by keeping the other two stages
+SAADI-EC takes the same number of cycles as the 16-bit                           (normalizing stage and shifting and error compensation stage)
+SAADI-EC (three cycles), the total energy consumption per                        fully utilized. In SAADI-EC-P, t is fixed to the maximum
+division is 75% lower.                                                           value of n − 1, and there are n − 1 copies of the multiply-
+   Table III compares the MAEs of SAADI-EC, SAADI-                               and-accumulate pipeline stage. Predictably, the area overhead
+EC-P (pipelined version of SAADI-EC), SAADI, TruncApp,                           of this approach is quite large, but the energy per operation
+SEERAD, AAXD, and PLApp with different accuracy levels.                          decreases for n = [8, 12, 16] compared to SAADI-EC. For
+The best MAE of TruncApp is 4.26% when the accuracy                              example, at n = 8 SAADI-EC-P can achieve 0.37% MAE
+level is 4, and increasing it beyond 4 does not improve                          while still producing 1 result per cycle and a delay of 1.16 ns.
+the accuracy due to its linear reciprocal approximation. The                     The energy per result is 3.54 nJ, which is lower than the
+MAE of SEERAD(3) and SEERAD(4) is 4.41% and 2.12%,                               5.72 nJ that SAADI-EC consumes.
+respectively. The MAE of AAXD ranges between 6.13% and                              Fig. 8 better illustrates the comparison between the approxi-
+0.18% for accuracy levels 6–16. Although its accuracy is better                  mate dividers. It shows the tradeoffs between the energy-delay
+than TruncApp and SEERAD, its delay is significantly longer                      product (EDP) and accuracy.
+
+     Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+2688                                         IEEE TRANSACTIONS ON VERY LARGE SCALE INTEGRATION (VLSI) SYSTEMS, VOL. 27, NO. 11, NOVEMBER 2019
+
+
+
+
+Fig. 9. Energy dissipation breakdown of the main hardware blocks of the
+proposed divider.
+
+
+   Each curve represents the EDP-accuracy tradeoffs of
+SAADI-EC for each n, and each dot on the curves represents
+the EDP-accuracy pair for different t. One can select n based
+on the range of accuracy requirement and the energy budget
+at design time, and at runtime, t can be adjusted to exploit the
+tradeoffs. TruncApp, SEERAD, and PLApp are denoted by
+“,” “,” and “” marks, respectively. TruncApp(4), but it is
+outperformed by SAADI-EC with n = 6 and t = 2. Similarly,
+SEERAD(4) is outperformed by SAADI-EC with n = 8 and
+t = 2. PLApp is outperformed by SAADI-EC when n = 6 and
+n = 8. AAXD is denoted by “” marks, and it exhibits high
+EDP due to the precise divider used as the base arithmetic
+unit. SAADI-EC shows lower EDP since it uses a multiplier.
+SAADI-EC outperforms AAXD both in MAE and EDP after
+                                                                                   Fig. 10. Color quantization using k-means clustering (k = 8) for varying n
+a few iterations, which is affordable due to its shorter cycle                     and t. The output quality is shown in PSNR (dB)/MSE/SSIM (%) in
+period.                                                                            comparison to the output of an 32-bit exact divider. (a) Original image and
+   Fig. 9 reports the sources of energy dissipation within our                     reference color quantization using an exact divider. (b) Color quantization
+                                                                                   using SAADI-EC with various n (t = n − 1). (c) Color quantization using
+proposed design as n and t increase. We separated SAADI-EC                         SAADI-EC with various t (n = 8).
+into three different main blocks: the normalization block,
+the multiply-and-accumulate block, and the shifting and error
+compensation block. These represent the logical boundaries                         or transmission of the image, and k-means clustering is a
+between the main sources of energy dissipation. At low                             commonly used algorithm. The mean update operation in
+values of n, the energy dissipated by the normalization and                        k-means requires iterative division by non-constant values,
+shift and error compensation blocks is more significant than                       thus an energy-efficient divider needs to be used. To examine
+the multiply-and-accumulate block. As n grows, however,                            the quality of SAADI-EC compared with an exact divider
+it becomes a significantly larger portion of the energy dissipa-                   and evaluate the accuracy with varying t and n, five images
+tion in the overall divider, reaching 73.5% of the total energy                    are clustered into eight colors (i.e., k = 8). We calculate
+dissipation when n = 16 and t = 1. Similarly, as t grows,                          three quality metrics: peak signal-to-noise ratio (PSNR), mean
+so does the percentage of energy dissipated by the multiply-                       square error (MSE), and structural similarity (SSIM), with
+and-accumulate blocks, reaching 93.9% of the total energy                          respect to the baseline results using an exact divider. To eval-
+dissipation when n = 16 and t = 15.                                                uate SAADI-EC without the impact of the initial random
+                                                                                   centers, we feed the same initial centers into the baseline and
+                                                                                   SAADI-EC each time and repeat the experiment ten times to
+C. K -Means Color Quantization                                                     take the average quality measurements.
+   For application-level evaluation, we perform color quan-                           Fig. 10(a) shows the original image and the color-reduced
+tization, which reduces the number of unique colors in an                          image using an exact divider as a reference. Fig. 10(b) shows
+image while preserving the appearance of the colors as much                        the results by SAADI-EC with different n. We tie t to
+as possible. Color quantization saves energy for the storage                       n − 1, providing sufficient time for SAADI-EC to converge.
+
+       Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+MELCHERT et al.: SAADI-EC                                                                                                                                    2689
+
+
+
+
+                                                                                 Fig. 12.   Image quality (PSNR) using SAADI-EC on JPEG compression.
+
+
+
+
+                                                                                 Fig. 13. Example of the image division of two consecutive frames of a
+                                                                                 benchmark.
+
+
+                                                                                 compression while varying n and t. The quality of compres-
+                                                                                 sion for JPEG is set to 90% for this experiment. Our proposed
+                                                                                 divider replaces the accurate divider used in the quantization
+                                                                                 step of the JPEG compression algorithm. To evaluate how
+                                                                                 this substitution affects the quality of the compressed image,
+                                                                                 we compute the PSNR between the original images and the
+Fig. 11. Color quantization using k-means clustering (k = 8) on various          compressed images with an accurate divider, as well as the
+images. The output quality is shown in PSNR (dB)/MSE/SSIM (%) in                 PSNR between the original images and the compressed images
+comparison to the output of a 32-bit accurate divider.                           after substituting our divider. In Fig. 12, we show the results
+                                                                                 of this application for n = [4, 8, 12, 16] and for t ranging from
+As n increases from 4 to 12, all three quality measures                          1 to n − 1. We report the average PSNR over 1000 random
+improve. Although SAADI-EC is capable of producing an out-                       images from the Caltech 101 data set [42]. As the quality of
+put of a reasonable quality for n = 4, the quality dramatically                  quotient approximation increases, the PSNR of the compressed
+increases for n = 8, approaching 100% SSIM for n = 12. The                       images using SAADI-EC becomes closer to the PSNR of the
+results with different t are shown in Fig. 10(c). In this case,                  compressed images using an exact divider. The points along
+n is fixed to 8, and t is set to 2, 4, or 6. We observe a clear                  each curve shown in Fig. 12 represent accuracy levels that can
+trend of quality improvement with a larger t. Even with only                     be adjusted at runtime. In this particular example, we can see
+two cycles, SAADI-EC produces a high-quality result with                         that using 8-bit SAADI-EC suffices.
+SSIM higher than 90%, and further accuracy improvement is
+achieved by increasing t.
+                                                                                 E. Image Division With Varying Accuracy Requirement
+   We show the results of color quantization with SAADI-EC
+for four additional benchmark images in Fig. 11. For all the                        To further illustrate the benefits of dynamic accuracy con-
+input images, n is fixed to 8 and t is fixed to 7, and the quality               figuration, we perform image division on video sequences.
+is compared to the output of an exact divider. We can note                       Image division is a common algorithm used for detecting
+that the quality measures are dependent on the input image.                      changes in different frames of a sequence of images, which is
+PSNR ranges from 27.7 to 33.2 dB, and SSIM varies between                        useful in applications ranging from surveillance to medical
+84.6% and 98.7%. This confirms the need for a quality-                           imaging. Fig. 13 shows an example of image division for
+configurable divider, which is the motivation of our work.                       one of the three benchmarks that we used. In this example,
+Exploiting the quality configurability of SAADI-EC, the appli-                   frame i is divided by the previous frame (i − 1) and then
+cation can save energy by decreasing t or improve quality by                     multiplied by 128. Each pixel in the image is represented by
+increasing t based on the observed high-level quality.                           8-bit integers, so multiplying by 128 allows us to represent
+                                                                                 the result of the division better within the visible range of
+                                                                                 the image. Most consecutive frames are very similar, so most
+D. JPEG Compression                                                              pixels in the resulting divided image have a value close to 128.
+   To further explore how varying approximation accuracy                         If a pixel in frame i is brighter than in frame i − 1, it will
+affects application-level performance, we perform JPEG                           appear as a bright spot in the divided image, and if a pixel in
+
+     Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+2690                                         IEEE TRANSACTIONS ON VERY LARGE SCALE INTEGRATION (VLSI) SYSTEMS, VOL. 27, NO. 11, NOVEMBER 2019
+
+
+
+
+Fig. 14. Resulting PSNR of image division on 1500 frames of change detection benchmarks. For each divider, line “A” denotes the changing accuracy
+requirement (target PSNR), lines “B” denote accuracy levels supported by the divider, line “C” denote the accuracy level selected by the divider to meet the
+requirement, and lines “D” denotes violated accuracy requirement (if any).
+
+
+frame i is darker than in frame i − 1, it will appear as a dark                                                      TABLE IV
+spot.                                                                                        A CCURACY L EVELS OF SEERAD, T RUNC A PP, AAXD,
+                                                                                                    AND PLA PP U SED FOR C OMPARISON
+   In this work, we simulate the case where the required
+accuracy of image division varies over time by dividing
+consecutive frames of a video sequence comprised of three
+change detection benchmark scenes from [40]. During each
+of these three scenes, we alter the accuracy requirement of
+the output image and dynamically adjust the divider to meet
+the requirement. We evaluate the accuracy of the division
+periodically throughout the video sequence using a high-
+accuracy division as a comparison to our approximate division.                     to t = 1, and the highest level of accuracy corresponds to
+For SAADI-EC and SAADI, this is done by setting t to the                           t = 5. Note that these accuracy levels are all achievable with a
+maximum value of 5, which yields almost 100% accurate                              single divider and can be configured at runtime. For SEERAD,
+results. Then, the optimal value of the configuration parame-                      TruncApp, AAXD, and PLApp, the accuracy levels correspond
+ter without violating the accuracy requirement is chosen by                        to different dividers (B). The accuracy level of these dividers
+gradually decreasing the accuracy and comparing the PSNR                           means the bit-width of the base multiplier or divider unit used
+between the accurate and approximate divided frames until it                       in each design, and the accuracy levels used in the experiment
+drops below the required level.                                                    are listed in Table IV. We assume that, when multiple dividers
+   For evaluation, we measure the accuracy of our divider by                       are used to support dynamic accuracy adjustment, unused
+comparing it to an accurate divider and calculating the PSNR.                      dividers are power-gated. The stairstep line (A) represents the
+Then, we repeat the process with dividers proposed in previous                     dynamic target accuracy, and “C” presents the actual accu-
+works and compare the results by calculating the number of                         racy achieved by each divider. Finally, the red segments (D)
+frames in the sequence that violated the required accuracy                         represent accuracy violations.
+level. For the previous dividers, we generously assume that                           Table V illustrates the area, delay, energy, and number of
+accurate reference division results are obtained without any                       violated frames for each of the three benchmarks as well as
+overhead. Finally, we compare SAADI-EC against previous                            the combined total of the benchmarks. SEERAD, TruncApp,
+works by calculating the area, power, and energy required to                       AAXD, and PLApp all require multiple dividers to meet
+meet the changing accuracy requirements.                                           the dynamic accuracy requirement. The area is the sum of
+   Fig. 14 shows the resulting PSNR and changing accuracy                          the area of the dividers used to achieve the target accuracy.
+requirements for the three benchmarks. The PSNR is measured                        [e.g., AAXD(12) is not included in the area since it is not
+and displayed for each of the 500 frames in each benchmark.                        used.] In the case of SEERAD, TruncApp, and the nonerror
+The different levels of accuracy are calculated by varying                         corrected SAADI, the maximum required accuracy is greater
+the design parameters of each divider. For SAADI-EC and                            than the maximum accuracy that can be achieved by the
+SAADI with n = 6, the lowest level of accuracy corresponds                         divider, therefore there are some violated frames. We observe
+
+       Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+MELCHERT et al.: SAADI-EC                                                                                                                                    2691
+
+
+
+                                 TABLE V                                                                        R EFERENCES
+ A REA , P OWER , D ELAY, E NERGY, AND N UMBER OF V IOLATED F RAMES
+             FOR T HREE C HANGE D ETECTION B ENCHMARKS
+                                                                                  [1] S. Behroozi, J. Li, J. Melchert, and Y. Kim, “SAADI: A scalable
+                                                                                      accuracy approximate divider for dynamic energy-quality scaling,” in
+                                                                                      Proc. Asia South Pacific Design Autom. Conf. (ASP-DAC), Jan. 2019,
+                                                                                      pp. 481–486.
+                                                                                  [2] J. Han and M. Orshansky, “Approximate computing: An emerging
+                                                                                      paradigm for energy-efficient design,” in Proc. 18th IEEE Eur. Test
+                                                                                      Symp. (ETS), May 2013, pp. 1–6.
+                                                                                  [3] S. Venkataramani, S. T. Chakradhar, K. Roy, and A. Raghunathan,
+                                                                                      “Approximate computing and the quest for computing efficiency,” in
+                                                                                      Proc. 52nd Annu. Des. Automat. Conf., San Francisco, CA, USA,
+                                                                                      Jun. 2015, pp. 120-1–120-6.
+                                                                                  [4] M. Alioto, “Energy-quality scalable adaptive VLSI circuits and sys-
+                                                                                      tems beyond approximate computing,” in Proc. IEEE DATE, Lausanne,
+                                                                                      Switzerland, Mar. 2017, pp. 127–132.
+                                                                                  [5] V. Gupta, D. Mohapatra, S. P. Park, A. Raghunathan, and
+                                                                                      K. Roy, “IMPACT: IMPrecise adders for low-power approximate
+                                                                                      computing,” in Proc. 17th IEEE/ACM Int. Symp. Low-Power Electron.
+                                                                                      Design (ISLPED), Aug. 2011, pp. 409–414.
+                                                                                  [6] C. Liu, J. Han, and F. Lombardi, “A low-power, high-performance
+                                                                                      approximate multiplier with configurable partial error recovery,” in Proc.
+                                                                                      Conf. Design, Autom. Test Eur. (DATE), Mar. 2014, p. 95:1–95:4.
+                                                                                  [7] S. Hashemi, R. I. Bahar, and S. Reda, “DRUM: A dynamic range
+                                                                                      unbiased multiplier for approximate applications,” in Proc. IEEE/ACM
+                                                                                      Int. Conf. Comput.-Aided Design, Nov. 2015, pp. 418–425.
+                                                                                  [8] Software Optimization Guide for AMD Family 10h and 12h Processors,
+                                                                                      Adv. Micro Devices, Santa Clara, CA, USA, 2011.
+                                                                                  [9] Floating-Point IP Cores User Guide, Altera, San Jose, CA, USA, 2016.
+                                                                                 [10] R. Zendegani, M. Kamal, A. Fayyazi, A. Afzali-Kusha, S. Safari, and
+                                                                                      M. Pedram, “SEERAD: A high speed yet energy-efficient rounding-
+                                                                                      based approximate divider,” in Proc. Conf. Design, Autom. Test Eur.
+                                                                                      (DATE), Mar. 2016, pp. 1481–1484.
+                                                                                 [11] S. Hashemi, R. I. Bahar, and S. Reda, “A low-power dynamic divider
+                                                                                      for approximate applications,” in Proc. Design Autom. Conf. (DAC),
+                                                                                      Jun. 2016, pp. 105:1–105:6.
+                                                                                 [12] S. Vahdat, M. Kamal, A. Afzali-Kusha, M. Pedram, and Z. Navabi,
+                                                                                      “TruncApp: A truncation-based approximate divider for energy efficient
+                                                                                      DSP applications,” in Proc. Design, Autom. Test Eur. Conf. Exhib.
+                                                                                      (DATE), Lausanne, Switzerland, Mar. 2017, pp. 1635–1638.
+                                                                                 [13] L. Wu and C. C. Jong, “A curve fitting approach for non-iterative divider
+                                                                                      design with accuracy and performance trade-off,” in Proc. IEEE Int. New
+                                                                                      Circuits Syst. Conf. (NEWCAS), Jun. 2015, pp. 1–4.
+that SAADI-EC outperforms SEERAD, AAXD, and PLApp in                             [14] A. Raha and V. Raghunathan, “Towards full-system energy-accuracy
+terms of area and energy. While TruncApp achieves lower                               tradeoffs: A case study of an approximate smart camera system,” in
+                                                                                      Proc. Design Autom. Conf. (DAC), Jun. 2017, pp. 74:1–74:6.
+delay and energy than SAADI-EC, its accuracy does not meet                       [15] V. K. Chippa, S. Venkataramani, S. T. Chakradhar, K. Roy, and
+the quality requirement.                                                              A. Raghunathan, “Approximate computing: An integrated hardware
+                                                                                      approach,” in Proc. Asilomar Conf. Signals, Syst. Comput., Nov. 2013,
+                                                                                      pp. 111–117.
+                           V. C ONCLUSION                                        [16] J. Park, H. Choo, K. Muhammad, S. Choi, Y. Im, and K. Roy,
+                                                                                      “Non-adaptive and adaptive filter implementation based on sharing
+   An energy-efficient divider is a crucial arithmetic unit for                       multiplication,” in Proc. IEEE Int. Conf. Acoust., Speech, Signal
+low-power signal processing. In this paper, we presented a                            Process. (ICASSP), vol. 1, Jun. 2000, pp. 460–463.
+                                                                                 [17] Y. Kim, S. Venkataramani, K. Roy, and A. Raghunathan, “Designing
+quality-configurable approximate divider, named SAADI-EC.                             approximate circuits using clock overgating,” in Proc. Design Autom.
+It is based on an incremental approximation of the reciprocal                         Conf. (DAC), Jun. 2016, pp. 15:1–15:6.
+of the divisor, where the accuracy gradually increases over                      [18] S. Han, H. Mao, and W. J. Dally, “Deep compression: Com-
+                                                                                      pressing deep neural networks with pruning, trained quantization
+multiple iterations. The application can set the number of                            and Huffman coding,” 2015, arXiv:1510.00149. [Online]. Available:
+iterations to exploit the trade-off between accuracy the latency                      https://arxiv.org/abs/1510.00149
+to meet its requirement. We demonstrated that SAADI-EC                           [19] S. Han et al., “EIE: Efficient inference engine on compressed deep neural
+                                                                                      network,” in Proc. ACM/IEEE 43rd Annu. Int. Symp. Comput. Archit.,
+produces the division results with adjustable accuracy. The                           Jun. 2016, pp. 243–254.
+accuracy–latency tradeoff of the different implementations of                    [20] S. Liu, K. Pattabiraman, T. Moscibroda, and B. G. Zorn, “Flikker:
+SAADI-EC is evaluated, and the results for 32-bit division                            Saving DRAM refresh-power through critical data partitioning,” in Proc.
+                                                                                      Int. Conf. Architectural Support Program. Lang. Oper. Syst. (ASPLOS),
+with 8-bit approximation show the average accuracy between                            Mar. 2011, pp. 213–224.
+94.2% and 99.6% with latency between one and seven cycles.                       [21] A. Sampson, J. Nelson, K. Strauss, and L. Ceze, “Approximate storage
+We also performed color quantization using k-means cluster-                           in solid-state memories,” ACM Trans. Comput. Syst., vol. 32, no. 3,
+                                                                                      pp. 9:1–9:23, Sep. 2014.
+ing, and JPEG compression and demonstrated that SAADI-EC                         [22] A. Ranjan, S. Venkataramani, X. Fong, K. Roy, and A. Raghunathan,
+can produce high-quality results comparable to those generated                        “Approximate storage for energy efficient spintronic memories,” in Proc.
+by an exact divider. Finally, we showed that SAADI-EC                                 Design Autom. Conf. (DAC), Jun. 2015, pp. 1–6.
+                                                                                 [23] A. Raha, H. Jayakumar, S. Sutar, and V. Raghunathan, “Quality-aware
+outperforms other approximate dividers in applications that                           data allocation in approximate DRAM,” in Proc. Int. Conf. Compil.,
+have dynamic accuracy requirements using image division.                              Archit., Synth. Embedded Syst. (CASES), Oct. 2015, pp. 89–98.
+
+     Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+2692                                         IEEE TRANSACTIONS ON VERY LARGE SCALE INTEGRATION (VLSI) SYSTEMS, VOL. 27, NO. 11, NOVEMBER 2019
+
+
+
+[24] L. Yang and B. Murmann, “Approximate SRAM for energy-efficient,                                       Setareh Behroozi (S’18) received the B.S. degree
+     privacy-preserving convolutional neural networks,” in Proc. IEEE Com-                                 in computer engineering from the Iran University of
+     put. Soc. Annu. Symp. VLSI (ISVLSI), Jul. 2017, pp. 689–694.                                          Science and Technology, Tehran, Iran, in 2013, and
+[25] P. Stanley-Marbell and M. Rinard, “Lax: Driver interfaces for approx-                                 the M.S. degree in computer engineering, computer
+     imate sensor device access,” in Proc. Workshop Hot Topics Oper. Syst.                                 architecture from the Sharif University of Tech-
+     (HotOS), May 2015, pp. 1–6.                                                                           nology, Tehran, in 2015. She is currently working
+[26] P. Stanley-Marbell and M. Rinard, “Reducing serial I/O power in error-                                toward the Ph.D. degree in electrical and com-
+     tolerant applications by efficient lossy encoding,” in Proc. Design Autom.                            puter engineering at the University of Wisconsin–
+     Conf. (DAC), Jun. 2016, pp. 62:1–62:6.                                                                Madison, Madison, WI, USA.
+[27] D. J. Pagliari, E. Macii, and M. Poncino, “Serial T0: Approximate bus                                   Her current research interests include approx-
+     encoding for energy-efficient transmission of sensor signals,” in Proc.                               imate computing, low-power hardware-software
+     Design Autom. Conf. (DAC), Jun. 2016, pp. 14:1–14:6.                          for embedded systems, emerging memory technologies, and computer
+[28] Y. Kim, S. Behroozi, V. Raghunathan, and A. Raghunathan, “AxSer-              architecture.
+     Bus: A quality-configurable approximate serial bus for energy-efficient         Ms. Behroozi was a recipient of the Electrical and Computer Engineering
+     sensing,” in Proc. Int. Symp. Low Power Electron. Design (ISLPED),            Chancellor’s Opportunity Fellowship, the CRA-W Grad Cohort for Women
+     Jul. 2017, pp. 1–6.                                                           Workshop, the Grace Hopper Celebration (GHC), the A. Richard Newton
+[29] S. Behroozi, V. Raghunathan, A. Raghunathan, and Y. Kim, “A quality-          Young Student Fellowships, and the Design Contest Award at the ACM/IEEE
+     configurable approximate serial bus for energy-efficient sensory data         International Symposium on Low Power Electronics and Design (ISLPED)
+     transfer,” IEEE J. Emerg. Sel. Topics Circuits Syst., vol. 8, no. 3,          in 2018.
+     pp. 379–390, Sep. 2018.
+[30] S. Sen, S. Schmitt, M. Donahue, and S. Banerjee, “Exploiting
+     ‘approximate communication’ for mobile media applications,” in Proc.
+     Int. Workshop Mobile Comput. Syst. Appl. (HotMobile), Feb. 2009,
+     pp. 11:1–11:6.                                                                                          Jingjie Li (S’16) received the B.S. degree in elec-
+[31] D. Fujiki et al., “High-bandwidth low-latency approximate intercon-                                     tronic information engineering from the Beijing
+     nection networks,” in Proc. Int. Symp. High Perform. Comput. Archit.                                    Institute of Technology, Beijing, China, in 2017 and
+     (HPCA), Feb. 2017, pp. 469–480.                                                                         the B.Eng. (Research and Development) degree
+[32] V. Leon, G. Zervakis, S. Xydis, D. Soudris, and K. Pekmestzi, “Walking                                  (Hons.) in electronic and communication systems
+     through the energy-error Pareto frontier of approximate multipliers,”                                   from The Australian National University, Canberra,
+     IEEE Micro, vol. 38, no. 4, pp. 40–49, Jul. 2018.                                                       ACT, Australia, in 2017. He is currently work-
+[33] V. Leon, K. Asimakopoulos, S. Xydis, D. Soudris, and K. Pekmestzi,                                      ing toward the Ph.D. degree at the Department
+     “Cooperative arithmetic-aware approximation techniques for energy-                                      of Electrical and Computer Engineering, University
+     efficient multipliers,” in Proc. Design Autom. Conf. (DAC), Jun. 2019,                                  of Wisconsin–Madison (UW–Madison), Madison,
+     pp. 160:1–160:6.                                                                                        WI, USA.
+[34] A. Alaghi and J. P. Hayes, “Survey of stochastic computing,” ACM                From 2016 to 2017, he was a Student Scholar at Data61, Commonwealth
+     Trans. Embed. Comput. Syst., vol. 12, no. 2s, pp. 92:1–92:19, May 2013.       Scientific and Industrial Research Organization, Sydney. He currently serves
+[35] S. R. Faraji and K. Bazargan, “Hybrid binary-unary hardware accel-            as a Chancellor’s Opportunity Fellow at UW–Madison. His current research
+     erator,” in Proc. Asia South Pacific Design Autom. Conf. (ASP-DAC),           interests include pervasive computing, Internet of Things, and low-power
+     Jan. 2019, pp. 210–215.                                                       design for embedded systems.
+[36] H. Jiang, L. Liu, F. Lombardi, and J. Han, “Adaptive approximation              Mr. Li was a recipient of the A. Richard Newton Young Student Fellowship,
+     in arithmetic circuits: A low-power unsigned divider design,” in Proc.        the Design Contest Award at the ACM/IEEE International Symposium on Low
+     Conf. Design, Autom. Test Eur. (DATE), Mar. 2018, pp. 1411–1416.              Power Electronics and Design (ISLPED) in 2018, and the Best Paper Award
+[37] M. Vaeztourshizi, M. Kamal, A. Afzali-Kusha, and M. Pedram, “An               of the ACM Conference on Human Factors in Computing Systems (CHI)
+     energy-efficient, yet highly-accurate, approximate non-iterative divider,”    in 2019.
+     in Proc. ACM/IEEE Int. Symp. Low Power Electron. Design (ISLPED),
+     Jul. 2018, pp. 14:1–14:6.
+[38] H. Saadat, H. Javaid, and S. Parameswaran, “Approximate integer and
+     floating-point dividers with near-zero error bias,” in Proc. Design Autom.
+     Conf. (DAC), Jun. 2019, pp. 161:1–161:6.                                                                 Younghyun Kim (M’13) received the B.S. degree
+[39] S. F. Oberman and M. J. Flynn, “Division algorithms and implementa-                                      (Hons.) in computer science and engineering and
+     tions,” IEEE Trans. Comput., vol. 46, no. 8, pp. 833–854, Aug. 1997.                                     the Ph.D. degree in electrical engineering and com-
+[40] B. Parhami, Computer Arithmetic. London, U.K.: Oxford Univ. Press,                                       puter science from Seoul National University, Seoul,
+     1999.                                                                                                    South Korea, in 2007 and 2013, respectively.
+[41] Nangate 45 nm Open Cell Library, NanGate, Santa Clara, CA, USA,                                            From 2013 to 2016, he was a Post-Doctoral
+     2008.                                                                                                    Research Assistant at the School of Electrical and
+[42] L. Fei-Fei, R. Fergus, and P. Perona, “Learning generative visual models                                 Computer Engineering, Purdue University, West
+     from few training examples: An incremental Bayesian approach tested                                      Lafayette, IN, USA. From 2009 to 2011, he was a
+     on 101 object categories,” in Proc. CVPR Workshop Generative-Model                                       Visiting Scholar at the University of Southern Cal-
+     Based Vis. (WGMBV), Apr. 2004, p. 178.                                                                   ifornia, Los Angeles, CA, USA. He is currently an
+                                                                                   Assistant Professor at the Department of Electrical and Computer Engineering,
+                                                                                   University of Wisconsin–Madison, Madison, WI, USA. He has coauthored
+                                                                                   1 book, 2 book chapters, and more than 70 journal and conference papers. His
+                                                                                   current research interests include energy-efficient computing, cyber-physical
+                                                                                   systems security, and the Internet-of-Things.
+                       Jackson Melchert received the B.S. degree in                  Dr. Kim was a recipient of the NSF Faculty Early Career Development
+                       computer engineering and computer science from              Program (CAREER) Award in 2019, the EDAA Outstanding Dissertation
+                       the University of Wisconsin–Madison, Madison, WI,           Award in 2013, the Design Contest Award at the ACM/IEEE International
+                       USA, in 2019.                                               Symposium on Low Power Electronics and Design (ISLPED) in 2007, 2012,
+                          He has authored and contributed to papers pub-           2017, and 2018, the IEEE SSCS Seoul Chapter Award at the International
+                       lished in ACM Great Lakes Symposium for Very                SoC Design Conference in 2009, and the Best Paper Award Nomination at the
+                       Large Scale Integration (GLSVLSI), the IEEE                 ACM/IEEE ISLPED in 2016. He has served on the Technical Program Com-
+                       T RANSACTIONS ON V ERY L ARGE S CALE I NTE -                mittees of the ACM/EDAC/IEEE Design Automation Conference (DAC),
+                       GRATION (VLSI), and Asia and South Pacific Design           the ACM/IEEE ISLPED, the Asia and South Pacific Design Automation Con-
+                       Automation Conference (ASP-DAC). His current                ference (ASP-DAC), the International Conference on VLSI Design (VLSID),
+                       research interests include approximate computing,           the Symposium on Applied Computing, and the Ph.D. Forums at DAC and
+low-power embedded systems, very large-scale integrated circuit design, and        Design Automation and Test in Europe (DATE). He served as a Guest Editor
+computer architecture.                                                             for a Special Issue of VLSI Integration Journal (Elsevier).
+
+       Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:32:19 UTC from IEEE Xplore. Restrictions apply.
+

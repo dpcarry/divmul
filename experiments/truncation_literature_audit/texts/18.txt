@@ -1,0 +1,1205 @@
+                                                                                                                                                                                                                                              1
+
+
+
+
+                                                   RAPID: AppRoximAte Pipelined Soft MultIpliers and
+                                                   Dividers for High-Throughput and Energy-Efficiency
+                                                      Zahra Ebrahimi, Muhammad Zaid, Mark Wijtvliet, Akash Kumar, Senior Member, IEEE
+
+                                            Abstract—The rapid updates in error-resilient applications along with                                                                                                               6.3
+
+
+
+
+                                                                                                                                               Same -Bit Mul�plier
+                                         their quest for high throughput has motivated designing fast approximate                                                     Area               Delay                  Energy
+
+
+
+
+                                                                                                                               Normalized to
+                                         functional units for Field-Programmable Gate Arrays (FPGAs). Studies
+                                         have proposed various imprecise functional techniques, albeit posed                                                                                       3.7                                  3.5
+                                         with three shortcomings: first, most existing inexact multipliers and
+                                         dividers are specialized for Application-Specific Integrated Circuit (ASIC)                                                       1.9                            1.8
+                                                                                                                                                                                   1.5
+                                         platforms. Therefore, due to the architectural differences of underlying                                                    0.9
+                                                                                                                                                                                             0.6                         0.6
+                                         building blocks in FPGA and ASIC, ASIC-customized designs have
+arXiv:2206.13970v1 [cs.AR] 28 Jun 2022
+
+
+
+
+                                         not yielded comparable improvements when directly synthesized and                                                                 8-bit                 16-bit                        32-bit
+                                         ported to FPGAs. Second, state-of-the-art (SoA) approximate units are          Fig. 1: Comparing area, delay, and energy of 8-, 16-, and 32-bit
+                                         substituted, mostly in a single kernel of a multi-kernel application.
+                                         Moreover, the end-to-end assessment is adopted on the Quality of Results
+                                                                                                                        multiplication and division functions, implemented in Virtex-7 FPGA
+                                         (QoR), but not on the overall gained performance. Finally, existing            through Look-up Table (LUT) based accurate IPs.
+                                         imprecise components are not designed to support a pipelined approach,
+                                         which could boost the operating frequency/throughput of, e.g., division-
+                                                                                                                           FPGAs are equipped with hard-wired DSP blocks to speed-up
+                                         included applications. In this paper, we propose RAPID, the first pipelined
+                                         approximate multiplier and divider architectures, customized for FPGAs.        multiplication, being the commonly-used function in bio-signal or
+                                         The proposed units efficiently utilize 6-input Look-up Tables (6-LUTs)         image processing workloads. However, exploiting DSP blocks may
+                                         and fast carry chains to implement Mitchell’s approximate algorithms.          not fulfill design requirements due to three reasons: first, their limited
+                                         Our novel error-refinement scheme not only has negligible overhead over        ratio versus Look-up Tables (LUTs), i.e., <0.001 could be insufficient
+                                         the baseline Mitchell’s approach, but also boosts its accuracy to 99.4%
+                                         for arbitrary size of multiplication and division.                             for concurrent or multiplication-intensive applications. Second, their
+                                            Experimental results obtained with Xilinx Vivado demonstrate the            fixed locations in FPGAs impose routing overhead and may result in
+                                         efficiency of the proposed pipelined and non-pipelined RAPID multipliers       reduced performance for some applications [6, 7, 8]. Finally, DSPs
+                                         and dividers over accurate counterparts. In particular, 4-stage pipelined      are unable to be efficiently-utilized for multiplication with precision,
+                                         architecture of 32-bit RAPID multiplier (divider) enables 3.3× (5.1×)
+                                                                                                                        smaller than 18×18 bit [9, 10]. Therefore, designers are compelled to
+                                         higher throughput, 2.3× (6.8×) higher throughput/Watt, and 52% (31%)
+                                         savings of LUTs, over their 4-stage pipelined, accurate IP counterparts.       also employ soft Intellectual Properties (IPs) for e.g., multiplication
+                                         Moreover, the end-to-end evaluations of non-pipelined RAPID, deployed          and division functions, proposed by major FPGA vendors such as
+                                         in three multi-kernel applications in the domains of bio-signal processing,    Xilinx and Intel [11, 12]. In fact, exploitation of soft IPs instead
+                                         image processing, and moving object tracking for Unmanned Air Vehicles         of DSPs, for low bit-width operations, has also been suggested by
+                                         (UAV) indicate up to 35%, 33%, and 45% improvements in area, latency,
+                                         and Area-Delay-Product (ADP), respectively, over accurate kernels, with        academia and industry [13, 14]. Nonetheless, the long latency and
+                                         negligible loss in QoR. To springboard future research in reconfigurable       high resource footprint of LUT-based IPs still needs to be decreased
+                                         and approximate computing communities, our implementations will be             to facilitate the deployment of off-the-shelf FPGAs in aerial platforms
+                                         available and open-sourced at https://cfaed.tu-dresden.de/pd-downloads.        and wearable gadgets. On the other hand, to boost the throughput in
+                                            Index Terms—Field-Programmable Gate Arrays, Approximate Com-                despite of stagnant clock speed, pipelined IPs have been proposed
+                                         puting, Pipeline, Multiplier, Divider, Mitchell’s Algorithm, Bio-signal Pro-   as a promising solution, albeit leaving the the quest for reducing the
+                                         cessing, Unmanned Air Vehicles, High-Throughput, Energy-Efficiency.            resource-gap unaddressed.
+                                                                                                                           To minimize the resource footprint in aforementioned error-
+                                                                    I. I NTRODUCTION
+                                                                                                                        resilient programs, many approximation techniques have been
+                                            The ever-growing demand for edge computing has become pro-                  emerged, however, three main challenges are attributed to them. First,
+                                         nounced in the Internet of Things (IoT) era for a wide domain                  approximation approaches customized in ASIC platforms have not
+                                         of applications, from bio-signal to various cutting-edge image pro-            yielded comparable performance gains when directly synthesized and
+                                         cessing. For example, wearable 24/7 health monitoring gadgets                  ported to FPGAs, due to their different architectural specifications
+                                         are becoming ubiquitous, especially noting that 47% of cardiac                 [7]. Second, approximation is often applied on a single kernel of a
+                                         diseases – the main cause of death, worldwide – occur outside                  multi-kernel application, e.g., replacing multiplication (or division)
+                                         of hospitals [1, 2]. Unmanned Aerial Vehicles (UAVs) such as                   with imprecise versions in the DCT (quantization) stage of JPEG
+                                         drones are also proliferating for e.g., object/self tracking, search           compression. Their performance gain is also often evaluated and
+                                         and surveillance, agricultural operations, and entertainment. Although         reported for that single kernel and not in the end-to-end implemen-
+                                         Application-Specific Integrated Circuits (ASICs) are highly power-             tation of the application. Third, while most efforts are concentrated
+                                         efficient for implementing the above-mentioned programs, off-the-              on multiplication, studies like [15, 16] and our analysis shown in
+                                         shelf Field-Programmable Gate Arrays (FPGAs) have shown to serve               Fig. 1, consider the longer latency and higher energy of division
+                                         as commercially-viable options owing to their rapid prototyping and            compared to the multiplication. In fact, division is often the speed-
+                                         post-fabrication datapath versatility which can address the outpacing          bottleneck arithmetic operation in soft processors and can constrain
+                                         speed of algorithmic updates over the updates in hardware [3, 4, 5].           the speed of application. Therefore, approximation of division has
+                                         For example, the hardware of health gadgets should be able to adapt            also become pronounced as, although less frequent, this operation
+                                         with various patients’ physiological traits and the changes in heart’s         is unavoidable in image processing and vision applications (Harris
+                                         activity. High-throughput and/or energy-efficiency are also of high            corner detection and K-means in unsupervised clustering) as well
+                                         desire for the acceleration of such parallelizable applications that are       as bio-signal processing (heartbeat detection). In this context, a
+                                         repeatedly fed with a bulk of data.                                            pipelined/low-latency divider is of high desire. Nevertheless, among
+                                                                                                                                                      2
+
+
+
+the imprecise dividers in the literature only one is targeted for LUT-        • First approximate pipelined multiplier and divider. We design
+based architectures [15] and none is specialized toward a pipelined             2- 3-, and 4-stage pipeline architectures that achieve up to 8.1×
+design. In fact, pipelining has been mostly applied, in coarse-grain            higher throughput and 6.8× higher throughput/Watt over accurate
+granularity, in a processor datapath while the fine-grained approach            IP-based counterparts from Xilinx Vivado.
+has been overlooked, especially in approximate designs.                       • End-to-end performance-QoR evaluation on three application
+
+  To cope with the first challenge, we have designed LeAp [17] as               domains. The efficacy of the proposed multiplier and divider is
+the first logarithmic multiplier specialized for FPGAs. The motivation          evaluated in the end-to-end implementation of three applications:
+behind devising LeAp is based on translation of multiplication to               Pan-Tompkins heartbeat QRS detection, JPEG compression, and
+addition in the logarithmic presentation, through Mitchell’s algorithm          Harris Corner Detection (HCD).
+                    Approx.                         Approx.      ^            • Open-source model. The implementations of RAPID multipliers,
+[18] (P = A × B −−−−→ L     ogP = L
+                            ^       ^ ogA + L^ ogB −−−−−→ P̃ = 2LogP ).
+                     Log                             Anti-Log
+                                                                                dividers, and FPGA-customized programs will be open-sourced at
+Transforming the 2D array structure of multiplication to 1D addition sig-
+                                                                                https://cfaed.tu-dresden.de/pd-downloads, to fuel further research
+nificantly reduces the design complexity. Specifically, it reduces the long
+                                                                                in reconfigurable and approximate computing communities.
+latency and energy of an accurate divider, close to those of an accurate
+multiplier of the same-size. This translation is also suited for FPGAs           The rest of this article is organized as follows: Section II presents a
+and enables substantial gains as they already encompass fast carry chains     brief survey on the imprecise multipliers and dividers and distinguish
+to expedite addition. Implementation of Mitchell’s algorithm consists of      the contribution of this work. Section III summarizes a background
+three steps: approximate the log of inputs (by finding the position of        on Mitchell’s Mul/Div algorithms We elaborate upon the proposed
+the leading one), addition of two logs, and finally anti-log (a shift         architectures and pipelining approach in Section IV, respectively.
+operation). LeAp has taken major leaps toward speeding-up Leading             Experimental setup, circuit- and application-level results (on three
+One Detection (LOD) and error-reduction steps: in the former, the             multi-kernel applications) are detailed in Section V. Finally, Section
+LOD is accelerated by probing the 4-bit segment in parallel, and              VI draws the conclusion with an outlook to interesting future tracks.
+then finding the leading one in the most significant segment. For the                                  II. R ELATED W ORK
+latter, we have augmented the original Mitchell’s algorithm with three
+novel error-reduction schemes (independent from multiplier-size).                Although substantial effort has been dedicated to ASIC-based
+The proposed error-reduction schemes allow the addition of the error          inexact multipliers and dividers (a quantitative evaluation of them can
+coefficient concurrently with the fractional addition step and within         be found in [21]), FPGA-specialized counterparts have also recently
+the same resource footprint, used for implementing the baseline               gained traction. The approaches in both landscapes are discussed
+Mitchell’s designs [19]. Furthermore, LeAp [17] is customized in a            herein and their compendium is highlighted in Table I.
+way that effectively utilizes FPGA primitives, based upon the fact that          Partial product (PP) approximation: a wide class of works
+LUTs and carry chain (having fixed latency), can also be configured           targeting imprecise multipliers have mostly applied approximation
+to perform a ternary addition (frac1 +frac2 +error coefficient). This is      on: 1) PP generation by simplification of truth table in e.g., 2×2
+in contrast to previous approaches (MBM [20] and INZeD [16]), for             and 4×4 multipliers and use them in a modular design [22]. 2)
+which an additional circuitry was necessary for the addition of error-        Reduction/accumulation of PP rows into two, using 3:2 and 4:2
+reduction terms to the original Mitchell’s circuits.                          imprecise compressors [23, 24, 25, 26, 14, 27, 28] in Dadda- or
+                                                                              array-based multipliers. or 3) Adding the reduced PP rows by e.g.,
+   To surmount the rest of foregoing challenges in FPGAs, we further
+                                                                              splitting the carry propagation path [7, 29]. The main drawback of
+expand LeAp multiplier [17] and propose RAPID, which sets out to
+                                                                              these approaches is weak-scalability to larger input-width, as error
+enable the first architectures for approximate fine-grained pipelined
+                                                                              may drastically increase, when accumulated in a hierarchical design
+multiplier and divider. Our novel contributions in RAPID archi-
+                                                                              approach. Furthermore, compressor-based designs are posed with
+tectures are highlighted from three perspectives: first, following
+                                                                              high average relative error (ARE), or render moderate performance
+the light-weight error-reduction scheme of LeAp, we propose a
+                                                                              gain when applied on few least significant PP columns.
+logarithmic divider. Second, we further boost the accuracy of our
+                                                                                 Resizing to narrower-width multiplier/divider: another category
+designs by proposing various configurations for both multiplication
+                                                                              of works utilize a smaller instance of the arithmetic unit, based on a
+and division that also surpass the SoA counterparts in terms of
+                                                                              dynamic selection of most significant bits, starting from the position
+accuracy and/or performance metrics. Finally, we tailor our non-
+                                                                              of the leading one ([35, 34, 36, 47] for multiplier and [37, 38, 48]
+pipelined architectures for fine-grain pipelining and propose various
+                                                                              for divider). Although offering high resource improvements, these
+versions of approximate multiplier and divider, having different num-
+                                                                              truncation techniques suffer from error cases up to 100%. In addition,
+ber of stages. Such a spectrum of configurations also enables diverse
+                                                                              the latency of an accurate smaller-divider could be still multiple times
+power-throughput trade-offs, suited for different operating frequency
+                                                                              of a same-sized multiplier.
+levels within FPGAs. It is worth underlining that featuring fine-
+                                                                                 Division with inexact subtractor: this branch of studies have trun-
+grained pipelining at an intra-unit granularity could enable operating
+                                                                              cated or replaced accurate subtractors with imprecise counterparts, in
+at a higher frequency-level versus coarser-granularity (i.e., inter-
+                                                                              2N-by-N non-restoring and restoring array dividers [49, 50, 51, 52].
+unit), especially in applications including division operation. Note
+                                                                              The main difference between the two is in the remainder output, non-
+that although our circuits are specialized for FPGAs, our fine-grain
+                                                                              restoring version does not correct the remainder when subtraction has
+pipelining approach is also applicable to ASIC-based architectures.
+                                                                              a negative result. Thus, a correction circuit is added to its hardware
+In short, we make the following key technical research contributions
+                                                                              implementation. It has been shown that an approximate restoring
+in this journal version:
+                                                                              version dissipates less power than its non-restoring counterpart, while
+•   Near-zero biased multiplier & divider with extendable accu-               introducing slightly larger accuracy degradation [52]. Such cells are
+    racy. We further increase accuracy of LeAp multiplier and propose         also exploited in combinational implementation of higher radix SRT
+    three versions of divider. The accuracy of error-reduction schemes        dividers. Generally approximate array dividers offer high accuracy,
+    are further increased so that the minimally-biased designs confine        however, the resource savings achieved by them are small due to their
+    the average of absolute relative error (ARE) from >3.8% to <0.6%,         array structure [37, 38]. Furthermore, their latency remains multiple
+    through a limited number of coefficients.                                 times of a same-sized multiplier.
+                                                                                                                                                                                      3
+
+
+
+          TABLE I: Summary of state-of-the-art approximation approaches for ASIC- and FPGA-based multipliers and dividers [30]
+                                           ARE1                                                                                                        Reported
+    Approach       Mul/Div   Pipelined                                                 Description                                       Platform                       End-to-end4
+                                         up to (%)                                                                                                    Mul/Div Gain2
+                                           7.6                 Inexact 4:2 compressor in Dadda Mul [24, 25, 26, 28, 27]                                 {A, D, P} +       In [27]
+                                           1.7           Asymmetrically utilize inexact compressor in 3/4 of LSB columns [23]                         {A, P} ++, D +
+     Partial                                                                                                                              ASIC
+                                           8.4            Simplified Karnaugh map of 4:2 compressor in Booth multiplier [31]                             A +, E ++
+    Product
+                    3/7         7         Config.          Library of larger multiplier and adders using 2x2 instances [32, 22]                        {A, D, P} ++
+   Generation/                                                                                                                                                              7
+                                           0.3           Cutting the carry propagation path in 4-, 8-bit array multiplier [29, 7]                       {A, D, P} +
+    Addition/
+                                           8.5         Truth table simplification 3:2/4:2 compressor for Dadda multiplication [14]        FPGA           {A, P} +
+  Accumulation
+                                          Config.            Library of 4x4 and 8x8 with approximate partial products [33]                              {A, P, D} +
+                    3/ 7                   10.9         Leading one based: with error compensation [34], with rounding [35, 36]                         {A, P} ++
+   Truncated                    7
+                    7/ 3                    6.7       Leading-one position based 2k+2/k+1 Div plus error reduction circuit [37, 38]       ASIC        {A, D} +, E ++        7
+    Mul/Div
+                    3/ 7        7         1.2-4.7        Variable-precision multiplier based on 8-bit truncated instances [37, 38]                       {A, E} +
+                                           2.9           Piecewise linear approximation and rounding of reciprocal of divisor [39]                      {D, E} ++
+  Multiplicative                7          6.4            Approximating reciprocal by bit manipulation [40], with truncation [40]                     {A, D, E} +++         7
+                    7/3                                                                                                                   ASIC
+   Dividers                                16.3        Approximating reciprocal using a table indexed by upper bits of divisor [41]                   {A, D} +, E ++
+                                3          4.9          Incremental approximation of reciprocal of divisor using Taylor series [42]                    {D, E} +++           7
+                                            2.9      Enhance Log accuracy: round rather truncation in piecewise approximation [43]                    {A, P} ++, D +
+                                           > 3.9              Use different approximate adders in Mitchell’s multiplier [44]                            {A, P} +++
+  Mitchell’s        3/ 7
+                                 7          2.7        Improving accuracy of Mitchell’s Mul with adding one error-correction [20]         ASIC           {A, P} ++          7
+ Multiplication
+                                            2.7               Adding up to 256 error-coefficient to Mitchell’s muliplier [45]                             {A, P} +
+ and Division
+                    7/ 3                    3.0              Add one error-correction (with a similar approach to [20]) [16]                          A +, {D, E} ++
+  Algorithms
+                    3/ 7        7          1-1.6             Adding one to five error-coefficient to Mitchell’s multiplier [17]           FPGA        {A, E} ++, T +         7
+     [18]
+                    3/ 3        7           0.8        Adding 64 error-coefficients to Mitchell’s multiplier and divider [15, 30, 46]   FPGA/ASIC    {A, E} ++, T +++   In [30, 46]
+                    3/3         3          0.6-1     Different pipelined designs for multiplier and divider with tunable accuracy         FPGA      {A, E} +++, T +++        3
+    1                                                                         2                                                           4
+        Average of Absolute Relative Error (a.k.a MRED),                          Area/Delay/Energy/Power/Throughput                          End-to-end performance gain
+
+   Multiplicative dividers: in another class of dividers, the reciprocal                      provements come with the cost of relatively high error (ARE of
+of the divisor is calculated first and subsequently multiplied with the                       3.8% for multiplication and 4.1% for division). Therefore, various
+dividend. Approximation is applied on the reciprocal of the divisor                           schemes have been presented to reduce the error in the original
+(using Taylor series [53] or linear piecewise approximation [39]).                            Mitchell’s algorithms. The authors of MBM [20] have proposed a
+Encoding the reciprocal to lie in the range of (0.5, 1] is performed                          single error-reduction term for multiplication, and they employed a
+usually using a table indexed by the upper bits of the divisor (similar                       similar scheme for division in INZeD [16]. However, a single error-
+to [41]), or a series of bit manipulations, e.g., inverting all bits and                      reduction term weakly fits all input combinations and eventuates in
+appending ’1’ at MSB (like [40]). In some studies operands are also                           many output overflow cases, when adding the error-reduction term.
+truncated/rounded to lie in some specific bit-width range. Overall,                           In addition, their approaches are optimized for ASIC platforms. To
+these approaches impose significant resource cost in FPGAs, due                               alleviate error and also targeting FPGAs, we have recently proposed
+to requiring both reciprocal and multiplier IPs, separately. Moreover,                        two FPGA-specialized designs, LeAp [17] and SIMDive [15] (a
+when truncating divisor goes beyond relatively few bits, the accuracy                         similar error-reduction approach to SIMDive has also been adopted
+of the reciprocated divisor degrades significantly [39].                                      in the REALM multiplier [45]). The approaches in these works
+   FPGA-customized multipliers: it has been shown that ASIC-                                  considers F MSBs of fractional parts for each operand. Therefore, the
+based approximation approaches have not yielded comparable perfor-                            possible combinations for the possible pairs makes a squarish region
+mance gains when directly synthesized and ported to FPGAs [7, 33]                             which is then partitioned to 2F × 2F sub-regions, each assigned with
+(primarily, due to the underlying architectural differences). To cope                         a unique error-coefficient. Although the error-reduction approaches
+with this challenge, recent works narrowed their focus toward special-                        of these works are similar in spirit, each has been designed for
+izing such techniques taking into account the LUT-based structure of                          either ASIC or FPGA and targeted for different design goal. While
+FPGAs. For example, modification of LUTs which calculate LSBs                                 REALM [45] is an ASIC multiplier, SIMDive [15] implements
+in 4×4 multiplications have been customized separately, for array                             an FPGA-specific hybrid Mul/Div, aimed at applications with data
+based- [29, 7, 33], and Booth-based [54] architectures. Furthermore,                          parallelism opportunities that can benefit from Single Instruction,
+an approximate compressor has been proposed in [14], geared toward                            Multiple Data (SIMD) architectures. Moreover, as will be shown later,
+an LUT-oriented implementation. Despite the specialized customiza-                            RAPID enables higher accuracy than SIMDive, even with smaller
+tion in these schemes for reconfigurable platforms, their resource                            number of coefficients/LUTs.
+savings have not been significant compared to logarithmic designs                                Pipelined architectures: Fine-grain pipelining has recently gained
+(discussed in the following). Moreover, Booth-based designs suffer                            attention. In this context, authors in [55, 56] have applied pipelining
+from an increased critical path length [54]. This has highlighted the                         on PP generation and accumulation in the array-based accurate mul-
+need for exploring other avenues for FPGAs which can achieve higher                           tipliers. Compared to accurate-, limited attention has been dedicated
+performance gain with an acceptable accuracy.                                                 to approximate-designs. SoA divider SAADI-EC [42] and a modified
+   Logarithmic multiplier and dividers: In a more recent trend,                               version of the DRUM multiplier [57] have been the only works that
+some works have adopted Mitchell’s approximate algorithms in lieu                             adopted intra-unit pipelining. Despite the possibility of increasing
+of array-based designs. Mitchell’s algorithms translate multiplica-                           throughput, these work lack a well-established pipelining strategy
+tion (division) into log and addition (subtraction) in logarithmic                            as no analysis has been performed to uniformly divide the critical
+representation. Such logarithmic transformations generally render                             path over pipeline stages, resulting in poor performance. To the
+higher resource gains compared to other approximation approaches.                             best of our knowledge, no other work has proposed approximate
+Interestingly, the latency of a division is also reduced, comparable                          pipelined multiplier or divider architectures, which is highly desired
+to a same-sized multiplier, via this algorithm. However, these im-                            for processing of cutting-edge applications. In fact, the achieved
+                                                                                                                                                                       4
+
+
+
+    substantial boost in throughput is pivotal in e.g., image processing                The equations also reflect the proportional replication of error in each
+                                                                                        •
+    and health monitoring applications.                                                 power-of-two. This behavior is repeated for each size of multiplication
+                                                                                        or division (irrespective of k1 and k2 ). This repetition allows applying
+                                                                                        the same error-reduction approach for all multiplier or divider sizes. In
+                     III. P RELIMINARIES AND BACKGROUND                                 fact, a set of coefficients can be added to fractional parts, before that their
+       Mitchell’s Multiplication and Division Algorithms: as shown in                   summation become scaled [20, 16]).
+                                                                                     • As can be seen in Fig. 2 (a), and (e), some of nearby sub-regions have
+    Eq. 1, Mitchell’s algorithms perform imprecise multiplication and                   very small error (less than 2%), while the changes of error occurs is
+    division in the logarithmic representation of numbers. Consider the                 more pronounced in other sub-regions. This motivates grouping the regions
+    binary representation for N -bit unsigned input A, which can be                     having similar error as well as assigning more coefficients to the sub-regions
+    written as Eq. 2, where k indicate the position of the leading one.                 having higher error (to efficiently reduce the error to a certain bound).
+    The rest of the bits (starting from position k − 1 to 0) are considered             It is also worth noting that an efficient partitioning should result in a
+                                                                                     small number of coefficients to minimize the overhead of error-reduction.
+    as the fractional part and fall in the range of 0 ≤ x < 1.                       Partitioning approaches such as REALM [45] and SIMDive [15] results in
+                                                                                    superfluous number of error-coefficients when targeting high accuracy. Note,
+                         Approx.                              Approx.
+     
+       P  =  A   ×  B  −− −− →  Log
+                                 ^    P =  Log
+                                           ^   A  +   Log
+                                                      ^     B −−−  −→  P̃ = 2
+                                                                              ^
+                                                                              Log P  considering even four MSBs of fractional parts results in 24 × 24 = 256
+     
+                         Log                                 Anti-Log               coefficients and limits the scalability of such schemes (especially for FPGAs,
+                                                                                     as will be discussed later). It fact, the resource-efficiency of the error-reduction
+     
+                        Approx.                               Approx.         ^
+                                                                              Log
+                                                                                     strategy proposed in SIMDive depends on the number of LUT inputs and is not
+     D = A ÷ B −−−−→ LogD = LogA − LogB −−−−→ D̃ = 2
+                                ^         ^           ^                          D
+                                                                                     easily extendable when when targeting higher accuracy. Going into the details,
+                          Log                                 Anti-Log
+                                                                                (1) to generate 256 coefficient through SIMDive approach, four MSBs from each
+          k−1
+                                                                                     fractional part should be considered, which requires the direct utilization of
+          X                        e.g.                                              8-LUTs for each bit of error-reduction term. Otherwise the usage of a 256-
+A = 2k+        2i bi = 2k (1+x) −−→ 58 = 25 (1+0.11010)2 , 18 = 24 (1+0.001)2
+                                                                                     to-1 Mux (each input is 8- or 16-bit) is inevitable. Implementing this mux or
+          i=0
+                                                                                 (2) 8-LUT out of 6-LUTs increases the error-reduction overhead of SIMDive to
+                                                                                     nearly 4× of its original idea (well-suited for considering 3 or less MSBs of
+       In linear mathematics, log2 (1 + x) is approximated to x for this fractional part). This overhead is not negligible, especially when targeting a
+    range of 0 ≤ x < 1; thus, the approximate log value of input A is:               small-sized multiplier or divider. Building upon this discussion, we propose
+                                                                                     RAPID to enable reaching higher accuracy with even smaller overhead.
+    Log2 (A) ' k + x → Log2 (58) ' (101.11010)2 , Log2 (18) ' (100.001)2                Proposed light-weight error-reduction scheme: to cope with the overflow
+                                                                                 (3) problem in INZeD and MBM, and the over-provisioned number of coefficients
+       After applying the same step on the second input to get its (i.e., 256) in REALM, the insights obtained from aforementioned observations
+    approximate log, the summation (subtraction) of two parts is obtained incentivize reducing the error-reduction terms by efficiently clustering them in
+    in Eq. 4 (Eq. 5).                                                                fewer groups. In RAPID, we divide the squarish region between each power-
+                                                                                     of-two pair to different, and fewer, regions than REALM/SIMDive. In our
+     ]2 (P̃ ) = (k1 + k2 ) + (x1 + x2 ) → Ks = (1001)2 , Xs = (0.1111)2
+     Log                                                                             partitioning we consider the following factors:
+                                                                                 (4) 1) Consider four rather than three MSBs of fractional parts, to increase the
+      ]2 (D̃) = (k1 − k2 ) + (x1 − x2 ) → Ks = (1)2 , Xs = (0.1011)2 (5)
+     Log                                                                             accuracy.
+                                                                                     2) Minimize the number of sub-regions while considering four MSBs, to
+    Finally, by applying the anti-log (which mathematically is a shift op- constrain resource cost for selection of the coefficient.
+    eration), binary representation of the approximate product (quotient) 3) Minimize error distribution × error magnitude in each region (can
+                                                                                     be estimated to the integral of error-magnitude for that region).
+    are derived by Eq. 6 (Eq. 7):                                                    We have proposed three error-reduction schemes in Fig. 2, based on the
+                                                                                     in-depth analysis of error and the resource-usage reports from Vivado. To
+      k +k
+        2 1 2 (1 + x1 + x2 ), x1 + x2 < 1
+ P=
+  e                                                → P = 992, Pacc = 1044 (6)
+                                                       e                             minimize the average of absolute relative error (ARE), various partitionings
+           2k1 +k2 +1 (x1 + x2 ), x1 + x2 ≥ 1
+      k −k −1                                                                       have been investigated. The goal of partitioning is to keep the error of grouped
+      2 1 2 (2 + x1 − x2 ), x1 − x2 < 0                                              sub-regions nearly uniform and below pre-defined thresholds, e.g., ∼4%,
+D=
+ e                                                  →  D
+                                                       e = (11)2 = 3, Dacc = 3
+        2k1 −k2 (1 + x1 − x2 ), x1 − x2 ≥ 0                                          3%, and 2.5% for 3-, 5-, and 10-coefficient multiplier schemes, respectively.
+                                                                                 (7) Further, the error-reduction coefficient for each group of sub-intervals, are
+                                                                                     derived by following the mathematical approach detailed in [45]. The binary
+                                                                                     representation of the proposed coefficients for multiplier and divider are also
+      IV. P ROPOSED P IPELINED AND N ON -P IPELINED M ULTIPLIER                      shown in Table II. From the implementation point of view, partitioning is
+                          AND D IVIDER A RCHITECTURES                                implemented via small-sized multiplexers (coded via casex statement in HDL).
+                                                                                     In such implementation, the LUT usage depends on the number of error-
+       In this section we initially present the proposed error-reduction coefficients as the Mux-inputs and the complexity of conditional statements in
+    schemes, and afterwards elaborate on the structure of RAPID multi- the casex statement. In order to minimize the former (number of Mux-inputs)
+    plier and divider architectures (non-pipelined and pipelined).                   we have proposed three schemes, having most 10 coefficients. In order to
+                                                                                     minimize the latter (complexity of conditional statements for selecting the
+                                                                                     coefficients), we only consider comparing 4 MSBs of fractional parts for the
+    A. Proposed light-weight & minimally-biased error-reduction schemes partitioning. Moreover, in this partitioning, neighbouring sub-regions having
+                                                                                     the same coefficient are packed to reduce the complexity for each conditional
+       Mitchell’s error for 8-bit multiplication and division are formulated statement. From the hardware-usage perspective, each 6-LUT functions as
+    in the Equation 8 and 9. Inspecting the behavior of the error has a 4-MUX (in which 4 inputs and the 2 select lines are the LUT inputs).
+    provided the following insights, some of which are also noted and Further, as also denoted by [58], a 16:1 multiplexer requires a single FPGA-
+    endorsed by SoAs [45, 15, 20, 16]:                                               slice having four 6-LUTs. Based upon this, we have also chosen a a squarish
+                                                                                     partitioning through a MUX-based approach, to minimize the overhead for
+                                     2k1 +k2 (x1 x2 ),
+                           
+                                                                  x1 + x2 < 1        the proposed error-reduction strategy. This is while, checking the rhombus
+      EP = P − P =    e                                                          (8)
+                             2k1 +k2 (1 − x1 − x2 + x1 x2 ), x1 + x2 ≥ 1             borders (see the original error shape in Fig. 2) is very costly in hardware and
+                                                                                     could nullify the LUT-saving, gained from approximating approach. It should
+                                                                                     be noted that the proposed partitioning is also scalable, as the resource cost for
+                           
+                           2k1 −k2 (x1 (x2 −1)+x2 −(x2 )2 ) , x1 − x2 < 0
+      ED = D − D̃ =                          2(1+x2 )
+                                                                                 (9) choosing one of few coefficients does not grow exponentially, contrary to the
+                                          (x x2 −(x2 )2 )                            REALM/SIMDive approaches. In fact, the proposed partitioning surpasses the
+                                 2k1 −k2 1 1+x           ,        x1 − x2 ≥ 0
+                                                   2
+                                                                                     SoAs in terms of resource-error trade-off: not only with 10 error-coefficients
+    • The equations demonstrate the different error magnitude in each power-         and considering 4 MSBs we achieve Average Relative Error (ARE) of 0.6%,
+       of-two interval. Therefore, merely adding a single correction term to the     which is better than SIMDive/REALM (0.8% ARE, considering 3 MSBs),
+       output (as proposed in INZeD [16] and MBM [20]) is not efficient and          but also the resource footprint of this scheme is 193 LUTs, still lower than
+       results in many output overflow cases [45, 15].                               SIMDive/REALM counterparts (see Table III).
+                                                                                                                                                                                                           5
+
+
+
+                                                                                                                                                     10
+                                            3                                                       5                                            9
+                                                                                                                                             8
+                                                                                                4                                        7
+Mul�plica�on
+
+
+
+
+                                                                                           3                                      56
+                                                                                       2                                        34
+                                    1                                              1                                           12
+
+                                2
+
+
+
+
+                            (a) 3‐coeﬃcient                                (b) 5‐coeﬃcient                              (c) 10‐coeﬃcient                     (d) Exemplar of error‐reduced (5‐coeﬃcient)
+
+
+
+                                                                                                                               8 9
+                                                                               4                                           7
+                            2        3                                     3
+                                                                                       5
+                                                                                                                    4   56
+                                                                                                              123
+Division
+
+
+
+
+                      1                             1                1 2
+                                                2                                                   2 1                                              21
+                                                                                            4
+                                                                                                3                                            43
+                                                                                                                                    7   65
+                                                                                                                                8
+
+
+
+                            (e) 3‐coeﬃcient                                (f) 5‐coeﬃcient                           (g) 9‐coeﬃcient                         (h) Exemplar of error‐reduced (5‐coeﬃcient)
+
+
+                      Fig. 2: Proposed error reduction schemes of RAPID for multiplication and division, based on 4 MSBs of fractional parts.
+
+TABLE II: Binary representation of error-reduction coefficients in 16-bit multiplier & divider (3/4 MSBs are zero for Mul/Div and excluded)
+                                                        Multiplier                                                                                        Divider
+                  3-coefficient          5-coefficient                     10-coefficient                       3-coefficient                5-coefficient                    9-coefficient
+               1) 100000100111      1)   1001111111111       1)   1001111000110 6) 0101110011111             1) 1000011111111           1)   1001111000100      1)   1001110001111 6) 0110010100101
+               2) 010011101100      2)   1000011011101       2)   1000110110001 7) 0100101000011             2) 0100010111111           2)   1000001000111      2)   1000110111100 7) 0101000101011
+               3) 000100101001      3)   0110010001010       3)   0111111000100 8) 0100001011101             3) 0001011111111           3)   0110110001101      3)   1000000010100 8) 0100111101000
+                                    4)   0011110010111       4)   0111000110101 9) 0011110000011                                        4)   0101010100111      4)   0111001100010 9) 0100001101100
+                                    5)   0000111110000       5)   0110010100011 10) 0010101111111                                       5)   0011011100100      5)   0110100001101
+
+
+                                                                                                             For example, the position of leading one in the 8-bit LOD equals
+                                    3-bit                         3- bit                   Input2
+                   Input1                         Binary Adder                                               to the concatenation of {Location index of most significant segment,
+                             Integer Part                         Integer Part              8-bit
+                    8-bit                         (Subtractor)                                               Leading one position in that segment}, e.g., the leading one position
+                                                Slice 1   Slice 0                                            in ”01010101” is {{1},{10} => {110}} in binary. The first part
+               Approximate                                                         Approximate
+               Log Calculator       4-bit Light-Weight Error           4-bit       Log Calculator
+                                                                                                             ({1}) is the output of Flag-LUT that has been employed for upper
+        7-bit                               Coefficient Selection                               7-bit
+                                                                                                             4-bit segment. The second part ({10}) is the result of LOD4-LUTs
+   Fractional                                                                                   Fractional   on the upper segment. A similar method has been also exploited for
+         Part                   Ternary Adder with Error Compensation                           Part         16- and 32-bit LODs. For example, in a 16-LOD, if the upper half
+                                Slice 3  Slice 2    Slice 1  Slice 0                                         of the operand is zero, the 16-bit LOD is equal to the lower 8-bit
+                                                                                                             LOD. Else, the position of leading-one is 8+leading-one position in
+                Approximate Product (Quotient)                       Output Barrel Shifter                   the upper-half 8-LOD. This can be obtained by applying a logical-
+  Fig. 3: Overall structure of proposed RAPID multiplier and divider                                         OR function on the outputs of Flag-LUTs on the 4-bit segments of
+                                                                                                             the upper-half. In LeAp [17], LOD step was orchestrated through an
+B. Structure of RAPID multiplier and divider (Non-Pipelined)                                                 FSM and performed in, at most, five clock-cycles. In order to achieve
+  Fig. 3 illustrates the structure of the proposed multiplier and divider. The                               efficient pipelining and minimize the number of registers, the LOD is
+                                                          Approx.
+overall design is designed based on Res = A ×      ÷ B −−Log−−→ Log ^  Res =                                 implemented as combinational logic. Subsequently, the critical path
+              Approx.       ^
+                                                                                                             is analyzed in order to achieve balanced partitioning for pipelining.
+Log
+^   A ± LogB −
+        ^ −           g = 2Log
+               −−−→ Res        Res .
+                                Anti-Log                                                                        Addition of integer parts: as shown in Fig. 3, each 4-bit addition
+   Leading-one detection: To accelerate leading one detection in our                                         is fulfilled by one Virtex-7 slice which includes four 6-LUTs and its
+FPGA-customized method, this process is calculated based upon 4-                                             associated fast carry chains. Together, these implement a Carry Look-
+bit LODs (implemented by directly configuring LUTs). In the first                                            Ahead Adder (CLA). Extending the 4-bit addition to 8-bits is easily
+step, we prob the presence of bit value ‘1’, simultaneously, in each                                         achievable by connecting the Cout from a previous slice to the Cin
+4-bit segment of the operands. To this end, one LUT is configured                                            of the next slice. Recalling Eq. 4 and Eq. 5, division is performed by
+as a logical OR function, applied on 4-bits of each group to reveal                                          changing additions to subtractions, through 2’s complement modules.
+whether the segment contains a bit with value ‘1’ (acts as a zero-                                              LUT-optimised ternary addition: recalling that in LeAp [17], we
+detection flag). In parallel, another 6-LUT is configured to two 5-                                          have proposed error reduction coefficients such that it only depends
+LUTs in such a way that it determines the position of leading-one                                            on the fractional bits (and not the intermediate result of Mitchell
+in the 4-bit segment (LOD4-LUT). Finally, based on the resulting                                             Mul/Div, contrary to MBM/INZeD [20, 16]). On the other hand,
+bits from the output of these 6-LUTs, we determine the position of                                           LUTs and their associated fast carry chain in Xilinx UNISIM
+leading one in the most significant group, through the priority logic.                                       library [59] can be configured to implement a ternary adder. To
+                                                                                                                                                                                     6
+
+
+
+
+    Approx Log                Error Coefficient               Ternary Addition             Integer Parts            Barrel Shifter                          Relative
+                                                                                                                                           MUL Latency Throughput LUT Total
+ Calculator (1.2 ns)          Selection (0.9 ns)           (Fracs+Error) (2. 4 ns)        Addition (0.9 ns)        Anti-Log (1.2 ns)                                  Reg
+                                                                                                                                            Non-
+                                                                                                      Integer Parts Add
+                                                                                                                                                      6.1     0.8      171    64
+Approx Log          Error Coeff. Sel.            Ternary Add           Reg      Ternary Add                                     Anti-Log Pipelined
+Calculator              (3.0 ns)              Fracs+Error [11:0]      0.2 ns    Fracs+Error [15:12]       (3 . 1 ns)        Barrel Shifter 2-stage
+                                                                                                                                           Pipeline   6.6     1.5      173    98
+Approx Error Coeff. Sel        Fracs+Error Reg              Fracs + Error [15:4]          Reg       Integer Parts                Barrel
+                                                                                                                                           3-stage
+Log        (2.1 ns)                  [3:0] 0.2 ns                 (2 ns)                 0.2 ns      Add         (1.8 ns)        Shifter              6.9     2.12     174    126
+                                                                                                                                           Pipeline
+
+Approx Error Coeff.           Reg       Fracs + Error [7:0]          Reg       Fracs + Error [15:8]     Reg     Integer Parts Barrel 4-stage          7.2     2.71     175    141
+Log   (1.6 ns) Sel.          0.2 ns          (1.4 ns)               0.2 ns           (1.4 ns)          0.2 ns    Add (1.6 ns) Shifter Pipeline
+
+
+
+ Approx Log           Error Coeff.        Two's Comp.                 Ternary Addition         Integer Parts            Barrel Shifter                      Relative         Total
+                                                                                                                                            DIV Latency Throughput LUT
+ Calc. (1.2 ns)      Select. (0.9 ns)       (0.4 ns)               (Fracs+Error) (2.4 ns)     Addition (0.9 ns)        Anti-Log (1.2 ns)                               Reg
+                                                                                                                                            Non-
+                                                                                                      Integer Parts Add
+                                                                                                                                                      6.4     2.84     112    41
+Approx Log Error Coeff . Two's Comp. Ternary Add                       Reg      Ternary Add                                     Anti-Log Pipelined
+Calculator         (3.4 ns)       Fracs+Error [11:0]                  0.2 ns    Fracs+Error [15:12]       (3 . 2 ns)        Barrel Shifter 2-stage
+                                                                                                                                           Pipeline   7.2     5.19     121    70
+ Approx      Error Coeff
+                     .                Two's       Reg       Fracs + Error [15:0]          Reg       Integer Parts               Barrel
+                                                                                                                                           3-stage
+ Log              (2.3 ns)            Comp.      0.2 ns          (2.6 ns)                0.2 ns      Add         (1.8 ns)       Shifter               8.4     6.67     127     98
+                                                                                                                                           Pipeline
+
+Approx Error Coeff.           Reg          Two's Comp.
+                                                                     Reg       Fracs + Error [15:4]     Reg     Integer Parts Barrel 4-stage          9.2     8.12     130    119
+                                        Fracs + Error [3:0]
+Log   (1.8 ns) Sel.          0.2 ns          (2.1 ns)               0.2 ns           (2.1 ns)          0.2 ns    Add (1.7 ns) Shifter Pipeline
+                                                                                                                                             Latency of Non-pipelined Accurate Unit
+Latency = N× Clock Period = N × (Max of Stages' delay+Reg delay)                  (N = # of Pipeline stages),   Relative Throughput = N×
+                                                                                                                                             Latency of pipelined Approximate Unit
+
+           Fig. 4: Proposed 2-, 3-, and 4-stage pipelining for 16x16 RAPID-5 multiplier (top) and RAPID-9 16/8 divider (bottom).
+
+this end, we have manually configured the LUTs and carry chain                                    the default-optimizations and structural-modification applied by the
+primitives of the FPGA in such a way that they implement a ternary                                tool. Based on this analysis, the pipelining registers were inserted
+adder. This highly suits our error-reduction approach as enables                                  in the proper locations of the non-pipelined design. Afterwards, re-
+combining the process of adding error-reduction coefficient with                                  synthesis has been performed to assess whether a marginal fine-tuning
+fractional parts with the same resource footprint and in a single                                 for the adopted partitioning can result in better end-to-end latency.
+step. In fact, regardless of the ternary adder size and compared to                               It can be inferred from Fig. 4, that through the adopted pipelining
+the binary version, only one more bit at MSB position is needed,                                  approach, the latency of stages become similar. Moreover, the delay
+as frac1i +frac2i +error coefficienti +Cin (Cout from prior bit) may                              overhead of a pipeline register is small, particularly since the divider
+result in 3 bits, requiring another LUT at the end of the chain                                   is in the critical path in most applications. Moreover, each of the
+[19]. Moreover, the delay of FPGA primitives is fixed. Therefore,                                 proposed soft-core designs has a different operating frequency and
+adding error-reduction term at the same time as fractional parts does                             can be utilized w.r.t the different frequency levels offered by a single
+not impose additional overhead to the design. On the contrary, in                                 or various FPGA families. Finally, different pipeline versions enable
+REALM [45], MBM [20], and INZeD [16] an additional circuit is                                     a spectrum of latency-throughput trade-offs. Therefore, the proper
+needed to add the error-reduction term (or half of it) to the original                            configurations can be loaded w.r.t. the application’s requirement.
+Mitchell’s circuits, based on the intermediate summation/subtraction
+of fractional parts.                                                                                                       V. R ESULTS AND D ISCUSSION
+   It should be noted that to prevent overflow in 2N-by-N bit standard
+                                                                                                     In this section, we first present the implementation results of
+division, the condition for dividend < 2N × divisor needs to be
+                                                                                                  the proposed RAPID multipliers and dividers (pipelined and non-
+satisfied [60]. This means that scaling of the divider lies in the range
+                                                                                                  pipelined configurations). We have also implemented the compared
+of 20 to 2N −1 (similar to [16]). Therefore, only N-1 bits are used
+                                                                                                  the proposed RAPID against the following designs: DSP- and
+from the subtractors for the output and N LSBs from log   f
+                                                              dividend is                         pipelined/non-pipelined IP-based accurate counterparts, dynamically
+neglected. This also reduces the resource footprint for subtractor and
+                                                                                                  truncated DRUM [47] and AAXD [37], hierarchical-based AFM
+barrel shifter and does not affect the accuracy.
+                                                                                                  multiplier [29], SAADI-EC pipelined divider [42], and Mitchell-
+C. Proposed Pipelined Architectures for Multiplier and Divider                                    based counterparts (SIMDive multiplier and divider [15], MBM
+                                                                                                  multiplier [20], and INZeD divider [16]). We compare the designs
+   In order to minimize the latency overhead, the combinational                                   w.r.t different performance metrics including Performance (herein
+datapath of multiplier and divider should be partitioned for near                                 throughput) per Watt which is considered by industry to be the very
+uniform latency over the pipelined stages. To achieve this, we have                               new Moore’s Law [61]. Afterwards, the end-to-end performance gain
+adopted the following steps: first, each stage of the multiplication                              on three multi-kernel applications is assessed.
+or division is synthesized in isolation to get an estimation of the
+delay for each stage. Fig. 4 shows the latency of individual stages in
+non-pipelined and various pipelined configurations for a 5-coefficient                            A. RAPID versus SoA multipliers & dividers (circuit-level evaluation)
+multiplier and divider (the results for all designs are shown in Table                               Experimental Setup: to evaluate performance metrics, all the de-
+III). Note that after integrating the sub-modules and synthesizing                                signs are developed in Verilog HDL, synthesized, and implemented
+the entire component, the end-to-end latency may change due to                                    in Xilinx Vivado 2019.2 for the Virtex-7 FPGA. To ensure scalability
+                                                                                                                                                                                                                          7
+
+
+
+TABLE III: Accuracy-resource trade-off of accurate/approximate multipliers & dividers (pipelined/non-pipelined) in FPGA implementation
+                                                 Multiplier                                                                                                     Divider
+                                          1                                     3
+                                  E2E                 Circuit   Clk      Rel.       Rel.                 Error                                  E2E              Circuit       Clk    Rel.   Rel.                  Error
+                                              Rel.2                                        ARE PRE                                                      Rel.                                        ARE    PRE
+   8×8 Mul        LUT      FF     Latency             Power Power Energy Tput/                           Bias       8/4 Div      LUT      FF Latency             Power Power Energy Tput/                          Bias
+                                              Tput                                         (%)    (%)                                                   Tput                                        (%)    (%)
+                                   (ns)               (mW)      (mW) per inst Watt                       (%)                                    (ns)             (mW)      (mW) per inst Watt                      (%)
+                   7+                                                                                                             11+
+  DSP-based                 31     3.72       1.97    17.52      10.3    1.77       1.13    -      -       -       DSP-based               63   7.48    1.44      19.80        11.6   2.25   0.44    -       -       -
+                  1 DSP                                                                                                          2 DSPs
+              4
+  Acc IP NP         60      48      3.67       1.0    15.91       -       1.0       1.0     -      -       -      Acc IP NP        51      42   10.74    1.0      9.62          -     1.0    1.0     -       -       -
+  Acc IP P2         60      88     4.30       1.71    23.19     37.5     2.23       0.45    -      -       -       Acc IP P2       55      59    13     1.67      21.09        18.4   2.43   0.41    -       -       -
+  Acc IP P3         60     112     5.10       2.16     47.5      43      2.64       0.38    -      -       -       Acc IP P4       69      89   23.7    1.81      26.27        29.1   3.14   0.32    -       -       -
+ RAPID-3 NP         57      39     4.97       0.74     12.06      -      1.03       0.97   1.02   6.1    0.06    RAPID-3 NP        41      20   5.20    2.06      9.72          -     0.48   2.06   0.99   5.74    0.02
+ RAPID-5 P25        62      56     5.45       1.35    18.17     22.9     1.91       0.52   0.91   4.45    0.05    RAPID-5 P2       44      20   5.18    4.15      14.74        20.8   0.88   1.13   0.79   4.34     0.01
+ RAPID-10 P3        71      69     6.88       1.60    24.31     34.0     2.29       0.44   0.64 3.69     0.05     RAPID-9 P3       51      20   5.34    8.05      22.66        30.6   0.91   1.47   0.58   3.48    0.01
+    AFM1            69      58     5.50       0.67    18.66       -      1.76       0.57   0.23 16.52    0.23    SIMDive-DIV       44      20   5.23    2.09      9.23          -     0.45   2.20   0.77   5.20    0.01
+ SIMDive-MUL        61      32     5.13       0.72    16.34       -      1.44       0.7    0.82   4.76   0.05       INZeD          47      21   6.12    1.75      11.14         -     0.65   1.53   2.93   9.53    0.02
+    MBM             64      33     5.16       0.71    17.48       -      1.54       0.65   2.60   8.59   0.09       Mitchell       36      20   5.10    2.11       8.53         -     0.42   2.40   3.90   13.00   3.90
+   Mitchell         51      32     4.82       0.76    13.39       -      1.11       0.9    3.77 11.11    3.77    SAADI-EC (16)    103      42    13     0.84      24.42         -     2.99   0.33   2.37   8.82    1.92
+   DRUM-4           53      32     5.08       0.72    14.33       -      1.25       0.81   5.82 25.35    1.84     AAXD (6/3)       38      20   6.06    1.77       9.01         -     0.52   1.91   2.08 100.00    1.49
+                                   E2E                Circuit   Clk      Rel.       Rel.                 Error                                  E2E              Circuit       Clk    Rel.   Rel.                  Error
+                                              Rel.                                         ARE PRE                                                      Rel.                                        ARE    PRE
+  16×16 Mul       LUT      FF     Latency             Power Power Energy Tput/                           Bias       16/8 Div     LUT      FF Latency             Power Power Energy Tput/                          Bias
+                                              Tput                                         (%)    (%)                                                   Tput                                        (%)    (%)
+                                   (ns)               (mW)      (mW) per inst Watt                       (%)                                    (ns)             (mW)      (mW) per inst Watt                      (%)
+                   8+                                                                                                            197+
+  DSP-based                 32      4.11      1.19     17.48     9.8      0.48      2.08    -      -       -       DSP-based              131   10.36   1.76      51.62        25.1   2.34   0.43    -       -       -
+                  1 DSP                                                                                                          7DSP
+  Acc IP NP        287      64     4.88        1.0    47.81       -       1.0       1.0     -      -       -      Acc IP NP       169      76   18.23    1.0      17.97         -     1.0    1.0     -       -       -
+  Acc IP P2        249     176     6.14       1.60    64.86     65.3     1.71       0.59    -      -       -       Acc IP P2      175     104   19.59   1.86      38.82        12.3   1.47   0.68    -       -       -
+  Acc IP P3        249     245     8.88       1.65    94.49     75.0     2.15       0.46    -      -       -       Acc IP P4      181     168   20.09   3.63      56.21        24.5   1.68   0.6     -       -       -
+  Acc IP P4        249     343     9.60       2.03    150.73    130.0    2.89       0.35    -      -       -     RAPID-3 NP       112      41   6.38    2.98      18.67         -     0.34   2.98   1.02   5.74    0.02
+ RAPID-3 NP        168      64     5.90       0.83    31.43       -      0.86       1.17   1.03   6.1    0.06     RAPID-5 P2      121      70   7.07    5.16      27.77        19.5   0.49   2.04   0.79   4.34    0.01
+  RAPID-3 P2       169      98     6.11       1.52    47.35     40.7     1.21       0.85   1.03   6.1    0.06     RAPID-9 P3      127      98   8.35    6.62      30.29        24.3   0.44   2.28   0.58   3.48     0.01
+  RAPID-5 P3       177     126     6.87       2.25    75.35     58.2     1.27       0.81   0.93   4.45   0.05     RAPID-9 P4      130     119    9.2    8.01      34.68        27.7   0.42   2.40   0.58   3.48    0.01
+ RAPID-10 P4       193     141     7.25       2.52    84.75     87.4     1.46       0.7    0.56 3.69     0.23    SIMDive-DIV      143      64   5.68    3.28      23.84         -     0.39   2.57   0.78   5.20    0.01
+    AFM1           261      66     7.32       0.67    44.78       -      1.41       0.71   1.34 17.80    1.34       INZeD         165      41   6.28    2.90      27.50         -     0.51   1.97   2.93   9.54    0.02
+ SIMDive-MUL       216      64     5.95       0.82    37.06       -      0.95       1.06   0.82   4.90   0.05       Mitchell      106      64   5.56    3.39      17.34         -     0.32   3.11   4.11   13.00   4.11
+    MBM            204      65     6.59       0.74    35.34       -       1.0       1.0    2.63   8.83   0.09    SAADI-EC (16)    342     126   25.70   0.71      57.01         -     4.31   0.23   2.14   8.82    1.76
+   Mitchell        167      64     5.51       0.99    31.46       -      0.64       1.56   3.85 11.11    3.85     AAXD (8/4)      151     155   12.51   1.46      25.17         -     0.93   1.08   2.99   100     0.90
+   DRUM-6          233      64     5.34       0.91    38.43       -      0.88       1.14   1.47   6.31    0.04    AAXD (12/6)     207     233   21.26   0.86      34.51         -     2.16   0.46   0.74   100     0.30
+                                   E2E                Circuit   Clk      Rel.       Rel.                 Error                                  E2E              Circuit       Clk    Rel.   Rel.                  Error
+                                              Rel.                                         ARE PRE                                                      Rel.                                        ARE    PRE
+  32×32 Mul       LUT      FF     Latency             Power Power Energy Tput/                           Bias      32/16 Div     LUT      FF Latency             Power Power Energy Tput/                          Bias
+                                              Tput                                         (%)    (%)                                                   Tput                                        (%)    (%)
+                                   (ns)               (mW)      (mW) per inst Watt                       (%)                                    (ns)             (mW)      (mW) per inst Watt                      (%)
+                   18 +                                                                                                          359+
+  DSP-based                 75     6.93       1.04     35.48     14.8     0.47      2.28    -      -       -       DSP-based              228   11.65   3.62      92.91        28.7   0.98   1.02    -       -       -
+                  4 DSPs                                                                                                         9DSP
+  Acc IP NP        1012    128     6.69        1.0    110.56      -       1.0       1.0     -      -       -      Acc IP NP       597     139   42.24    1.0      34.16         -     1.0    1.0     -       -       -
+  Acc IP P2        1012    291     7.82       1.71    154.26    92.8     1.31       0.76    -      -       -       Acc IP P2      607     208   47.48   1.78      74.55        10.4   1.4    0.74    -       -       -
+  Acc IP P3        1012    835     9.74       2.06    218.32    146.6     1.6       0.63    -      -       -       Acc IP P4      607     339   56.95   2.97     111.04        21.9   1.75   0.76    -       -       -
+  Acc IP P4        1014    1119    11.73      2.28    330.64    250.8    2.31       0.43    -      -       -     RAPID-3 NP       378      85   6.70    6.30      42.70         -     0.19   5.04   1.04   5.74    0.02
+ RAPID-3 NP        434     128      6.30      1.06    90.08       -      0.77       1.3    1.05   6.1    0.07     RAPID-5 P2      389     128   8.43    10.02     49.07        16.5   0.2    5.22   0.79   4.34     0.01
+  RAPID-3 P2       450     184     6.74       1.98    131.22    62.7     0.88       1.13   1.05   6.1    0.07     RAPID-9 P3      399     173   9.86     12       59.20        20.2   0.2    5.24   0.61   3.48    0.01
+  RAPID-5 P3       462     242     7.38       2.72    181.53    95.1     0.92       1.09   0.95   4.45    0.05    RAPID-9 P4      417     213   11.10   15.22     67.59        26.7   0.2    5.53   0.61   3.48    0.01
+ RAPID-10 P4       490     276     8.04       3.33 253.12       124.2    1.03       0.97   0.58 3.64     0.06    SIMDive-DIV      381      80   6.84    6.18      43.04         -     0.2    4.90   0.81   5.16    0.02
+    AFM1           995     317     10.76      0.62    119.63      -      1.74       0.57   2.88 22.40    2.88       INZeD         422      81   8.15    5.18      47.67         -     0.27   3.71   2.96   9.47    0.03
+ SIMDive-MUL       521     128     6.88       0.97    83.50       -      0.78       1.29   0.91   4.72   0.05       Mitchell      349      80   6.21    6.91      39.42         -     0.17   5.99   4.19   13.00   4.19
+    MBM            533     129     7.51       0.89    89.94       -      0.91       1.09   2.69   8.74   0.10    SAADI-EC (16)    822     228   51.60   0.82      92.86         -     3.32   0.30   2.33   9.04    1.85
+   Mitchell        428     128      6.23      1.12    60.25       -      0.55       1.83   3.91 11.11    3.91     AAXD (8/4)      361     278   24.66   1.71      40.78         -     0.70   1.43   3.04   100     1.10
+   DRUM-6          616     128     6.35       1.05    88.85       -      0.76       1.31   1.53   5.88   0.05     AAXD (12/6)     513     505   37.20   1.14      57.95         -     1.49   0.67   0.79   100     0.35
+        1 End-to-end         2 Throughput              3 Energy       per instruction = total dynamic power × clock period                      4 Non-Pipelined            5   5-Coeff. 2-stage pipelined
+
+of multipliers and dividers, they are compared for precisions of 8-,                                              evaluated in Monte Carlo simulations2 . Post-implementation results
+16-, and 32-bit. Area and latency are collected from Vivado reports.                                              are summarized in Table III. The following conclusions can be made
+Power and energy dissipations1 are obtained through simulations in                                                based on the results:
+Xilinx Power Estimator (XPE) over 100 million inputs, uniformly                                                   • RAPID multipliers and dividers versus DSP-based and ac-
+distributed in a random order over the whole input interval. For                                                    curate Vivado IPs: the results corroborate prior studies [9, 10]
+a precise measurement, we used the clock gating command to                                                          stating that DSPs are able to be efficiently-utilized, only for
+prevent superfluous switching activity in unused resources. To assess                                               large bit-width precision. The reason behind this degraded per-
+accuracy metrics for different partitioning, the behavioral structure                                               formance is that DSP48E1 hosts a 25×18 hard-wired multiplier
+of multipliers and dividers are developed in C++. To calculate the                                                  and is not optimized for smaller multipliers. This has been the
+average of absolute relative error (ARE), peak absolute relative error                                              main motive that FPGA designers have recommended utilizing
+(PRE), and error bias in 8- and 16-bit designs, exhaustive testing is                                               of soft multipliers should be used for implementing lower bit-
+performed. For 32-bit error characterization, 232 , ∼ 4.3 billion input                                             widths [9, 10, 13, 12]. In particular, compared to LUT-based
+pairs, uniformly distributed over the whole 32-bit interval have been                                               implementation, DSP-based dividers are less energy-efficient, for
+                                                                                                                    both 8- and 16-bit precision. Targeting higher-order precision of
+                                                                                                                    32-bit, the proposed RAPID multiplier and divider have lower
+   1 Similar to prior works, only dynamic power is reported from Xilinx
+Vivado, as the static power analysis of Vivado is for the entire FPGA [6, 54].                                         2 Simulated      on Rack Server: Intel Xeon E5-2667 @3.2 GHz, 512 GB RAM
+                                                                                                                                                   8
+
+
+
+    latency than DSP-based counterparts. In terms of energy-efficiency         enabled by pipelining RAPID comes at the cost of increased
+    (relative energy/instruction), DSPs are better than RAPID, only for        throughput per Watt, when compared to SIMDive.
+    multiplication. In contrast, RAPID dividers are significantly better       Please note although comparing the SIMD and pipelined architec-
+    than DSP-based implementation (especially in 32-bit precision).            tures is not in the scope of this paper, herein some of the key dif-
+    Compared to LUT-based IPs, the results exhibit the efficiency of           ferences between RAPID and SIMDive are discussed. Supporting
+    RAPID divider in all performance metrics, when targeting division          higher throughput through SIMDive has added to the complexity
+    of any precision. In case of multiplication, although accurate             of the sub-modules. For example, 4×3=12 bit is used for LOD
+    IP renders better performance in 8-bit over RAPID, the area-               in 32-bit SIMDive or 2- and 4-MUX units are used to select
+    and/or energy-saving of RAPID over accurate Vivado IP becomes              the functionality and sub-word length in the intermediate adders.
+    substantial in 16-bit. Moreover, the latency of RAPID also becomes         Moreover, integration of a multiplier and divider into a hybrid
+    smaller when targeting 32-bit. Overall, the improvements become            design marginally affects the complexity of the circuit through
+    more pronounced, when architectures are implemented for higher             including 2-MUX units to select the mode in sub-modules. Finally,
+    bit-width. This is due to: first, transforming the 2D array-based          in order to support simultaneous scalings for sub-word length in
+    structure of Mul/Div to 1D Add/Sub through Mitchell’s algorithms,          SIMD mode, the LOD, error-reduction, and final shifter become
+    as discussed earlier. Second, the cost of error coefficients gets          more complex. For example, in a 32-bit LOD, instead of 5 bit for
+    amortized in higher-order designs.                                         the SISD mode, 4×3=12 bit is used to also support simultaneous
+•   RAPID multipliers and dividers render better perfor-                       8-bit leading one detection for the SIMD mode (the complexity
+    mance over hierarchical structures: comparing Mitchell-based               overhead is also posed to integer/fractional part adder).
+    RAPID with modular counterpart AFM (structured by incorpo-             •   Comparing latency, throughput and throughput per Watt in
+    rating smaller inexact instances) demonstrates three points: first,        pipelined and non-pipelined designs: overall, operating at a
+    thanks to transforming the 2D array structure of multiplication            higher frequency and producing one-operation-per-cycle through
+    to 1D addition in the logarithmic representation, the area of              pipelining has resulted in additional flip-flops, increased end-to-end
+    Mitchell-based unit grows by the factor of ∼2.6, less aggressive           latency, and higher dynamic power dissipation. However, pipelining
+    compared to ∼3.7 for the array-based counterparts. This further            enables significant improvement in throughput. In fact, higher
+    accentuates the efficiency of RAPID, particularly in larger bit-           throughput enabled by increasing the number of pipeline stages
+    width. Second, comparing the results of 8- versus 16-bit asserts           comes at the cost of lower Throughput per Watt as well. This
+    that approximation applied on hierarchical approaches is beneficial        descending trend is mainly due to the increase in the number
+    in accuracy-resource trade-off, only when it is done from scratch          of FFs and end-to-end latency in such designs. In particular, the
+    for each multiplier size, otherwise accumulated error in larger            analysis of latency and throughput per Watt highlights the efficacy
+    designs significantly sacrifices output accuracy to achieve resource       of pipelining for RAPID circuits from three perspectives. First,
+    efficiency. On the other hand, accuracy metrics in Mitchell-based          comparing accurate- and RAPID-pipelined designs demonstrates
+    designs do not undergo notable changes. Finally, as already dis-           that, even with increasing the number of pipelining stages, the end-
+    cussed in earlier work [17], some modular architectures sacrifice          to-end latency for each x-stage based RAPID remains smaller than
+    delay for LUT saving [7].                                                  its x-stage based accurate counterpart (except for 8-bit multiplica-
+•   RAPID designs establish better resource-accuracy trade-off                 tion). Second, the x-stage based pipelined RAPID enables higher
+    than leading-one based truncated counterparts: the higher                  throughput per Watt versus its x-stage based accurate counterpart.
+    accuracy levels of DRUM and AAXD come at the cost of higher                Third, while increasing the number of pipeline stages results in a
+    resource consumption than logarithmic counterparts (due to using           descending trend in throughput per Watt for RAPID multipliers and
+    an accurate core unit). Furthermore, employing an accurate in-             accurate IPs (both multiplier and divider), this trend is ascending
+    stance of a divider still results in a long latency, multiple times        for RAPID dividers. This means that increasing the pipeline depth
+    that of a same-size multiplier. RAPID, on the other hand, has              is highly beneficial for dividers. Moreover, the relative throughput
+    reduced the high latency of accurate divider, nearly to latency of         per Watt ratio for RAPID dividers are higher than 1, meaning that
+    its same-size multiplier. Overall, our proposed architectures yield        pipelined RAPID dividers achieve a better throughput per Watt
+    better resource-accuracy trade-off, especially in higher bit-width.        than their accurate counterparts (even when compared to the non-
+    Finally, there are many cases with an error near or equal to 100%          pipelined mode). On the other hand, as discussed in Section II the
+    in the truncation-based AAXD divider. Such high error cases can            reciprocal-based dividers are not suited for LUT-based platforms.
+    result in false positive peaks in heartbeat and corner detection, as       In fact, the poor performance of pipelined SAADI-EC is due to two
+    will be discussed later.                                                   reasons: first, its datapath is divided into three non-uniform stages
+•   The proposed error-reduction outperforms other Mitchell-                   (normalizing block, multiplier, and error-correction accumulator
+    based architectures: the error-reduction strategy of RAPID sur-            based on Taylor iterations). Second, generating the reciprocal of the
+    passes SIMDive/REALM in three aspects. First, the proposed error-          divisor (even through utilizing reciprocal IP of Vivado, as adopted
+    reduction scheme achieves a higher accuracy level, even with fewer         herein) is a costly operation for LUT-based designs.
+    coefficients/LUTs. This is due to the better partitioning scheme           It is worth noting that Xilinx Vivado offers different imple-
+    of RAPID, while it still considers 4 MSBs of fractional parts.             mentation strategies to reduce the dynamic power, including
+    Second, the exponential increase in the number of coefficients (256        Power DefaultOpt, Power ExploreArea (in which sequential re-
+    for 4 MSBs) of REALM/SIMDive not only poses a noticeable                   sources are combined) and system-level power reduction tech-
+    resource penalty, but also would nullify the gain, when realized           niques such as voltage scaling [62]. Overall, it is reported that
+    in a LUT-based implementation. Overall, RAPID enables a more               such optimizations can enable up to 30% improvement in dynamic
+    cost-effective strategy for partitioning the squarish zone. Third,         power [62]. However, considering the trade-off between area/power
+    in addition to error-reduction strategy, RAPID can achieve a               and performance, exploiting such techniques will increase the
+    higher throughput, energy, and throughput per Watt, compared to            critical path delay. As pipelining has increased the critical path
+    SIMDive, in non-pipeline configuration (except for 8- and 16-              delay by itself, we have refrained from applying further directives,
+    bit division). Albeit, as noted previously, the higher throughput          but users can utilize such options w.r.t. their constraints.
+                                                                                                                                                                                            9
+
+
+
+Low -Pass Filter       High-Pass Filter        Diﬀerentiator        Squarer         Sliding Window      Color Conversion            Gaussian Smoothing               Derivative Mask
+                                                                                                         (RGB to Grayscale)                  5x5               (Gradient Calc. via Sobel)
+                                                                                                                                           Smoothed                      5x5        5x5
+                                                                                                                 0.299        R
+                                                                                                                                            Output
+                                                                                                                                                                Ix     Sobel - x   Image
+                                                                                                        Gray                                                            Coeff.     Pixels
+                                     3                     4                                                     0.587        G          5x5        5x5
+                                                                                                       Scaled                          Gaussian    Image                 5x5        5x5
+                                                                                                                 0.114        B                                 Iy     Sobel - y   Image
+                                                                                                                                        Coeff.     Pixels               Coeff.     Pixels
+
+Fig. 5: The structure of Pan Tompkins QRS detection application [30]
+                                                                                                             Struct Tensor and            Normalize Response
+                                                                                                           Calc. Harris Response                                               Corner
+Color Conversion        2D-DCT (1D transpose   1D)         Quantization                                                                   Dynamic-Max = Max (Scores)
+                                                     To user's compression factor
+                                                                                       Zig-zag              Auto -       Ix Ix Ix Iy                                        Selection Via
+  (RGB to YCbCr)                                                                    Arrangement           Correlation
+                                                                                                                                                                            Non-Maximum
+                                8x8                    8x8      8x8                                                                           Normalized Score =
+ Y                 R           2D-DCT                 Quant.   2D-DCT
+                                                                                                          Matrix (M)    Ix Iy Iy Iy                                          Suppression
+          3x3                                         Output   Output                                                                      Response Dynamic-Max
+ Cb      Filter    G       8x8         8x8                8x8     User                Huffman             R = det (M) _ k   trace (M) 2
+                          DCT         Image             Quant.  Quality               Encoding
+ Cr      Coeff
+             .     B      Coeﬀ.       Pixels                     Factor                               Fig. 7: The structure of Harris Corner Detection application [30]
+                                                         Table
+
+      Fig. 6: The structure of JPEG Compression application [30]
+                                                                                                     to MATLAB for generating the motion/terrain vectors4 . The accuracy
+                                                                                                     changes in these applications are measured by conducting analysis on
+B. Evaluation of RAPID in three multi-kernel applications                                            50 images from three aerial imagery datasets [68, 69, 70]. To remain
+   The efficacy of RAPID over accurate and SoA multipliers3 and                                      inline with industrial standards, we refrained from applying approx-
+dividers has been also appraised by deploying them in the end-to-end                                 imations to zigzag and Huffman kernels in JPEG which implement
+implementation of three multi-kernel applications. The application,                                  a re-arrangement and encoding scheme, respectively. Moreover, the
+shown in figures 5, 6, and 7 include JPEG compression, heart-beat                                    corner selection via non-maximum suppression in HCD have also
+detection through Pan-Tompkins algorithm, and HCD (the corners                                       been remained accurate, as it is mainly comprised of comparison
+are further employed to generate movement vectors, which is used                                     operations and has moderately low resource footprint. In this article
+in object tracking programs).                                                                        we have considered the PSNR of, at least, 28 dB for ECG and JPEG
+Hardware implementation and performance analysis of applications:                                    compression and 90% correct vectors for HCD application (reported
+the source-code of applications is synthesized with Xilinx Vivado for                                to be an acceptable confidence level for moving object tracking [67]).
+the usually-adopted kernel configuration of 16-bit. The implemen-                                    Please note, although a relatively low PSNR of 11-19 dB, and thereby,
+tation of Pan-Tompkins algorithm is adopted from [63]. The base                                      95-100% detection ratio has been allowed in XBioSip [63], we adhere
+of JPEG compression is adopted from AxBench [64] and further                                         to a high PSNR in this article, that is also expected to render 100%
+optimized for a resource-efficient implementation on FPGA, by e.g.,                                  detection accuracy [63].
+transforming 2D-DCT calculations to the butterfly-based 1D-DCT                                       Post-implementation results: Fig. 10 shows the obtained area, delay,
+approach [64, 65]. We have developed both JPEG and HCD in C++                                        and Area-Delay-Product (ADP) improvements of approximate de-
+and synthesized them through Vivado High-Level Synthesis (HLS)                                       signs, in the three applications5 . The comparison is among three con-
+and disabled DSPs. HLS has two key advantages: first, it facilitates                                 figurations: adopting with RAPID multipliers and dividers, adopting
+applying various directives, in a system-level implementation as well                                SoA SIMDive multiplier and divider, or dynamically truncated de-
+as the process for generating different, customized configurations.                                  signs, i.e., DRUM-6 multiplier together with AAXD-8/4 divider. The
+Second, it simplifies the high-level behavioral evaluation of the entire                             following inferences are highlighted on the efficacy of RAPID de-
+design. To efficiently reflect the optimizations of RAPID in the                                     signs, after appraising the end-to-end performance gain:
+final HDL design and to overcome the resource gap between HLS                                           First, referring to Fig. 8 and Fig. 9 the quality drop by designs
+generated and HDL, we have employed a three-step approach. In                                        having a near-unbiased error characteristic (both RAPID and SIM-
+the first step we have coded each of accurate multiplication and                                     Dive) is smaller than when truncated counterparts are adopted. As
+division functions in the applications. This scheme has facilitated                                  discussed before, the biased error of truncated designs, i.e., DRUM
+replacing each function with its optimized RAPID versions, later in                                  and AAXD, results in accumulation of errors in consecutive kernels.
+step 3. Second, the compiler has been forced, via HLS inline pragmas,                                In fact, our profiling has revealed that the near-zero biased errors of
+to generate an independent HDL file for each of multiplication                                       the RAPID multiplier and divider have been able to cancel out each
+and division functions. In the third step, the HDL description of                                    other in consecutive operations/kernels and prevent a drastic error
+the respective functions are replaced by HDL-optimized versions of                                   accumulation in the aggregation-based (mostly Add/Mul) structure of
+RAPID modules. Finally, for the end-to-end performance analysis,                                     kernels. Such observations also corroborate [71, 72] in that error-bias
+the HLS-synthesized designs for all accurate and approximate appli-                                  feature plays a pivotal role in approximation of consecutive kernels
+cations have been further passed to the downstream implementation                                    having an aggregation-based structure, e.g., neural networks. Second,
+phase, placed and routed on Virtex-7.                                                                the negligible accuracy loss after deployment of RAPID is partly
+QoR analysis on real-world benchmarks: for assessing the end-to-                                     due to the small average and peak error of the proposed multiplier
+end accuracy of Pan-Tompkins, we measured the QRS and Peak                                           and divider, as compared to high peak error in DRUM/AAXD, (up
+Signal to Noise Ratio (PSNR) for 30k ECG samples from the MIT-                                       to 100% in hundreds of input cases). In fact, the analysis shows
+BIH database [66] in MATLAB. For quality measurements on JPEG-                                       that a high peak error is also reflected as incorrect vectors in the
+compressed images PSNR is used, while the percentage of correct                                      HCD application (especially due to the presence of division in the
+vectors is considered as the application-level metric for HCD. In fact,                              last stage of the HCD algorithm). This also holds true for false
+similar to [67], the extracted corners from HCD algorithm are passed                                 positive heartbeat (QRS peaks), as by utilizing both DRUM and
+                                                                                                     AAXD the detection accuracy of heartbeat has dropped by ∼1%.
+
+                                                                                                         4 In [67], only DCT adders are approximated (DCT is used as a pre-
+      3 Herein
+            the SISD mode of SIMDive has been analyzed. Detailed compar-                             processing compression step in UAV programs).
+ison of SIMD architectures with pipelining for multi-kernel applications and                             5 Comprehensive energy analysis for multi-kernel programs on large
+resolving instruction dependencies are targeted as interesting future works.                         image/ECG datasets is for follow-up track
+                                                                                                                                        10
+
+
+
+
+      (a) Accurate multiplication and division (PSNR = 30.9)                   (b) RAPID multiplier-10 and divider-9 (PSNR = 28.7)
+
+
+
+
+      (c) SIMDive multiplication and division (PSNR = 29.3)              (d) DRUM-6 multiplication and AAXD-8/4 division (PSNR = 24.4)
+   Fig. 8: Comparison of JPEG compression on aerial images with accurate and different approximate multipliers and dividers (16-bit).
+
+
+
+
+    (a) Accurate multiplication and division (baseline) = 100%                     (b) RAPID multiplier-10 and divider-9 = 94%
+
+
+
+
+         (c) SIMDive multiplication and division = 97%                       (d) DRUM-6 multiplication and AAXD-8/4 division = 83%
+Fig. 9: Tracking via Harris Corner Detection: changes in Harris score range also enables detection of new vectors in the threshold- based
+selection of tracking algorithm in MATLAB. Average of false positive vectors is less than 5%.
+                                                                                                                                                                                                                                                                                                                                                                           11
+
+
+
+                                                                                                                                                                                                                                           PSNR                                                                                                           Correct Vectors %
+
+
+
+
+                                                                                                                                                                                                                                                   Performance (Normalized to 16-bit Accurate)
+                                                                                 QRS=100%                 PSNR
+
+
+
+
+                                                                                                                 Performance (Normalized to 16-bit Accurate)
+                                                                                                                                                                                                               29.8
+Performance (Normalized to 16-bit Accurate)
+                                                                QRS=100%                        QRS=99%                                                        1.0                                                                  0.97      32                                                                                            97%
+                                              1.0 QRS=100%                           41.4                  45                                                           26.8                 27.9                                                                                                1.0                                                                     98
+                                                                       39.4                     0.94                                                                                                              0.86                                                                                                     96%
+                                                      34.7                       0.92                                                                                                                                                         30                                                                                                          0.92           97
+                                                                0.88                                                                                           0.9                           0.87                                                                                                         93%               0.83                                 0.89
+                                              0.9                                                          40                                                               0.87                                                                                                                 0.9                                      0.88
+                                                   0.83                                                                                                                                                                                                                                                       0.82      0.85                                             96
+                                                                                                                                                                                                                             0.80             28                                                                                                 0.81               0.82
+                                              0.8                                                     28.5 35                                                  0.8                                                                     0.78                                                      0.8 0.76                                                                95
+                                                                                                                                                                                                           0.75
+                                                                                                   0.70                                                                                                                                       26                                                                                   0.71                                  94
+                                                                                                                                                                                          0.69                                                                                                                                                     0.69
+                                              0.7      0.67             0.68                          0.66 30                                                  0.7                                                                                                                               0.7                                                                     93
+                                                                                     0.65                                                                            0.65                                             0.64                    24
+                                                                                                                                                                                                    0.60                                                                                                        0.62
+                                                                          0.60          0.60                                                                                                                                               23.2                                                                                                                          92
+                                              0.6        0.55                                              25                                                  0.6             0.56                                                           22                                                 0.6                                                             91%
+                                                                                                                                                                                                                                                                                                                                                                         91
+                                              0.5                                                          20                                                  0.5                                                                            20                                                 0.5                                                                     90
+                                                    RAPID-3      RAPID-10         SIMDive      DRUM/AAXD                                                               RAPID-3             RAPID-10          SIMDive         DRUM/AAXD                                                                  RAPID-3          RAPID-10          SIMDive        DRUM/AAXD
+                                                         Area          Delay       ADP         PSNR                                                                                 Area         Delay            ADP        PSNR                                                                             Area        Delay           ADP           Correct Vectors
+
+                                                              ECG Pan-Tompkins                                                                                                        JPEG Co mpression                                                                                                                Harris Corner Detection
+
+      Fig. 10: End-to-end performance of applications utilizing RAPID multiplier and divider, compared to accurate and SoA approximate designs.
+Performance (Normalized to 16-bit Acc_NP)
+
+
+
+
+                                                                                              4.92
+                                              5.0
+                                                                                                                                                                                                                                       4.38
+                                              4.5
+                                              4.0                                                                                                                                                                                                                                                                                                                   3.67
+                                              3.5
+                                                                2.81                2.90
+                                              3.0                                                                                                                                      2.66                              2.59                                                                                         2.43
+                                              2.5                                                                                                                                                                                                                                                                                                   2.17
+                                              2.0     1.76                                                                                                            1.73                                                                                                                             1.68
+                                                                          1.54                                                                                                     1.61                 1.37
+                                              1.5          1.21                                                                                                1.28                                                                                                                                            1.17                 1.14
+                                                  1.01                                                                                                                                           0.87             0.91          1.05                                      1.04                                                                               0.91
+                                              1.0                    0.67      0.70      0.79                                                                                                                                                                                                                                0.82           0.84
+                                              0.5
+                                                  Acc_P2 Acc_P4 RAPID-5_NP RAPID-5_P2 RAPID-5_P4                                                                 Acc_P2            Acc_P4 RAPID-5_NP RAPID-5_P2 RAPID-5_P4                                                             Acc_P2 Acc_P4 RAPID-5_NP RAPID-5_P2 RAPID-5_P4
+
+                                                                  Latency            Throughput                                                                                       Latency               Throughput                                                                                               Latency         Throughput
+                                                                ECG Pan-Tompkins                                                                                                   JPEG Compression                                                                                                     Harris Corner Detection
+      Fig. 11: The end-to-end latency and throughput of applications utilizing RAPID multiplier and divider, compared to accurate IP counterparts,
+      in pipelined and non-pipelined format.
+              (Normalized to Accrate_NP)
+
+
+
+
+                                                                        Dominated Points especially as they are constantly fed with bulk of data. As can be
+                                                                                                                 Pareto Points
+                                              1.2                             1.2                                    1.2
+                                                                                         seen in Fig. 11, the throughput of the applications increases after
+                                                                 Acc_NP     Acc_NP    Acc_NP
+          1.0                                                    1.0          1.0        applying the pipelining, but this comes with the cost of increase in the
+          0.8                            0.8 RAPID-5_NP          0.8 RAPID-5_NP          end-to-end latency. Nevertheless, the latency overhead of converting
+               RAPID-5_NP
+                           Acc_P2                                               Acc_P2
+          0.6                            0.6          Acc_P2     0.6                     RAPID P2 configuration to RAPID P4 is less than of the overhead
+                               Acc_P4        RAPID-5_P2                           Acc_P4
+          0.4 RAPID-5_P2                 0.4                     0.4 RAPID-5_P2          from converting Acc P2 to Acc P4. Similar observation also holds
+                                                        Acc_P4                           true for the improvement in the throughput. Moreover, application
+          0.2                            0.2                     0.2    RAPID-5_P4
+                                               RAPID-5_P4
+-1
+
+
+
+
+                   RAPID-5_P4                                                            configurations having the RAPID P2 reach smaller latency along
+                   Throughput
+
+
+
+
+          0.0                            0.0                     0.0
+             0.5   0.7  0.9    1.1 1.3      0.5 1.0 1.5 2.0         0.7   0.9   1.1 1.3
+                                                                                         with the higher throughput than when incorporating Acc NP or
+                                       Latency (Norm. to Acc_NP)
+                                                                                         Acc P2. Finally, Fig. 12 illustrates the Pareto points in the trade-
+                 ECG Pan-Tompkins       JPEG Compression Harris Corner Detection off between Latency and throughput for pipelined an non-pipelined
+
+      Fig. 12: Comparing the latency and throughput trade-off in applica- architectures. As can be observed, RAPID P2 and RAPID P4 render
+      tions exploiting pipelined and non-pipelined version of RAPID and the Pareto points having better trade-off in latency and throughput
+      accurate multiplier and divider.                                                   than other configurations.
+                                                                                            Discussion: it should be highlighted that although more compli-
+                                                                                         cated object tracking or heart arrhythmia programs utilize machine-
+      Second, RAPID-configured applications also have better area- and
+                                                                                         learning techniques for feature extraction, continuously offloading the
+      ADP- gains, compared to both SIMDive and truncated counterparts
+                                                                                         complete video stream (for the former) or patient bio-signal data (for
+      (see Fig. 10). SIMDive on the other hand has marginally better end-
+                                                                                         the latter) to the insecure/untrustworthy network, or process/store it
+      to-end latency (by at most 3%), since it’s error-reduction circuitry is
+                                                                                         on the third-party cloud can pose performance bottleneck for a real-
+      customized for performance-efficiency by directly configuring LUTs.
+                                                                                         time processing and deplete the battery in a short interval. Therefore,
+      Nonetheless, the difference of QoR and performance-gain between
+                                                                                         enabling extraction of some features at the edge is highly desired.
+      RAPID and SIMDive is not significant at application-level.
+         To compare the throughput of applications in pipelined and non-
+                                                                                                                                                                                                                                VI. C ONCLUSIONS AND F UTURE W ORK
+      pipelined configuration, we have also deployed the 2- and 4-stage
+      pipelined versions of the RAPID multiplier and divider (along with                                                                                                                                In this paper, we have proposed RAPID, the first fine-grain pipelin-
+      their accurate counterparts). For a fair comparison, we have avoided                                                                                                                           ing architecture for approximate multiplier and divider. The proposed
+      user-specified optimizations such as function pipelining pragmas                                                                                                                               error-reduction schemes of RAPID enable 99-99.4% accuracy with
+      (e.g., on matrix multiplication) and the applications are also im-                                                                                                                             smaller cost, compared to the existing approaches. In particular,
+      plemented on the basis of streaming approach. Fig. 11 compares                                                                                                                                 pipelined RAPID multipliers (dividers) enable up to 3.3× (8.1×)
+      the end-to-end latency and throughput of both pipelined and non-                                                                                                                               higher throughput, 2.3× (6.8×) higher throughput/Watt, and 56%
+      pipelined configurations. Please note, the area difference by only                                                                                                                             (36%) savings of LUTs, over pipelined accurate IPs. The end-to-
+      replacing the non-pipelined RAPID multipliers and dividers with their                                                                                                                          end evaluations of RAPID in heartbeat detection, JPEG compres-
+      pipelined versions is not significant (see Fig. 10). The throughput                                                                                                                            sion, and Harris corner detection demonstrate up to 35%, 33%,
+      is estimated as the inverse of the clock period for the applications,                                                                                                                          and 45% improvements in area, latency, and Area-Delay-Product,
+                                                                                                                                                                            12
+
+
+
+respectively, over accurate configuration, with negligible loss in QoR.                      [11]   Xilinx. 2015. LogiCORE IP multiplier v12.0. https://www.xilinx.com/
+RAPID pipelined designs are interesting candidates to speed up the                                  support / documentation / ip documentation / mult gen / v12 0 / pg108 -
+                                                                                                    mult-gen.pdf. (2015).
+execution of a wide domain of stream-based applications that are
+                                                                                             [12]   Xilinx. 2016. LogiCORE IP Divider v5.1. https://www.xilinx.com/
+constantly fed with a bulk of data. 35%, 33%, and 45% improvements                                  support / documentation / ip documentation / div gen / v5 1 / pg151 - div -
+in area, latency, and Area-Delay-Product (ADP), respectively, over                                  gen.pdf. (2016).
+accurate kernels, with negligible loss in QoR.                                               [13]   Xilinx. 2018. 7 Series DSP48E1 Slice. https://www.xilinx.com/support/
+   For future work, we intend to assess the efficacy of the                                         documentation/user guides/ug479 7Series DSP48E1.pdf. (2018).
+                                                                                             [14]   N. Van Toan and J. Lee. 2020. FPGA-Based Multi-Level Approximate
+RAPID pipeline mode in different application domains, e.g., Neural                                  Multipliers for High-Performance Error-Resilient Applications. IEEE
+networks which offers both SIMD and pipelining opportunities. The                                   Access, 8.
+challenge is resolving data dependencies in consecutive instructions.                        [15]   Z. Ebrahimi et al. 2020. SIMDive: Approximate SIMD Soft Multiplier-
+Such challenges are usually partially addressed through out-of-order                                Divider for FPGAs with Tunable Accuracy. In ACM Great Lakes
+                                                                                                    Symposium on VLSI (GLSVLSI).
+execution in processors. However, this technique cannot fully utilize
+                                                                                             [16]   H. Saadat et al. 2019. Approximate Integer and Floating-Point Dividers
+the pipelining potentials. Therefore, we target providing specialized                               with Near-Zero Error Bias. In IEEE/ACM Design Automation Confer-
+versions of the pipelined multiplier and divider, which will be able                                ence (DAC).
+to support internal data forwarding [55, 56] and able to resolve data                        [17]   Z. Ebrahimi et al. 2020. LeAp: Leading-one Detection-based Softcore
+dependencies. It should be noted that bypassing would be faster and                                 Approximate Multipliers with Tunable Accuracy. In Asia & South
+                                                                                                    Pacific Design Automation Conference (ASP-DAC).
+posed with smaller overhead, when implemented through an intra-                              [18]   J. N. Mitchell. 1962. Computer Multiplication and Division us-
+unit granularity.                                                                                   ing Binary Logarithms. IRE Transactions on Electronic Computers
+   Furthermore, we plan to design an approximate Arithmetic Logic                                   (IRETEC), 11, 4.
+Unit (ALU) and assess its applicability in the data-path of soft                             [19]   A. R. Baranwal et al. 2020. ReLAccS: A Multi-level Approach to Ac-
+                                                                                                    celerator Design for Reinforcement Learning on FPGA-based Systems.
+processors such as RISC-V. In fact, RAPID bears a great potential to                                IEEE Transactions on Computer-Aided Design of Integrated Circuits
+be deployed in the mantissa multiplier/divider which consume more                                   and Systems (TCAD).
+than 95% of the total area and power in the floating point unit (in                          [20]   H. Saadat et al. 2018. Minimally Biased Multipliers for Approxi-
+which division latency is up to 35× of addition operation) [20, 73].                                mate Integer and Floating-Point Multiplication. IEEE Transactions on
+Recently, this track has attracted noticeable attention, especially due                             Computer-Aided Design of Integrated Circuits and Systems (TCAD),
+                                                                                                    37, 11.
+to the ever-growing usage of 3D computer graphics [74, 75].                                  [21]   H. Jiang et al. 2020. Approximate Arithmetic Circuits: A Survey,
+                                                                                                    Characterization, and Recent Applications. Proceedings of the IEEE,
+                             ACKNOWLEDGEMENT                                                        108, 12.
+   This research is co-funded by the projects X-ReAp: Cross(X)-                              [22]   S. Rehman et al. 2016. Architectural-space exploration of approximate
+                                                                                                    multipliers. In IEEE/ACM International Conference on Computer-
+Layer Runtime Reconfigurable Approximate Architecture (Number                                       Aided Design (ICCAD).
+380524764), funded by the German research foundation Deutsche                                [23]   M. Wang et al. 2020. An Optimized Compression Strategy for
+Forschungsgemeinschaft (DFG) and Re-learning: Self-learning and                                     Compressor-Based Approximate Multiplier. In IEEE International
+flexible electronics through inherent component reconfiguration                                     Symposium on Circuits and Systems (ISCAS).
+                                                                                             [24]   A. G. M. Strollo et al. 2020. Comparison and Extension of Approxi-
+(Number 100382146), funded by the European Social Fund (ESF).                                       mate 4-2 Compressors for Low-Power Approximate Multipliers. IEEE
+                                                                                                    Transactions on Circuits and Systems I (TCAS-I): Regular Papers, 67,
+                                   R EFERENCES                                                      9.
+ [1]   World Health Organisation. 2018. Cardiovascular diseases (CVDs).                      [25]   P. J. Edavoor et al. 2020. Approximate Multiplier Design Using Novel
+       https : / / www. who . int / news - room / fact - sheets / detail / cardiovascular-          Dual-Stage 4:2 Compressors. IEEE Access, 8.
+       diseases-(cvds). (2018).                                                              [26]   D. Esposito et al. 2018. Approximate Multipliers Based on New
+ [2]   P. Kostic. 2017. Heart Disease and Early Heart Attack Care.                                  Approximate Compressors. IEEE Transactions on Circuits and Systems
+       https : / / www . bnl . gov / hr / occmed / hpp / linkable files / pdf /                     I (TCAS-I): Regular Papers, 65, 12.
+       EarlyHeartAttackSymptoms.pdf. (2017).                                                 [27]   S. Venkatachalam and S. Ko. 2017. Design of Power and Area Efficient
+ [3]   Y. Yang et al. 2019. FPNet: Customized Convolutional Neural Network                          Approximate Multipliers. IEEE Transactions on Very Large Scale
+       for FPGA Platforms. In IEEE International Conference on Field-                               Integration Systems (TVLSI), 25, 5.
+       Programmable Technology (ICFPT).                                                      [28]   O. Akbari et al. 2017. Dual-Quality 4:2 Compressors for Utilizing in
+ [4]   X. Gu et al. 2016. A Real-Time FPGA-Based Accelerator for ECG                                Dynamic Accuracy Configurable Multipliers. IEEE Transactions on
+       Analysis and Diagnosis Using Association-Rule Mining. ACM Trans-                             Very Large Scale Integration Systems (TVLSI), 25, 4.
+       actions on Embedded Computing Systems (TECS), 15, 2.                                  [29]   Y. Guo et al. 2020. Small-Area and Low-Power FPGA-Based Multipli-
+ [5]   H.K. Chatterjee et al. 2015. Real–time detection of electrocardiogram                        ers using Approximate Elementary Modules. In Asia & South Pacific
+       wave features using template matching and implementation in FPGA.                            Design Automation Conference (ASP-DAC).
+       International Journal of Biomedical Engineering and Technology (IJ-                   [30]   Z. Ebrahimi, et al. 2021. Plasticine: A Cross-Layer Approximation
+       BET), 17, 3.                                                                                 Methodology for Multi-Kernel Applications through Minimally Biased,
+ [6]   S. Ullah et al. 2021. High-Performance Accurate and Approximate                              High-Throughput, and Energy-Efficient SIMD Soft Multiplier-Divider.
+       Multipliers for FPGA-based Hardware Accelerators. IEEE Transac-                              ACM Transactions on Design Automation of Electronic Systems (TO-
+       tions on Computer-Aided Design of Integrated Circuits and Systems                            DAES), 27, 2.
+       (TCAD).                                                                               [31]   M. S. Ansari et al. 2018. Low-Power Approximate Multipliers Using
+ [7]   S. Ullah et al. 2018. Area-Optimized Low-Latency Approximate Mul-                            Encoded Partial Products and Approximate Compressors. IEEE Journal
+       tipliers for FPGA-Based Hardware Accelerators. In IEEE/ACM Design                            on Emerging and Selected Topics in Circuits and Systems (JETCAS),
+       Automation Conference (DAC).                                                                 8, 3.
+ [8]   I. Kuon and J. Rose. 2007. Measuring the gap between fpgas and asics.                 [32]   V. Mrazek et al. 2017. EvoApprox8b: Library of Approximate Adders
+       IEEE Transactions on Computer-Aided Design of Integrated Circuits                            and Multipliers for Circuit Design and Benchmarking of Approxima-
+       and Systems (TCAD), 26, 2.                                                                   tion Methods. In Design, Automation & Test in Europe (DATE).
+ [9]   A. Boutros et al. 2018. Embracing Diversity: Enhanced DSP Blocks                      [33]   S. Ullah et al. 2018. SMApproxLib: Library of FPGA-based Approxi-
+       for Low-Precision Deep Learning on FPGAs. In IEEE International                              mate Multipliers. In IEEE/ACM Design Automation Conference (DAC).
+       Conference on Field Programmable Logic and Applications (FPL).                        [34]   F. Frustaci et al. 2020. Approximate Multipliers With Dynamic Trun-
+[10]   S. Lee et al. 2019. Double MAC on a DSP: Boosting the Performance                            cation for Energy Reduction via Graceful Quality Degradation. IEEE
+       of Convolutional Neural Networks on FPGAs. IEEE Transactions on                              Transactions on Circuits and Systems II (TCAS-II): Express Briefs, 67,
+       Computer-Aided Design of Integrated Circuits and Systems (TCAD),                             12.
+       38, 5.
+                                                                                                                                                                    13
+
+
+
+[35]   S. Vahdat et al. 2019. TOSAM: An Energy-Efficient Truncation- and        [60]   B. Parhami. 2010. Computer Arithmetic: Algorithms and Hardware
+       Rounding-Based Scalable Approximate Multiplier. IEEE Transactions               Designs. Volume 20. Oxford university press.
+       on Very Large Scale Integration Systems (TVLSI), 27, 5.                  [61]   ARM. 2021. Performance per Watt Is the New Moore’s Law. https:
+[36]   R. Zendegani et al. 2017. RoBA Multiplier: A Rounding-Based                     //www.arm.com/blogs/blueprint/performance-per-watt. (2021).
+       Approximate Multiplier for High-Speed yet Energy-Efficient Digital       [62]   Xilinx. 2021. Vivado Design Suite User Guide: Power Analysis and
+       Signal Processing. IEEE Transactions on Very Large Scale Integration            Optimization. https : / / www. xilinx . com / content / dam / xilinx / support /
+       Systems (TVLSI), 25, 2.                                                         documents/sw manuals/xilinx2021 2/ug907- vivado- power- analysis-
+[37]   H. Jiang et al. 2019. Low-Power Unsigned Divider and Square Root                optimization.pdfhttps://docs.xilinx.com/v/u/2019.1- English/ug907-
+       Circuit Designs Using Adaptive Approximation. IEEE Transactions on              vivado-power-analysis-optimizationversion2019andbetter. (2021).
+       Computers (TC), 68, 11.                                                  [63]   B. Prabakaran et al. 2019. XBioSiP: A Methodology for Approximate
+[38]   H. Jiang et al. 2018. Adaptive approximation in arithmetic circuits: A          Bio-Signal Processing at the Edge. In IEEE/ACM Design Automation
+       low-power unsigned divider design. In Design, Automation & Test in              Conference (DAC).
+       Europe (DATE).                                                           [64]   A. Yazdanbakhsh et al. 2017. AxBench: A Multiplatform Benchmark
+[39]   M. Vaeztourshizi et al. 2018. An Energy-Efficient, Yet Highly-                  Suite for Approximate Computing. IEEE Design & Test, 34, 2.
+       Accurate, Approximate Non-Iterative Divider. In International Sym-       [65]   M. Jridi et al. 2013. Low complexity DCT engine for image and
+       posium on Low Power Electronics and Design (ISLPED).                            video compression. In Real-Time Image and Video Processing (RTIVP).
+[40]   S. Vahdat et al. 2017. TruncApp: A truncation-based approximate                 Volume 8656.
+       divider for energy efficient DSP applications. In Design, Automation     [66]   A. L. Goldberger et al. 2000. PhysioBank, PhysioToolkit, and Phys-
+       & Test in Europe (DATE).                                                        ioNet: Components of a New Research Resource for Complex Physi-
+[41]   R. Zendegani et al. 2016. SEERAD: A high speed yet energy-efficient             ologic Signals. Circulation.
+       rounding-based approximate divider. In Design, Automation & Test in      [67]   T. Nomani et al. 2020. xUAVs: Towards Efficient Approximate Com-
+       Europe (DATE).                                                                  puting for UAVs—Low Power Approximate Adders With Single LUT
+[42]   J. Melchert et al. 2019. SAADI-EC: A Quality-Configurable Approxi-              Delay for FPGA-Based Aerial Imaging Optimization. IEEE Access, 8.
+       mate Divider for Energy Efficiency. IEEE Transactions on Very Large      [68]   M. Mueller et al. 2016. A Benchmark and Simulator for UAV Tracking.
+       Scale Integration Systems (TVLSI), 27, 11.                                      In European Conference on Computer Vision (ECCV).
+[43]   M. S. Ansari et al. 2019. A Hardware-Efficient Logarithmic Multiplier    [69]   H. Fan et al. 2020. VisDrone-SOT2020: The Vision Meets Drone
+       with Improved Accuracy. In Design, Automation & Test in Europe                  Single Object Tracking Challenge Results. In Workshops in European
+       (DATE).                                                                         Conference on Computer Vision (ECCV).
+[44]   W. Liu et al. 2018. Design and Evaluation of Approximate Logarithmic     [70]   Y. Lyu et al. 2020. UAVid: A semantic segmentation dataset for UAV
+       Multipliers for Low Power Error-Tolerant Applications. IEEE Trans-              imagery. ISPRS Journal of Photogrammetry and Remote Sensing, 165.
+       actions on Circuits and Systems I (TCAS-I): Regular Papers, 65, 9.       [71]   M. S. Ansari et al. 2020. Improving the Accuracy and Hardware
+[45]   H. Saadat et al. 2020. REALM: Reduced-Error Approximate Log-based               Efficiency of Neural Networks Using Approximate Multipliers. IEEE
+       Integer Multiplier. In Design, Automation & Test in Europe (DATE).              Transactions on Very Large Scale Integration Systems (TVLSI), 28, 2.
+[46]   Zahra Ebrahimi and Akash Kumar. 2021. BioCare: An Energy-Efficient       [72]   Z. G. Tasoulas et al. 2020. Weight-Oriented Approximation for Energy-
+       CGRA for Bio-Signal Processing at the Edge. In IEEE International               Efficient Neural Network Inference Accelerators. IEEE Transactions on
+       Symposium on Circuits and Systems (ISCAS).                                      Circuits and Systems I (TCAS-I): Regular Papers, 67, 12.
+[47]   S. Hashemi et al. 2015. DRUM: A Dynamic Range Unbiased Multiplier        [73]   S. Tamimi et al. 2019. An Efficient SRAM-Based Reconfigurable Ar-
+       for approximate applications. In IEEE/ACM International Conference              chitecture for Embedded Processors. IEEE Transactions on Computer-
+       on Computer-Aided Design (ICCAD).                                               Aided Design of Integrated Circuits and Systems (TCAD), 38, 3.
+[48]   S. Hashemi et al. 2016. A low-power dynamic divider for approximate      [74]   Juwon Yun et al. 2020. A latency-effective pipelined divider for double-
+       applications. In IEEE/ACM Design Automation Conference (DAC).                   precision floating-point numbers. IEEE Access, 8.
+[49]   E. Adams et al. 2020. Approximate Restoring Dividers Using Inexact       [75]   Yuheng Yang et al. 2021. An architecture of area-effective high radix
+       Cells and Estimation From Partial Remainders. IEEE Transactions on              floating-point divider with low-power consumption. IEEE Access, 9.
+       Computers (TC), 69, 4.
+[50]   S. Venkatachalam et al. 2019. Design of Approximate Restoring
+       Dividers. In IEEE International Symposium on Circuits and Systems
+       (ISCAS).
+[51]   L. Chen et al. 2018. Design, Evaluation and Application of Ap-
+       proximate High-Radix Dividers. IEEE Transactions on Multi-Scale
+       Computing Systems (TMSCS), 4, 3.
+[52]   L. Chen et al. 2016. On the Design of Approximate Restoring Dividers
+       for Error-Tolerant Applications. IEEE Transactions on Computers (TC),
+       65, 8.
+[53]   S. Behroozi et al. 2019. SAADI: A Scalable Accuracy Approximate
+       Divider for Dynamic Energy-Quality Scaling. In Asia & South Pacific
+       Design Automation Conference (ASP-DAC).
+[54]   S. Ullah et al. 2020. Area-optimized Accurate and Approximate Soft-
+       core Signed Multiplier Architectures. IEEE Transactions on Computers
+       (TC).
+[55]   J. Seo and D. H. Kim. 2019. Dependency-Resolving Intra-Unit Pipeline
+       Architecture for High-Throughput Multipliers. In Design, Automation
+       & Test in Europe (DATE).
+[56]   J. Seo and D. H. Kim. 2019. High-Throughput Multiplier Architec-
+       tures Enabled by Intra-Unit Fast Forwarding. In IEEE International
+       Symposium on Computer Arithmetic (ARITH).
+[57]   S. Scarfone et al. 2021. Design and Analysis of a Leading One
+       Detectorbased Approximate Multiplier on FPGA. In International
+       Conference on Synthesis, Modeling, Analysis and Simulation Methods,
+       and Applications to Circuit Design (SMACD ).
+[58]   K. Chapman. 2013. Multiplexer design techniques for datapath per-
+       formance with minimized routing resources (Xilinx Application Note).
+       https://docs.xilinx.com/v/u/en- US/xapp522- mux- design- techniques.
+       (2013).
+[59]   Xilinx. 2013. Xilinx 7 Series FPGA Programmable Guide for HDL
+       Designs. https://www.xilinx.com/support/documentation/sw manuals/
+       xilinx14 7/7series hdl.pdf. (2013).
+                                                                                  14
+
+
+
+                        Zahra Ebrahimi received her B.Sc. and M.Sc.
+                        degrees in computer engineering at Sharif Univer-
+                        sity of Technology (SUT), Iran, in 2014 and 2016,
+                        respectively. Meanwhile, she was also a Research
+                        Assistant at the Data Storage, Networks, and Pro-
+                        cessing Laboratory, at SUT. She started her Ph.D.
+                        at the Center for Advancing Electronics Dresden
+                        (cfaed), Technische Universität Dresden, Germany,
+                        in 2018. Her research interests include approximate
+                        computing, reconfigurable accelerator design, and
+                        energy-efficient edge computing.
+
+
+
+
+                        Muhammad Zaid received his B.Sc. degree in
+                        Electrical Engineering from National University of
+                        Sciences and Technology (NUST), Islamabad, Pak-
+                        istan, in 2017. He is currently pursuing the M.Sc.
+                        in Nanoelectronic Systems at Technische Universität
+                        Dresden. His research interest includes HW/SW co-
+                        design of embedded AI systems.
+
+
+
+
+                        Mark Wijtvliet received his MS.c. and Ph.D. de-
+                        grees at the Electronic Systems group at Eindhoven
+                        university of technology in 2011 and 2020, respec-
+                        tively. His Ph.D. topic focused at energy efficient re-
+                        configurable processor architectures. Afterwards, he
+                        worked as a post-doctoral researcher at TU Dresden
+                        at the processor design chair in the field of hard-
+                        ware security. Currently he works as a researcher at
+                        ASMPT in the Netherlands. His interests include re-
+                        configurable hardware, hardware security, processor
+                        optimization, chip design, and space applications.
+
+
+
+
+                        Akash Kumar (SM’13) received the joint Ph.D.
+                        degree in electrical engineering and embedded sys-
+                        tems from the Eindhoven University of Technology,
+                        Eindhoven, The Netherlands, and the National Uni-
+                        versity of Singapore (NUS), Singapore, in 2009.
+                        From 2009 to 2015, he was with NUS. He is
+                        currently a Professor with Technische Universität
+                        Dresden, Dresden, Germany, where he is directing
+                        the Chair for Processor Design. His current research
+                        interests include the design, analysis, and resource
+                        management of low-power and fault-tolerant embed-
+ded multiprocessor systems.
+

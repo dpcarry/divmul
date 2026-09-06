@@ -1,0 +1,748 @@
+882                                              IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 72, NO. 2, FEBRUARY 2025
+
+
+
+
+      Low-Power High Precision Floating-Point Divider
+         With Bidimensional Linear Approximation
+                        Gennaro Di Meo , Antonio Giuseppe Maria Strollo , Senior Member, IEEE,
+                                Davide De Caro , Senior Member, IEEE, Luca Tegazzini ,
+                                        and Ettore Napoli , Senior Member, IEEE
+
+
+    Abstract— In this paper we propose a novel approximate                     to ensure the feasible integration of these circuits in elec-
+floating-point divider based on bidimensional linear approx-                   tronic systems and makes their implementation challenging.
+imation. In our approach, the mantissa quotient is seen as                     Among applications requiring careful design of arithmetic
+a function of the two input mantissas of the divider. The
+domain of this two-variable function is partitioned into nx × ny               circuits, environmental sensing and healthcare monitoring
+subregions, named tiles, where nx, ny are chosen as powers of                  occupy an interesting position, involving the realization of
+two. In each tile the quotient is approximated with a linear                   complex networks of devices where data are acquired, pro-
+combination of the input mantissas. To achieve fine accuracy,                  cessed, and transmitted according to the paradigm of the
+an optimization problem is formulated within each tile to                      Internet of Things [1]. In this context, signal elaboration,
+determine the optimal coefficients for the linear combination,
+which minimize the Mean Relative Error Distance (MRED) of the                  leveraging addition, multiplication and division, is responsible
+divider. Furthermore, to make hardware implementation more                     for large energy consumption, thus calling for the development
+effective, the minimization problem is appropriately modified to               of suitable low-power techniques. Likewise, tasks as image
+search for optimal quantized coefficients. The hardware structure              classification or speech enhancement demand for the design
+of the divider only requires a small look-up table to store                    of neural networks, exploiting additions and multiplications
+the linear approximation coefficients, and a carry save adder
+tree. The proposed architecture is highly tunable at design-time               extensively [2]. Also in this case, power and area constitute
+over a wide range of accuracy, depending on the number of                      critical design parameters that make the practical realiza-
+tiles chosen for the approximation. The obtained results demon-                tion of the algorithms challenging. As further example, also
+strate error performance and hardware features superior to the                 in telecommunication systems circuits for adaptive filtering,
+state-of-the-art. The proposed dividers define the Pareto front,               channel equalization, Fast Fourier Transform (FFT) or Inverse
+considering the trade-off between power-delay-product vs. MRED
+and area-delay-product vs. MRED, for MRED in the range of                      Fast Fourier Transform (IFFT) [3], [4], [5] require an intensive
+4 × 10−3 − 2 × 10−2 . Application results for JPEG compression                 usage of arithmetic blocks to realize noise suppression and
+and tone mapping further highlight the strength of our proposal,               signal coding. Again, the research of methos able to allow an
+which exhibits Structural Similarity Index (SSIM) very close to                effective integration of such systems is crucial for their prac-
+1 in all cases and Peak Signal-to-Noise Ratio (PSNR) up to 45 dB.              tical realization, and, as consequence, the adoption of proper
+   Index Terms— Floating-point divider, approximate computing,                 strategies for arithmetic circuits design becomes relevant to
+error correction, low-power.                                                   meet the desired power/area requirements.
+
+                          I. I NTRODUCTION                                     A. General Background
+
+A    RITHMETIC circuits are widely employed for the design
+     of Digital Signal Processing (DSP) algorithms, typically
+being the key elements to achieve the highest performances.
+                                                                                  In the field of DSP, floating-point arithmetic constitutes
+                                                                               a valuable mean to perform calculations with fine accuracy
+                                                                               in a wide range of representable values. At the same time,
+The demand for suitable hardware features in terms of area                     the practical realization of floating-point arithmetic circuits
+occupation and power consumption is of pivotal importance                      poses important issues from a hardware perspective, thus
+                                                                               demanding for proper implementation strategies. In particular,
+  Manuscript received 9 May 2024; revised 17 July 2024 and 16 August 2024;
+accepted 19 August 2024. Date of publication 27 August 2024; date of current   the computation of the output mantissa, generally expressed on
+version 30 January 2025. This work was supported by the Spoke 1 Future         a large number of bits, implies intensive calculations that lead
+High Performance Computing (HPC) and Big Data of Italian Research Center       to high power consumption and area. In the context of signal
+on High-Performance Computing, Big Data and Quantum Computing (ICSC)
+funded by Ministero dell’Università e della Ricerca (MUR) Mission 4—Next       processing, Approximate Computing constitutes a meaningful
+Generation European Union (EU). This article was recommended by Associate      solution to reduce the complexity of the circuits, providing to
+Editor J. Zhang. (Corresponding author: Gennaro Di Meo.)                       intentionally sacrifice accuracy of calculation to save hardware
+  Gennaro Di Meo, Antonio Giuseppe Maria Strollo, Davide De Caro,
+and Luca Tegazzini are with DIETI, University of Napoli Federico II,           performance [6], [7].
+80125 Napoli, Italy (e-mail: gennaro.dimeo@unina.it; astrollo@unina.it;           In literature, several approximate techniques have been
+dadecaro@unina.it; luca.tegazzini@unina.it).                                   shown for the design of efficient floating-point arithmetic
+  Ettore Napoli is with DIEM, University of Salerno, 84084 Fisciano, Italy
+(e-mail: enapoli@unisa.it).                                                    circuits. In the case of multipliers, proposed approaches range
+  Digital Object Identifier 10.1109/TCSI.2024.3447830                          from linear approximation [8], [9] to static segmentation [10]
+                             © 2024 The Authors. This work is licensed under a Creative Commons Attribution 4.0 License.
+                                        For more information, see https://creativecommons.org/licenses/by/4.0/
+DI SMEO et al.: LOW-POWER HIGH PRECISION FLOATING-POINT DIVIDER                                                                    883
+
+
+
+and tunable accuracy implementations [11], [12]. In [13], and        results in TSMC 28nm CMOS technology reveal remarkable
+[14], mantissa product is also skipped under proper error            hardware performance, assessed in terms of power-delay-
+conditions. Likewise, important efforts have been made also to       product (PDP) and area-delay-product (ADP), making the
+reduce the complexity of floating-point adders exploiting tech-      proposed design pareto optimal. Finally, analyses of appli-
+niques like lower-OR addition (LOA) and speculation [15],            cations as JPEG compression and tone mapping [32] of
+[16], [17].                                                          high dynamic range (HDR) images are presented to test the
+   The floating-point divider, necessary in a wide range of          proposed design in concrete scenarios. Again, our approach
+applications such as domain transformation, JPEG compres-            demonstrates superior performance, offering results very close
+sion, tone mapping, and motion detection, is a notorious             to the exact case.
+complex, slow and power-hungry circuit. Many recent research            The paper is organized as follows: section II offers an
+efforts have been dedicated to the design of hardware efficient      overview of the state-of-the-art and introduces the division in
+floating-point dividers. Iterative algorithms like Sweeney-          floating-point arithmetic; section III describes the theoretical
+Robertson-Tocher (SRT) and Newton-Raphson are often                  approach adopted to compute the quotient with the bidimen-
+employed to realize a division [18], [19], [20]. While in the        sional linear approximation, whereas section IV describes the
+SRT method each iteration allows to find a bit of the result         hardware structure of the proposed mantissa divider. Error
+exploiting subtraction, in the Newton-Raphson approach the           metrics and hardware performance are shown in section V,
+algorithm starts from an initial estimate of the quotient and        whereas image processing results are discussed in section VI.
+uses multiplications to achieve the desired value. Despite the       Conclusions are in section VII.
+precision of these techniques, iterative implementations suffer
+from high latency, and require significant hardware resources              II. F LOATING -P OINT D IVISION BACKGROUND
+to store the partial results. On the contrary, works like [21],
+[22], [23], [24], [25], [26], [27], [28], [29], [30], and [31]       A. Related Works
+introduce suitable approximate techniques which allow to                In the following we present an overview of the state-
+realize the division with optimal latency and throughput. For        of-the-art for approximate, non-iterative dividers. A shown
+instance, in [21], [22], and [23] the authors revisit the division   in [21], mantissa division can be computed by performing a
+as a subtraction by computing the result in the logarithmic          subtraction in the logarithmic number system. This approach
+number system. The papers [24], [25], [26] find the reciprocal       approximates the logarithm of the input mantissas and the final
+of the divisor performing a multiplication instead of a division,    antilogarithm operation, introducing a rather large error on the
+while [27], [28], and [29] introduce error correction techniques     result. In addition, some least significant bits (LSBs) of the
+based on variable compensation terms. The works [30], [31]           mantissas can be truncated to further reduce the hardware cost.
+present solutions based on signal inversion and truncation,          The authors of [22] exploit mantissa subtraction, as in [21],
+which are applicable to the mantissa divider for a hardware          and introduce a constant compensation term to achieve zero
+efficient computation.                                               mean error, while [23] presents a pipelined structure for field
+                                                                     programmable gate arrays applications. In [24], a two steps
+                                                                     approximation process is exploited: in the first step different
+B. Contribution                                                      approximation levels, which depend on the most significant
+   In this paper, we propose a novel approximate floating-point      bits of the divisor, are used to compute the reciprocal of the
+divider based on a bidimensional linear approximation. In our        divisor, while in the second step the reciprocal of the divisor
+implementation, the mantissa division is revisited as function       is multiplied by the dividend using shift-and-add operations.
+of the two input mantissas. The domain of this two-variable          The number of approximation levels and the number of
+function is divided in rectangular regions, named tiles in the       adders used for the shift-and-add operations define both the
+following, and in each tile the quotient is expressed as a           accuracy and the circuital complexity of the divider. As in [24],
+piecewise-linear combination of the mantissas. The coeffi-           an approximate version of the reciprocal of the divisor is
+cients for the linear combination are obtained in each tile          computed also in [25], which exploits a variant of the Taylor
+by solving an optimization problem aimed at minimizing the           expansion, and a variable correction term, stored in a LUT,
+Mean Relative Error Distance (MRED) between the exact                is added to recover precision. In [26] the authors propose an
+division and the proposed approximation. In a subsequent             approximate division scheme based on logarithmic conversion
+step, to make hardware implementation more effective, the            and piecewise constant approximation for the reciprocal of
+optimization problem is properly modified to find a set of           the divisor. In this case, different from [24] an inner truncated
+quantized coefficients able to minimize MRED while being             multiplier is implemented to compute the quotient, achieving
+represented with a reduced number of bits. The hardware              higher accuracy at the cost of a superior hardware complexity.
+implementation of the proposed circuit only requires a small         The work [27] is also based on logarithmic numbers but intro-
+look-up table (LUT), used to store the optimal coefficients,         duces a variable correction technique for accuracy recovery
+and a simple multi-operand adder.                                    as in [25]. Here, N MSBs of the input mantissas allow to
+   Simulation results reveal error metrics comparable to or          identify 22·N regions, and, for each region, a coefficient is
+superior to the state-of-the-art, with accuracy tunable at           defined to reduce the approximation error. Paper [28] also
+design-time over a wide range depending on the number of             exploits a similar approach, with the mantissa plane divided in
+tiles chosen for the approximation. In addition, post-synthesis      both rectangular and triangular regions. Accordingly, suitable
+884                                           IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 72, NO. 2, FEBRUARY 2025
+
+
+
+                                                                             The block mantissa divider, highlighted in red, implements:
+                                                                                                         1 + Mx
+                                                                                                   P=                                  (2)
+                                                                                                         1 + My
+                                                                              Let us observe that P is in [0.5, 1) when Mx < My, while
+                                                                           P is already in [1, 2) when Mx ≥ My. Therefore, the integer
+                                                                           part of P comprises only its MSB (named MSBP in Fig. 1b)
+                                                                           with MSBp = 0 if P is in [0.5, 1), and MSBp = 1 if P is
+                                                                           in [1, 2).
+                                                                              In order to extract the output mantissa Mz, the quotient
+                                                                           P should be in the form (1 + Mz), and hence P should be
+                                                                           normalized in the range [1, 2). Accordingly, the normalization
+                                                                           block in Fig. 1b performs the following operations:
+                                                                             (1 + M z)
+                                                                                (
+                                                                                  2 · P = 2 · (1 + M x)/(1 + M y) i f M S B P = 0
+                                                                              =
+                                                                                  P = (1 + M x)/(1 + M y)         i f M S BP = 1
+                                                                                                                                       (3)
+Fig. 1. (a) Floating-point representation of the real number x in single     Thus, when MSBP = 0 a left shift is required to move
+precision format, and (b) block diagram of the floating-point divider.
+                                                                           P in the range [1, 2). In this case the exponent has to be
+                                                                           decremented by 1 in order to compensate for the mantissa
+                                                                           shift. Overall, E z can be computed as follows:
+coefficients that best fit the division with a linear function of
+the mantissas are found. In [29], the quotient is expressed as                           E z = E x − E y − bias − M S B P              (4)
+a linear function of the dividend, with coefficients that depend
+on the divisor. Some LSBs of the operands are truncated to                   As shown in (3), the mantissa computation requires the
+reduce the hardware burden. In the case of [27], [28], [29],               division between (1 + Mx) and (1 + My), which is the most
+the kind of partition scheme and the number of truncated bits              compute-intensive block.
+are design parameters used to trade accuracy of calculations
+for hardware complexity. The work [30] approximates the                                    III. P ROPOSED T ECHNIQUE
+reciprocal of the divisor with a linear function. Then, following            Before describing our approach, let us call P ′ the approx-
+an approach similar to [24], revisits the computed expression              imate mantissa quotient, and let us define the Relative Error
+as a shift-and-add operation to reduce the hardware complex-               Distance (RED) between P and P ′ as
+ity. In [31] the reciprocal of the divisor is approximated by
+                                                                                                           P − P′
+means of bit-inversion and a right shift, and some LSBs of the                                   RE D =                                (5)
+inverted signal are also truncated for further simplification.                                               P
+                                                                             Starting from (5), we compute the Mean Relative Error
+B. Floating-Point Division                                                 Distance (MRED) as the average value of the RED.
+                                                                             In the following, section III-A shows the theoretical rea-
+   In floating-point arithmetic, a real number x is expressed in
+                                                                           soning used to set up the minimization problem able to find
+terms of sign Sx, exponent Ex, and mantissa Mx as:
+                                                                           optimal coefficients, while section III-B revisits the proposed
+                x = (−1) Sx · 2 E x−bias · (1 + M x)                (1)    approach with the aim to find the coefficients numerically.
+                                                                           Then, in section III-C quantization effects are addressed to
+with bias that depends on the selected format. The mantissa                compute optimal quantized coefficients.
+Mx is in the range [0, 1) and, as consequence, the quantity
+(1 + Mx) lays in the interval [1, 2).
+   With reference to the single precision IEEE floating-point              A. Theoretical Approach
+representation [33], considered in the rest of the paper, the                 As observable from (2), the quotient P can be seen as a
+number x is on 32 bits as shown in Fig. 1a. The MSB is the                 function of two variables, Mx and My, which assumes values
+sign of x, the following n E = 8 bits represent its exponent,              in the mantissas’ plane defined as [0, 1) × [0, 1). In order
+and the remaining n M = 23 LSBs are the mantissa. The bias                 to approximate the quotient, we partition the plane Mx–My
+is 127.                                                                    in nx × ny regions as shown in Fig. 2, where each region,
+   Let us consider the division z = x/y, where Sy, Ey, My and              named tile in the following, has dimensions 1x = 1/nx and
+Sz, Ez, Mz that are signs, exponents, and mantissas of the real            1y = 1/ny.
+numbers y and z, respectively, and z is expressed as in (1).                  In the following, we introduce the indexes h, k to identify
+As shown in Fig. 1b, the sign Sz is computed by XOR-ing Sx                 a tile of the plane, and call (Mxh , Myk ) the coordinates of
+and Sy, while the output exponent Ez is substantially computed             its lower-left corner, with Mxh = (h − 1) · 1x and Myk =
+by subtracting the exponents of the inputs and the bias.                   (k − 1) · 1y (see Fig. 2).
+DI SMEO et al.: LOW-POWER HIGH PRECISION FLOATING-POINT DIVIDER                                                                                      885
+
+
+
+                                                                                  for h = 1..nx, k = 1..ny. Thus, the optimization problem can
+                                                                                  be expressed as follows:
+                                                                                     for each tile, find the coefficients ah,k , bh,k , ch,k such that:
+                                                                                                        sx −1 nX
+                                                                                                       nX      sy −1
+
+                                                                                                                          R E Di, j min!           (10)
+                                                                                                          i=0    j=0
+
+                                                                                     We can organize the problem of (10) in an equivalent
+                                                                                  form, more suitable for numerical solution. To that purpose,
+                                                                                  we introduce a set of auxiliary variables u i,j in addition to
+                                                                                  ah,k , bh,k , ch,k , and reformulate (10) as follows:
+                                                                                             sx −1 nX
+                                                                                            nX      sy −1
+
+                                                                                                            u i, j min!                            (11)
+                                                                                             i=0    j=0
+                                                                                                                 Subject to : R E Di, j ≤ u i, j   (12)
+Fig. 2. Partitioning of the mantissas’s plane in nx ×ny tiles. In this example,
+nx and ny are equal to 4 and 8, respectively.                                     for: i = 0.. n sx −1; j = 0.. n sy −1
+                                                                                     By using (8), the constraint (12) can be written as:
+
+  Then, in the (h, k)-th tile the mantissa quotient is approx-                    Pi, j −ah,k ·(M xi − M x h )−bh,k ·(M y j − M yk )−ch,k ≤ u i, j Pi, j
+imated with a linear expression of Mx, My as in a first-order                                                                                      (13)
+Taylor expansion:                                                                   This constraint is in the form |a| ≤ b. It can be rewritten
+   P = ah,k · (M x − M x h ) + bh,k · (M y − M yk ) + ch,k
+     ′
+                                                                           (6)    with two linear constraints not involving the absolute value:
+                                                                                                                 (
+where ah,k , bh,k , ch,k are suitable constants, while Mx and My                                                   a≤b
+                                                                                                    |a| ≤ b ⇔                               (14)
+lay in the range [Mxh , Mxh+1 ) and [Myk , Myk+1 ), respectively.                                                  −a ≤ b
+   The coefficients of the approximation are not computed as
+                                                                                    In this way, (13) is modified as follows:
+in Taylor expansion, but instead are calculated in each tile in
+order to minimize the MRED of the approximation.                                           − ah,k · (M xi − M x h ) − bh,k · (M y j − M yk )
+   To that purpose, we introduce in each tile a set of uniformly                                  − ch,k − u i, j · Pi, j ≤ −Pi, j
+distributed n sx × n sy sampling points (Mxi , Myj ) whose coor-
+dinates are:                                                                               ah,k · (M xi − M x h ) + bh,k · (M y j − M yk )
+                             1x                                                                   + ch,k − u i, j · Pi, j ≤ Pi, j                  (15)
+        M xi = M x h + i ·          i = 0, 1, . . . , n sx − 1
+                             n sx                                                    The minimization problem (11),(15) takes the form of a
+                              1y                                                  standard linear programming problem, defined as:
+        M y j = M yk + j ·           j = 0, 1, . . . , n sy − 1 (7)
+                              n sy
+                                                                                                      cT x min!
+  The MRED is minimized for this set of sampling points.                                                   subject to : Ax ≤ b                     (16)
+Let us consider the point (Mxi , Myj ), highlighted in blue in
+Fig. 2, and let us call Pi, j as the exact quotient: Pi, j =                      where the vector x includes 3+n sx ·n sy variables corresponding
+(1 + Mxi )/(1 + Myj ). The relative error distance at the                         to the desired coefficients ah,k , bh,k , ch,k and the auxiliary
+considered (i, j) point is:                                                       variables u i,j . The number of constraints is 2 · nsx · n sy .
+                                                                                     In the paper the minimization problem is solved in Matlab
+  R E Di, j                                                                       by using the Dual Simplex method. Our numerical experiments
+      Pi, j −ah,k · (M xi − M x h )−bh,k · (M y j − M yk )−ch,k                   show that having n sx , n sy larger than 20 does not change
+  =
+                                  Pi, j                                           the solution of the optimization problem. Therefore, we fixed
+                                                                           (8)    n sx = n sy = 20 points per tile.
+                                                                                     The Fig. 3 highlights the behavior of the overall MRED
+  The MRED in the (h, k)-th tile is obtained by averaging the                     of the divider for different partition schemes, defined by the
+RED over the set of sampling points:                                              parameters nx, ny. For the sake of simplicity, the values of nx,
+                                                                                  ny are chosen as powers of two. As shown in the figure, the
+                                             sx −1 nX
+                                            nX      sy −1
+                                   1                                              MRED depends on the adopted partition scheme, exhibiting a
+           M R E Dh,k =                   ·               R E Di, j        (9)
+                              n sx · n sy                                         reduction up to two orders of magnitude for increasing values
+                                            i=0    j=0
+                                                                                  of nx, ny. The error exhibits a larger dependence on ny, with
+                                                                                  best results achieved for ny ≥ 8. For instance, considering the
+B. Minimization Problem                                                           curve for nx = 8 (depicted in black), the MRED reduces from
+  In order to minimize the overall MRED of the divider,                           10−2 up to about 10−4 . Likewise, the error steeply decreases
+we proceed tile-by-tile, by minimizing the MREDh,k of (9)                         for nx in the range [2, 16], whereas a lower reduction is
+886                                           IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 72, NO. 2, FEBRUARY 2025
+
+
+
+                                                                           complexity. The lower LSBa , LSBb , LSBc the better the
+                                                                           MRED (due to the finer resolution of the coefficients), but
+                                                                           the larger the hardware complexity (due to the logic to store
+                                                                           the coefficients). Figure 4 shows the behavior of the MRED
+                                                                           with quantized coefficients as function of LSBa , LSBb for
+                                                                           LSBc = 2−2 , 2−4 , 2−7 , 2−10 . In this analysis, we refer to
+                                                                           the partitions nx = 2, ny = 4 (Fig. 4a), nx = 2, ny = 8
+                                                                           (Fig. 4b), nx =4, ny = 8 (Fig. 4c), and nx = 8, ny = 8
+                                                                           (Fig. 4d), and also reports the error performance using the
+                                                                           unquantized coefficients. The minimization problem is solved
+                                                                           in Matlab by using the legacy branch and bound method and
+                                                                           n sx × n sy = 20 × 20 points per tile. As shown, the MRED
+                                                                           depends on the weights LSBa , LSBb , exhibiting a strong
+                                                                           improvement for values varying from 2−1 to 2−4 . At the same
+Fig. 3. Behavior of the overall MRED of the mantissa divider as function   time, a careful choice of LSBc is also required. Indeed, only
+of different partition schemes.                                            for LSBc = 2−7 , 2−10 the MRED is able to approach the
+                                                                           value of the unquantized case, whereas the accuracy worsens
+registered when nx passes to 32 (as shown by the very close                for LSBc = 2−2 , 2−4 .
+green and violet curves for ny ≤ 16). Following the above
+                                                                           Algorithm 1 Algorithm for Computing the Coefficients
+considerations, partition schemes with nx in the range [2, 16]
+                                                                           Needed to Approximate the Quotient P According to (18)
+and ny in the range [2, 32] are suitable candidates to realize
+                                                                           Input: The number of tiles, nx, ny; the weights of the less-significant
+the approximate divider. At the same time, is it worth noting              bits used to represent in binary format the coefficients of the
+that the number of partitions affects the number of coefficients           approximation: LSBa , LSBb , LSBc .
+and, as consequence, the hardware complexity of the circuit.               Output (for each tile): the quantized coefficients used in the
+                                                                           approximation: aqh,k , bqh,k , cqh,k .
+Therefore, a careful choice of the partition scheme is pivotal             Steps:
+to properly balance the trade-off between accuracy of results              1. nsx = 20; nsy = 20; // Fixed to 20 since numerical experiments
+and hardware performance.                                                  showed that larger values do not change the solution
+                                                                           2. 1x = 1/nx; 1y = 1/ny;
+                                                                           3. for h = 1:nx
+C. Quantized Minimization Problem                                          4. for k = 1:ny
+                                                                           5.     Mxh = (h − 1)1x; Myk = (k − 1)1y;
+   An efficient hardware implementation of the proposed                    6.     for i = 0 : n sx −1
+algorithm requires a careful quantization of the coefficients              7.        for j = 0 : n sy −1
+ah,k , bh,k , ch,k , so that they can be efficiently stored in a look-     8.           Mxi = Mxh + i1x/nsx; My j = Myk + j1 y/nsy;
+                                                                           9.           compute matrix A and vectors c, b with (11)(15)(17)
+up table. In order to find optimal solution also taking into               10.           solve problem (16) to compute Ah,k , Bh,k , Ch,k
+consideration coefficient quantization, we replace ah,k , bh,k ,           11.           aqh,k = Ah,k LSBa ; bqh,k = Bh,k LSBb ; cqh,k = C h,k LSBc ;
+ch,k with quantized terms aqh,k , bqh,k , and cqh,k :                      12.       end for;
+                                                                           13.     end for;
+                        aqh,k = Ah,k · L S Ba                              14. end for;
+                                                                           15. end for;
+                        bqh,k = Bh,k · L S Bb
+                        cqh,k = C h,k · L S Bc                     (17)
+where Ah,k , Bh,k , Ch,k are integer variables, and LSBa , LSBb ,                       IV. H ARDWARE I MPLEMENTATION OF
+LSBc are the weights of the least significant bits of the novel                               THE M ANTISSA D IVIDER
+coefficients. Using (17) in place of ah,k , bh,k , ch,k allows                The hardware implementation of the proposed approximate
+to find a quantized solution to the problem (11), (15). The                mantissa divider is depicted in Fig. 5. The values of nx and
+minimization problem takes the form of a mixed-integer linear              ny are powers of two. Please, note that the proposed structure
+programming problem, which searches for optimal values of                  will be integrated into the floating-point divider of Fig. 1 to
+the integer variables Ah,k , Bh,k , Ch,k able to minimize the              carry out the analyses shown in the following sections.
+MRED taking as input parameters the partition scheme, defined                 In order to compute the quotient, each mantissa is divided
+by nx, ny, and the coefficient weights LSBa , LSBb , LSBc                  into two main fields as shown in Fig. 5a, where we consider
+(please note that the problem is mixed-integer since variables             the case of an nM = 8-bit mantissa and a partition scheme
+u i,j remain real). It is worth noting that, using the coefficients        with nx = 4 for the sake of demonstration. With reference to
+of (17), the mantissa quotient of (6) is computed now as:                  Mx, the first field gathers 2 MSBs (highlighted in red) and
+                                                                           constitutes the index h, used for the selection of the desired
+      P ′ = aqh,k ·(M x − M x h )+bqh,k ·(M y − M yk )+cqh,k       (18)
+                                                                           coefficients. It is worth noting that choosing nx as a power of
+The algorithm 1 details the steps needed to calculate the                  two allows to find the value of the index just selecting log2 (nx)
+coefficients aqh,k , bqh,k , and cqh,k .                                   MSBs of the mantissa.
+   A careful choice of the weights LSBa , LSBb , LSBc allows                  The second field corresponds to the mantissa with-
+to obtain the best trade-off between precision and hardware                out the bits of the index, and represents the difference
+DI SMEO et al.: LOW-POWER HIGH PRECISION FLOATING-POINT DIVIDER                                                                                 887
+
+
+
+
+Fig. 4. MRED with respect to the weights LSBa , LSBb for different values of LSBc in the cases: (a) nx = 2, ny = 4, (b) nx = 2, ny = 8, (c) nx = 4,
+ny = 8, and (d) nx = 8, ny = 8. The dotted black line represents the error of the divider without quantization of the coefficients.
+
+
+
+Mxdiff = (Mx − Mxh ), used to compute P ′ according to (18).               fused in a unique carry-save adder block (CSAB). For the sake
+To better clarify this point, let us consider the values of Mx             of demonstration, Fig. 5c shows the schematic of the CSAB
+in the tile h = 3. The lower-left corner of the tile starts with           again in the case of mantissas on n M = 8 bits, t = 3 truncated
+Mxh =11000000, while Mx in this tile assumes the values                    LSBs. Coefficients Ah,k , Bh,k are supposed to be on 2 bits
+11000000, 11000001, . . . , 11111111. As consequence, the dif-             with LSBa = LSBb = 2−1 , while Ch,k is on 7 bits with
+ference Mx–Mxh can be obtained by simply discarding 2 MSBs                 LSBc = 2−6 . In this example, the LSBs of the truncated
+of Mx. This avoids the need of a subtracter to compute                     mantissas have weight 2−5 . Therefore, the products aqh,k ·
+Mx–Mxh with beneficial effects on hardware performance.                    Mxdiff , bqh,k · Mydiff have LSB whose weight is 2−6 .
+   As shown in Fig. 5(a), we discard t LSBs of Mxdiff                         The truncation allows to express the approximate quotient
+(highlighted in gray in the figure), to further reduce the                 P ′ on a reduced number of bits as also shown in the example
+hardware complexity. Accordingly, Mxdiff is expressed on                   of Fig. 5c, where only 7 bits are computed instead of 9. It is
+n M −log2 (nx) −t bits.                                                    worth noting that the reduced bit-width of P ′ allows also
+   The mantissa My is segmented in the same way, with                      to simplify the multiplexer in the normalization block of the
+log2 (ny) MSBs corresponding to the index k, and the following             floating-point divider (visible in Fig. 1b), with further hard-
+n M –log2 (ny)–t bits that correspond to the truncated difference          ware improvement on the overall circuit. After normalization,
+Mydiff = (My–Myk ).                                                        the extracted mantissa is extended up to the number of bits
+   The structure of the approximate mantissa divider is shown              defined by the standard (e.g. 23 bits in single precision format)
+in Fig. 5b, particularized to the case of 8-bit mantissas with             by left-side zero padding.
+t = 3 truncated bits and partition scheme nx = 4, ny = 4. The
+indexes h, k allow to address the coefficients Ah,k , Bh,k , Ch,k ,                           V. D ESIGN P ERFORMANCE
+stored in a LUT. The LUT will be synthesized with standard
+cells and stores the coefficients computed at design time. The             A. Error Metrics
+truncated mantissas and the coefficients are multiplied and                  In order to compute the error metrics, the floating-point
+added as reported in (18). The multipliers and the adder are               divider integrating the proposed mantissa divider is simulated
+888                                                 IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 72, NO. 2, FEBRUARY 2025
+
+
+
+                                                                                       Defining the combination of design parameters resulting
+                                                                                    in the optimal hardware-accuracy trade-off is not a straight-
+                                                                                    forward task. Nevertheless (considering the trends described
+                                                                                    above) some trial and errors are sufficient to obtain very
+                                                                                    effective and most likely optimal implementations (reported
+                                                                                    in Table I and Fig. 9 as a function of the desired precision
+                                                                                    targets), that overcome the state-of-the-art.
+                                                                                       We consider the following partition schemes, offering a
+                                                                                    good compromise between hardware performance and preci-
+                                                                                    sion: (i) nx = 2, ny = 4, (ii) nx = 2, ny = 8, (iii) nx = 4,
+                                                                                    ny = 8, (iv) nx = 8, ny = 8. In addition, quantized coefficients
+                                                                                    are computed with weights LSBa = 2−2 , LSBb = 2−2 , and
+                                                                                    LSBc = 2−7 . The values of the coefficients for the four
+                                                                                    partition schemes are reported in Fig. 6, grouped in the form
+                                                                                    Ah,k , Bh,k , Ch,k for each combination of the indexes h, k.
+                                                                                       Figure 7 depicts the behavior of the MRED as a function of
+                                                                                    the number t of truncated LSBs of the mantissas. The MRED
+                                                                                    is practically constant for t ≤ 16, whereas an increase in the
+                                                                                    error is shown when more than t = 17 bits are truncated.
+                                                                                       The nomenclature used for the proposed floating-point
+                                                                                    architecture is FPD2Dnx×ny,t , which points out the imple-
+                                                                                    mented partition scheme and the number of truncated bits in
+                                                                                    the mantissa divider. In particular, in the following we focus
+                                                                                    our attention on the designs FPD2D2×4,19 , FPD2D2×8,18 ,
+                                                                                    FPD2D2×8,17 , FPD2D4×8,17 , FPD2D8×8,17 , FPD2D8×8,16 ,
+                                                                                    FPD2D8×8,15 that show a favorable tradeoff between accuracy
+Fig. 5. (a) Partition of the mantissa M x in the case n M = 8 bits, (b) schematic   and hardware complexity.
+of the proposed approximate mantissa divider, and (c) detail of the carry save         Table I collects the error performance of the above designs,
+adder block (CSAB) with n M = 8 and t = 3 truncated LSBs. Coefficients              also offering a comparison with the state-of-the-art. After a
+Ah,k , Bh,k are expressed on 2 bits with LSBa = LSBb = 2−1 , while Ch,k is
+on 7 bits with LSBc = 2−6 .                                                         careful analysis, we select for our study the implementations
+                                                                                    of [21], [24], [26], [27], and [29], named ALD, FPAD,
+with 106 couples of random inputs. Then, the obtained results                       LPCAD(k, t), CADE(N , L), and FPDMEK,pt , respectively,
+are compared to the exact case. Let us name z and z ′                               since they offer the best hardware-accuracy trade-off among
+as the exact and the approximate floating-point quotients,                          the works cited in section II-A. For LPCAD, k is the number
+respectively. The relative error distance is defined as RED =                       of coefficients used in the approximation, and t is the number
+|(z − z ′ )/z |, whereas the Mean Relative Error Distance is                        of preserved columns in the inner multiplier. For CADE, N is
+MRED = mean(RED), where mean(·) is the mean value oper-                             the number of LSBs used to identify the 22·N regions in which
+ator. We also introduce the error bias EB = mean((z − z ′ )/z),                     a coefficient is defined to minimize the approximation error,
+the probability of having RED greater than 2% (PRED), and                           and L is the number of bits used to quantize the coefficients.
+the normalized mean error distance referred to the mantissa                         For FPDME, K is the number of stipes used in the mantissas’
+divider, defined as NMED = mean(|P − P ′ |)/Pmax , with                             plane, while pt is the number of truncated bits. In addition, p
+Pmax that is the maximum possible value of the mantissa                             least significant bits are truncated also in ALD, while in FPAD
+quotient. Moreover, we assess the mean absolute error MAE =                         parameters L and A define the approximation depth and the
+mean(| z-z′ |), and the root mean square error RMSE.                                number of adders involved for the shift-and-add operation.
+   Our approach has several design parameters (the number of                           As shown in Tab. I, the proposed technique is able to
+tiles nx, ny, the coefficient weights LSBa , LSBb , LSBc , the                      offer a wide range of values for the MRED in dependence
+number t of truncated bits).                                                        on the adopted partition scheme and mantissa truncation. For
+   The selection of these parameters involves a trade-off                           instance, FPD2D2×4,19 achieves an MRED of 1.98%, whereas
+between precision and hardware complexity.                                          implementations FPD2D8×8,15 and FPD2D8×8,16 are able to
+   - Increasing nx, ny improves the accuracy (owing to the                          approach MRED =0.4%. Similar observation applies for the
+      smaller tiles size) but calls for a large number of coeffi-                   PRED, which reduces of about two orders of magnitude from
+      cients and hence in larger look-up tables to store them.                      the configuration nx = 2, ny = 4 to nx = 8, ny = 8.
+   - Reducing LSBa , LSBb , LSBc improves the MRED (due                             At the same time, the EB is very close to zero in all the
+      to finer resolution of the coefficients), but increases the                   cases with best results achieved for ny = 8. The proposed
+      hardware complexity (due to the larger word size used to                      dividers perform well also in terms of NMED, MAE, and
+      store the coefficients).                                                      RMSE, offering a wide range of values. In this case, partition
+   - Increasing the number of truncated bits, t, simplifies the                     scheme with nx = 8, ny = 8 leads to best results with
+      hardware at the cost of precision.                                            NMED in the range 2.51 × 10−3 − 4.84 × 10−3 and MAE
+DI SMEO et al.: LOW-POWER HIGH PRECISION FLOATING-POINT DIVIDER                                                                                  889
+
+
+
+                                                                      TABLE I
+                E RROR M ETRICS AND H ARDWARE P ERFORMANCE OF THE OF THE P ROPOSED D IVIDER AND THE S TATE - OF - THE -A RT
+
+
+
+
+Fig. 6. Coefficients of the divider in the cases (a) nx = 2, ny = 4, (b) nx = 2, ny = 8, (c) nx = 4, ny = 8, (D) nx = 8, ny = 8 computed with weights
+LSBa = 2−2 , LSBb = 2−2 , and LSBc = 2−7 . for each couple of coordinates h, k, coefficients are grouped in the form (Ah,k , Bh,k , Ch,k ).
+
+
+
+in the range 3.87 × 10−2 − 5.35 × 10−2 . Similarly, RMSE                    values of RMSE. On the other hand, the other dividers exhibit
+reduces up to 6.5 with FPD2D8×8,15 . Among the other designs,               worse accuracy, with MRED up to 4% in the case ALD [21].
+FPDME16,16 , FPDME32,16 [29], CADE N = 4, L = 8 [27],
+and LPCAD(3,8) [26] achieve performance comparable to the
+cases with nx = 4, ny = 8 and nx = 8, ny = 8, exhibiting                    B. Hardware Performance
+MRED in the range 0.38%–0.75% and PRED between 8×10−2                         The proposed divider and the state-of-the-art are synthesized
+and 5 × 10−4 . Results are comparable also in terms of                      in TSMC 28nm CMOS technology using Cadence Genus
+NMED and MAE, ranging in 3.54 × 10−3 − 5.41 × 10−3 and                      with a clock period Tck of 10ns and supply voltage of 0.9V.
+3.79 × 10−2 − 1.03 × 10−1 , respectively. At the same time                  Power consumption is computed by means of post-synthesis
+CADE N = 4, L = 8 [27] and FPDME32,16 [29] achieve best                     simulations and exploiting standard delay format (SDF) and
+890                                              IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 72, NO. 2, FEBRUARY 2025
+
+
+
+                                                                          performance with PDP and ADP of about 3fJ and 22µm2 ·
+                                                                          ns, respectively, but it is worth noting that this performance is
+                                                                          achieved at the cost of lower precision, as shown in the table.
+                                                                             To put results in perspective, Fig. 9 shows the tradeoff
+                                                                          between PDP vs. MRED (Fig. 9a) and ADP vs. MRED
+                                                                          (Fig. 9b). In these plots the best tradeoff is represented by
+                                                                          the lower-left corner of the figure and the Pareto front is
+                                                                          highlighted by the black dotted line. As shown, the pro-
+                                                                          posed dividers offer the best trade-off between precision and
+                                                                          hardware, defining the pareto front for MRED in the range
+                                                                          4 × 10−3 –2 × 10−2 .
+
+                                                                                            VI. I MAGE A PPLICATION
+Fig. 7.   MRED vs. the number t of truncated bits of the mantissas.       A. JPEG Compression
+                                                                             JPEG compression reduces the amount of information
+                                                                          used to represent an image, to reduce memory storage or
+toggle count format (TCF) file to annotate net delays and                 data transmission. The algorithm initially converts the Red-
+the switching activity of the circuit. In addition, 105 random            Green-Blue (RGB) color space to the luminance-chrominance
+inputs are used to feed the circuits during the simulations.              domain, and then utilizes cosine transformation to identify
+Area occupation and critical path delay are also investigated             the frequency content of the selected image. Subsequently,
+by means of post-synthesis analyses.                                      it employs variable quantization to represent low frequencies
+    Figure 8 displays area and power breakdown in the cases               with fine precision and high frequencies with rough accuracy.
+of FPD2D2×4,19 and FPD2D8×8,15 , offering the lowest power                This approach enables the algorithm to primarily approximate
+and the best error metrics, respectively. As shown, the mantissa          the higher frequencies, which are less perceptible to the human
+divider, which gathers both the LUT and the CSAB, deter-                  eye. In addition, the algorithm also offers the possibility to
+mines the largest part of the area and power consumption.                 define the amount of compression by acting on a quality
+For instance, mantissa divider of FPD2D2×4,19 occupies about              factor Q, chosen in the range [0, 100], with Q = 0 and
+60% of the total area and dissipates about 54% of the overall             Q = 100 corresponding to the strongest and the finest
+power consumption. For FPD2D8×8,15 area and power of the                  approximation, respectively.
+mantissa divider are responsible for about 80% and 70% of                    In our case, the proposed divider and the state-of-the-art
+the total area and power, respectively. Accordingly, reducing             proposals are used to implement the quantization step. For
+hardware complexity of mantissa divider allows to reduce the              this analysis, we consider the images Autumn, Pears, Peppers,
+hardware complexity of the overall circuit.                               Mandrill, Light House and Fabric, from the Matlab dataset,
+    Table I collects the hardware results, expressed also in terms        with quality factor Q = 35, 70, 100. The accuracy is assessed
+of power-delay-product (PDP) and area-delay-product (ADP).                by comparing the images compressed with exact divider with
+Please note that the presented results encompass the entire               those compressed with approximate dividers. As figure of
+floating-point divider, including mantissa division, normaliza-           merits, we use the Mean Similarity Index (SSIM) and Peak
+tion and exponent calculation.                                            Signal-to-Noise Ratio (PSNR), expressed in dB. Table II
+    For the comparisons, we also report hardware performance              collects the results, showing the mean SSIM and the mean
+of the exact floating-point divider, chosen from the ChipAware            PSNR computed among the six images for each value of Q.
+library of the synthesizer. As shown, the proposed circuits are           In addition, last two columns also report the overall mean
+able to offer a remarkable improvement of performance with                SSIM and PSNR, offering a synthetic overview of accuracy
+respect to the exact case, with PDP reducing up to a factor               performance. As shown, proposed dividers are able to offer
+×3876 and ADP reducing up to a factor ×417 in the case                    SSIM values very close to 1 in all the cases with average PSNR
+FPD2D2×4,19 .                                                             that overcomes 45dB. The accuracy increases by increasing the
+    The designs FPD2D2×4,19 and FPD2D2×8,18 exhibit PDP                   number of tiles, as expected. Among the different implemen-
+less than 10fJ and ADP in the range from 46µm2 · ns to                    tations, the divider FPD2D8×8,15 achieves the best result, with
+62µm2 · ns, achieving performance close to FPDME4,17 [29].                an average PSNR of 45.4dB and SSIM of 0.997. The circuits
+On the other hand, PDP increases in the case of finer par-                FPDME [29] are able to approach performance of the proposed
+titions and less aggressive truncation. For instance, dividers            divider with an average PSNR up to 44.4dB, whereas CADE
+with nx = 8, ny = 8 limit PDP and ADP saving up to the                    N = 4, L = 8 [27] and LPCAD(3,8) [26] exhibit lower results,
+factors ×1687 and ×176, respectively, with results that worsen            with PSNR around to 42dB. At the same time, implementation
+reducing the number of truncated bits. Among the other                    ALD p = 8 [21] offers worst accuracy, with PSNR limited
+implementations, FPAD [24] and FPDME4,15 [29] exhibit PDP                 to 24.3dB. Figure 10a and 10b depict the images “Pears” and
+reductions in the range ×2052–×2462 and comparable values                 “Light House” compressed with quality factor Q = 35 and
+of ADP, whereas LPCAD [26] and CADE [27] show a superior                  Q = 70, respectively. For the sake of demonstration, we report
+complexity. At the same time, ALD [21] has good hardware                  the results obtained with the implementations ALD p = 8
+DI SMEO et al.: LOW-POWER HIGH PRECISION FLOATING-POINT DIVIDER                                                                                    891
+
+
+
+
+Fig. 8.   (a) Area and (b) power breakdown for the divider FPD2D2×4,19 , and (c) area and (d) power breakdown for the divider FPD2D8×8,15 .
+
+
+
+
+Fig. 9. Tradeoff between (a) PDP vs. MRED and (b) ADP vs. MRED for the proposed floating-point dividers and the state-of-the-art. The black dotted line
+represents the Pareto front.
+
+
+
+[21], offering the worst PSNR, and FPD2D8×8,15 , offering the                where α is a parameter chosen in the range [0, 1], L w is
+best PSNR. As shown, the image obtained with the proposed                    the luminance defined as function of the red, green, and blue
+divider is practically unchanged with respect to the exact case,             (R,G,B, respectively) channels of the HDR image:
+as also confirmed by the high values of PSNR and SSIM.
+Conversely, ALD [21] exhibits a sensible quality degradation                     L w (i, j) = 0.27· R(i, j)+0.67·G(i, j)+0.06· B(i, j)            (20)
+that is coherent with the lower values of PSNR and SSIM.                     and L w,m is the geometric mean of L w , defined as:
+                                                                                                                                
+                                                                                                         N −1 M−1
+B. Tone Mapping of HDR Images                                                                        1   X    X
+                                                                                      L w,m = exp                log(L w (i, j))                (21)
+   High dynamic range (HDR) images are employed in several                                          NM
+                                                                                                                i=0 j=0
+applications such as photography, computer graphics, or medi-
+cal imaging, and are produced by capturing high-quality scenes               In the following, we consider the case α = 0.5. As second
+where the pixels are represented in floating-point to give a                 step, the display luminance L d (i,j) is computed as follows:
+wide range of details. In these applications, tone mapping is                                                        L(i, j)
+used to convert HDR images in standard formats.                                                     L d (i, j) =                                  (22)
+                                                                                                                   1 + L(i, j)
+   We have analyzed the performance of the proposed dividers
+and of the state-of-the-art to realize a tone mapping algorithm              and is multiplied to the R,G,B channels of the HDR image:
+based on the Reinhard operator [32]. To this aim, the scaled                                     R ′ (i, j) = L d (i, j) · R(i, j)
+luminance L(i, j) of the HDR image is computed, where i =
+                                                                                                 G ′ (i, j) = L d (i, j) · G(i, j)
+0, 1, ..N , j = 0, 1, . . . , M are the coordinates of its pixels:
+                                     α                                                           B ′ (i, j) = L d (i, j) · B(i, j)                (23)
+                      L(i, j) =          L w (i, j)             (19)
+                                   L w,m                                     were R ′ , G ′ , B ′ are the channels with low dynamic range.
+892                                          IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 72, NO. 2, FEBRUARY 2025
+
+
+
+                                                                   TABLE II
+                   ACCURACY P ERFORMANCE OF P ROPOSED D IVIDERS AND OF THE S TATE - OF - THE -A RT IN JPEG C OMPRESSION
+
+
+
+
+Fig. 10. JPEG compression results for the images (a) “Pears” with quality factor Q = 35 and (b) “Light House” with quality factor Q = 70 for the
+implementations ALD p = 8 [21] and FPD2D8×8,15 .
+
+
+
+   As last step, the resulting channels are quantized                    very close to 1. Only the implementation CADE N = 4,
+(e.g. on 8 bits) to represent the image in a standard for-               L = 8 [27] is able to achieve a larger PSNR (44.8dB on
+mat. Table III collects the result of tone mapping algorithm,            average), whereas the other implementations exhibit poorer
+obtained by applying the approximate dividers for the compu-             performance. Among the implementation, LPCAD [26] offers
+tation of (19), (21), and (22). In this case, three test images          worst results, with PSNR that range between 10dB and 12dB
+are considered, Bottles Smal, Oxford Church, and Office,                 and SSIM up to 0.658.
+whose pixels are represented in single-precision floating-point            For the sake of demonstration, Fig. 11 reports the images
+arithmetic. As shown, the proposed dividers are able to offer            obtained with LPCAD [26] and the proposed dividers in the
+high values of PSNR (up to 43.6dB on average) with SSIM                  case of the “Office” image. As shown, images computed with
+DI SMEO et al.: LOW-POWER HIGH PRECISION FLOATING-POINT DIVIDER                                                                          893
+
+
+
+                                                                     TABLE III
+                ACCURACY P ERFORMANCE OF P ROPOSED D IVIDERS AND OF THE S TATE - OF - THE -A RT IN T ONE M APPING A PPLICATION
+
+
+
+
+Fig. 11.   Tone mapping of the “Office” image for the LPCAD implementations and the proposed dividers.
+
+
+LPCAD [26] exhibit a visible alteration of the luminance                    My and a minimization problem is set up in order to find
+level, whereas the proposed dividers allow to compute images                optimal quantized coefficients that minimize the MRED of
+practically unchanged with respect to the exact case.                       the divider. From the hardware point of view, the proposed
+                                                                            circuit only requires a fused multiply-and-add structure and a
+                         VII. C ONCLUSION                                   hardwired LUT. The proposed architecture is highly tunable
+   In this paper, we have proposed a novel approxi-                         at design-time over a wide range of accuracy, depending
+mate floating-point divider based on bidimensional linear                   on the number of tiles chosen for the approximation. The
+approximation. In our approach, the mantissa quotient                       obtained results demonstrate error performance and hardware
+(1 + Mx)/(1 + My) is revisited as function of the two variables             features superior to the state-of-the-art. The proposed dividers
+Mx, My. The domain of this function is partitioned in nx × ny               define the Pareto front, considering the trade-off between
+tiles, with nx, ny that are powers of two. In each tile, the                power-delay-product vs. MRED and area-delay-product vs.
+quotient is approximated with a linear combination of Mx,                   MRED, for MRED in the range of 4 × 10−3 − 2 × 10−2 .
+894                                                IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 72, NO. 2, FEBRUARY 2025
+
+
+
+Application results for JPEG compression and tone mapping                         [19] W. Liu and A. Nannarelli, “Power efficient division and square root
+further highlight the strength of our proposal, which exhibits                         unit,” IEEE Trans. Comput., vol. 61, no. 8, pp. 1059–1070, Aug. 2012,
+                                                                                       doi: 10.1109/TC.2012.82.
+Structural Similarity Index (SSIM) very close to 1 in all cases                   [20] K. J. N. S. Bhargav, S. Palisetti, and M. Rao, “A Newton Raphson
+and Peak Signal-to-Noise Ratio (PSNR) up to 45 dB.                                     method based approximate divider design for color quantization appli-
+                                                                                       cation,” in Proc. 18th Int. SoC Design Conf. (ISOCC), Oct. 2021,
+                                                                                       pp. 115–116, doi: 10.1109/ISOCC53507.2021.9613961.
+                              R EFERENCES                                         [21] J. N. Mitchell, “Computer multiplication and division using binary log-
+ [1] J. Gubbi, R. Buyya, S. Marusic, and M. Palaniswami, “Internet of Things           arithms,” IRE Trans. Electron. Comput., vol. EC-11, no. 4, pp. 512–517,
+     (IoT): A vision, architectural elements, and future directions,” Future           Aug. 1962, doi: 10.1109/TEC.1962.5219391.
+     Gener. Comput. Syst., vol. 29, no. 7, pp. 1645–1660, Sep. 2013, doi:         [22] H. Saadat, H. Javaid, and S. Parameswaran, “Approximate inte-
+     10.1016/j.future.2013.01.010.                                                     ger and floating-point dividers with near-zero error bias,” in Proc.
+ [2] Y.-C. Lee, T.-S. Chi, and C.-H. Yang, “A 2.17-mW acoustic DSP                     56th ACM/IEEE Design Autom. Conf. (DAC), Las Vegas, NV, USA,
+     processor with CNN-FFT accelerators for intelligent hearing assistive             Jun. 2019, pp. 1–6.
+     devices,” IEEE J. Solid-State Circuits, vol. 55, no. 8, pp. 2247–2258,       [23] Z. Ebrahimi, M. Zaid, M. Wijtvliet, and A. Kumar, “RAPID:
+     Aug. 2020, doi: 10.1109/JSSC.2020.2987695.                                        Approximate pipelined soft multipliers and dividers for high through-
+ [3] D. Esposito, G. Di Meo, D. De Caro, A. G. M. Strollo, and E. Napoli,              put and energy efficiency,” IEEE Trans. Comput.-Aided Design
+     “Quality-scalable approximate LMS filter,” in Proc. 25th IEEE Int.                Integr. Circuits Syst., vol. 42, no. 3, pp. 712–725, Mar. 2023, doi:
+     Conf. Electron., Circuits Syst. (ICECS), Bordeaux, France, Dec. 2018,             10.1109/TCAD.2022.3184928.
+     pp. 849–852, doi: 10.1109/ICECS.2018.8617858.                                [24] C. K. Jha, K. Prasad, V. K. Srivastava, and J. Mekie, “FPAD: A multi-
+ [4] M. Garrido, “A survey on pipelined FFT hardware architectures,” J.                stage approximation methodology for designing floating point approxi-
+     Signal Process. Syst., vol. 94, no. 11, pp. 1345–1364, Nov. 2022, doi:            mate dividers,” in Proc. IEEE Int. Symp. Circuits Syst. (ISCAS), Seville,
+     10.1007/s11265-021-01655-1.                                                       Spain, Oct. 2020, pp. 1–5, doi: 10.1109/ISCAS45731.2020.9180768.
+ [5] Y. Guo, Z. Wang, Q. Hong, H. Luo, X. Qiu, and L. Liang, “A 60-               [25] J. Oelund and S. Kim, “ILAFD: Accuracy-configurable floating-point
+     mode high-throughput parallel-processing FFT processor for 5G/4G                  divider using an approximate reciprocal and an iterative logarithmic
+     applications,” IEEE Trans. Very Large Scale Integr. (VLSI) Syst., vol. 31,        multiplier,” in Proc. Great Lakes Symp. VLSI, Knoxville, TN, USA,
+     no. 2, pp. 219–232, Feb. 2023, doi: 10.1109/TVLSI.2022.3227346.                   Jun. 2023, pp. 639–644, doi: 10.1145/3583781.3590262.
+ [6] V. K. Chippa, S. T. Chakradhar, K. Roy, and A. Raghunathan, “Analysis        [26] Y. Wu et al., “An energy-efficient approximate divider based on loga-
+     and characterization of inherent application resilience for approximate           rithmic conversion and piecewise constant approximation,” IEEE Trans.
+     computing,” in Proc. 50th Annu. Design Autom. Conf., Austin, TX, USA,             Circuits Syst. I, Reg. Papers, vol. 69, no. 7, pp. 2655–2668, Jul. 2022,
+     May 2013, pp. 1–9, doi: 10.1145/2463209.2488873.                                  doi: 10.1109/TCSI.2022.3167894.
+ [7] J. Han and M. Orshansky, “Approximate computing: An emerg-                   [27] M. Imani, R. Garcia, A. Huang, and T. Rosing, “CADE: Configurable
+     ing paradigm for energy-efficient design,” in Proc. 18th IEEE                     approximate divider for energy efficiency,” in Proc. Design, Autom. Test
+     Eur. Test Symp. (ETS), Avignon, France, May 2013, pp. 1–6, doi:                   Eur. Conf. Exhib. (DATE), Florence, Italy, Mar. 2019, pp. 586–589, doi:
+     10.1109/ETS.2013.6569370.                                                         10.23919/DATE.2019.8715112.
+ [8] M. Imani et al., “ApproxLP: Approximate multiplication with lineariza-       [28] L. Wu and C. C. Jong, “A curve fitting approach for non-iterative divider
+     tion and iterative error control,” in Proc. 56th ACM/IEEE Design Autom.           design with accuracy and performance trade-off,” in Proc. IEEE 13th
+     Conf. (DAC), Las Vegas, NV, USA, Jun. 2019, pp. 1–6.                              Int. New Circuits Syst. Conf. (NEWCAS), Grenoble, France, Jun. 2015,
+ [9] C. Chen, W. Qian, M. Imani, X. Yin, and C. Zhuo, “PAM: A piecewise-               pp. 1–4, doi: 10.1109/NEWCAS.2015.7182097.
+     linearly-approximated floating-point multiplier with unbiasedness and        [29] G. Di Meo, A. G. M. Strollo, and D. De Caro, “Novel low-power
+     configurability,” IEEE Trans. Comput., vol. 71, no. 10, pp. 2473–2486,            floating-point divider with linear approximation and minimum mean
+     Oct. 2022, doi: 10.1109/TC.2021.3131850.                                          relative error,” IEEE Trans. Circuits Syst. I, Reg. Papers, vol. 70, no. 12,
+[10] G. Di Meo, G. Saggese, A. G. M. Strollo, D. De Caro, and N. Petra,                pp. 5275–5288, Dec. 2023, doi: 10.1109/TCSI.2023.3312974.
+     “Approximate floating-point multiplier based on static segmentation,”        [30] M. Vaeztourshizi, M. Kamal, A. Afzali-Kusha, and M. Pedram, “An
+     Electronics, vol. 11, no. 19, p. 3005, 2022, doi: 10.3390/electron-               energy-efficient, yet highly-accurate, approximate non-iterative divider,”
+     ics11193005.                                                                      in Proc. Int. Symp. Low Power Electron. Design, New York, NY, USA,
+[11] V. Leon, T. Paparouni, E. Petrongonas, D. Soudris, and K. Pekmestzi,              Jul. 2018, pp. 1–6, doi: 10.1145/3218603.3218650.
+     “Improving power of DSP and CNN hardware accelerators using approx-          [31] S. Vahdat, M. Kamal, A. Afzali-Kusha, M. Pedram, and Z. Nav-
+     imate floating-point multipliers,” ACM Trans. Embedded Comput. Syst.,             abi, “TruncApp: A truncation-based approximate divider for energy
+     vol. 20, no. 5, pp. 1–21, Sep. 2021, doi: 10.1145/3448980.                        efficient DSP applications,” in Proc. Design, Autom. Test Eur.
+[12] G. Saggese, E. Napoli, and A. G. M. Strollo, “CFPM: Run-time                      Conf. Exhib., Lausanne, Switzerland, Mar. 2017, pp. 1635–1638, doi:
+     configurable floating-point multiplier,” in Proc. 18th Conf. Ph.D                 10.23919/DATE.2017.7927254.
+     Res. Microelectron. Electron. (PRIME), Valencia, Spain, Jun. 2023,           [32] Y. Kinoshita, S. Shiota, and H. Kiya, “Fast inverse tone mapping
+     pp. 173–176, doi: 10.1109/PRIME58259.2023.10161866.                               with Reinhard’s global operator,” in Proc. IEEE Int. Conf. Acoust.,
+[13] M. Imani, D. Peroni, and T. Rosing, “CFPU: Configurable float-                    Speech Signal Process. (ICASSP), New Orleans, LA, USA, Mar. 2017,
+     ing point multiplier for energy-efficient computing,” in Proc. 54th               pp. 1972–1976, doi: 10.1109/ICASSP.2017.7952501.
+     ACM/EDAC/IEEE Design Autom. Conf. (DAC), Austin, TX, USA,                    [33] IEEE Standard for Floating-Point Arithmetic, ANSI/IEEE IEEE Stan-
+     Jun. 2017, pp. 1–6, doi: 10.1145/3061639.3062210.                                 dard 754 2019, 2019.
+[14] M. Imani, R. Garcia, S. Gupta, and T. Rosing, “RMAC: Runtime
+     configurable floating point multiplier for approximate computing,” in
+     Proc. Int. Symp. Low Power Electron. Design, Seattle, WA, USA,
+     Jul. 2018, pp. 1–6, doi: 10.1145/3218603.3218621.
+[15] W. Liu, L. Chen, C. Wang, M. O’Neill, and F. Lombardi, “Design and
+     analysis of inexact floating-point adders,” IEEE Trans. Comput., vol. 65,
+     no. 1, pp. 308–314, Jan. 2016, doi: 10.1109/TC.2015.2417549.
+[16] S. K. Beura, J. Samanta, B. P. Devi, and P. Saha, “Floating point                                      Gennaro Di Meo received the M.S. degree
+     adder using inexact mantissa adder,” in Proc. 4th Int. Conf. Com-
+                                                                                                            (cum laude) in electrical engineering and the Ph.D.
+     put. Commun. Syst. (I3CS), Shillong, India, Mar. 2023, pp. 1–5, doi:                                   degree in information technology and electrical engi-
+     10.1109/I3CS58314.2023.10127550.                                                                       neering from the University of Napoli Federico II,
+[17] W. Liu, L. Chen, C. Wang, M. O’Neill, and F. Lombardi, “Inexact
+                                                                                                            Italy, in 2018 and 2022, respectively. Currently, he is
+     floating-point adder for dynamic image processing,” in Proc. 14th IEEE                                 a Researcher with the Department of Information
+     Int. Conf. Nanotechnol., Toronto, ON, Canada, Aug. 2014, pp. 239–243,                                  Technology and Electrical Engineering, University
+     doi: 10.1109/NANO.2014.6967953.                                                                        of Napoli Federico II. His research interests include
+[18] J. Ebergen and N. Jamadagni, “Radix-2 division algorithms with                                         the design of digital VLSI circuits for telecommu-
+     an over-redundant digit set,” IEEE Trans. Comput., vol. 64, no. 9,
+                                                                                                            nications, LMS filters, and approximate computing.
+     pp. 2652–2663, Sep. 2015, doi: 10.1109/TC.2014.2366738.
+DI SMEO et al.: LOW-POWER HIGH PRECISION FLOATING-POINT DIVIDER                                                                                           895
+
+
+
+                        Antonio Giuseppe Maria Strollo (Senior Member,                                    Luca Tegazzini received the M.S. degree (cum
+                        IEEE) received the M.S. (cum laude) and Ph.D.                                     laude) from the University of Napoli Federico II,
+                        degrees in electronic engineering from the Uni-                                   Italy, in 2023, where he is currently pursuing the
+                        versity of Napoli Federico II, Italy. Since 2002,                                 Industrial Ph.D. degree in micro and nano elec-
+                        he has been a Full Professor with the University of                               tronics with the National Program. His research
+                        Napoli Federico II, where he was the Head of the                                  interests range from approximate arithmetic circuits
+                        Department of Electronic and Telecommunication                                    to digitally controlled delay lines.
+                        Engineering from 2005 to 2008. He has published
+                        more than 150 papers on international journals and
+                        conferences. His current research interests include
+                        arithmetic circuits, approximate computing, and
+low-power digital signal processing circuits. He has been a Technical Pro-
+gram Committee Member for international conferences, including PRIME,
+ICECS, and ESSCIRC/ESSDERC. He and his co-authors were a recipient of
+the 2021 IEEE Transactions on Circuits and Systems Guillemin-Cauer Best
+Paper Award. From 2009 to 2012, he served as an Associate Editor for IEEE
+T RANSACTIONS ON C IRCUITS AND S YSTEMS —I: R EGULAR PAPERS. He is
+currently an Associate Editor of Integration, the VLSI Journal.
+
+
+
+                                                                                                          Ettore Napoli (Senior Member, IEEE) received
+                          Davide De Caro (Senior Member, IEEE) received                                   the Electronic Engineering degree (Hons.) in 1995,
+                          the M.S. degree (Hons.) in electronic engineering                               the Ph.D. degree in electronic engineering in 1999,
+                          and the Ph.D. degree in electronic engineering and                              and the Physics degree (Hons.) in 2009. He was
+                          computer science from the University of Naples                                  a Research Associate with the Engineering Depart-
+                          Federico II, Italy, in July 1999 and February 2003,                             ment, University of Cambridge, U.K., in 2004.
+                          respectively. He has worked in the area of digital                              He was a Full Professor with the University of
+                          integrated VLSI circuit design for the last 14 years.                           Napoli Federico II in 2020. He has been a Full
+                          He is currently an Associate Professor with the                                 Professor with the University of Salerno since
+                          Department of Electrical Engineering and Informa-                               2021. He has authored or co-authored more than
+                          tion Technology, University of Naples Federico II.                              100 papers published in international journals and
+                          He is the author of more than 80 technical papers in    conferences. His research interests include the VLSI circuit design and
+international journals and refereed international conferences.                    modeling of power semiconductor devices.
+
+
+
+
+                           Open Access funding provided by ‘Università degli Studi di Napoli ''Federico II''’
+                                              within the CRUI CARE Agreement
+

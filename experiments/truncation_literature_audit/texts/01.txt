@@ -1,0 +1,480 @@
+                   A Low-Power Dynamic Divider for Approximate
+                                  Applications
+
+                    Soheil Hashemi                                             R. Iris Bahar                          Sherief Reda
+               School of Engineering                                      School of Engineering                  School of Engineering
+                  Brown University                                           Brown University                       Brown University
+               Providence, RI 02912                                       Providence, RI 02912                    Providence, RI 02912
+            soheil_hashemi@brown.edu                                     iris_bahar@brown.edu                   sherief_reda@brown.edu
+
+ABSTRACT                                                                                      design area, therefore adding inaccuracies. The implemen-
+In this work, a low-power, low-error divider design is pro-                                   tation of these approximations are mostly focused on ba-
+posed that can achieve significant power and area savings,                                    sic arithmetic building blocks (e.g. adders and multiplier),
+while introducing insignificant inaccuracies to the output.                                   due to their high utilization in different applications. These
+The design of our divider is highly scalable, offering a wide                                 approximate designs can then replace or augment their ac-
+range of power and inaccuracy trade-offs based on the appli-                                  curate counterparts in general purpose processors or ASIC
+cation requirements. Furthermore, the proposed divider has                                    designs and accelerators.
+a lower delay compared to the accurate design, enabling its                                      While a number of designs for approximate arithmetic
+use on the critical path. We theoretically analyze the error                                  have been proposed for adders and multipliers, the approxi-
+of our design as a function of its configuration, and we thor-                                mate design space of other arithmetic units, such as dividers,
+oughly evaluate the error and power characteristics of our                                    is not as well investigated. This work aims to address this
+divider in a standalone case and demonstrate that the pro-                                    issue, by proposing an approximate divider targeted toward
+posed design can achieve up to 70% in power savings, while                                    error resilient applications. Our contributions are as follows.
+introducing an mean average absolute error of only 3.08%.                                        • We present a novel approximate divider that is de-
+We also implement three image-processing applications in                                           signed to dynamically select the most relevant bits of
+hardware using our divider and conclude that use of the                                            each of the operands and reduce complexity by dis-
+proposed divider will not perceptibly impact their quality-                                        carding the lower, less significant bits.
+of-service while achieving power benefits of up to 75%.
+                                                                                                 • Our highly scalable design approach enables designers
+                                                                                                   to arbitrarily trade-off accuracy for power and area
+1.     INTRODUCTION                                                                                savings during design process based on their applica-
+   Energy efficiency has emerged as one of most critical crite-                                    tion requirements. Our divider utilizes a smaller accu-
+ria in computing systems design in recent years. Computing                                         rate divider design in its core, which offers flexibility
+systems, in general, are designed to generate accurate out-                                        to the designer as it facilitates the integration of de-
+puts regardless of the application which can lead to higher                                        signer’s preferred divider design.
+power and complexity that what is needed. In particular,
+applications in domains of image and signal processing, com-                                     • We derive mathematical formulation for the introduced
+puter vision, and machine learning can tolerate amounts of                                         average error and average absolute error as a func-
+inaccuracies in their computations but still lead to results                                       tion of the divider’s parameters. We verify our anal-
+within acceptable bounds. This error tolerance can origi-                                          ysis with experimental results. Furthermore, we thor-
+nate from imperfect human perception, lack of a universal                                          oughly evaluate our divider for different configurations
+best result, or redundancy or noise in the input signal [3].                                       in terms of accuracy performance, design area, power
+Approximate computing enables the designer to exploit this                                         consumption, and timing analysis.
+error tolerance to add a new dimension to design optimiza-                                       • We use our divider to implement three applications
+tion, where computational accuracy is traded for reductions                                        in image processing, namely change detection, fore-
+in power consumption and design complexity.                                                        ground extraction and JPEG compression, to evaluate
+   In approximate hardware design, inaccuracies are intro-                                         the performance of our divider in real applications. We
+duced to the circuit by design. In this approach, hardware                                         implement our applications in Verilog and report the
+elements are simplified to reduce the power consumption and                                        accuracy, design area, and power consumption of the
+                                                                                                   approximate designs.
+Permission to make digital or hard copies of all or part of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed           The rest of the paper is organized as follows. In Section 2,
+for profit or commercial advantage and that copies bear this notice and the full cita-        we review some of the related work in approximate comput-
+tion on the first page. Copyrights for components of this work owned by others than           ing and approximate arithmetic. In Section 3, we describe
+ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or re-
+publish, to post on servers or to redistribute to lists, requires prior specific permission   the proposed design of the approximate divider architecture
+and/or a fee. Request permissions from permissions@acm.org.                                   and propose our analytical error analysis. In Section 4 we
+DAC ’16, June 05-09, 2016, Austin, TX, USA                                                    evaluate the performance of the proposed method in a stan-
+c 2016 ACM. ISBN 978-1-4503-4236-0/16/06. . . $15.00                                          dalone case and also within the context of applications. Fi-
+DOI: http://dx.doi.org/10.1145/2897937.2897965                                                nally, we summarize our conclusions in Section 5.
+2.   PREVIOUS WORK                                                                                                                                 Truncated
+   In this section, we review some of the related prior work
+done in the area of approximate design. Approximations can         (a) 0       ...          0      1                                                 X         ...               X
+be integrated in the underling hardware design, enabling the                             Leading
+designer to introduce inaccuracies in a controlled and deter-                              ‘1’
+
+
+ministic manner. Several approximate adder cells were pro-         (b)                             1
+posed by Gupta et al., where some of the transistors used
+in traditional mirror adders are removed [2]. Mahdiani et                                                          k bits
+al. proposed an approximate multiplier, where the output          Figure 1: An example of the approximation process.
+is approximated in partial product addition stage [8]. A          (a) Original input. (b) Approximated input.
+highly configurable approximate multiplier with near zero
+error distribution is proposed by Hashemi et al. [4]. New         each of the operands. Then, for each of the operands a pre-
+metrics for evaluation of approximate designs are proposed        defined number of following consecutive bits are selected and
+in [7, 9, 5]. An automated technique for approximate syn-         routed to the accurate core divider, while the rest of the in-
+thesis of behavioral Verilog is proposed by Nepal et al. [10].    put bits are truncated. We define the parameter k (or range
+   While a few designs have been proposed for both adders         of the divider) as the number of bits put through the accu-
+and multipliers, dividers and other arithmetic units have         rate divider. This parameter can be used by the designer
+not received nearly as much attention. This is due in part        to select among different trade-offs between accuracy and
+to lower utilization of blocks such as dividers compared to       design metrics, giving the design significant flexibility.
+adders and multipliers. Lower utilization of dividers, how-          Figure 1 illustrates the process implemented for approxi-
+ever, is in part a result of high cost of dividers in terms       mation of each of the operands. For an n bit operand, first
+of delay and power. Therefore, divider design with signifi-       the most significant one is detected using a LOD block. The
+cant improvements in these areas can facilitate utilization of    next k − 1 bits are then selected and routed directly to the
+these arithmetic blocks. Kelly et al. propose a multi-cycle       arithmetic logic using multiplexers. The remaining bits are
+unsigned integer divider design for timing critical applica-      then truncated. As this truncation is done on both dividend
+tions [6]. The proposed approximate design trades accu-           and divisor the final approximate result of the division could
+racy for timing improvements, achieving as much as 22.5%          either underestimate or overestimate the final accurate re-
+speedup compared to a radix-4 SRT divider with 99.4%              sult; thus, errors could potentially cancel each other out in
+probability of correctness in the output. In this work, the fo-   series of operations.
+cus is on speedup improvements, and the power and design             Figure 2 shows the building blocks of the proposed hard-
+area characteristics of the design are not evaluated thor-        ware and their interconnections. In order to maintain con-
+oughly. A non-restoring divider design is proposed by Chen        sistency with previous work, we design our divider to have
+et al. where a 8/4 divider array is approximated by us-           a 2/1 ratio between the dividend and the divisor. While the
+ing their proposed approximated subtractor cells [1]. The         ratio is kept constant throughout this work, the proposed
+utilization of pass transistor logic in the design limits their   design can be readily used to implement dividers with any
+applicability. A floating point non-iterative divider using       input widths without restrictions. Furthermore, we define
+curve fitting is proposed by Wu et al. where a systematic         parameter n to be equal to the bitwidth of the dividend
+approach provides a range of trade-offs between area-delay        to simplify future references. Figure 2 shows the bitwidths
+product and accuracy [13].                                        and their relations to each other. Here, the LOD blocks,
+                                                                  encoders, multiplexers, and barrel shifter are all part of the
+3.   PROPOSED APPROXIMATE DIVIDER                                 steering logic while the accurate core divider is the only com-
+                                                                  ponent in the arithmetic logic. If the leading ‘1’ is within
+   In any binary number, the higher-order bits represent the      the least significant k bits, no truncation is necessary and
+most significant bits of the number and the significance of       the accurate divider can handle all of the non-zero bits in
+the bits decrease as we move toward lower-order bits. In our      the operands. Therefore, in this case, the least k bits are
+design, we take advantage from the aforementioned fact and        directly forwarded to the divider and as a result no inac-
+propose to limit the number of bits in the operands actu-         curacy is introduced to the division output. This special
+ally divided, by carefully selecting a dynamic range of bits      case is integrated in all our evaluations, but is not shown
+for each of the two operands. To be more specific, we re-         in the schematics in order to avoid over-complicating the
+duce a large, and hence high power, divider to a significantly
+smaller core accurate divider and some steering logic, where
+                                                                                                             Priority Encoder
+
+
+
+
+the steering logic is defined as hardware necessary for dy-
+                                                                         n                             n
+namically detecting the most significant bits of each operand                        Leading One
+                                                                  X                    Detector
+                                                                                                                                   Multiplexer
+and routing the selected bits to the accurate divider.                                                                                         k
+                                                                                                                                Log(n)               k/2
+   In our design, inaccuracies are introduced as part of the
+                                                                                                                                           /                Barrel
+                                                                                                                                                                           n/2
+steering logic component, where each of the operands are                                                                                                                             Q
+                                                                                                                                   -                        Shifter
+                                                                                                             Priority Encoder
+
+
+
+
+approximated by truncating some of the lower bits. The                                                                          Log(n/2)       k/2
+                                                                         n/2                           n/2
+truncated operands are then divided accurately using a di-        D
+                                                                                     Leading One
+                                                                                                                                   Multiplexer
+                                                                                       Detector
+vider. If the design area and power consumption reduction
+due to the smaller divider outweighs the overheads due to
+                                                                                                                                                     Approximate Divider
+the steering logic, then the proposed implementation is well-
+justified and results in power and design area savings. In our    Figure 2: Simplified schematic for the proposed ap-
+design, the steering logic utilizes leading one detector (LOD)    proximate divider. The result is shifted by the value
+units to effectively “zoom in” on the most significant bits of    specified in the output of the subtractor.
+            (a) 0001 0111 0100 1101 ÷ 0011 0010                     where b a represents the truncated operand encoded with
+            (b)                1011 1010 ÷ 1100                   k bits. Note that b  a = a if the leading one is within the
+            (c)                          = 1111                   lower k bits. Here, the value of b
+                                                                                                   a represents an intermediate
+            (d)                       0111 1000                   step (using k-bit rather than n-bit) in the calculation of the
+            (e)                       0111 0111                   division and therefore |a − b
+                                                                                              a| represent the truncation error.
+                                                                  The relative truncation error is given by
+Figure 3: An example of a division using the pro-
+posed method. (a) Input operands (596510 /5010 );                                |a − b
+                                                                                      a|              L
+                                                                                         = t                     .
+(b) Approximated operands (18610 /1210 ); (c) Arith-                                a      2 + U × 2t−k+1 + L
+metic unit result (1510 ); (d) Final approximate result              Based on Equation 1 and in the case of division, assuming
+(12010 ); (e) Accurate result (11910 ).                           uniform distribution on the input operands, and using the
+schematics. As a feature of the proposed methodology, the         same calculation for the second operand, the expected error
+utilization of an accurate divider as the core components         of the divider is given by
+enables the designers to use their preferred divider archi-                     a         1 1
+tecture. We will demonstrate in Section 4 that this design           E(Error( )) = n n0 ×
+                                                                                b        2 2
+will lead to significant improvements in power consumption,                  n       0
+                                                                            2X −1 2n   −1 j k                k
+                                                                                                        2u(a−2 )×(t−k)
+                                                                                                                         
+design area, and delay.                                                            X        a     a
+                                                                                               −     ×                       (2)
+                                                                                                  b
+   Figure 3 gives a numeric example demonstrating the op-                                   b     b
+                                                                                                  b           0
+                                                                                                       2u(b−2k )×(t0 −k0 )
+                                                                             a=1 b=1
+eration of the proposed approximate divider with input size
+16/8 and k = 8. In this figure, bold numbers represent the        where u(·) is a step function equal to one when its argu-
+selected bits that will be routed to the arithmetic logic as      ment is non-negative and equal to zero for negative inputs
+they are. In this example, the approximation has a relative       (e.g., when an operand is passed to the core divider accu-
+error of -0.84%.                                                  rately). Further, the parameters related to the dividend (a)
+   It is worth mentioning that the proposed design can eas-       are shown as n, k, t while the parameters of the divisor (b)
+ily be used to divide signed numbers, where a preprocessing       are shown as n0 , k0 , t0 . Here, the flooring function represents
+logic can convert signed operands to unsigned before for-         integer division. Furthermore, the formula is driven for gen-
+warding them to the approximate divider. The output of the        eral case of the division where in the case of this work, the
+divider can then be negated if the sign bits of the operands      values of n0 , k0 can be replaced with n/2, k/2 to maintain
+do not match.                                                     the 2/1 ratio. In subsection 4.1 we validate our analytical
+   As our proposed method dynamically detects the most            analysis against experimental results.
+significant bits for operation, the benefits of our design in-
+crease as the divider input width grows. Note that often the      4.    EXPERIMENTAL RESULTS
+complexity of accurate divider designs grows as a quadratic          In this section, we empirically evaluate the proposed ap-
+function of input width O(n2 ). However, in the case of our       proximate divider design in terms of computational accu-
+design, while the complexity of the steering logic increases as   racy as well as power and area performance. For the core
+the input size grows, the complexity of the arithmetic logic      divider, we implement a conventional array divider. All de-
+does not need to grow to maintain accuracy. It is critical        signs are coded in Verilog and synthesized using Synopsys
+to note that in our design k << n. With this in mind, one         DC compiler with an industrial 65-nm standard cell library
+can easily show that in our proposed divider the steering         at the typical process corner. We use MentorGraphics Mod-
+logic grows as O(n log n), while the arithmetic logic grows       elSim to evaluate the numerical output of the designs and
+as O(k2 ). Therefore, overall as the input width grows, the       assess its accuracy. In Subsection 4.1, we evaluate the ac-
+increase in complexity for our divider is much less signifi-      curacy, power consumption, and design area characteristics
+cant than the increase in an accurate divider, resulting in       of our approximate standalone divider and compare these
+more substantial benefits. This makes the proposed divider        characteristics against those of an accurate divider. Then,
+highly scalable to higher input widths. Thorough analysis of      in Subsection 4.2 we evaluate the quality of solution when
+the proposed divider in Section 4 will confirm our argument.      our divider is used in real applications. Here, we also report
+                                                                  the power and area benefits achieved when implementing
+Mathematical Analysis: We also derive mathematical                each of the applications in Verilog and as a custom design.
+formulation for the expected error of our proposed divider
+based on the design parameters k and n. Figure 4 highlights       4.1    Standalone Divider
+the generic definition of the variables as used in this section      In this subsection, two ten-million randomly generated
+for each of the operands. Here, t, L, and U are defined as        vectors are used to evaluate the divider and its error char-
+the index of the leading one, the value of the lower bits, and    acteristics. Similar to the approach proposed in [7], we eval-
+the value of higher bits respectively.                            uate the performance of our divider in terms of both the
+  Using this notation, for the proposed architecture, the ap-     relative error and error distance (ED) distribution. Here,
+proximate value of the operand is equal to                        relative error is defined as RE = (Acc − App)/Acc, while
+                             j a k
+                        a = t−k+1
+                        b                                   (1)   error distance is simply defined as ED = |App − Acc| where
+                              2                                   App and Acc are the results generated by the approximate
+  n-1              t     k bits      Truncated             0      and accurate circuits respectively. We analyze the error dis-
+        0...0      1          U                  L
+                                                                  tributions and show that the proposed approximate divider
+                                                                  has near zero error bias which results in improvements in ap-
+Figure 4: The general case of the approximation and               plications where results of divisions are summed together.
+the analytical variables.                                            As discussed in Section 3, our divider is highly config-
+                                                                  urable. As the value of the parameter k can be anywhere
+                                                                                                                                                 100
+                                                                                                                                                               90.04
+Table 1: Accuracy results for the standalone divider                                                                                             90
+                                                                                                                                                                                       82.40
+for different values of k (n = 16).                                                                                                              80
+                                                                                                                                                                                                        70.81
+
+
+
+
+                                                                                                                            Savings achieved %
+                                                                 range                                                                           70    66.08
+                                                    k = 4 k = 6 k = 8 k = 10 k = 12
+                                                                                                                                                 60                            54.25
+                     Max. ED                          64    44    26    13      6                                                                                                                                         49.65
+                                                                                                                                                 50
+               Average Abs Error %                  13.57 6.37   3.08  1.42    0.59                                                                                                             41.85
+                                                                                                                                                 40
+                   Error Bias %                     -1.78 -1.49 -0.93 -0.48   -0.23                                                                                                                                                              29.61
+               Standard Deviation %                 17.16 8.55   4.60  2.56    1.50                                                              30
+                                                                                                                                                                                                                  21.90
+                                                                                                                                                 20
+                      20                                                           40                                                            10                                                                                       7.10
+
+                                                                                                                                                  0
+                                                                                                                                                          k=4                     k=6              k=8              k=10                     k=12
+ Error Percentage %
+
+
+
+
+                                                              Error Percentage %
+                      15                                                           30
+                                                                                                                                                                   Design Area Savings                  Total Power Savings
+
+                      10                                                           20                                      Figure 6: Area & power savings as a function of k.
+                                                                                                                                                 100
+                                                                                                                                                                                                                                          93.17
+                       5                                                           10                                                                                                                    87.13
+                                                                                                                                                 90
+                                                                                                                                                 80                                                                               75.80
+                                                                                                                                                                       70.81
+
+
+
+
+                                                                                                                            Savings Achieved %
+                       0                                                            0                                                            70
+                       -20     -10      0      10        20                             0   10   20    30     40      50                                                                       61.99
+                       (a) Relative Error Distribution                              (b) Error Distance Distribution                              60
+                                                                                                                                                 50
+                                                                                                                                                           41.85
+  Figure 5: The error distributions of our divider.                                                                                              40
+                                                                                                                                                 30
+Table 2: Accuracy for the standalone divider for                                                                                                 20
+different input sizes (k = 8).                                                                                                                   10
+                                                                 divider size
+                                                                                                                                                  0
+                                                          n = 16   n = 24     n = 32
+                                                                                                                                                                  n=16                             n=24                               n=32
+                                 Max ED                      26      420       6772                                                                                Design Area Savings                  Total Power Savings
+                           Average ABS Error %              3.03     3.09       3.09
+                               Error Bias %                -0.97    -0.84      -0.84
+                                                                                                                           Figure 7: Area & power savings as a function of n.
+                           Standard Deviation %              4.6     3.84       3.77
+                                                                                                                           that the value of the accurate results is also increasing, keep-
+between 2 (to maintain the 2/1 ratio) and n, the range of                                                                  ing the error/Acc ratio within the same bounds, therefore
+possible power and accuracy trade-offs (which is a function                                                                resulting in small changes in average relative error. These
+of k) is large. We first examine the impact on the divider                                                                 results support our claim that we do not need to increase
+performance by varying the value of k from 4 to 12, while                                                                  the range of the divider to higher bit widths to maintain ac-
+assuming a constant value of n = 16. Table 1 summarizes                                                                    curacy. Therefore, our design can achieve improved benefits
+the accuracy results with respect to the accurate design. As                                                               as the divider input width increases.
+expected, the accuracy increases for all of the metrics as                                                                    Figure 7 gives the design area and total power savings of
+the value of k increases. In addition, we notice that as k                                                                 our proposed divider relative to an accurate divider of the
+increases, the average absolute error decreases roughly by                                                                 same size. Here, as explained in Section 3, we maintain a 2×
+a factor of two. This is expected given that increments in                                                                 ratio between the input operand for all cases. We observe
+the range translate into one more bit calculated in the re-                                                                that the benefits in power savings increase from 42% to 62%
+sult. This trend makes the error performance of the divider                                                                to 76% as the divider size grows from 16/8 to 24/12 and
+easily calculable and predictable.                                                                                         then to 32/16. Further improvements to accuracy can be
+   Furthermore, we plot the error distance and the relative                                                                achieved by simply increasing the range of the divider.
+error distributions for a divider with n = 16 and k = 8.                                                                      We also compare our proposed approximate divider against
+Figures 5(a) and 5(b) show the empirical error distributions.                                                              the approximate divider, AXDnr, proposed by Chen et al. [1].
+The biggest portion of the results are close to 0 in both                                                                  We implement a model of their design in Matlab and com-
+distributions such that more than 99.5% of the relative error                                                              pare it with our divider using the same inputs. Since AXDnr
+is within 15% error bound. The results in Figure 5(a) also                                                                 is implemented using pass transistor logic, for a fair compar-
+show that the relative error is relatively balanced around 0                                                               ison, we compare AXDnr against an accurate divider using
+resulting in lower error rates in applications where results                                                               pass transistor logic while comparing our designs against an
+of different divide operations are added together to generate                                                              accurate design using conventional CMOS technology. In
+the final result.                                                                                                          each design we report the design area utilization normalized
+   Figure 6 gives the total power and design area savings                                                                  to the accurate divider using the same logic. Since the power
+relative to an accurate divider for different values of k (n =                                                             consumption and design area have a strong correlation, this
+16). We can observe that with average absolute error values                                                                comparison provides useful information on how the dividers
+ranging from 0.64% to 13.7% it is possible to obtain power                                                                 compare. Figure 8 illustrates this comparison using a Pareto
+savings of 29% to 90%, respectively. Our approach provides                                                                 Frontier graph. As demonstrated in the figure, the designs
+great flexibility to meet application needs.                                                                               proposed using our approach clearly outperform the previ-
+   Next, we consider the impact of changes in the divider                                                                  ous work in both the accuracy and the design metrics while
+input size on the performance. We summarize the accuracy                                                                   offering a much broader range of trade-offs.
+results in Table 2 with k = 8 and for input widths of 16/8,                                                                   In our approximated design, even though almost all of the
+24/12, and 32/16. While the maximum error distance is                                                                      steering and arithmetic logic are on the critical path, the
+increasing significantly with input size, it is critical to note                                                           quadratically smaller arithmetic logic leads to significantly
+                   70
+                   60        This Work                                             AXD3V6
+ Average Error %
+
+
+                   50
+                             AXD3V
+                             AXD3T                                  AXD3T12
+                   40
+                   30
+                   20                                                                        AXD3V4
+                                                                        AXD3T10                                                     a. Input Image 1                         b. Input Image 2
+                                         k=4
+                   10                                                             AXD3T8               AXD3V2
+                                                      k=6                                   AXD3T6
+                                                             k=8              k=10                          AXD3T4
+                   0                                                                                 k=12
+
+                        0          20            40                60                 80                     100
+                                               Area Utilization %
+
+Figure 8: Trade-offs between accuracy and design
+area for our divider vs. AXDnr [1].
+                                                                                                                                   c. Accurate Output                      d. Approximate Output
+Table 3: Critical path delay as a function of input
+size (k = 6).                                                                                                        Figure 9: Change detection results for two sets of
+    Divider Size                  Acc. Delay (ns)           App. Delay (ns)                    Speedup               input images. (a) Input image 1; (b) Input image
+       16/8                             8.39                     4.75                           1.77×                2; (c) Detected using accurate divider; (d) Detected
+       24/12                           17.33                     5.26                           3.29×
+                                                                                                                     using approximate divider. P SN R = 28.87 dB.
+       32/16                           29.60                     5.74                           5.16×
+                                                                                                                     using exact and approximate dividers. Here, Figure 9(a)
+shorter critical path delay. Table 3 showcases the delay re-                                                         and 9(b) show the two input images, Figure 9(c) shows the
+sults and the corresponding speedups, for different divider                                                          detection result using an accurate divider, and Figure 9(d)
+input widths. A speedup between 1.77× and 5× over a tra-                                                             shows the result using the proposed approximate divider
+ditional accurate divider is possible using our approach.                                                            with k = 8. It can be seen that the degradation in out-
+                                                                                                                     put quality is hardly noticeable to the human eye.
+4.2                     Results for Real Applications                                                                   Table 4 summarizes the hardware design characteristics of
+   In this section, we evaluate the proposed divider design                                                          the application for implementations using both accurate and
+when used within the context of three different applications                                                         approximate dividers in their design. Since division modules
+from the image processing domain: image change detection,                                                            comprise a substantial portion of the hardware implementa-
+JPEG compression and foreground extraction. The criteria                                                             tion, using our approximate divider can reduce power com-
+for applications is immunity to small and bounded errors as                                                          sumption by more than 75% without any significant degra-
+well as high utilization of the dividers in the combinational                                                        dation in output accuracy. Furthermore, delay is reduced
+logic. We implemented our applications in Verilog and eval-                                                          by 2.84×, providing timing slack that can be exploited to
+uated both accuracy of the result as well as design metrics.                                                         further reduce power consumption with voltage scaling.
+We use peak signal to noise ratio (PSNR) to evaluate the
+performance of our divider in our applications, since PSNR                                                           Table 4: Area, power and delay characteristics using
+is commonly used for accessing the quality of images after                                                           the proposed divider in change detection.
+compression or processing. All PSNR values are calculated                                                                          Area                 Power     Area          Power                Delay
+                                                                                                                       Design     (um2 )                (mW )    Savings       Savings             Reduction
+using the output of the accurate divider as the reference
+                                                                                                                        Acc.     17360.64               1.6875      −             −                   −
+image.                                                                                                                  App.     10327.68               0.4074   40.51%        75.86%               2.84×
+4.2.1                       Change Detection
+   In this application, two images are compared against each                                                         4.2.2      JPEG Compression
+other and the coordinates of the changes are highlighted.                                                               We also evaluate our divider in a JPEG compression al-
+These coordinates can later be used for remote sensing, med-                                                         gorithm using a 512x512 RGB image as the input. Our
+ical diagnosis or surveillance applications. Different imple-                                                        divider replaces the ones used in the quantization step. We
+mentations of this algorithm have been proposed in the lit-                                                          use 16/8-bit fixed-point dividers where the processed input
+erature using either dividers or subtracters [11]. In this                                                           image, after DCT, is mapped to 16-bits, while the quantiza-
+work, we are evaluating the proposed divider against accu-                                                           tion divisors use 8-bits. For our approximate design, we use
+rate divider, and therefore the differences among high-level                                                         the proposed divider with k = 8 and report the accuracy and
+algorithms are not relevant to this study. In basic imple-                                                           the resulting JPEG images for comparison. Figure 10 shows
+mentation of this application, the value of each pixel after                                                         the compressed image using both an accurate divider and
+pre-processing is divided by the value of the corresponding                                                          an approximate divider. As shown in the image, the degra-
+pixel in the second image. Larger values in the division re-                                                         dation in accuracy due to use of the approximate divider
+sult correspond to bigger differences between the two input                                                          is negligible. The PSNR of the image outputted using the
+images. A predefined threshold is then used to highlight the                                                         approximate divider is 24.82 dB in reference to the output
+coordinates of the changes. We implement this application                                                            of the accurate design.
+on regions of interest for each example image to narrow the                                                             In Table 5, we summarize the hardware design character-
+search space. As our input images, we use two randomly                                                               istics of the JPEG compression algorithm utilizing both the
+chosen images as proposed in [12], which is a dataset specif-                                                        accurate and the approximate dividers. Even as a more com-
+ically designed for change detection algorithms.                                                                     plicated design, in particular, our proposed implementation
+   Figure 9 illustrates the output images as implemented                                                             achieves power savings of 29.23%.
+                                                                                          Table 6: Area, power and delay characteristics using
+                                                                                          the proposed divider in foreground extraction.
+                                                                                                          Area    Power      Area      Power       Delay
+                                                                                               Design    (um2 )   (mW )     Savings   Savings    Reduction
+                                                                                                Acc.    9192.96   0.6345       −         −          −
+                                                                                                App.    7511.04   0.2283    18.30%    64.02%      2.44×
+
+                                                                                          vider is highly configurable, enabling designers to use dif-
+                                                                                          ferent variants based on their accuracy needs. We demon-
+                     (a)                                      (b)                         strate that the benefits of this design approach increase as
+Figure 10: JPEG compression using accurate and                                            the input width increases, making it highly scalable. We
+approximate dividers. (a) Compressed image using                                          evaluate the design thoroughly and empirically in terms of
+accurate divider; (b) Compressed image using Ap-                                          accuracy, design area, total power savings, and circuit de-
+proximate divider. P SN R = 24.82 dB.                                                     lay, and show that we can achieve significant savings while
+Table 5: Area, power and delay characteristics using                                      adding a small error to the divider results. In particular,
+the proposed divider in JPEG compression.                                                 our divider achieves up to 70% in power savings while intro-
+              Area                 Power    Area          Power                 Delay     ducing an insignificant 3.08% error in standalone analysis.
+  Design     (um2 )                (mW )   Savings       Savings              Reduction   Finally, we evaluate our design against three hardware im-
+   Acc.     1291474                 9.10      −             −                     −       plemented applications from the image processing domain
+   App.     1102510                 6.44   14.63 %       29.23 %               1.52 ×
+                                                                                          and show that we can achieve up to 75% in power savings
+                                                                                          while degradations in quality-of-service are negligible.
+                                                                                          Acknowledgments: This research is supported by NSF
+                                                                                          grant 1420864.
+
+                                                                                          6.     REFERENCES
+                                                                                           [1] L. Chen, J. Han, W. Liu, and F. Lombardi. Design of
+               (a) Input Image                   (b) Estimated Background
+                                                                                               approximate unsigned integer non-restoring divider for inexact
+                                                                                               computing. In Great Lakes Symposium on VLSI, pages 51–56,
+                                                                                               2015.
+                                                                                           [2] V. Gupta, D. Mohapatra, A. Raghunathan, and K. Roy.
+                                                                                               Low-power digital signal processing using approximate adders.
+                                                                                               IEEE Transactions on Computer-Aided Design of Integrated
+                                                                                               Circuits and Systems, 32(1):124–137, 2013.
+                                                                                           [3] J. Han and M. Orshansky. Approximate computing: An
+             (c) Accurate Output                     (d) Approximate Output
+                                                                                               emerging paradigm for energy-efficient design. In European
+                                                                                               Test Symposium, pages 1–6, 2013.
+Figure 11: Foreground extraction using accurate                                            [4] S. Hashemi, R. I. Bahar, and S. Reda. Drum: A dynamic range
+and approximate dividers. (a) Input image; (b) Esti-                                           unbiased multiplier for approximate applications. In
+mated background image; (c) Enhanced image using                                               International Conference on Computer-Aided Design, pages
+                                                                                               418–425, 2015.
+accurate divider; (d) Enhanced image using approx-
+                                                                                           [5] J. Huang, J. Lach, and G. Robins. A methodology for
+imate divider. P SN R = 23.96 dB.                                                              energy-quality tradeoff using imprecise hardware. In Design
+                                                                                               Automation Conference, pages 504–509, 2012.
+4.2.3      Foreground Extraction                                                           [6] D. Kelly, B. Phillips, and S. Al-Sarawi. Approximate unsigned
+                                                                                               binary integer dividers for arithmetic data value speculation. In
+   We also use our divider to implement a simple foreground                                    Conference on Design and Architectures For Signal And
+extraction (i.e., background removal) algorithm. Foreground                                    Image Processing, pages 105–112, 2009.
+extraction is commonly used as an initial stage for further                                [7] J. Liang, J. Han, and F. Lombardi. New metrics for the
+processing. In this algorithm, the input images usually suf-                                   reliability of approximate and probabilistic adders. IEEE
+                                                                                               Transactions on Computers, 62(9):1760–1771, 2013.
+fer from background variations (e.g., uneven illumination),                                [8] H. Mahdiani, A. Ahmadi, S. Fakhraie, and C. Lucas.
+affecting the foreground quality. The effect of this back-                                     Bio-inspired imprecise computational blocks for efficient VLSI
+ground variance can be reduced by dividing the image by                                        implementation of soft-computing applications. IEEE
+its estimated background image. Figure 11 visualizes the                                       Transactions on Circuits and Systems I, 57(4):850–862, 2010.
+                                                                                           [9] J. Miao, K. He, A. Gerstlauer, and M. Orshansky. Modeling
+input, estimated backgrounds, and output images as gener-                                      and synthesis of quality-energy optimal approximate adders. In
+ated using approximate and exact dividers. The proposed                                        International Conference on Computer-Aided Design, pages
+divider, using k = 8, maintains a PSNR of 23.96 dB. In this                                    728–735, 2012.
+application, again the degradation of the quality of service                              [10] K. Nepal, Y. Li, R. I. Bahar, and S. Reda. Abacus: A technique
+                                                                                               for automated behavioral synthesis of approximate computing
+in negligible.                                                                                 circuits. In Design, Automation and Test in Europe
+   The hardware design characteristics of the application are                                  Conference and Exhibition, pages 1–6, 2014.
+given in Table 6. Here, use of the proposed approximate di-                               [11] R. Radke, S. Andra, O. Al-Kofahi, and B. Roysam. Image
+                                                                                               change detection algorithms: a systematic survey. IEEE
+vider can achieve up to 64% in total power savings compared                                    Transactions on Image Processing, 14(3):294–307, 2005.
+to the accurate design. In terms of critical path delay, the                              [12] Y. Wang, P.-M. Jodoin, F. Porikli, J. Konrad, Y. Benezeth, and
+approximate design can achieve delay reductions of 2.44×.                                      P. Ishwar. Cdnet 2014: An expanded change detection
+                                                                                               benchmark dataset. In Computer Vision and Pattern
+                                                                                               Recognition Workshops, pages 393–400, 2014.
+5.   CONCLUSIONS                                                                          [13] L. Wu and C. C. Jong. A curve fitting approach for
+                                                                                               non-iterative divider design with accuracy and performance
+  In this work we proposed a design for approximate di-                                        trade-off. In New Circuits and Systems Conference, pages 1–4,
+viders targeted toward error resilient applications. Our di-                                   2015.
+

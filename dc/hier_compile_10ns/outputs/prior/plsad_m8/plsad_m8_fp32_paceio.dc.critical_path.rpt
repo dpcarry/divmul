@@ -1,0 +1,796 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : plsad_m8_fp32_paceio
+Version: U-2022.12-SP7
+Date   : Fri Sep  4 01:19:12 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1 ZeroWireload tcbn65gplustc_ccs
+  plsad_m8_fp32_paceio ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_paceio_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_mantissa_div_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_2 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8 ZeroWireload  tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                        Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                       0.00       0.00
+  clock network delay (ideal)                                                                                  0.00       0.00
+  input external delay                                                                                         0.02       0.02 f
+  y[22] (in)                                                                                                   0.00       0.02 f
+  impl/y[22] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                               0.00       0.02 f
+  impl/wrapper/y[22] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                           0.00       0.02 f
+  impl/wrapper/shared_wrapper/y[22] (fp32_normal_finite_wrapper)                                               0.00       0.02 f
+  impl/wrapper/shared_wrapper/U97/Z (CKBD1)                                                                    0.03       0.06 f
+  impl/wrapper/shared_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                      0.00       0.06 f
+  impl/wrapper/mantissa_y[9] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                   0.00       0.06 f
+  impl/core/fraction_y[9] (plsad_mantissa_div_EXACT_MSB_BITS8)                                                 0.00       0.06 f
+  impl/core/U37/ZN (INVD1)                                                                                     0.03       0.09 r
+  impl/core/U21/ZN (NR3D0)                                                                                     0.06       0.15 f
+  impl/core/U6/ZN (NR3D0)                                                                                      0.16       0.31 r
+  impl/core/U7/ZN (ND2D1)                                                                                      0.06       0.37 f
+  impl/core/U3/ZN (INVD1)                                                                                      0.06       0.43 r
+  impl/core/U35/ZN (OAI222D0)                                                                                  0.09       0.52 f
+  impl/core/approximate_sum/x2[6] (plsad_loa4_EXACT_MSB_BITS8)                                                 0.00       0.52 f
+  impl/core/approximate_sum/U28/Z (CKXOR2D1)                                                                   0.06       0.58 r
+  impl/core/approximate_sum/U12/Z (AO22D0)                                                                     0.06       0.64 r
+  impl/core/approximate_sum/U8/Z (AN2XD1)                                                                      0.03       0.68 r
+  impl/core/approximate_sum/U16/S (FA1D0)                                                                      0.07       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/B[1] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)        0.00       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_1/CO (FA1D0)                                     0.08       0.83 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_2/CO (FA1D0)                                     0.05       0.89 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_3/CO (FA1D0)                                     0.05       0.94 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_4/CO (FA1D0)                                     0.05       0.99 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_5/CO (FA1D0)                                     0.05       1.04 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_6/CO (FA1D0)                                     0.05       1.09 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_7/Z (XOR3D1)                                     0.10       1.19 f
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/SUM[7] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)      0.00       1.19 f
+  impl/core/approximate_sum/sum[14] (plsad_loa4_EXACT_MSB_BITS8)                                               0.00       1.19 f
+  impl/core/U33/ZN (INVD1)                                                                                     0.11       1.30 r
+  impl/core/shift (plsad_mantissa_div_EXACT_MSB_BITS8)                                                         0.00       1.30 r
+  impl/wrapper/shift[0] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.30 r
+  impl/wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                  0.00       1.30 r
+  impl/wrapper/shared_wrapper/U31/CO (FA1D0)                                                                   0.11       1.41 r
+  impl/wrapper/shared_wrapper/U32/CO (FA1D0)                                                                   0.05       1.46 r
+  impl/wrapper/shared_wrapper/U33/CO (FA1D0)                                                                   0.05       1.51 r
+  impl/wrapper/shared_wrapper/U34/CO (FA1D0)                                                                   0.05       1.56 r
+  impl/wrapper/shared_wrapper/U35/CO (FA1D0)                                                                   0.05       1.61 r
+  impl/wrapper/shared_wrapper/U36/CO (FA1D0)                                                                   0.05       1.67 r
+  impl/wrapper/shared_wrapper/U48/Z (XOR3D1)                                                                   0.08       1.74 f
+  impl/wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                          0.00       1.74 f
+  impl/wrapper/out0[30] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.74 f
+  impl/out0[30] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                            0.00       1.74 f
+  out0[30] (out)                                                                                               0.00       1.74 f
+  data arrival time                                                                                                       1.74
+
+  clock vclk (rise edge)                                                                                      10.00      10.00
+  clock network delay (ideal)                                                                                  0.00      10.00
+  output external delay                                                                                       -0.02       9.98
+  data required time                                                                                                      9.98
+  -------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                      9.98
+  data arrival time                                                                                                      -1.74
+  -------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                             8.24
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1 ZeroWireload tcbn65gplustc_ccs
+  plsad_m8_fp32_paceio ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_paceio_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_mantissa_div_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_2 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8 ZeroWireload  tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                        Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                       0.00       0.00
+  clock network delay (ideal)                                                                                  0.00       0.00
+  input external delay                                                                                         0.02       0.02 f
+  y[22] (in)                                                                                                   0.00       0.02 f
+  impl/y[22] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                               0.00       0.02 f
+  impl/wrapper/y[22] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                           0.00       0.02 f
+  impl/wrapper/shared_wrapper/y[22] (fp32_normal_finite_wrapper)                                               0.00       0.02 f
+  impl/wrapper/shared_wrapper/U97/Z (CKBD1)                                                                    0.03       0.06 f
+  impl/wrapper/shared_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                      0.00       0.06 f
+  impl/wrapper/mantissa_y[9] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                   0.00       0.06 f
+  impl/core/fraction_y[9] (plsad_mantissa_div_EXACT_MSB_BITS8)                                                 0.00       0.06 f
+  impl/core/U37/ZN (INVD1)                                                                                     0.03       0.09 r
+  impl/core/U21/ZN (NR3D0)                                                                                     0.06       0.15 f
+  impl/core/U6/ZN (NR3D0)                                                                                      0.16       0.31 r
+  impl/core/U7/ZN (ND2D1)                                                                                      0.06       0.37 f
+  impl/core/U3/ZN (INVD1)                                                                                      0.06       0.43 r
+  impl/core/U35/ZN (OAI222D0)                                                                                  0.09       0.52 f
+  impl/core/approximate_sum/x2[6] (plsad_loa4_EXACT_MSB_BITS8)                                                 0.00       0.52 f
+  impl/core/approximate_sum/U28/Z (CKXOR2D1)                                                                   0.06       0.58 r
+  impl/core/approximate_sum/U12/Z (AO22D0)                                                                     0.06       0.64 r
+  impl/core/approximate_sum/U8/Z (AN2XD1)                                                                      0.03       0.68 r
+  impl/core/approximate_sum/U16/S (FA1D0)                                                                      0.07       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/B[1] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)        0.00       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_1/CO (FA1D0)                                     0.08       0.83 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_2/CO (FA1D0)                                     0.05       0.89 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_3/CO (FA1D0)                                     0.05       0.94 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_4/CO (FA1D0)                                     0.05       0.99 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_5/CO (FA1D0)                                     0.05       1.04 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_6/CO (FA1D0)                                     0.05       1.09 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_7/Z (XOR3D1)                                     0.10       1.19 f
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/SUM[7] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)      0.00       1.19 f
+  impl/core/approximate_sum/sum[14] (plsad_loa4_EXACT_MSB_BITS8)                                               0.00       1.19 f
+  impl/core/U33/ZN (INVD1)                                                                                     0.11       1.30 r
+  impl/core/shift (plsad_mantissa_div_EXACT_MSB_BITS8)                                                         0.00       1.30 r
+  impl/wrapper/shift[0] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.30 r
+  impl/wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                  0.00       1.30 r
+  impl/wrapper/shared_wrapper/U31/CO (FA1D0)                                                                   0.11       1.41 r
+  impl/wrapper/shared_wrapper/U32/CO (FA1D0)                                                                   0.05       1.46 r
+  impl/wrapper/shared_wrapper/U33/CO (FA1D0)                                                                   0.05       1.51 r
+  impl/wrapper/shared_wrapper/U34/CO (FA1D0)                                                                   0.05       1.56 r
+  impl/wrapper/shared_wrapper/U35/CO (FA1D0)                                                                   0.05       1.61 r
+  impl/wrapper/shared_wrapper/U36/CO (FA1D0)                                                                   0.05       1.67 r
+  impl/wrapper/shared_wrapper/U48/Z (XOR3D1)                                                                   0.08       1.74 f
+  impl/wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                          0.00       1.74 f
+  impl/wrapper/out0[30] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.74 f
+  impl/out0[30] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                            0.00       1.74 f
+  out0[30] (out)                                                                                               0.00       1.74 f
+  data arrival time                                                                                                       1.74
+
+  clock vclk (rise edge)                                                                                      10.00      10.00
+  clock network delay (ideal)                                                                                  0.00      10.00
+  output external delay                                                                                       -0.02       9.98
+  data required time                                                                                                      9.98
+  -------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                      9.98
+  data arrival time                                                                                                      -1.74
+  -------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                             8.24
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1 ZeroWireload tcbn65gplustc_ccs
+  plsad_m8_fp32_paceio ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_paceio_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_mantissa_div_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_2 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8 ZeroWireload  tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                        Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                       0.00       0.00
+  clock network delay (ideal)                                                                                  0.00       0.00
+  input external delay                                                                                         0.02       0.02 f
+  y[22] (in)                                                                                                   0.00       0.02 f
+  impl/y[22] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                               0.00       0.02 f
+  impl/wrapper/y[22] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                           0.00       0.02 f
+  impl/wrapper/shared_wrapper/y[22] (fp32_normal_finite_wrapper)                                               0.00       0.02 f
+  impl/wrapper/shared_wrapper/U97/Z (CKBD1)                                                                    0.03       0.06 f
+  impl/wrapper/shared_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                      0.00       0.06 f
+  impl/wrapper/mantissa_y[9] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                   0.00       0.06 f
+  impl/core/fraction_y[9] (plsad_mantissa_div_EXACT_MSB_BITS8)                                                 0.00       0.06 f
+  impl/core/U37/ZN (INVD1)                                                                                     0.03       0.09 r
+  impl/core/U21/ZN (NR3D0)                                                                                     0.06       0.15 f
+  impl/core/U6/ZN (NR3D0)                                                                                      0.16       0.31 r
+  impl/core/U7/ZN (ND2D1)                                                                                      0.06       0.37 f
+  impl/core/U3/ZN (INVD1)                                                                                      0.06       0.43 r
+  impl/core/U35/ZN (OAI222D0)                                                                                  0.09       0.52 f
+  impl/core/approximate_sum/x2[6] (plsad_loa4_EXACT_MSB_BITS8)                                                 0.00       0.52 f
+  impl/core/approximate_sum/U28/Z (CKXOR2D1)                                                                   0.06       0.58 r
+  impl/core/approximate_sum/U12/Z (AO22D0)                                                                     0.06       0.64 r
+  impl/core/approximate_sum/U8/Z (AN2XD1)                                                                      0.03       0.68 r
+  impl/core/approximate_sum/U16/S (FA1D0)                                                                      0.07       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/B[1] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)        0.00       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_1/CO (FA1D0)                                     0.08       0.83 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_2/CO (FA1D0)                                     0.05       0.89 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_3/CO (FA1D0)                                     0.05       0.94 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_4/CO (FA1D0)                                     0.05       0.99 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_5/CO (FA1D0)                                     0.05       1.04 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_6/CO (FA1D0)                                     0.05       1.09 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_7/Z (XOR3D1)                                     0.10       1.19 f
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/SUM[7] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)      0.00       1.19 f
+  impl/core/approximate_sum/sum[14] (plsad_loa4_EXACT_MSB_BITS8)                                               0.00       1.19 f
+  impl/core/U33/ZN (INVD1)                                                                                     0.11       1.30 r
+  impl/core/shift (plsad_mantissa_div_EXACT_MSB_BITS8)                                                         0.00       1.30 r
+  impl/wrapper/shift[0] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.30 r
+  impl/wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                  0.00       1.30 r
+  impl/wrapper/shared_wrapper/U31/CO (FA1D0)                                                                   0.11       1.41 r
+  impl/wrapper/shared_wrapper/U32/CO (FA1D0)                                                                   0.05       1.46 r
+  impl/wrapper/shared_wrapper/U33/CO (FA1D0)                                                                   0.05       1.51 r
+  impl/wrapper/shared_wrapper/U34/CO (FA1D0)                                                                   0.05       1.56 r
+  impl/wrapper/shared_wrapper/U35/CO (FA1D0)                                                                   0.05       1.61 r
+  impl/wrapper/shared_wrapper/U36/CO (FA1D0)                                                                   0.05       1.67 r
+  impl/wrapper/shared_wrapper/U48/Z (XOR3D1)                                                                   0.08       1.74 f
+  impl/wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                          0.00       1.74 f
+  impl/wrapper/out0[30] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.74 f
+  impl/out0[30] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                            0.00       1.74 f
+  out0[30] (out)                                                                                               0.00       1.74 f
+  data arrival time                                                                                                       1.74
+
+  clock vclk (rise edge)                                                                                      10.00      10.00
+  clock network delay (ideal)                                                                                  0.00      10.00
+  output external delay                                                                                       -0.02       9.98
+  data required time                                                                                                      9.98
+  -------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                      9.98
+  data arrival time                                                                                                      -1.74
+  -------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                             8.24
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1 ZeroWireload tcbn65gplustc_ccs
+  plsad_m8_fp32_paceio ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_paceio_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_mantissa_div_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_2 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8 ZeroWireload  tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                        Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                       0.00       0.00
+  clock network delay (ideal)                                                                                  0.00       0.00
+  input external delay                                                                                         0.02       0.02 f
+  y[22] (in)                                                                                                   0.00       0.02 f
+  impl/y[22] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                               0.00       0.02 f
+  impl/wrapper/y[22] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                           0.00       0.02 f
+  impl/wrapper/shared_wrapper/y[22] (fp32_normal_finite_wrapper)                                               0.00       0.02 f
+  impl/wrapper/shared_wrapper/U97/Z (CKBD1)                                                                    0.03       0.06 f
+  impl/wrapper/shared_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                      0.00       0.06 f
+  impl/wrapper/mantissa_y[9] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                   0.00       0.06 f
+  impl/core/fraction_y[9] (plsad_mantissa_div_EXACT_MSB_BITS8)                                                 0.00       0.06 f
+  impl/core/U37/ZN (INVD1)                                                                                     0.03       0.09 r
+  impl/core/U21/ZN (NR3D0)                                                                                     0.06       0.15 f
+  impl/core/U6/ZN (NR3D0)                                                                                      0.16       0.31 r
+  impl/core/U7/ZN (ND2D1)                                                                                      0.06       0.37 f
+  impl/core/U3/ZN (INVD1)                                                                                      0.06       0.43 r
+  impl/core/U35/ZN (OAI222D0)                                                                                  0.09       0.52 f
+  impl/core/approximate_sum/x2[6] (plsad_loa4_EXACT_MSB_BITS8)                                                 0.00       0.52 f
+  impl/core/approximate_sum/U28/Z (CKXOR2D1)                                                                   0.06       0.58 r
+  impl/core/approximate_sum/U12/Z (AO22D0)                                                                     0.06       0.64 r
+  impl/core/approximate_sum/U8/Z (AN2XD1)                                                                      0.03       0.68 r
+  impl/core/approximate_sum/U16/S (FA1D0)                                                                      0.07       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/B[1] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)        0.00       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_1/CO (FA1D0)                                     0.08       0.83 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_2/CO (FA1D0)                                     0.05       0.89 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_3/CO (FA1D0)                                     0.05       0.94 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_4/CO (FA1D0)                                     0.05       0.99 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_5/CO (FA1D0)                                     0.05       1.04 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_6/CO (FA1D0)                                     0.05       1.09 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_7/Z (XOR3D1)                                     0.10       1.19 f
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/SUM[7] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)      0.00       1.19 f
+  impl/core/approximate_sum/sum[14] (plsad_loa4_EXACT_MSB_BITS8)                                               0.00       1.19 f
+  impl/core/U33/ZN (INVD1)                                                                                     0.11       1.30 r
+  impl/core/shift (plsad_mantissa_div_EXACT_MSB_BITS8)                                                         0.00       1.30 r
+  impl/wrapper/shift[0] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.30 r
+  impl/wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                  0.00       1.30 r
+  impl/wrapper/shared_wrapper/U31/CO (FA1D0)                                                                   0.11       1.41 r
+  impl/wrapper/shared_wrapper/U32/CO (FA1D0)                                                                   0.05       1.46 r
+  impl/wrapper/shared_wrapper/U33/CO (FA1D0)                                                                   0.05       1.51 r
+  impl/wrapper/shared_wrapper/U34/CO (FA1D0)                                                                   0.05       1.56 r
+  impl/wrapper/shared_wrapper/U35/CO (FA1D0)                                                                   0.05       1.61 r
+  impl/wrapper/shared_wrapper/U36/CO (FA1D0)                                                                   0.05       1.67 r
+  impl/wrapper/shared_wrapper/U48/Z (XOR3D1)                                                                   0.08       1.74 f
+  impl/wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                          0.00       1.74 f
+  impl/wrapper/out0[30] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.74 f
+  impl/out0[30] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                            0.00       1.74 f
+  out0[30] (out)                                                                                               0.00       1.74 f
+  data arrival time                                                                                                       1.74
+
+  clock vclk (rise edge)                                                                                      10.00      10.00
+  clock network delay (ideal)                                                                                  0.00      10.00
+  output external delay                                                                                       -0.02       9.98
+  data required time                                                                                                      9.98
+  -------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                      9.98
+  data arrival time                                                                                                      -1.74
+  -------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                             8.24
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1 ZeroWireload tcbn65gplustc_ccs
+  plsad_m8_fp32_paceio ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_paceio_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_mantissa_div_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_2 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8 ZeroWireload  tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                        Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                       0.00       0.00
+  clock network delay (ideal)                                                                                  0.00       0.00
+  input external delay                                                                                         0.02       0.02 f
+  y[22] (in)                                                                                                   0.00       0.02 f
+  impl/y[22] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                               0.00       0.02 f
+  impl/wrapper/y[22] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                           0.00       0.02 f
+  impl/wrapper/shared_wrapper/y[22] (fp32_normal_finite_wrapper)                                               0.00       0.02 f
+  impl/wrapper/shared_wrapper/U97/Z (CKBD1)                                                                    0.03       0.06 f
+  impl/wrapper/shared_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                      0.00       0.06 f
+  impl/wrapper/mantissa_y[9] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                   0.00       0.06 f
+  impl/core/fraction_y[9] (plsad_mantissa_div_EXACT_MSB_BITS8)                                                 0.00       0.06 f
+  impl/core/U37/ZN (INVD1)                                                                                     0.03       0.09 r
+  impl/core/U21/ZN (NR3D0)                                                                                     0.06       0.15 f
+  impl/core/U6/ZN (NR3D0)                                                                                      0.16       0.31 r
+  impl/core/U7/ZN (ND2D1)                                                                                      0.06       0.37 f
+  impl/core/U3/ZN (INVD1)                                                                                      0.06       0.43 r
+  impl/core/U35/ZN (OAI222D0)                                                                                  0.09       0.52 f
+  impl/core/approximate_sum/x2[6] (plsad_loa4_EXACT_MSB_BITS8)                                                 0.00       0.52 f
+  impl/core/approximate_sum/U28/Z (CKXOR2D1)                                                                   0.06       0.58 r
+  impl/core/approximate_sum/U12/Z (AO22D0)                                                                     0.06       0.64 r
+  impl/core/approximate_sum/U8/Z (AN2XD1)                                                                      0.03       0.68 r
+  impl/core/approximate_sum/U16/S (FA1D0)                                                                      0.07       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/B[1] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)        0.00       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_1/CO (FA1D0)                                     0.08       0.83 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_2/CO (FA1D0)                                     0.05       0.89 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_3/CO (FA1D0)                                     0.05       0.94 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_4/CO (FA1D0)                                     0.05       0.99 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_5/CO (FA1D0)                                     0.05       1.04 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_6/CO (FA1D0)                                     0.05       1.09 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_7/Z (XOR3D1)                                     0.10       1.19 f
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/SUM[7] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)      0.00       1.19 f
+  impl/core/approximate_sum/sum[14] (plsad_loa4_EXACT_MSB_BITS8)                                               0.00       1.19 f
+  impl/core/U33/ZN (INVD1)                                                                                     0.11       1.30 r
+  impl/core/shift (plsad_mantissa_div_EXACT_MSB_BITS8)                                                         0.00       1.30 r
+  impl/wrapper/shift[0] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.30 r
+  impl/wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                  0.00       1.30 r
+  impl/wrapper/shared_wrapper/U31/CO (FA1D0)                                                                   0.11       1.41 r
+  impl/wrapper/shared_wrapper/U32/CO (FA1D0)                                                                   0.05       1.46 r
+  impl/wrapper/shared_wrapper/U33/CO (FA1D0)                                                                   0.05       1.51 r
+  impl/wrapper/shared_wrapper/U34/CO (FA1D0)                                                                   0.05       1.56 r
+  impl/wrapper/shared_wrapper/U35/CO (FA1D0)                                                                   0.05       1.61 r
+  impl/wrapper/shared_wrapper/U36/CO (FA1D0)                                                                   0.05       1.67 r
+  impl/wrapper/shared_wrapper/U48/Z (XOR3D1)                                                                   0.08       1.74 f
+  impl/wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                          0.00       1.74 f
+  impl/wrapper/out0[30] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.74 f
+  impl/out0[30] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                            0.00       1.74 f
+  out0[30] (out)                                                                                               0.00       1.74 f
+  data arrival time                                                                                                       1.74
+
+  clock vclk (rise edge)                                                                                      10.00      10.00
+  clock network delay (ideal)                                                                                  0.00      10.00
+  output external delay                                                                                       -0.02       9.98
+  data required time                                                                                                      9.98
+  -------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                      9.98
+  data arrival time                                                                                                      -1.74
+  -------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                             8.24
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1 ZeroWireload tcbn65gplustc_ccs
+  plsad_m8_fp32_paceio ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_paceio_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_mantissa_div_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_2 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8 ZeroWireload  tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                        Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                       0.00       0.00
+  clock network delay (ideal)                                                                                  0.00       0.00
+  input external delay                                                                                         0.02       0.02 f
+  y[22] (in)                                                                                                   0.00       0.02 f
+  impl/y[22] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                               0.00       0.02 f
+  impl/wrapper/y[22] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                           0.00       0.02 f
+  impl/wrapper/shared_wrapper/y[22] (fp32_normal_finite_wrapper)                                               0.00       0.02 f
+  impl/wrapper/shared_wrapper/U97/Z (CKBD1)                                                                    0.03       0.06 f
+  impl/wrapper/shared_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                      0.00       0.06 f
+  impl/wrapper/mantissa_y[9] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                   0.00       0.06 f
+  impl/core/fraction_y[9] (plsad_mantissa_div_EXACT_MSB_BITS8)                                                 0.00       0.06 f
+  impl/core/U37/ZN (INVD1)                                                                                     0.03       0.09 r
+  impl/core/U21/ZN (NR3D0)                                                                                     0.06       0.15 f
+  impl/core/U6/ZN (NR3D0)                                                                                      0.16       0.31 r
+  impl/core/U7/ZN (ND2D1)                                                                                      0.06       0.37 f
+  impl/core/U3/ZN (INVD1)                                                                                      0.06       0.43 r
+  impl/core/U35/ZN (OAI222D0)                                                                                  0.09       0.52 f
+  impl/core/approximate_sum/x2[6] (plsad_loa4_EXACT_MSB_BITS8)                                                 0.00       0.52 f
+  impl/core/approximate_sum/U28/Z (CKXOR2D1)                                                                   0.06       0.58 r
+  impl/core/approximate_sum/U12/Z (AO22D0)                                                                     0.06       0.64 r
+  impl/core/approximate_sum/U8/Z (AN2XD1)                                                                      0.03       0.68 r
+  impl/core/approximate_sum/U16/S (FA1D0)                                                                      0.07       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/B[1] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)        0.00       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_1/CO (FA1D0)                                     0.08       0.83 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_2/CO (FA1D0)                                     0.05       0.89 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_3/CO (FA1D0)                                     0.05       0.94 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_4/CO (FA1D0)                                     0.05       0.99 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_5/CO (FA1D0)                                     0.05       1.04 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_6/CO (FA1D0)                                     0.05       1.09 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_7/Z (XOR3D1)                                     0.10       1.19 f
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/SUM[7] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)      0.00       1.19 f
+  impl/core/approximate_sum/sum[14] (plsad_loa4_EXACT_MSB_BITS8)                                               0.00       1.19 f
+  impl/core/U33/ZN (INVD1)                                                                                     0.11       1.30 r
+  impl/core/shift (plsad_mantissa_div_EXACT_MSB_BITS8)                                                         0.00       1.30 r
+  impl/wrapper/shift[0] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.30 r
+  impl/wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                  0.00       1.30 r
+  impl/wrapper/shared_wrapper/U31/CO (FA1D0)                                                                   0.11       1.41 r
+  impl/wrapper/shared_wrapper/U32/CO (FA1D0)                                                                   0.05       1.46 r
+  impl/wrapper/shared_wrapper/U33/CO (FA1D0)                                                                   0.05       1.51 r
+  impl/wrapper/shared_wrapper/U34/CO (FA1D0)                                                                   0.05       1.56 r
+  impl/wrapper/shared_wrapper/U35/CO (FA1D0)                                                                   0.05       1.61 r
+  impl/wrapper/shared_wrapper/U36/CO (FA1D0)                                                                   0.05       1.67 r
+  impl/wrapper/shared_wrapper/U48/Z (XOR3D1)                                                                   0.08       1.74 f
+  impl/wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                          0.00       1.74 f
+  impl/wrapper/out0[30] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.74 f
+  impl/out0[30] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                            0.00       1.74 f
+  out0[30] (out)                                                                                               0.00       1.74 f
+  data arrival time                                                                                                       1.74
+
+  clock vclk (rise edge)                                                                                      10.00      10.00
+  clock network delay (ideal)                                                                                  0.00      10.00
+  output external delay                                                                                       -0.02       9.98
+  data required time                                                                                                      9.98
+  -------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                      9.98
+  data arrival time                                                                                                      -1.74
+  -------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                             8.24
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1 ZeroWireload tcbn65gplustc_ccs
+  plsad_m8_fp32_paceio ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_paceio_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_mantissa_div_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_2 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8 ZeroWireload  tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                        Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                       0.00       0.00
+  clock network delay (ideal)                                                                                  0.00       0.00
+  input external delay                                                                                         0.02       0.02 f
+  y[22] (in)                                                                                                   0.00       0.02 f
+  impl/y[22] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                               0.00       0.02 f
+  impl/wrapper/y[22] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                           0.00       0.02 f
+  impl/wrapper/shared_wrapper/y[22] (fp32_normal_finite_wrapper)                                               0.00       0.02 f
+  impl/wrapper/shared_wrapper/U97/Z (CKBD1)                                                                    0.03       0.06 f
+  impl/wrapper/shared_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                      0.00       0.06 f
+  impl/wrapper/mantissa_y[9] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                   0.00       0.06 f
+  impl/core/fraction_y[9] (plsad_mantissa_div_EXACT_MSB_BITS8)                                                 0.00       0.06 f
+  impl/core/U37/ZN (INVD1)                                                                                     0.03       0.09 r
+  impl/core/U21/ZN (NR3D0)                                                                                     0.06       0.15 f
+  impl/core/U6/ZN (NR3D0)                                                                                      0.16       0.31 r
+  impl/core/U7/ZN (ND2D1)                                                                                      0.06       0.37 f
+  impl/core/U3/ZN (INVD1)                                                                                      0.06       0.43 r
+  impl/core/U35/ZN (OAI222D0)                                                                                  0.09       0.52 f
+  impl/core/approximate_sum/x2[6] (plsad_loa4_EXACT_MSB_BITS8)                                                 0.00       0.52 f
+  impl/core/approximate_sum/U28/Z (CKXOR2D1)                                                                   0.06       0.58 r
+  impl/core/approximate_sum/U12/Z (AO22D0)                                                                     0.06       0.64 r
+  impl/core/approximate_sum/U8/Z (AN2XD1)                                                                      0.03       0.68 r
+  impl/core/approximate_sum/U16/S (FA1D0)                                                                      0.07       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/B[1] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)        0.00       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_1/CO (FA1D0)                                     0.08       0.83 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_2/CO (FA1D0)                                     0.05       0.89 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_3/CO (FA1D0)                                     0.05       0.94 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_4/CO (FA1D0)                                     0.05       0.99 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_5/CO (FA1D0)                                     0.05       1.04 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_6/CO (FA1D0)                                     0.05       1.09 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_7/Z (XOR3D1)                                     0.10       1.19 f
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/SUM[7] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)      0.00       1.19 f
+  impl/core/approximate_sum/sum[14] (plsad_loa4_EXACT_MSB_BITS8)                                               0.00       1.19 f
+  impl/core/U33/ZN (INVD1)                                                                                     0.11       1.30 r
+  impl/core/shift (plsad_mantissa_div_EXACT_MSB_BITS8)                                                         0.00       1.30 r
+  impl/wrapper/shift[0] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.30 r
+  impl/wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                  0.00       1.30 r
+  impl/wrapper/shared_wrapper/U31/CO (FA1D0)                                                                   0.11       1.41 r
+  impl/wrapper/shared_wrapper/U32/CO (FA1D0)                                                                   0.05       1.46 r
+  impl/wrapper/shared_wrapper/U33/CO (FA1D0)                                                                   0.05       1.51 r
+  impl/wrapper/shared_wrapper/U34/CO (FA1D0)                                                                   0.05       1.56 r
+  impl/wrapper/shared_wrapper/U35/CO (FA1D0)                                                                   0.05       1.61 r
+  impl/wrapper/shared_wrapper/U36/CO (FA1D0)                                                                   0.05       1.67 r
+  impl/wrapper/shared_wrapper/U48/Z (XOR3D1)                                                                   0.08       1.74 f
+  impl/wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                          0.00       1.74 f
+  impl/wrapper/out0[30] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.74 f
+  impl/out0[30] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                            0.00       1.74 f
+  out0[30] (out)                                                                                               0.00       1.74 f
+  data arrival time                                                                                                       1.74
+
+  clock vclk (rise edge)                                                                                      10.00      10.00
+  clock network delay (ideal)                                                                                  0.00      10.00
+  output external delay                                                                                       -0.02       9.98
+  data required time                                                                                                      9.98
+  -------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                      9.98
+  data arrival time                                                                                                      -1.74
+  -------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                             8.24
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1 ZeroWireload tcbn65gplustc_ccs
+  plsad_m8_fp32_paceio ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_paceio_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_mantissa_div_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_2 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8 ZeroWireload  tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                        Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                       0.00       0.00
+  clock network delay (ideal)                                                                                  0.00       0.00
+  input external delay                                                                                         0.02       0.02 f
+  y[22] (in)                                                                                                   0.00       0.02 f
+  impl/y[22] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                               0.00       0.02 f
+  impl/wrapper/y[22] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                           0.00       0.02 f
+  impl/wrapper/shared_wrapper/y[22] (fp32_normal_finite_wrapper)                                               0.00       0.02 f
+  impl/wrapper/shared_wrapper/U97/Z (CKBD1)                                                                    0.03       0.06 f
+  impl/wrapper/shared_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                      0.00       0.06 f
+  impl/wrapper/mantissa_y[9] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                   0.00       0.06 f
+  impl/core/fraction_y[9] (plsad_mantissa_div_EXACT_MSB_BITS8)                                                 0.00       0.06 f
+  impl/core/U37/ZN (INVD1)                                                                                     0.03       0.09 r
+  impl/core/U21/ZN (NR3D0)                                                                                     0.06       0.15 f
+  impl/core/U6/ZN (NR3D0)                                                                                      0.16       0.31 r
+  impl/core/U7/ZN (ND2D1)                                                                                      0.06       0.37 f
+  impl/core/U3/ZN (INVD1)                                                                                      0.06       0.43 r
+  impl/core/U35/ZN (OAI222D0)                                                                                  0.09       0.52 f
+  impl/core/approximate_sum/x2[6] (plsad_loa4_EXACT_MSB_BITS8)                                                 0.00       0.52 f
+  impl/core/approximate_sum/U28/Z (CKXOR2D1)                                                                   0.06       0.58 r
+  impl/core/approximate_sum/U12/Z (AO22D0)                                                                     0.06       0.64 r
+  impl/core/approximate_sum/U8/Z (AN2XD1)                                                                      0.03       0.68 r
+  impl/core/approximate_sum/U16/S (FA1D0)                                                                      0.07       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/B[1] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)        0.00       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_1/CO (FA1D0)                                     0.08       0.83 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_2/CO (FA1D0)                                     0.05       0.89 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_3/CO (FA1D0)                                     0.05       0.94 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_4/CO (FA1D0)                                     0.05       0.99 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_5/CO (FA1D0)                                     0.05       1.04 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_6/CO (FA1D0)                                     0.05       1.09 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_7/Z (XOR3D1)                                     0.10       1.19 f
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/SUM[7] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)      0.00       1.19 f
+  impl/core/approximate_sum/sum[14] (plsad_loa4_EXACT_MSB_BITS8)                                               0.00       1.19 f
+  impl/core/U33/ZN (INVD1)                                                                                     0.11       1.30 r
+  impl/core/shift (plsad_mantissa_div_EXACT_MSB_BITS8)                                                         0.00       1.30 r
+  impl/wrapper/shift[0] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.30 r
+  impl/wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                  0.00       1.30 r
+  impl/wrapper/shared_wrapper/U31/CO (FA1D0)                                                                   0.11       1.41 r
+  impl/wrapper/shared_wrapper/U32/CO (FA1D0)                                                                   0.05       1.46 r
+  impl/wrapper/shared_wrapper/U33/CO (FA1D0)                                                                   0.05       1.51 r
+  impl/wrapper/shared_wrapper/U34/CO (FA1D0)                                                                   0.05       1.56 r
+  impl/wrapper/shared_wrapper/U35/CO (FA1D0)                                                                   0.05       1.61 r
+  impl/wrapper/shared_wrapper/U36/CO (FA1D0)                                                                   0.05       1.67 r
+  impl/wrapper/shared_wrapper/U48/Z (XOR3D1)                                                                   0.08       1.74 f
+  impl/wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                          0.00       1.74 f
+  impl/wrapper/out0[30] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.74 f
+  impl/out0[30] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                            0.00       1.74 f
+  out0[30] (out)                                                                                               0.00       1.74 f
+  data arrival time                                                                                                       1.74
+
+  clock vclk (rise edge)                                                                                      10.00      10.00
+  clock network delay (ideal)                                                                                  0.00      10.00
+  output external delay                                                                                       -0.02       9.98
+  data required time                                                                                                      9.98
+  -------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                      9.98
+  data arrival time                                                                                                      -1.74
+  -------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                             8.24
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1 ZeroWireload tcbn65gplustc_ccs
+  plsad_m8_fp32_paceio ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_paceio_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_mantissa_div_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_2 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8 ZeroWireload  tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                        Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                       0.00       0.00
+  clock network delay (ideal)                                                                                  0.00       0.00
+  input external delay                                                                                         0.02       0.02 f
+  y[22] (in)                                                                                                   0.00       0.02 f
+  impl/y[22] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                               0.00       0.02 f
+  impl/wrapper/y[22] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                           0.00       0.02 f
+  impl/wrapper/shared_wrapper/y[22] (fp32_normal_finite_wrapper)                                               0.00       0.02 f
+  impl/wrapper/shared_wrapper/U97/Z (CKBD1)                                                                    0.03       0.06 f
+  impl/wrapper/shared_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                      0.00       0.06 f
+  impl/wrapper/mantissa_y[9] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                   0.00       0.06 f
+  impl/core/fraction_y[9] (plsad_mantissa_div_EXACT_MSB_BITS8)                                                 0.00       0.06 f
+  impl/core/U37/ZN (INVD1)                                                                                     0.03       0.09 r
+  impl/core/U21/ZN (NR3D0)                                                                                     0.06       0.15 f
+  impl/core/U6/ZN (NR3D0)                                                                                      0.16       0.31 r
+  impl/core/U7/ZN (ND2D1)                                                                                      0.06       0.37 f
+  impl/core/U3/ZN (INVD1)                                                                                      0.06       0.43 r
+  impl/core/U35/ZN (OAI222D0)                                                                                  0.09       0.52 f
+  impl/core/approximate_sum/x2[6] (plsad_loa4_EXACT_MSB_BITS8)                                                 0.00       0.52 f
+  impl/core/approximate_sum/U28/Z (CKXOR2D1)                                                                   0.06       0.58 r
+  impl/core/approximate_sum/U12/Z (AO22D0)                                                                     0.06       0.64 r
+  impl/core/approximate_sum/U8/Z (AN2XD1)                                                                      0.03       0.68 r
+  impl/core/approximate_sum/U16/S (FA1D0)                                                                      0.07       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/B[1] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)        0.00       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_1/CO (FA1D0)                                     0.08       0.83 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_2/CO (FA1D0)                                     0.05       0.89 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_3/CO (FA1D0)                                     0.05       0.94 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_4/CO (FA1D0)                                     0.05       0.99 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_5/CO (FA1D0)                                     0.05       1.04 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_6/CO (FA1D0)                                     0.05       1.09 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_7/Z (XOR3D1)                                     0.10       1.19 f
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/SUM[7] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)      0.00       1.19 f
+  impl/core/approximate_sum/sum[14] (plsad_loa4_EXACT_MSB_BITS8)                                               0.00       1.19 f
+  impl/core/U33/ZN (INVD1)                                                                                     0.11       1.30 r
+  impl/core/shift (plsad_mantissa_div_EXACT_MSB_BITS8)                                                         0.00       1.30 r
+  impl/wrapper/shift[0] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.30 r
+  impl/wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                  0.00       1.30 r
+  impl/wrapper/shared_wrapper/U31/CO (FA1D0)                                                                   0.11       1.41 r
+  impl/wrapper/shared_wrapper/U32/CO (FA1D0)                                                                   0.05       1.46 r
+  impl/wrapper/shared_wrapper/U33/CO (FA1D0)                                                                   0.05       1.51 r
+  impl/wrapper/shared_wrapper/U34/CO (FA1D0)                                                                   0.05       1.56 r
+  impl/wrapper/shared_wrapper/U35/CO (FA1D0)                                                                   0.05       1.61 r
+  impl/wrapper/shared_wrapper/U36/CO (FA1D0)                                                                   0.05       1.67 r
+  impl/wrapper/shared_wrapper/U48/Z (XOR3D1)                                                                   0.08       1.74 f
+  impl/wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                          0.00       1.74 f
+  impl/wrapper/out0[30] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.74 f
+  impl/out0[30] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                            0.00       1.74 f
+  out0[30] (out)                                                                                               0.00       1.74 f
+  data arrival time                                                                                                       1.74
+
+  clock vclk (rise edge)                                                                                      10.00      10.00
+  clock network delay (ideal)                                                                                  0.00      10.00
+  output external delay                                                                                       -0.02       9.98
+  data required time                                                                                                      9.98
+  -------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                      9.98
+  data arrival time                                                                                                      -1.74
+  -------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                             8.24
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: out0[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1 ZeroWireload tcbn65gplustc_ccs
+  plsad_m8_fp32_paceio ZeroWireload        tcbn65gplustc_ccs
+  plsad_fp32_paceio_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_mantissa_div_EXACT_MSB_BITS8 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_2 ZeroWireload tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8 ZeroWireload  tcbn65gplustc_ccs
+  plsad_loa4_EXACT_MSB_BITS8_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                        Incr       Path
+  -------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                       0.00       0.00
+  clock network delay (ideal)                                                                                  0.00       0.00
+  input external delay                                                                                         0.02       0.02 f
+  y[22] (in)                                                                                                   0.00       0.02 f
+  impl/y[22] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                               0.00       0.02 f
+  impl/wrapper/y[22] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                           0.00       0.02 f
+  impl/wrapper/shared_wrapper/y[22] (fp32_normal_finite_wrapper)                                               0.00       0.02 f
+  impl/wrapper/shared_wrapper/U97/Z (CKBD1)                                                                    0.03       0.06 f
+  impl/wrapper/shared_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                      0.00       0.06 f
+  impl/wrapper/mantissa_y[9] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                   0.00       0.06 f
+  impl/core/fraction_y[9] (plsad_mantissa_div_EXACT_MSB_BITS8)                                                 0.00       0.06 f
+  impl/core/U37/ZN (INVD1)                                                                                     0.03       0.09 r
+  impl/core/U21/ZN (NR3D0)                                                                                     0.06       0.15 f
+  impl/core/U6/ZN (NR3D0)                                                                                      0.16       0.31 r
+  impl/core/U7/ZN (ND2D1)                                                                                      0.06       0.37 f
+  impl/core/U3/ZN (INVD1)                                                                                      0.06       0.43 r
+  impl/core/U35/ZN (OAI222D0)                                                                                  0.09       0.52 f
+  impl/core/approximate_sum/x2[6] (plsad_loa4_EXACT_MSB_BITS8)                                                 0.00       0.52 f
+  impl/core/approximate_sum/U28/Z (CKXOR2D1)                                                                   0.06       0.58 r
+  impl/core/approximate_sum/U12/Z (AO22D0)                                                                     0.06       0.64 r
+  impl/core/approximate_sum/U8/Z (AN2XD1)                                                                      0.03       0.68 r
+  impl/core/approximate_sum/U16/S (FA1D0)                                                                      0.07       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/B[1] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)        0.00       0.75 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_1/CO (FA1D0)                                     0.08       0.83 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_2/CO (FA1D0)                                     0.05       0.89 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_3/CO (FA1D0)                                     0.05       0.94 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_4/CO (FA1D0)                                     0.05       0.99 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_5/CO (FA1D0)                                     0.05       1.04 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_6/CO (FA1D0)                                     0.05       1.09 r
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/U1_7/Z (XOR3D1)                                     0.10       1.19 f
+  impl/core/approximate_sum/add_0_root_add_0_root_add_23_4/SUM[7] (plsad_loa4_EXACT_MSB_BITS8_DW01_add_0)      0.00       1.19 f
+  impl/core/approximate_sum/sum[14] (plsad_loa4_EXACT_MSB_BITS8)                                               0.00       1.19 f
+  impl/core/U33/ZN (INVD1)                                                                                     0.11       1.30 r
+  impl/core/shift (plsad_mantissa_div_EXACT_MSB_BITS8)                                                         0.00       1.30 r
+  impl/wrapper/shift[0] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.30 r
+  impl/wrapper/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                  0.00       1.30 r
+  impl/wrapper/shared_wrapper/U31/CO (FA1D0)                                                                   0.11       1.41 r
+  impl/wrapper/shared_wrapper/U32/CO (FA1D0)                                                                   0.05       1.46 r
+  impl/wrapper/shared_wrapper/U33/CO (FA1D0)                                                                   0.05       1.51 r
+  impl/wrapper/shared_wrapper/U34/CO (FA1D0)                                                                   0.05       1.56 r
+  impl/wrapper/shared_wrapper/U35/CO (FA1D0)                                                                   0.05       1.61 r
+  impl/wrapper/shared_wrapper/U36/CO (FA1D0)                                                                   0.05       1.67 r
+  impl/wrapper/shared_wrapper/U48/Z (XOR3D1)                                                                   0.08       1.74 f
+  impl/wrapper/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                                          0.00       1.74 f
+  impl/wrapper/out0[30] (FP_DIV_WRAPPER_32_width_trunc13_width_mantissa10_width_shift1)                        0.00       1.74 f
+  impl/out0[30] (plsad_fp32_paceio_EXACT_MSB_BITS8)                                                            0.00       1.74 f
+  out0[30] (out)                                                                                               0.00       1.74 f
+  data arrival time                                                                                                       1.74
+
+  clock vclk (rise edge)                                                                                      10.00      10.00
+  clock network delay (ideal)                                                                                  0.00      10.00
+  output external delay                                                                                       -0.02       9.98
+  data required time                                                                                                      9.98
+  -------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                      9.98
+  data arrival time                                                                                                      -1.74
+  -------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                             8.24
+
+
+1

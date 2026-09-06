@@ -1,0 +1,669 @@
+        OAD: Optimally Approximated Floating-Point
+           Divider with Runtime Configurability
+
+   Abstract—Approximate computing is a promising alternative              with run-time configurability. To enhance the accuracy,
+to improve energy efficiency for IoT devices on the edge. By use          we can add up the error compensations of increasing lev-
+of tangent planes, this work proposes an optimally approximated           els from the level 0. The circuit for the error compensation
+floating-point divider with runtime configurability. We turn the
+division approximation to an optimal problem and obtain a                 of each level is easily implemented with shift, inversion
+theoretically sound formula, which is similar to the formula              and substraction. This reduce the cost complexity from
+of the approximated floating-point multiplier in [1]. With the            exponential to linear function of levels n directly.
+approximate formula, a multi-level architecture is proposed to          • For different levels, we derive mathematical formulation
+implement the run-time configurability and the proposed divider           for the absolute error of approximations in the proposed
+strikes an advantageous balance between accuracy and resource
+efficiency comparing to the prior state-of-the-art approximate            divider by the Taylor’s Theorem for two variables.
+dividers.                                                               The experimental results clearly demonstrate that, in com-
+   Index Terms—tangent plane, approximate computation, divider       parison to state-of-the-art dividers, OAD strikes an advanta-
+                                                                     geous balance between accuracy and resource efficiency. (In
+                    I. INTRODUCTION                                  this paragraph, we should list the experimental results
+                                                                     simply. Read [16] for reference )
+   Energy efficiency has emerged as one of most critical criteria       The rest of the paper is organized as follows. In Section
+in computing systems design in recent years. Though in general       II, we review some previous related works on the approxi-
+computing systems are designed to generate accurate outputs,         mated arithmetics; in Section III, we propose the design of
+applications in domains of computer vision and machine learn-        approximated divider architecture and give the analytical error
+ing can tolerate amounts of inaccuracies in their computations.      analysis in Section IV; in Section V and Section VI, we
+Computational accuracy is traded for reductions in power             evaluate the performance of the proposed approximate divider
+consumption and design complexity [2] [3].                           with experimental results and in real applications; finally, we
+   In approximate hardware design, hardware elements are             summarize our conclusion in Section VII.
+simplified to reduce the power consumption and design area,
+therefore adding inaccuracies. The implementation of these                              II. PREVIOUS WORK
+approximations are mostly focused on basic arithmetic building          In this section, we review some of the related prior work
+blocks (e.g. adders and multiplier), due to their high utilization   done in the area of approximate design. Approximate archi-
+in different applications. These approximate designs can then        tecture can enable the designer to introduce inaccuracies in a
+replace or augment their accurate counterparts in general            controlled and deterministic manner.
+purpose processors.                                                     While a few approximate designs have been proposed for
+   While a number of designs for approximate adders and              both adders and multipliers [4], [5], [6], [1], dividers and other
+multipliers have been proposed, the approximate design of            arithmetic units have not received as much attention. This is
+dividers is not as well investigated. Arithmetic divider is          due in part to lower utilization of blocks such as dividers
+a basic yet complex module in integrated circuits. It plays          compared to adders and multipliers and the main reason of
+an increasingly important role in a variety of fields and is         the lower utilization of dividers is in part a result of high
+widely used in graphic processing. However, divider is often         cost of dividers in terms of delay and power. As shown in
+a performance limiting module in these applications due to           [7], an accurate FP divider incurs more than 15× Area-Delay-
+its complexity. The lack of fast division module in integrated       Product and over 1.5× power consumption compared to an
+circuits has for a long time been the bottleneck for some            accurate FP multiplier. Therefore, approximate divider design
+real-time multimedia applications. This work aims to address         with significant improvements in these areas can facilitate
+this issue, by proposing OAD (an Optimally Approximated              utilization of these arithmetic blocks.
+Floating-Point Divider). Our main contributions are as follows:         Recently, several works on approximate dividers have been
+   • By use of tangent planes, an optimization formulation is        proposed. These methods have their own advantages, disad-
+      given to optimize the error of the approximate divider         vantages and mainly focus on:
+      which acts as the basis of the divider architecture; fur-      (1) truncation-based [8], [9], [10]. The ideas lie on dynamically
+      thermore, we modify the proposed formula and obtain a          select the most relevant bits of each of the operands and
+      new formulation with unbiased error distribution.              reduce complexity by discarding the lower, less significant
+   • Based on the optimization formulation mentioned above,          bits. Truncated-based designs can achieve high computational
+      we present a novel multi-level approximate FP divider          accuracy, but often need a smaller accurate divider design in
+its core and so impose substantial hardware overhead;                      we obtain p = y1 +y
+                                                                                            2 . Following the symbols in [1], we let
+                                                                                               2
+
+                                                                                y1 +y2
+(2) logarithm-based [7], [11], [12]. These designs depend on                                x1 +x2
+                                                                           k1 = 2 , k2 = 2 . Thus on [x1 , x2 ] × [y1 , y2 ], we have
+the approximation log2 (1 + a) ≈ a mainly. Since the error of
+the approximation log2 (1+a) ≈ a is small only if a is close to                  x     1                        y      2
+                                                                                   =x·                ≈   x · (− 2 + )
+zero, logarithm-based designs are more hardware-efficient but                    y     y                        k1    k1
+should balance between the two accuracy and configurability                                                 1        2
+                                                                                                      = − 2 xy + x
+during runtime;                                                                                            k1       k1
+(3) reciprocal-based dividers [13], [14], [15], [16], [17]. These                                           1                        2
+                                                                                                      ≈ − 2 (−k1 k2 + k1 x + k2 y) + x
+dividers use different ways to approximate the reciprocal y1 of                                            k1                        k1
+divisor y, such as Taylor’s expansions[13], Newton Raphson                                                  1
+method[15], quadratic curve fitting[17] and piece-wise linear                                         = − 2 (−k1 k2 + k1 x + k2 y − 2k1 x)
+                                                                                                           k1
+segments[16];                                                                                           1
+(4) In [18], the proposed approach is based on the curve fitting                                      =     (k1 k2 + k1 x − k2 y),         (1)
+                                                                                                        k12
+method to approximate the curved surfaces with small square
+planes as follows:                                                         where the second approximate equation follows the main result
+                      x                                                    in [1]. Set the approximate linear function zI = k12 (k1 k2 +
+                        ≈ p · x − q · y + r.                                                                                  1
+                      y                                                    k1 x − k2 y).
+First decide the partition scheme and then use the Matlab
+curve-fitting toolbox to find the coefficients p, q and r for the          B. Second Method
+square/triangular plane to approximate the individual region                 In this subsection, we try to approximate z = xy on
+of the curved surfaces xy . The Look-up Table stores the                   [x1 , x2 ] × [y1 , y2 ] by tangent plane directly. For the curved
+coefficients p, q and r. Since there are no concrete information           surface F (x, y, z) = z − xy = 0, the tangent plane at the point
+about the constants p, q, r, the proposed architecture relies on           (x0 , y0 , z0 = xy00 ) is:
+pre-loaded lookup tables (LUTs), making runtime adjustments
+to accuracy impossible.                                                         ∂F               ∂F               ∂F
+                                                                                   · (x − x0 ) +    · (y − y0 ) +    · (z − z0 ) = 0,
+                                                                                ∂x               ∂y               ∂z
+     III. PROPOSED APPROXIMATE FP DIVIDER
+                                                                                                       x0
+   Comparing to integer computing, FP arithmetic is more                   where ∂F         1    ∂F
+                                                                                    ∂x = − y0 , ∂y = y02 ,
+                                                                                                                    ∂F
+                                                                                                                    ∂z = 1.
+complex and so energy consuming. According to IEEE 754                         So the tangent plane of z =          y at the point
+                                                                                                                    x
+                                                                                                                                     (x0 , y0 , z0 =     x0
+                                                                                                                                                         y0 )
+standard in [20], an FP number Fx consists of sign, mantissa               is:
+and exponent as follows:                                                             1               x0
+                                                                                 −      · (x − x0 ) + 2 · (y − y0 ) + 1 · (z − z0 ) = 0.
+             Fx = signx × x × 2Ex , ∀x ∈ [1, 2)                                      y0              y0
+where signx , x, Ex refer to the sign, mantissa and exponent               That is
+of Fx respectively. Thus for two FP numbers Fx and Fy , the                                            x0  1           x0
+division is:                                                                            z      =          + (x − x0 ) − 2 (y − y0 )
+                                                                                                       y0  y0          y0
+             Fx                    x
+                  = signx signy × × 2Ex −Ey .                                                          x0  1    x0
+             Fy                    y                                                           =          + x − 2 y.
+                                                                                                       y0  y0   y0
+In a general processor, for an FP division, the sign bits is com-
+puted by an XOR operation and the exponent bits are computed               In this case, we try to choose a point in order to minimize the
+by a subtractor. The division xy of two mantissas is much more             error function:
+energy consuming and costlier than the computations of signs
+                                                                                              Z x2 Z y2
+                                                                                                         x      x0     1   x0
+and exponents. The motivation of this work is to propose an                 EII (x0 , y0 ) =            [ − ( + x − 2 y)]dxdy
+                                                                                               x1    y1  y      y 0    y 0 y0
+energy efficient divider for xy between mantissas.                                    2      2
+                                                                                    x − x1                         x0
+                                                                                 = 2           (ln y2 − ln y1 ) − (x2 − x1 )(y2 − y1 )
+A. First Method                                                                          2                         y0
+                                                                                             2     2
+   On [y1 , y2 ], our aim is to approximate f (y) = y1 by the                           1 x2 − x 1                  x0        y 2 − y12
+                                                                                     −               (y2 − y1 ) + 2 (x2 − x1 ) 2        . (2)
+tangent line g(y) = − py2 + p2 of some point p in [y1 , y2 ]. We                        y0     2                    y0            2
+try to find a point p which minimizes the error function
+                    Z y2                                                       Thus we have
+                          1      y     2
+      EI (p) =           [ − (− 2 + )]dy
+                                                                                                                         2    2
+                                                                                                                      1 (y2 −y1 )(x2 −x1 )
+                      y1 y       p     p                                       ∂EII
+                                                                                 ∂x0   = − (x2 −x1y)(y
+                                                                                                    0
+                                                                                                       2 −y1 )
+                                                                                                               +     y02         2          = 0;
+                                                                                                                                  2   2
+                                   y22 − y12  2                                ∂EII
+                                                                                       =    x0
+                                                                                                (x2   − x1 )(y2 −
+                                                                                                                               (x   −x
+                                                                                                                    y1 ) + y12 2 1 2 2 1
+                                                                                                                                        )(y −y )
+                                                                                                                                                   −   x0
+                                                                                                                                                             = 0.
+                = ln y2 − ln y1 +        2
+                                             − (y2 − y1 ).                       ∂y0        y02                              0                         y03
+                                      2p      p
+By                                                                           It follows from the first equation ∂E
+                                                                                                                 ∂x0 = 0 that we obtain
+                                                                                                                   II
+
+                                                                                 y1 +y2
+        0=   EI′ (p)   =   (y12   −   y22 )p−3   + 2(y2 − y1 )p   −2
+                                                                       ,   y0 = 2 = k1 . Substitute y0 into the equation ∂E   ∂y0 = 0,
+                                                                                                                                II
+we get x0 = x1 +x
+                2
+                  2
+                     = k2 . Therefore the approximation of                     Sign X
+                                      2 y1 +y2
+z = y by the tangent plane at ( x1 +x
+    x
+                                   2   , 2 ) is:                                                        XOR                                                    Sign Z
+                                                                               Sign Y
+  x     x0      1     x0          k2     1    k2
+     ≈      + x− 2y =                + x − 2y
+  y     y0      y0    y0          k1    k1    k1                               Exp X
+         1                                                                                               −                                                    Exp Z
+     = 2 k1 k2 + k1 x − k2 y , ∀(x, y) ∈ [x1 , x2 ] × [y1 , y2 ]               Exp Y
+
+
+
+
+                                                                                                                                              NORMALIZE
+        k1
+                                                               (3)
+                                                                                                        Level 2
+   As in Subsection III-A, we set the approximate linear
+                                                                              Fraction X                Level 1
+function zII = k12 (k1 k2 + k1 x − k2 y). Comparing the ap-
+                    1
+proximation formula zI in Subsection III-A, we find that                                                Level 0           +       ×                           Fraction Z
+these two methods obtain the same approximation formulae                      Fraction Y
+                                                                                                   Constants in LUT
+for xy on [x1 , x2 ] × [y1 , y2 ]. This consistency also explains
+the rationality of the approximate formula in some sense, and
+                                                                                       Fig. 1. Architecture of the proposed approximate divider.
+increases our interest in the method. In fact using a similar
+computation as above, we can obtain that on [x1 , x2 ] × [y1 , y2 ]
+the approximation of the multiplication x · y by the tangent
+plane at ( x1 +x
+              2
+                 2
+                   = k2 , y1 +y
+                             2
+                                2
+                                   = k1 ) is:                                      y 1 Region                      4 Sub-Regions                 42 Sub-Regions
+                                                                               2                               2                          2
+                     x · y ≈ −k1 k2 + k1 x + k2 y,                                                                                      7/4
+                                                                                                          3/2                          3/2                            ...
+which is the main result in [1].                                                                                                      5/4
+                                        y1 +y2
+   We substitute x0 = x1 +x
+                         2
+                            2
+                              , y0 =       2     into EII (x0 , y0 ) in   1                         x 1               3               1           5       3   7
+(2) and obtain                                                                1                2              1       2
+                                                                                                                              2           1       4       2   4
+                                                                                                                                                                  2
+                                                                                   Level 0                         Level 1                       Level 2
+                 x22 − x21                     x2 − x21
+EII (x0 , y0 )   =         (ln y2 − ln y1 ) − 2         (y2 − y1 )
+                     2                          y2 + y1                            Fig. 2. Multi-level partition of mantissa domain [1, 2) × [1, 2)
+                    x2 − x21                 x2 − x21
+                 − 2         (y2 − y1 ) + 2 2         (y2 − y1 )
+                    y2 + y1                   y2 + y1
+                 x22 − x21
+             =             (ln y2 − ln y1 ) ̸= 0.             (4)
+                     2                                                       level 1: [1, 1.5) × [1, 1.5), [1, 1.5) × [1.5, 2), [1.5, 2) ×
+So the approximate formula zII is not unbias.                             [1, 1.5), [1.5, 2) × [1.5, 2);
+                                                                             level n: [xnp−1 , xnp ) × [yq−1
+                                                                                                         n
+                                                                                                              , yqn ), where xnp = 1 + 2pn , yqn =
+C. Architecture for Multi-Level Approximate Divider                             q
+                                                                          1 + 2n .
+   From the error analysis in Section IV below, it can be seen               We denote the pth interval for x on the n-level as [xnp−1 , xnp )
+that the error of the second method decreases exponentially as            for p = 1, · · · , 2n and similarly the qth interval for y on the n-
+the level increases; furthermore the second method is the main            level as [yq−1
+                                                                                     n
+                                                                                          , yqn ) for q = 1, · · · , 2n . Thus the interval middle
+part of the third method and easier to implement than the third           points are
+method. So in the following we mainly focus on the second
+method, i.e. on [x1 , x2 ] × [y1 , y2 ],                                                            1          p−1       1      2p − 1
+                                                                          cnp = xnp−1 +
+                                                                          x                               =1+       + n+1 = 1 + n+1 = k2
+                 x         1                                                                   2n+1             2 n   2          2
+                   ≈ zII = 2 (k1 k2 + k1 x − k2 y),                                             1              q−1      1      2q − 1
+                 y        k1                                               n
+                                                                          yc    n
+                                                                           q = yq−1 +                     = 1 + n + n+1 = 1 + n+1 = k1 .
+                                                                                              2n+1              2    2          2
+where k1 = y1 +y 2
+                   2
+                      and k2 = x1 +x
+                                  2
+                                     2
+                                       .
+   According to (4), the finer granularity of partition yields
+                                                                             Therefore by equation (3), for any level n we can derive the
+to smaller approximation error. Thus, we propose a multi-
+                                                                          following:
+level approximation divider architecture which is runtime
+configurable.
+                                                                                             1
+   As shown in Figure 1, level 0 is denoted as the basic                           n
+                                                                                  zII =               n
+                                                                                                    (x[       n       n           n
+                                                                                                      p(n) · yq(n) + yq(n) · x − xp(n) · y),
+                                                                                                             [       [           [                                      (5)
+                                                                                            n
+                                                                                          (yq(n) )2
+approximation module, which provides an initial estimate zII0
+                                                              ,                            [
+while the deeper levels act as error compensation to gradually
+improve the overall accuracy. Thus by specifying the desired              where p(n), q(n) are the indexes to specify the subregion
+depths we can realize the run-time configurability.                       which (x, y) belongs to in the nth level. In the following, we
+   The initial domain for the mantissas in an FP divider is               will implement [    1
+                                                                                                  and wn = x[  n       n        n
+                                                                                                               p(n) · yq(n) + yq(n) · x −
+                                                                                            n
+                                                                                                                      [        [
+                                                                                                2   (yq(n) )
+[1, 2) × [1, 2). For one level deeper, as shown in Figure 2 we
+                                                                           p(n) · y separately.
+                                                                           n
+                                                                          x[
+partition each rectangle domain to 22 -subregions of rectangle
+shapes from the middle points as follows:                                    (i) First for wn . The following method is similar to that
+   level 0: [1, 2) × [1, 2);                                              for approximate multiplier in [1]. For convenience of readers,
+we list main calculations of this method. We have                                  where x[n], y[n] are the nth bit after decimal point in binary
+                                                                                   expansion of x, y separately. Thus
+      n
+wn = x[       n       n           n
+      p(n) · yq(n) + yq(n) · x − xp(n) · y
+             [       [           [
+                                                                                           n       n       n           n
+                                                                                   △wn = [x[
+                                                                                           p(n) · yq(n) + yq(n) · x − xp(n) · y]
+                                                                                                  [       [           [
+       = (wn − wn−1 ) + (wn−1 − wn−2 ) + · · · + (w1 − w0 ) + w0
+                                                                                            n−1       n−1       n−1           n−1
+         Xn                                                                             − [x\         \         \             \
+                                                                                            p(n−1) · yq(n−1) + yq(n−1) · x − xp(n−1) · y]
+       =    △wi + x[0       0       0          [0
+                    p(0) · yq(0) + yq(0) · x − xp(0) · y
+                            d       d
+                                                                                             n       n       n−1
+                                                                                                             \         n−1
+                                                                                                                       \
+                                                                                             p(n) · yq(n) − xp(n−1) · yq(n−1) ]
+                                                                                         = [x[      [
+           i=1
+            n                                                                               n       n−1
+                                                                                                    \             n       n−1
+                                                                                                                          \
+                                                                                            q(n) − yq(n−1) )x − (xp(n) − xp(n−1) )y
+                                                                                        + (y[
+           X                                                                                                     [
+       =         △wi + 2.25 + 1.5x − 1.5y.                                   (6)
+                                                                                             n−1       x[n]?(1) : (−1)       n−1      y[n]?(1) : (−1)
+           i=1                                                                          = [(x\
+                                                                                             p(n−1) +                  ) · (y\
+                                                                                                                             q(n−1) +                 )
+                                                                                                             2n+1                          2n+1
+                                                                                           n−1       n−1
+                                                                                        − x\p(n−1)· y\     ]
+                                                                                                       q(n−1)
+                                                                                          y[n]?(1) : (−1)        x[n]?(1) : (−1)
+                                                                                        +                   x−                   y
+                                                                                               2n+1                    2n+1
+                           2                                                                                y[n]?(1) : (−1)
+                                                                                                 n−1
+                                                                                        = (x + x\p(n−1) ) ·
+                                                                                                                  2n+1
+                                                                                            n−1             x[n]?(1) : (−1)
+                       yd
+                        0                                                               + (y\
+                                                                                            q(n−1) − y) ·
+                        q(0)                                                                                     2n+1
+                                                   (x, y)                                 x[n]?(1) : (−1) y[n]?(1) : (−1)
+                       yd
+                        1
+                        q(1)                                                            +                    ·
+                                                                                               2n+1                 2n+1
+                           1                                                            = [(x + x\n−1
+                                                                                                         ) · (y[n]?(1) : (−1))
+                               1      xd
+                                       0 xd 1      2                                                 p(n−1)
+                                       p(0) p(1)
+                                                                                            n−1
+                                                                                        + (y\
+                                                                                            q(n−1) − y) · (x[n]?(1) : (−1))] >> n + 1
+       Fig. 3. Illustration of the point (x, y) in the partitioned domain.              + [(x[n]?(1) : (−1)) · (y[n]?(1) : (−1))] >> 2n + 2.                 (7)
+
+
+   It is easy to calculate that
+                                                                                                   n−1       n−1
+                                                                                      Note that x\ p(n−1) , yq(n−1) are the middle points of the
+                                                                                                             \
+                                                                                                                                n−1
+                                    0      3                                       intervals that contain x, y separately. (x+ x\   )·(y[n]?(1) :
+                                                                                                                                        p(n−1)
+                                   x[
+                                    p(0) = 2 ;                                     (−1)) >> n+1 can be implemented in circuit with 1 addition
+                                                                                   operation, at most 1 inversion operation and 1 (n+1)-bits right
+                                                                                                       n−1
+and                                                                                shift operation; (y\q(n−1) − y) · (x[n]?(1) : (−1)) >> n + 1 can
+                                                                                   be implemented in circuit with logic operations by turning the
+                              3   1                                                first n bits in y to 0 and bit flipping (if necessary) for the rest
+                       p(1) = 2 + 22 if x > xp(0) ;
+                       1
+                      x[                    [0
+                                                                                   of bits in y, at most 1 inversion operation and 1 (n + 1)-bits
+                                                                                   right shift operation; since
+
+
+                              3   1                                                      [(x[n]?(1) : (−1)) · (y[n]?(1) : (−1))] >> 2n + 2
+                       p(1) = 2 − 22 if x < xp(0) ;
+                       1
+                      x[                    [0
+                                                                                         = (x[n]∧ y[n])?(−1) : (1) >> 2n + 2,
+
+i.e.                                                                               it can be implemented with 1 XOR operation, at most 1
+                                                                                   inversion operation and 1 (2n + 2)-bits right shift operation.
+                     1       0      x[1]?(1) : (−1)
+                    x[      [
+                     p(1) = xp(0) +                 .                                 (ii) Secondly for \   1 .      1
+                                                                                                                          is constant that can be
+                                          22                                                               n   2   n
+                                                                                                                   [
+                                                                                                              (yq(n) )  2   (yq(n) )
+                                                                                   pre-calculated and pre-loaded lookup tables for each level n
+                                                                                   and q(n) = 1, 2, · · · , 2n . Since
+   Thus in general, we have
+
+                                                                                                         n−1         y[n]?1:(−1)
+                    n       n−1
+                            \        x[n]?(1) : (−1)                                      n
+                                                                                         y[
+                                                                                          q(n)    =     y\
+                                                                                                         q(n−1) +       2n+1
+                   x[
+                    p(n) = xp(n−1) +      2n+1                                                    =      n−2
+                                                                                                        y\      +    y[n−1]?1:(−1)
+                                                                                                                                     + y[n]?1:(−1)
+                                                                                                          q(n−2)           2n             2n+1         ,
+                                                                                                                          n
+                                                                                                                 0
+                                                                                                                         P    y[k]?1:(−1)
+and similarly                                                                                     =     · · · = yd
+                                                                                                                 q(0) +          2k+1
+                                                                                                                        k=1
+
+
+
+                    n       n−1
+                            \        y[n]?(1) : (−1)                               we list the constants          1
+                                                                                                                          for level 0, 1, 2, 3 as follows:
+                   y[
+                    q(n) = yq(n−1) +                 ,                                                          n
+                                                                                                              (y[    )2
+                                          2n+1                                                                  q(n)
+                                                                                         For f (x, y) = xy on [x1 , x2 ] × [y1 , y2 ] and x0 = x1 +x
+                                                                                                                                                  2
+                                                                                                                                                     2
+                                                                                                                                                       =
+                                                                                                y1 +y2
+                                                                                      k2 , y0 = 2 = k1 as the symbols in Section III, we have
+                 1       1
+level 0 :            =
+                0 )2
+              (yd      (3/2)2                                                         x    x0                1                  x0
+                  q(0)
+                                                                                        =     + (x − x0 ) ·     + (y − y0 ) · (− 2 )
+                                                                                     y    y0                y0                 y0
+                 1      (7/4)2
+                                    1
+                                                    if y[1] = 1;                          1            2                                     1
+level 1 :            =                                                                  + [(x − x0 ) · 0 + 2(x − x0 )(y − y0 )(−                        )
+                                                                                          2                                          (y0 + θ(y − y0 ))2
+                1 )2
+              (yd q(1)
+                        1 2
+                                  (5/4)             if y[1] = 0;                                       2(x0 + θ(x − x0 ))
+                                                                                        + (y − y0 )2 ·                     ]
+                                                                                                        (y0 + θ(y − y0 ))3
+                               1
+                                                     y[1] = 1, y[2] = 1;                   1
+                               (15/8)2                                                 = 2 (k1 k2 + k1 x − k2 y)                                        (8)
+                              
+                                                                                          k1
+                               1 2
+                              
+                                                     y[1] = 1, y[2] = 0;
+                              
+                  1          (13/8)                                                       (y − y0 )[(y − y0 )(x0 + θ(x − x0 )) − (x − x0 )(y0 + θ(y − y0 ))]
+level 2 :                =                                                              +
+                                                                                                                   (y0 + θ(y − y0 ))3
+                                                                                                                                                             .
+                2               1
+              (yq(2) )
+                d      2   
+                           
+                            (11/8)2                 y[1] = 0, y[2] = 1;
+                           
+                           
+                                    1
+                                                     y[1] = 0, y[2] = 0;
+                           
+                                  (9/8)2                                                It follows from equation (3) and (8) that
+
+                                                                                               x
+                                                                                                 = zII + err, for (x, y) ∈ [x1 , x2 ] × [y1 , y2 ],
+                              
+                                   1
+                              
+                              
+                               (31/16)2              y[1] = 1, y[2] = 1, y[3] = 1;            y
+                              
+                                   1
+                                                      y[1] = 1, y[2] = 1, y[3] = 0;
+                              
+                              
+                                (29/16)2
+                              
+                                                                                      where err is
+                              
+                              
+                              
+                                   1
+                                                      y[1] = 1, y[2] = 0, y[3] = 1;
+                              
+                              
+                                (27/16)2
+                              
+                              
+                              
+                               1 2
+                              
+                              
+                                                      y[1] = 1, y[2] = 0, y[3] = 0;     (y − y0 )[(y − y0 )(x0 + θ(x − x0 )) − (x − x0 )(y0 + θ(y − y0 ))]
+                  1          (25/16)                                                                                                                       . (9)
+level 3 :                =      1
+                                                                                                                (y0 + θ(y − y0 ))3
+                3
+              (yq(3) )
+                d      2   
+                           
+                            (23/16)2                 y[1] = 0, y[2] = 1, y[3] = 1;
+                           
+                            1
+                           
+                           
+                           
+                            (21/16)2                 y[1] = 0, y[2] = 1, y[3] = 0;     Thus for the nth level and (x, y) ∈ [xnp(n)−1 , xnp(n) ) ×
+                                                                                                       ), where xnp(n) = 1 + p(n)               q(n)
+                           
+                                                                                                                              2n and yq(n) = 1 + 2n ,
+                                1                                                        n        n                                   n
+                                                      y[1] = 0, y[2] = 0, y[3] = 1;   [yq(n)−1 , yq(n)
+                           
+                           
+                            (19/16)2
+                           
+                                                                                      it follows from the equation (9) that
+                           
+                           
+                            1
+                           
+                                                      y[1] = 0, y[2] = 0, y[3] = 0;
+                                  (17/16)2
+
+                                                                                                           |y − y0 |(2|y − y0 | + 2|x − x0 |)
+                                                                                                    |err| ≤
+                                                                                                                          13
+                                                                                                             1       4       1
+                         y[0] [1] [2] [3] [4] [5] . . .                                                   ≤ n+1 · n+1 = n .                                (10)
+                                                                                                           2       2        4
+              y           1 1 0 1 0 1 ...
+                    Fig. 4. An example y in [1, 2).
+
+
+  For example, mantissa y = 1.1 0 1 0 1 · · · (see Figure 4), we
+have
+                1                1
+              0
+                         =     (3/2)2 ,
+            (yd
+              q(0)
+                   )2
+                1                   1                  1                                                       Figure 5   Level 2 Errors
+              1
+                         =               2 =        (7/4)2 ,
+            (yd    )2             3 1
+              q(1)                2+4
+                1                       1                  1
+              2
+                         =                      2 =    (13/8)2 ,
+            (yd    )2             3 1 1
+              q(2)                2+4−8
+                1                           1                      1
+              3
+                         =                            2 =      (27/16)2 ,
+            (yd    )2             3   1   1   1
+              q(3)                2 + 4 − 8 + 16
+                1                               1                      1
+              4
+                         =                                2 =      (53/32)2 .
+            (yd    )2             3   1   1   1    1
+              q(4)                2 + 4 − 8 + 16 − 32
+
+                                                                                                               Figure 6   Level 4 Errors
+                         IV. ERROR ANALYSIS
+
+   In this section, we further discuss the absolute error for
+different levels of approximations in the proposed divider. We                                       V. EXPERIMENTAL RESULTS
+recall the Taylor’s Theorem for two variables: for 0 < θ < 1,
+                                                                        A. Circuit Implementation for Multi-Level
+                                      ∂              ∂
+ f (x, y) = f (x0 , y0 ) + [(x − x0 ) ∂x + (y − y0 ) ∂y ]f (x0 , y0 )
+              ∂
+ +[(x − x0 ) ∂x  + (y − y0 ) ∂y  ] f (x0 + θ(x − x0 ), y0 + θ(y − y0 )). For x, y ∈ [1, 2), it follows from Equatoins 5, 6 and 7 that
+                               ∂ 2
+                                                                                                       VII. CONCLUSIONS
+                    x             1                                                In this work, we proposed a design for multi-level approxi-
+     level 0 :        ≈ zII =           w0 ;
+                    y           0
+                              (yq(0) )2
+                                d                                                mate FP divider with runtime configurability. The architecture
+                                                                                 can reach the optimal approximation and unbiased error distri-
+                    x             1
+     level 1 :        ≈ zII =           (△w1 + w0 );                             bution easily without increasing much area and delay overhead.
+                    y           1
+                              (yq(1) )2
+                                d
+                                                                                                              R EFERENCES
+                    x             1                                               [1] C.T. Chen, et al., “Optimally Approximated and Unbiased Floating
+     level 2 :        ≈ zII =           (△w2 + △w1 + w0 );
+                    y           2
+                              (yd     2                                               Point Multiplier with Runtime Configurability,” International Confer-
+                                q(2) )                                                ence on Computer-Aided Design (ICCAD), pp.1-9, 2020.
+                                                                                  [2] J. Han and M. Orshansky, “Approximate Computing: An Emerg-
+           ······                                                                     ing Paradigm for Energy-Efficient Design,” European Test Sympo-
+                                                                                      sium(ETS), pp.1-6, 2013.
+                                                                                  [3] V. Gupta, et al., “IMPACT: IMPrecise Adders for Low-Power Approxi-
+where                                                                                 mate Computing,” International Symposium on Low Power Electronics
+                                                                                      and Design (ISLPED), pp. 409-414,2011.
+              w0 = 2.25 + 1.5x − 1.5y;                                            [4] V. Gupta, D. Mohapatra, A. Raghunathan, and K. Roy, “Low-power
+                                                                                      digital signal processing using approximate adders,” IEEE Transactions
+                       0                                                              on Computer-Aided Design of Integrated Circuits and Systems, vol.32,
+           △w1 = (x + x[
+                       p(0) ) · (y[1]?(1) : (−1)) >> 2                                no. 1, pp.124-137, 2013.
+                                                                                  [5] S. Hashemi, R. I. Bahar, and S. Reda, “Drum: A dynamic range unbi-
+                       0
+                   + (yd                                                              ased multiplier for approximate applications,” International Conference
+                       q(0) − y) · (x[1]?(1) : (−1)) >> 2
+                                                                                      on Computer-Aided Design(ICCAD), pp.418-425, 2015.
+                   + (x[1]ˆy[1]?(−1) : (1)) >> 4;                                 [6] H. Mahdiani, A Ahmadi, S. Fakhraie, and C. Lucas, “Bio-inspired
+                                                                                      imprecise computational blocks for efficient VLSI implementation
+                       1                                                              of soft-computing applications,” IEEE Transactions on Circuits and
+           △w2 = (x + x[
+                       p(1) ) · (y[2]?(1) : (−1)) >> 3                                Systems I, vol.57, no.4, pp.850-862, 2010.
+                                                                                  [7] H. Saadat et al., “Approximate Integer and Floating-Point Dividers with
+                       1
+                   + (yd                                                              Near-Zero Error Bias,” Design Automation Conference (DAC), pp.1-6
+                       q(1) − y) · (x[2]?(1) : (−1)) >> 3
+                                                                                      , 2019.
+                   + (x[2]ˆy[2]?(−1) : (1)) >> 6;                                 [8] L. Chen et al., “Design of Approximate Unsigned Integer Non-restoring
+                                                                                      Divider for Inexact Computing,” Great Lakes Symposium on VLSI
+         ······                                                                       (GLSVLSI), pp.51-56, 2015.
+                                                                                  [9] S. Hashemi et al., “A low-power dynamic divider for approximate
+                                                                                      applications,” Design Automation Conference (DAC), pp.1-6,2016.
+                                                                                 [10] H. Jiang et al., “Low-Power Unsigned Divider and Square Root Circuit
+   This section further presents a concrete multi-level architec-                     Designs Using Adaptive Approximation,” IEEE Trans.on Computers,
+                                                                                      vol.68, no.11, pp.1635-1646, 2019.
+ture designed to implement this algorithm for x, y ∈ [1, 2),                     [11] M.Imani et al., “CADE: Configurable Approximate Divider for Energy
+allowing for dynamic configuration at run-time, which is                              Efficiency,” Design, Automation, Test in Europe Conference and Exhi-
+illustrated in Figure 7. The circuit implementation of wn                             bition (DATE), pp.586-589, 2019.
+                                                                                 [12] O.G. Ratnaparkhi et al., “LEAD: Logarithmic Exponent Approximate
+is detailed in subsection III-C. The proposed approximate                             Divider For Image Quantization Application,” Great Lakes Symposium
+divider organically combines the multi-level architecture with                        on VLSI (GLSVLSI), pp.437-442, 2022.
+the LUT-based design.                                                            [13] J. Melchert et al., “SAADI-EC: A Quality-Configurable Approximate
+                                                                                      Divider for Energy Efficiency,” IEEE Transactions on Very Large Scale
+                                                                                      Integration (VLSI) Systems, Vol.27, no.11, pp.2680-2682, 2019.
+                                                                                 [14] J. Oelund et al., “ILAFD: Accuracy-Configurable Floating-Point Di-
+                        △w2                                                           vider Using an Approximate Reciprocal and an Iterative Logarithmic
+     x                  △w1                                                           Multiplier,” Great Lakes Symposium on VLSI (GLSVLSI), pp.639-644,
+                                        wn                                            2023.
+                         w0            +           Shift-and-Add     zII ≈ x/y   [15] K.J.N.S. Bhargav et al., “A newton raphson method based approximate
+     y                                                                                divider design for color quantization application,” in ISOCC’21, pp115-
+                        1/(yd
+                            n
+                            q(n)
+                                 )2                                                   116.
+                                                                                 [16] C. Wen et al., “PACE: A Piece-Wise Approximate and Config-
+                                                                                      urable Floating-Point Divider for Energy-Efficient Computing,” in
+         Fig. 7. Concrete architecture of the approximate divider.
+                                                                                      DATE’2024.
+                                                                                 [17] H. Liu et al., “QIAD: A quadratic interpolation approximate divider,”
+                                                                                      IEICE Electronics Express, vol.20, no.11, pp.1-6, 2023.
+                                                                                 [18] L. Wu et al., “A curve fitting approach for non-iterative divider design
+                    VI. APPLICATIONS                                                  with accuracy and performance trade-off,” International New Circuits
+                                                                                      and Systems Conference (NEWCAS), pp.1-4, 2015.
+   We evaluated the proposed divider across different ap-                        [19] C. Wu et al., “Area-Delay-Energy-Efficient Approximate Dividers
+proximate levels, focusing on accuracy, resource utilization,                         Based on Piecewise Linear Fitting of Surface,” IEEE Transactions on
+and performance. This section is dedicated to examining the                           Circuits and Systems, vol. 71, no. 11, pp. 5017-5029, 2024.
+                                                                                 [20] IEEE Standard for Floating-Point Arithmetic, IEEE Standard 754-2008,
+disparities between the outcomes of the proposed approximate                          pp. 1-70, 2008.
+divider and the exact divider in practical applications. We                      [21] https : //en.wikipedia.org/wiki/Divisiona lgorithm
+conduct several benchmark tests, include image processing
+approaches such as change detection, background removal, K-
+Mean image color quantization, and Softmax layers in neural
+networks.
+

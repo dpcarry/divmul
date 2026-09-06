@@ -60,16 +60,29 @@ struct Metric {
     double relative = 0.0;
     double signed_error = 0.0;
     double maximum = 0.0;
+    double maximum_relative = 0.0;
+    uint32_t maximum_x = 0;
+    uint32_t maximum_y = 0;
+    uint32_t maximum_result = 0;
 };
 
-static void update(Metric& metric, uint32_t bits, double exact) {
+static void update(Metric& metric, uint32_t bits, double exact,
+                   uint32_t x, uint32_t y) {
     const double error = static_cast<double>(as_float(bits)) - exact;
     const double absolute = std::fabs(error);
     metric.absolute += absolute;
     metric.squared += error * error;
     metric.relative += absolute / std::fabs(exact);
     metric.signed_error += error;
-    if (absolute > metric.maximum) metric.maximum = absolute;
+    const double relative = absolute / std::fabs(exact);
+    if (absolute > metric.maximum) {
+        metric.maximum = absolute;
+        metric.maximum_x = x;
+        metric.maximum_y = y;
+        metric.maximum_result = bits;
+    }
+    if (relative > metric.maximum_relative)
+        metric.maximum_relative = relative;
 }
 
 int main(int argc, char** argv) {
@@ -98,11 +111,11 @@ int main(int argc, char** argv) {
         dut.eval();
         const double exact = static_cast<double>(as_float(x))
                              * static_cast<double>(as_float(y));
-        update(amlib, dut.amlib_z, exact);
-        update(current, dut.current_z, exact);
-        update(accuracy, dut.accuracy_z, exact);
-        update(conservative, dut.conservative_z, exact);
-        update(aggressive, dut.aggressive_z, exact);
+        update(amlib, dut.amlib_z, exact, x, y);
+        update(current, dut.current_z, exact, x, y);
+        update(accuracy, dut.accuracy_z, exact, x, y);
+        update(conservative, dut.conservative_z, exact, x, y);
+        update(aggressive, dut.aggressive_z, exact, x, y);
         if (dut.accuracy_z != model_root(x, y, level, accuracy_drop[level]))
             ++accuracy_mismatches;
         if (dut.conservative_z != model_root(
@@ -127,7 +140,12 @@ int main(int argc, char** argv) {
                   << " mred=" << metrics[i].relative / random_vectors
                   << " rmse=" << std::sqrt(metrics[i].squared / random_vectors)
                   << " mean_error=" << metrics[i].signed_error / random_vectors
-                  << " max_abs=" << metrics[i].maximum << "\n";
+                  << " max_abs=" << metrics[i].maximum
+                  << " max_rel=" << metrics[i].maximum_relative
+                  << " worst_x=0x" << std::hex << metrics[i].maximum_x
+                  << " worst_y=0x" << metrics[i].maximum_y
+                  << " worst_result=0x" << metrics[i].maximum_result
+                  << std::dec << "\n";
     }
     std::cout << "MODEL_CHECK level=" << level
               << " accuracy_mismatches=" << accuracy_mismatches

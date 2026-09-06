@@ -1,0 +1,991 @@
+IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 71, NO. 11, NOVEMBER 2024                                               5017
+
+
+
+
+ Area-Delay-Energy-Efficient Approximate Dividers
+   Based on Piecewise Linear Fitting of Surface
+  Chaoyuan Wu , Weiwei Shi , Member, IEEE, Yida Yuan , Zhuoliang Zou , Zhihong Mo, and Jiangwei He
+
+   Abstract— In this paper, signed and unsigned approximate                  detection and pattern recognition for better performance,
+dividers based on piecewise linear fitting of surface (PLSAD)                energy consumption and complexity (area). It has been widely
+are proposed. After extracting the exponent and mantissa of                  applied to digital systems to reduce circuit complexity, power,
+two binary fixed-point operands, the surface representing the
+quotient of the mantissa is partitioned into sub-regions, which are
+                                                                             and delay by sacrificing some accuracy [1], [2], [3], [4], [5].
+linearly approximated by rectangular planes. The proposed logic                 The majority of the recent approximate computing focuses
+architecture for geometric plane computations relies on simple               on adders, compressors and multipliers. The design methods
+arithmetic operations of addition and shifting. Additionally,                primarily emphasize custom cell design [6], approximations
+approximate adders reduce circuit complexity and enhance per-                on addition, and accumulation well-organized calculation [7],
+formance, while enabling dynamic configuration of dividers based
+                                                                             [8], [9], [10].
+on accuracy requirements. Fairly compared to recently published
+approximated dividers based on the same 45nm technology                         Recently, there has been increased attention to approximate
+and logic synthesis constrains, the proposed circuits outperform             design of dividers. In this domain, one particular approach
+other works in overall aspects. ‘As the bit-width of OR-gate                 is to approximate the logic expressions of partial adders or
+additions in Least significant bit (LSB) increases, the mean                 subtractorins within the non-restoring and restoring array [11],
+relative error distance (MRED) gradually grows from 0.82%                    [12]. The dividers in [13] have only established marginal
+to 2.63%, while the circuit area, delay and power consumption
+                                                                             improvements in hardward performence. Another approach is
+reduce to 840um2 , 0.9ns and 881uW, respectively. Similarly,
+the proposed approximate floating-point (FP) 16-bit and 32-bit               to enhance algorithm or circuit structure. For example, a high-
+dividers improve circuit delay and power by over 50% compared                speed and energy-efficient approximate divider (SEERAD) is
+to the state-of-the-art designs in the same condition. The proposed          proposed in [14]. By rounding off the divisor, this divider
+dividers perform well in image processing and demonstrate                    saves computational overhead involving only shifting and
+high adaptability in softmax layer of deep neural network and                addition. This simplification leads to a significant reduction in
+real-time EEG signal recognition applications.                               circuit delay while maintaining acceptable precision. However,
+   Index Terms— Approximate computing, piecewise linear fit-                 SEERAD employs lookup tables, resulting in more power
+ting, divider, energy-efficient, error-tolerant.                             consumption and circuit area. Alternatively, TruncApp [15]
+                       I. I NTRODUCTION                                      multiplies the truncated dividend by the approximate inverse of
+                                                                             the divisor. TruncApp generally improves power consumption
+W       ITH the development and popularity of wearable
+        electronic devices and artificial intelligence edge com-
+puting, the demand for high-performance and efficient digital
+                                                                             over SEERAD, but its accuracy is rather low due to the direct
+                                                                             constant approximation. At the algorithmic level, a promising
+electronic systems is rapidly growing. Besides relying on                    approximate dividers are based on the logarithmic number
+high-cost technology improvement and parallel computational                  system (LNS). These designs use Mitchell’s approximate log-
+structure, error-tolerant algorithms (Approximate Computing,                 arithmic conversion to perform division (ALD) [16], leading
+AC) can be an ideal alternative in image processing, object                  to significant hardware improvements. However, ALDs are
+                                                                             non-configurable and suffer from severe error bias when all
+  Manuscript received 3 April 2024; revised 14 June 2024 and 2 July 2024;    error values have the same sign. A hybrid design known
+accepted 3 July 2024. Date of publication 22 July 2024; date of current
+version 25 October 2024. This work was supported in part by the Natural
+                                                                             as AXHD [17], which combines the restoring array and
+Science Foundation of Guangdong Province under Grant 2023A1515010761,        logarithmic dividers, offers a novel and efficient low-power
+in part by the Special Innovative Project of Guangdong Universities under    solution but still leads to major error bias like previous ones.
+Grant 2022KTSCX106, in part by the Shenzhen Science and Technology           Recently, the field has seen a surge in interest towards approx-
+Program under Grant ZDSYS20220527171402005, in part by the Key-Area
+Research and Development Program of Guangdong Province under Grant           imate dividers utilizing piecewise linear (PWL) techniques.
+2021B1101270006, and in part by the National Natural Science Foundation      For instance, LPCAD [18] leverages Mitchell’s logarithms to
+of China under Grant 61974095. This article was recommended by Associate     convert integer operands into the logarithmic domain. Within
+Editor W. Liu. (Corresponding author: Weiwei Shi.)
+  Chaoyuan Wu, Zhuoliang Zou, Zhihong Mo, and Jiangwei He are with
+                                                                             this domain, the division operation is approximated by a
+the Department of Microelectronics, CEIE, Shenzhen University, Shenzhen      piecewise constant function, effectively transforming it into
+518060, China.                                                               a simpler multiplication.
+  Weiwei Shi is with the State Key Laboratory of Radio Frequency Het-           This paper presents a novel hybrid method for division,
+erogeneous Integration, Shenzhen University, Shenzhen 518060, China, and
+also with the Department of Microelectronics, CEIE, Shenzhen University,     drawing inspiration from the aforementioned logarithmic
+Shenzhen 518060, China (e-mail: wwshi@szu.edu.cn).                           conversion and PWL techniques. The proposed approach
+  Yida Yuan is with WingSemi Technology (Shanghai), Shanghai 201203,         transforms fixed-point (or integer) division into a more
+China.                                                                       computationally efficient fraction division using logarithmic
+  Color versions of one or more figures in this article are available at
+https://doi.org/10.1109/TCSI.2024.3425538.                                   conversion. Subsequently, the geometric surface representing
+  Digital Object Identifier 10.1109/TCSI.2024.3425538                        the quotient space of the fraction division is divided into a set
+                      1549-8328 © 2024 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+                                    See https://www.ieee.org/publications/rights/index.html for more information.
+5018                                      IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 71, NO. 11, NOVEMBER 2024
+
+
+
+of planes, facilitating hardware implementation through the
+use of shift-and-add circuits. Notably, unlike PWL methods
+that approximate curves with a limited number of straight
+lines, this work proposes a Piecewise Linear Fitting of Surface
+(PLS) approach. PLS approximates the two-dimensional func-
+tion representing the quotient space with planes, enabling its
+application in the design of the proposed approximate divider.
+   The description of the proposed approximation method and
+the hardware architecture is provided in Section II. Section III
+presents the error analysis, synthesis results and comparisons.
+In Section IV, some practical applications of our design are
+shown. Section V concludes the paper.
+
+      II. P ROPOSED A PPROXIMATE D IVIDER D ESIGN
+   This section details the derivation of the principles behind
+the proposed PLS-based approximate divider, as well as the
+corresponding implementation of hardware circuit structure.
+                                                                     Fig. 1.   The surface of (1 + f 1 )/(1 + f 2 ).
+
+A. Derivation Analysis and Proposed Approximation of
+Division                                                                                             ∂2 y
+                                                                                                              =0                    (7)
+   First of all, we can convert the input operands A and B                                          ∂ f 12
+of the divider as follows, both of which are non-zero positive
+                                                                        Eqs. 6 and 7 indicate that given a fixed value of f 2 (named
+integers.
+                                                                     a) and any value of f 1 in the range [0,1), the shadow of y
+                        A = 2e1 (1 + f 1 )                    (1)    projected onto the view y- f 1 is a line with curvature 0 and
+                        B = 2e2 (1 + f 2 )                    (2)    perpendicular to the f 2 axis, with a slope of 1/(1 + a). To fit
+                                                                     a surface, we can utilize an infinite number of these lines or
+In the expression above, e1 and e2 are the exponents of A            planes with a width of small 1 f 2 and length 1. Similarly,
+and B in float-point format which can represent the position         taking the partial derivative of f 2 , y gets
+of the leading-one bit in binary. f 1 and f 2 are the fraction
+part of A and B within the range of [0,1). Thus, the result of                                     ∂y         1 + f1
+                                                                                                        =−                          (8)
+the division of two operands, Q can be computed using the                                          ∂ f2     (1 + f 2 )2
+following equation.                                                                              ∂2 y     2 (1 + f 1 )
+                                                                                                        =                           (9)
+               A    2e1 (1 + f 1 )           1 + f1                                              ∂ f 22   (1 + f 2 )3
+           Q=     = e              = 2e1 −e2                  (3)
+               B    2 2 (1 + f 2 )           1 + f2
+               1 + f1                                                    Eq. 9 is a function with respect to f 1 and f 2 . Even though
+            y=                                                (4)     f 1 takes a fixed value, the projection of y onto the view
+               1 + f2
+                                                                     y- f 2 (as shown in Fig. 1(c)) exhibits a variable curvature across
+   The range for the quotient of (1 + f 1 )/(1 + f 2 ) is [0.5,2),   different values of f 2 . Therefore, we adopted a strategy of
+and in Eq. 4, we replace it by y which represents a surface.         dividing the f 1 - f 2 plane into several regions using a line
+Applying calculus, we may employ a plane to approximate the          perpendicular to the f 2 axis and derived PLS functions for
+area of the surface with a small region σ . The expression of        each region. While a smaller increment of 1 f 2 leads to a better
+this plane can be written as follows                                 surface fitting, there exists a hardware-accurate trade-off to be
+                
+                  1 + f1
+                                                                    taken into account. Having too many or too few regions might
+           ŷ =                   = k1 f 1 + k2 f 2 + C        (5)   strain circuit resources or increase error rates, we divided the
+                  1 + f 2 appr ox
+                                                                     [0,1) range of f 2 into eight equal-sized regions. The k1 ,k2 can
+   ŷ is the approximate value of y for the region σ , k1 and        then be solved for next.
+k2 are the coefficients of the variables f 1 and f 2 , respec-
+                                                                                                       ∂y
+                                                                                                 Z Z
+tively, and C is a constant offset. It is not feasible to fit                               k=             dσi σi
+                                                                                                               
+                                                                                                                                    (10)
+the entire surface with an infinite number of planes due to                                            ∂f
+                                                                                                         σi
+the significant resource overhead on the hardware circuit.
+Nevertheless, we can minimize error by using a finite number             Assuming that the region σi is defined by 0 ≤ f 1 < 1 and
+of planes as a substitute for the surface. Fig. 1(a) shows           i/8 ≤ f 2 < (i + 1)/8, k1 and k2 of ŷ can be approximated
+plotted y in MATLAB. We rotated the coordinate axis to view          by the mean value of the integrals of ∂ y/∂ f with respect to
+y- f 1 , revealing a quadrilateral plane projection as depicted in    f 1 and f 2 over σi , respectively. By applying the integral mean
+Fig. 1(b). We calculated the primary and secondary partial           theorem, we can compute the definite integral of the partial
+derivatives of f 1 for y, yielding the following expressions         derivatives of y over the σi , divide it by the area of σi , and
+                          ∂y       1                                 obtain the mean value as shown in Eq.10. Combining Eq.6, 8
+                               =                              (6)
+                          ∂ f1   1 + f2                              and 10, we can obtain expressions for the calculation of the
+WU et al.: AREA-DELAY-ENERGY-EFFICIENT APPROXIMATE DIVIDERS BASED ON PLSAD                                                                               5019
+
+
+
+                                                                                                                   TABLE I
+                                                                                                       T HE VALUE OF k1 , k2   IN   R EGIONS
+
+
+
+
+                                                                                                                   TABLE II
+                                                                                             T HE S UMMARY OF THE T HREE C ASES OF PLS P LANES
+
+
+Fig. 2.   The 3D view of yappr o .
+
+
+
+k1 and k2 , as shown in Eq. 11 and Eq. 12.
+                                        i+1
+                                         8
+                                               1
+                                        R
+                        ∂y
+                                              1+ f 2 d f 2
+                  RR
+                        ∂ f 1 dσi       i
+                  σi                    8                             9+i
+           k1 =                     =                         = 8ln         (11)
+                        σi                  i+1
+                                             8    −   i
+                                                      8
+                                                                      8+i
+                  RR    ∂y
+                        ∂ f 2 dσi
+                  σi                                      3
+           k2 =                     =−                                      (12)
+                        σi                  2(1 +     8 )(1 + 8 )
+                                                      i      i+1
+
+   To simplify the hardware calculations, the values of k1 and
+k2 are approximated to (2−m + 2−n ), so that we can multiply
+k1 , k2 through shifting and adding operations in the circuit.
+Finally, the constant offset C is adjusted. To find a suitable
+C value, we sampled 100 × 100 points equally in each region                        Fig. 3.   The MRED, area and power with different number of planes.
+and calculated the minimum Mean Relative Error Distance
+(MRED, in Eq. 13) between the surface and the linear approx-
+imation plane. Similarly, C is rounded to (2−m + 2−n ).                               The analysis given here explains why eight planes were
+                                                                                   chosen instead of four or sixteen.
+                         N
+                       1 X Accurate − Appr oximate                                    When implementing the algorithm on circuits, we will use
+      M RE D =             |                       |                        (13)   a multiplexer (MUX) to make the selection of each plane.
+                       N          Accurate
+                          1                                                        To accommodate for binary system characteristics, we divide
+    N is the number of sample points. The final plane functions                    the surface evenly into planes that are multiples of the power
+for the yappr ox of the eight regions are obtained as follows.                     of 2. It is easier to control the bit width of the MUX address
+And Fig. 2 shows the coordinate diagram after piecewise linear                     lines and ensures as much consistency as possible in the
+fitting for the surface y.                                                         hardware circuitry and software algorithms.
+                                                                                      According to Eq. 14, the PLS algorithm can achieve mul-
+                     1                          h 1
+                                                                                   tiplication of constant coefficients through multiple addition
+      
+       f 1 −   1 +        f 2 +  1,         f 2 ∈   0,
+      
+      
+                      4                                 8                         operations. PLS for 4 and 8 planes is both converted to the
+      
+             1                 65               h 1   2                        addition of 4 addends, while 16 planes require 6 addends due
+                                      ,                ,
+      
+      
+         1 −      f 1  −  f 2 +             f 2 ∈                                 to finer dividing of f 2 and more precise k1 and k2 values.
+               8                  64                 8 8
+      
+      
+      
+                                                                                      Table II evaluates the MRED and circuit performance of
+      
+               1                  69               h2 3
+      
+               
+                   f1 − f2 + ,               f2 ∈ ,
+      
+      
+         1−                                                                       approximation 16-bit dividers divided into 4, 8, and 16 planes.
+      
+              4                  64                 8 8
+      
+                                                                                  Constrained by the same RTL synthesis settings specified in
+             1         1          57            h3 4
+                   f1 − f2 + ,               f2 ∈ ,
+      
+       1−
+      
+                                                                                  Section III-B, the design explores the trade-off between accu-
+               4          2          64              8 8
+                                                                  h 
+ y=                                                        f 1 ∈  0, 1            racy and hardware cost. As the number of planes employed
+          1 1              1        119           h4 5
+                                                                                   in the PLS method increases, the MRED of the algorithmic
+                                           , f2 ∈ ,
+      
+      
+            +      f1 − f2 +
+          2 8               2        128             8 8                           model demonstrably decreases. However, this improvement in
+      
+      
+      
+      
+          1    1            1        59            h5 6                           accuracy comes at the cost of higher resource consumption
+      
+                
+             +      f1 − f2 + ,              f2 ∈ ,
+      
+      
+      
+      
+      
+         2 8               2        64              8 8                           within the synthesized circuit. In the 16-plane design, MRED
+      
+       1      1            1         61         h6 7                           is the smallest, but the circuit resource consumption and the
+                       f1 − f2 + , f2 ∈ ,
+      
+             +
+      
+                                                                                  power are the highest. The 4-plane design has the highest
+          2 16                2         64           8 8
+      
+      
+                                                                                   MRED (1.3%), however there is no significant reduction in
+      
+      
+        1        1 1               7             h7 
+      
+      
+                               f2 + ,        f2 ∈ , 1 ,                            circuit area compared to the 8-plane one as shown in Fig. 3.
+      
+       f −
+            1         −
+        2          2 8               8               8                             Since both of them involve 4 additions, the 4-plane design
+                                                                    (14)           has slightly fewer MUXs than the 8-plane design. The MRED
+5020                                           IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 71, NO. 11, NOVEMBER 2024
+
+
+
+
+Fig. 4.   Hardward architecture of the proposed design.
+
+
+of 0.82% for the 8-plane design is acceptable enough in most
+error-tolerant applications. Moreover, the circuit area and delay
+                                                                         Fig. 5.   The hardware structure of EF extract Unit for 16-bit input.
+are reduced by 29% and 20.8%, respectively, compared to the
+16-plane design. To balance tolerable computational error rates                                        TABLE III
+with better circuit performance, we chose the 8-plane design.                        H ARDWARE C OMPARISON OF E XPONENT-F RACTION
+                                                                                                 E XTRACTION D ESIGNS
+
+B. Logic Architecture Design and Hardware Optimization
+   Taking signed 16-by-16 division as an example, a block
+diagram of the proposed approximate divider structure is
+depicted in Fig. 4. In this work, the input of the divider is
+assumed to be a 16-bit fixed-point number in 2’s complement
+format. To handle zero inputs, a Sign&Zero Detect Unit is
+employed to identify if the input contains any zeros. In this            leverages OR gates to detect the presence of leading one bit
+case, the output of the divider is set to zero. Otherwise, the           within the upper half of the input. This detection governs
+unit detects the sign bit of the dividend or divisor to determine        the selection of either the high or low half-bits by MUX
+whether a positive value conversion for dividend or divisor is           circuits, along with the determination of a fixed left shift
+necessary. Meanwhile, the unit transmits the sign flag through           for the chosen portion. Notably, the output of the OR gates
+an XOR gate to the Sign Unit.                                            directly contributes to the individual bits of the exponent (e).
+   The absolute values of operands A and B, denoted |A|, |B|             The efficiency of this approach is demonstrated by the EF
+are processed by the EF Extract Unit. This unit isolates                 Extract Unit requiring only four executions of OR-MUX to
+the exponent e (the position of leading-one bit) and the                 produce a valid fraction ( f ) at the final MUX circuit.
+fraction f (lying in the range of [0,1)), which are 4-bit                   For comparative evaluation, we implemented circuits
+and 14-bit respectively. In [19] and [20], the Leading One               employing the LOD methods presented in [19], [20], and [21],
+Detectors (LODs), the Encoders (ENCs) and the left-shifter               ENCs and left-shifter to extract the exponent and fraction
+are employed for this extraction. It must be noted that the              from a 16-bit integer or fixed-point input. Notably, the LOD
+LOD module produces a one-hot code of the leading-one bit,               approach in [19] approximates the lowest 8 bit as 2 4-bit
+which needs to be encoded to a binary number by ENCs and                 inexact LOD blocks, which have been reproduced following
+then left-shift the input to get the fractional part. This paper         its original description. The leading-one position detector
+proposes a more efficient approach that eliminates the need              (LOPD) of [21] can directly output the binary number of
+for these additional steps. lgorithm 1 details a novel approach          the leading-one position without the ENCs. Table III sum-
+for efficient exponent and fraction extraction applicable to             marizes the synthesized circuit characteristics under identical
+n-bit input operands, where n is a power of 2. The algorithm             conditions. Our proposed method demonstrably achieves the
+iteratively divides the input into two halves and selects the            smallest circuit area and the shortest critical path, surpassing
+appropriate half based on the presence of leading one bits. This         the best performing reference [21] by 15% in area and 11% in
+selection process effectively determines the position of leading         delay. This improvement can be attributed to the streamlined
+one bit (exponent, e) and identifies the fractional portion ( f )        design of our circuit, which eliminates the priority encoder and
+requiring a fixed-length left shift. The algorithm repeats for           shifter. In simulation, the EF Extract Unit consumes less than
+log2 (n) iterations, culminating in the desired exponent and             20% power of the proposed divider, while the percentages of
+fraction values. For illustrative purposes, consider a 16-bit            the Fraction Divide Unit, the Shift Unit and other units/output
+unsigned input (detailed in Fig. 5). The EF Extract Unit                 buffers are around 39.0%, 29.6% and 11.5% respectively.
+WU et al.: AREA-DELAY-ENERGY-EFFICIENT APPROXIMATE DIVIDERS BASED ON PLSAD                                                                      5021
+
+
+Algorithm 1 EF Extracting.
+ 1: f = input[n − 2 : 0]
+ 2: select = input
+ 3: for i = 1 : log2 n do
+ 4:   if select[ ni − 1 : 2in ]! = 0 then
+ 5:      select = select[ ni − 1 : 2in ];
+ 6:      e[log2 n − i] = 1;
+ 7:       f = f << (2log2 n−i );
+ 8:   else
+ 9:      select = select[ 2in − 1 : 0];
+10:      e[log2 n − i] = 0;                                           Fig. 6.   The structure of LOA with m exact bits.
+11:       f = f;
+12:   end if
+13: end for
+
+
+
+
+   The Fraction Divide Unit calculates the yappr ox , and its
+internal circuit block diagram is shown in Fig. 4. After
+obtaining f 1 and f 2 , the appropriate values for k1 , k2 and
+C can be determined based on the value of f 2 [13:11]. If
+k1 or k2 is negative, calculating it with 1’s complement
+can reduce the delay and resources of adding 1. With C,
+we get 4 addends, x0 , x1 , x2 , x3 , which will be summed in
+                                                                      Fig. 7.   Dot diagram of the (a) exact and (b) approximate adding step.
+Approx Add Unit. The bit width of x3 (C) is 15, where
+x3 [14] represents integer bit and x3 [13 : 0] are fractional
+bits. x0 , x1 , x2 are also expanded by one bit at the most
+significant bit (MSB). Since the quotient of (1 + f 1 )/(1 + f 2 )    compressing adder and the approximate LOA are shown in
+is less than 2, the sum of the adder should also be a 15-bit          Fig. 7. The grey circles in Fig. 8(b) represent the part that
+number. In this study, a 4-2 compressor is used instead of            uses the OR-gate approximate addition. cin 1 and cin 2 are not
+full adder array of 4 inputs. The conventional 4-2 compressor,        directly connected to the carry-in signal of the 4-2 compressor,
+comprised of two full adders connected in series, produces            which prevents blocking and allows the or-tree adding and 4-2
+sum or carry-out signals with a delay of 41(assuming 1 is             compressing to be processed in parallel. Decreased bit width
+the delay of a XOR gate or a carry generator). Therefore,             of exact addition (m) reduces hardware resources, but also
+a flattened 4-2 compressor [22] can reduce 11 delay more              increases inaccuracy.
+than the conventional one. Consequently, multiple 4-bit CLA              The output of the Fraction Divide Unit is shifted left or right
+cascades are used to compute the sum of two outputs from              by the Shift Unit based on the value of e1 − e2 . If e1 − e2 is
+the 4-2 compressor to get the quotient of (1 + f 1 )/(1 + f 2 ).      negative, then the output is shifted to the right by |e1 − e2 | bit,
+   In pursuit of reducing circuit area and mitigating the long        otherwise it is shifted to the left by |e1 − e2 | bit. Finally, the
+carry-in delay of multi-bit adders, this work employs an              sign unit determines the sign of the output based on the sign
+approximate adder techniques. The operands of adders are              flag. The ( BA )appr ox yields a 31-bit result of PLSAD, where the
+fixed-point representations of fraction, whose least significant      LSB 14 bits are fractional and the MSB 15 bits are integer bits
+bits (LSBs) hold minimal weight. Consequently, these LSBs             in addition to the sign bit. In the case of unsigned dividing, the
+can be truncated or approximated with minimal impact on               Sign Detect and Sign Unit can be eliminated from the design.
+the overall accuracy. However, truncation would introduce a           The divider produces a 31-bit output with 16 integer bits at
+negative bias, so we adopt an approximate method named                MSB and 15 fractional bits at LSB.
+Lower Part OR Adder (LOA) [1], [23] that can have an almost              Compared to previous works, the features of the proposed
+unbiased and symmetric output error range between signed              divider design are as follows.
+or unsigned addition, and expand its 2 inputs to 4 inputs.               1) A novel hybrid method with logarithmic conversion and
+In Approx Add Unit, the exact adding are executed in the                     piecewise surface calculation is proposed. We mathe-
+MSB m-bit of four addends, while the rest bits of addends use                matically formulate a process for surface dividing of the
+approximate adders consists of OR-gates as shown in Fig. 6.                  quotient space arising from the logarithmic conversion
+To minimise the error caused by the OR-gate addition, the                    of mantissa values. In contrast to simple curve-fitting,
+carry signal cin 1 passed to the (14 − m + 1)th bit will be set              we fit a two-dimensional surface function by com-
+high if there are two or more 1s at the (14 − m)th bit, and the              bining the linear representations of the two variables,
+second carry signal cin 2 will be set high if there are four 1s.             which converts the complex computation into shift-
+   In the circuit, cin 1 can be placed at the least significant bit          and-add circuits that are more efficient for hardware
+of the output carr y from the 4-2 compressor, before using                   implementation.
+CLA to add the sum and carr y. The cin 2 can serve as the                2) The trade-off between hardware cost and accuracy is
+carry-in signal of CLA. The dot diagram of the exact 4-2                     explored by finding a suitable number of planes and
+5022                                      IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 71, NO. 11, NOVEMBER 2024
+
+
+
+                                                                      Normalised Mean Error Distance (NMED) by the maximum
+                                                                      exact output, Error Bias (EB), and overall results for circuit
+                                                                      synthesis. Additionally, we compare our proposed design with
+                                                                      several advanced approximate dividers.
+
+                                                                      A. Error Analysis
+                                                                        In contrast to the exact divider, we introduce errors primarily
+                                                                      during the calculation of the fraction division. Thus, the RED
+                                                                      without LOA can be expressed as Eq. 15.
+                                                                                                                  
+                                                                                                            1+ f 1          1+ f 1
+                                                                                                            1+ f 2 appr o − 1+ f 2
+                                                                                        A           A
+                                                                                          
+                                                                                        B appr o − B
+                                                                            RE D =           A
+                                                                                                      =              1+ f     1
+                                                                                             B                           1+ f 2
+                                                                                                                      1+ f 1
+                                                                                       (k1 f 1 + k2 f 2 + C) −        1+ f 2
+                                                                                   =                1+ f 1
+                                                                                                                                       (15)
+                                                                                                    1+ f 2
+                                                                                                                    1+ f 1
+                                                                                      1 X (k1 f 1 + k2 f 2 + C) − 1+ f2
+                                                                                         N
+                                                                              EB =                        1+ f 1
+                                                                                                                                   (16)
+                                                                                      N
+                                                                                          1               1+ f 2
+                                                                                                    h                            i
+                                                                         According to Eq. 15, the (k1 f 1 + k2 f 2 + b) − 1+  f1
+                                                                                                                           1+ f 2 can
+                                                                      be both positive or negative. Therefore, the errors in approxi-
+                                                                      mate division are two-sided and can be eliminated from each
+                                                                      other in the cumulative operation. subsequently we introduce
+                                                                      the EB, expressed as Eq. 16, that can measure the degree
+                                                                      of error introduced in the iterative calculation. Smaller EB
+                                                                      accumulates fewer errors. The LOA replaces the exact adder,
+                                                                      lowering hardware costs. However, it causes a minor mistake
+                                                                      in the addition result, especially for small m. Similarly, RED
+                                                                      with m-bit exact adder can be calculated using Eq. 17.
+                                                                                                                              1+ f 1
+                                                                                             ⌊k1 f 1 + k2 f 2 + C⌋m −         1+ f 2
+Fig. 8. The RED Map and the RED Distribution of 16-by-16 PLSAD with               R E Dm =                   1+ f 1
+                                                                                                                                       (17)
+(a)(c) m = 15 and (b)(d) m = 8.                                                                              1+ f 2
+                                                                         To evaluate the MRED, NMED, and EB of the proposed
+                                                                      16-by-16 and 8-by-8 dividers, we employ an exhaustive eval-
+     approximate the coefficients of variable to the power
+                                                                      uation strategy. This approach considers all possible input
+     of 2 to reduce the number of adders required. In addi-
+                                                                      combinations for operands f 1 and f 2 . For each combination,
+     tion to introducing the LOA technique extended to
+                                                                      the error between the approximate divider output and the exact
+     4-input to further reduce circuit complexity and shorten
+                                                                      result (1 + f 1 )/(1 + f 2 ) is calculated. Fig. 8(a)(b) shows the
+     the critical path for an hardware-efficient approximate
+                                                                      RED distribution on the f 1 - f 2 plane for 16-by-16 PLSAD,
+     divider with configurable accuracy. Both fixed-point and
+                                                                      The color value mapping is generally symmetric about the line
+     floating-point divider structures are also presented in this
+                                                                      RED=0, leading EB to be closer to 0. For the PLSAD with
+     paper.
+                                                                      m=8 in Fig. 8(b), the RED plot appears less smooth due to the
+  3) In terms of accuracy and circuit performance, the
+                                                                      use of approximate OR-gate addition instead of exact addition
+     proposed divider is compared with state-of-the-art
+                                                                      in the LSBs. On the contrary, as shown in Fig. 8(c) and (d),
+     approximate divider in terms of MRED, ADP and EDP
+                                                                      both of them have small and concentrated RED distribution.
+     metrics, including the latest AHXD, FPDME, LPCAD
+                                                                         Table IV shows the simulation results for the error metrics,
+     and so on. The results show that the MRED of the
+                                                                      NMED, MRED, and EB, for both unsigned 16-by-16 and
+     proposed divider is minimal and is in the Pareto Frontier
+                                                                      8-by-8 PLSADs, which were evaluated by using exhaustive
+     when both ADP and EDP are considered.
+                                                                      65536 × 65536 and 256 × 256 input cases, respectively. The
+  4) The proposed approximate divider is further evaluated in
+                                                                      line graph in Fig. 9 illustrates the relationship between m and
+     two image processing, softmax function of deep neural
+                                                                      statistical errors of MRED, NMED, and |EB| for the 16-by-16
+     network, and real-time emotion recognition applications
+                                                                      PLSAD. As the value of m decreases, the bit width of LOA
+     to validate the effectiveness of the proposed design.
+                                                                      increases, introducing more errors for divider. In the 16-by-16
+                                                                      design, MRED barely changes at m ≥ 8 because the bit weight
+       III. E RROR A NALYSIS AND I MPLEMENTATION                      of the 8 bits at the LSB is only a small part of it compared to
+                        E VALUATION                                   the whole design. When m<8, the proportion of bit weights in
+  In this section we present simulation results for the analysis      LOA increases, leading to a more rapid error growth. Thus,
+of error metrics in Relative Error Distance (RED), MRED,              a better trade-off between error and hardware performance can
+WU et al.: AREA-DELAY-ENERGY-EFFICIENT APPROXIMATE DIVIDERS BASED ON PLSAD                                                       5023
+
+
+
+                           TABLE IV                                                              TABLE V
+     MRED(%), NMED(10−6 ) AND EB(%) OF U NSIGNED 8- BY-8                     E XPERIMENTAL R ESULTS OF THE P ROPOSED U NSIGNED
+                 AND 16- BY-16 PLSAD S                                                AND S IGNED 16-BY-16 D IVIDER
+
+
+
+
+                                                                   comparison with resroting array dividers and 16-bit dividends
+                                                                   and 16-bit divisors for a fair comparison with other logarithmic
+                                                                   dividers, respectively. PLSAD is not restricted to any specific
+                                                                   dividend-divisor bit ratio.
+                                                                      Table VI lists the logic synthesis results of proposed designs
+                                                                   as well as those of AXHD [17], AXDr3 [11], AXRD [26],
+                                                                   TruncApp [15], SAADI [27] and LEDAD [28]. EDP, PDP
+Fig. 9. The MRED, NMED and EB of unsigned 16-by-16 PLSAD with      and MRED are given in the three columns on the right.
+different m.                                                       It is obvious that PLSAD exhibits the shortest critical path
+                                                                   among all the dividers and also offers the smallest EDP and
+                                                                   ADP when considering similar MREDs. As shown in Fig. 10,
+be achieved by using a suitable m value, which will be further     it reveals the relationship between MRED and EDP of the
+investigated in the following subsections.                         16-by-8 approximate dividers. The location of proposed design
+                                                                   are at the left-bottom corner, which implys that the energy
+B. Hardware Evaluation and Comparison                              consumption and circuit responsiveness of PLASD are at the
+                                                                   Pareto level for the same accuracy requirement. However, for
+   The proposed approximate divider and the state-of-the-
+                                                                   16-by-8 dividers, ADM1(8) and AXRD-M2(4) achieve the
+art dividers were implemented and reproduced in Verilog
+                                                                   smallest circuit area, but albeit at the expense of increased
+HDL and synthesized by Synopsys Design Compiler. For
+                                                                   delay due to their complex array structures. E-AXHD(14)
+fair comparisons, all the designs were synthesized based on
+                                                                   offers the small area through a hybrid restoring array and
+the NanGate 45 nm Open Cell Library [24], with the same
+                                                                   logarithmic divider architecture, further reducing complexity
+constraints of delay, power, area and capacitive load etc. After
+                                                                   by eliminating the divisor operand. AXDr3 using the TR
+synthesis, dividers are mapped to gate-level netlists, which
+                                                                   scheme generally has the smallest MRED but similarly the
+are later used to run static timing analysis (STA) and PTPX
+                                                                   delay of its complex array circuit is the longest here. For
+to measure the circuit delay and average power consumption.
+                                                                   16-by-16 dividers, TruncApp designs achieve minimal area
+In order to provide a comprehensive evaluation of the divider,
+                                                                   and delay by truncating the least significant bits (LSBs) of
+we have established three extra design metrics: Energy-Delay
+                                                                   both operands and converting the divisor’s inverse to a constant
+Product (EDP), Area-Delay Product (ADP), and Power-Delay-
+                                                                   multiplication with the dividend. However, this simplifica-
+Area Product (PPA). These metrics provide a combined view
+                                                                   tion comes at the expense of significantly higher MRED.
+of circuit efficiency, considering both accuracy and hardware
+                                                                   SAADI_EC(8) utilizes a Taylor series expansion for division,
+cost. Table V shows the area, power, delay, EDP, ADP,
+                                                                   achieving the lowest MRED but incurring the highest delay
+and PPA of the unsigned and signed 16-by-16 PLSAD with
+                                                                   (10.15 ns) due to its seven-iteration process. Similarly, LEAD
+different m value, respectively.
+                                                                   achieves low MRED through an exponent series expansion in
+   The proposed PLSAD architecture leverages variable-
+                                                                   the logarithmic division; however, this method suffers from
+precision exact adders controlled by the parameter m (m bits).
+                                                                   high area and long circuit paths due to the use of multipliers.
+This design balances hardware complexity (area, power, and
+                                                                      To sum up, the proposed divider outperforms the other
+delay) with accuracy (MRED). We observed minimal MRED
+                                                                   approximate dividers considered in this work in terms of
+variation in the PLSAD divider for m ≥ 8. Therefore,
+                                                                   hardware cost when the same MRED is needed.
+PLSAD(8) offers the optimal trade-off, achieving the lowest
+MRED while maximizing hardware efficiency. To facilitate
+a comprehensive comparison, we implemented PLSAD vari-             C. Evaluation and Comparison On FPGA
+ants with m = 8, 6, and 4. As mentioned, we assume                    Field Programmable Gate Array(FPGA) are semiconduc-
+16-bit dividends and 8-bit divisors of PLSAD for a fair            tor devices consisting of a matrix of Configurable Logic
+5024                                    IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 71, NO. 11, NOVEMBER 2024
+
+
+
+                           TABLE VI
+        C OMPREHENSIVE C OMPARISONS OF U NSIGNED 16-BIT
+                A PPROXIMATE D IVIDER D ESIGNS
+
+
+
+
+                                                                    Fig. 11. The Comparison of FPGA implementation in LUTs, delay and
+                                                                    power of dividers with difference input width.
+
+
+
+                                                                    completing the configuration, flip-flops are added to the input
+                                                                    ports and output ports of dividers to constrain the timing of
+                                                                    the combinational circuit. And the clock frequency is set to
+                                                                    100MHz, to estimate the LUT utilization, worst path delay,
+                                                                    and on-chip dynamic power on FPGA.
+                                                                       Fig. 11 shows the number of LUTs, worst path delay, and
+                                                                    dynamic power for three different input width of dividers.
+                                                                    The m of 16-bit and 32-bit PLSAD is 8. The PLS method
+                                                                    uses shift-addition operations to achieve complex non-linear
+                                                                    calculations, so the LUT resources used in the FPGA are pro-
+                                                                    portional to the bit-width of the inputs. Whereas for Xlinix’s
+                                                                    Divider IP, the number of LUT tends to grow exponentially
+                                                                    with increasing input width. Moreover, the power consumption
+                                                                    and the worst path delay of PLSAD are significantly better
+                                                                    than those of Divider IP.
+                                                                       The proposed design surpasses Divider IP in terms of
+                                                                    resource efficiency, power consumption, and circuit latency
+                                                                    for divisions with more input widths.
+
+
+Fig. 10. Joint EDP and MRED comparison of 16-by-8 PLSAD and other
+                                                                    D. Floating Point Divider Implementation and Comparison
+state-of-art dividers.                                                 The proposed approximate method is also suitable for
+                                                                    floating-point dividers. In the signed 16-bit floating point
+                                                                    divider, the exponent and mantissa are directly obtained from
+Blocks(CLBs) connected by programmable interconnects.               the binary of input, so only approximate division of the
+FPGA can be reprogrammed to implement the logic circuits            mantissa is required, as shown in Fig. 12. The circuits of DIV
+required by the user.                                               module are the same to the Fraction Divide Unit of Fig. 4.
+   To examine the applicability of the proposed approximate         For the standard half-precision(16-bit) representation specified
+computation method on FPGA, the XA7Z020 was selected                in IEEE 754 standard, they are 5 and 10 bits, respectively,
+as the FPGA device and we synthesized the PLSAD design              denoted as FP (1, 5, 10).
+through the Xilinx Vivado tool to compare it with the Divider          LPCAD [18], FPDME [29] and FPAD [30] are the state-
+Generator IP in terms of logic resource utilization(mainly          of-the-art FP dividers. To make a comparison with proposed
+Look-Up Table, LUT) and worst path delay.                           designs, we have reproduced these designs and synthesized
+   Before using the Divider Generator IP, the Output Remain-        them based on the NanGate 45 nm Open Cell Library [24]
+der Type was configured as Fractional and fractional width is       using the same constraint conditions. In addition to the signed
+taken as half of the output width, since our design also retains    16-bit FP divider, we have compared the 32-bit FP version,
+the fractional part. For example, for a signed 16-by-16 divider,    which is denoted as FP (1, 8, 23). The mantissa of inputs is
+the output format of IP should be 1 signed bit, 16 integer          truncated to 10 bits in our designs.
+bits, and 15 fractional bits. On the configuration table of            Table VII summarizes the comparative performance of the
+IP, the Algorithm Type is Radix2, the operand sign option           proposed 16-bit and 32-bit floating-point dividers against state-
+is Signed, and the Number of Latency is 0 that will only            of-art established designs. The proposed PLSAD architecture
+generate the combinational logic circuit without flip-flop. After   demonstrates a favorable trade-off between MRED and EDP.
+WU et al.: AREA-DELAY-ENERGY-EFFICIENT APPROXIMATE DIVIDERS BASED ON PLSAD                                                          5025
+
+
+
+                                                                                                 TABLE VIII
+                                                                                T HE PSNR/SSIM S OF THE C OLOR Q UANTIZATION
+                                                                                  R ESULTS U SING PLSAD W ITH D IFFERENT M
+
+
+
+
+                                                                        IV. E XPERIMENTAL A PPLICATIONS AND C ASE S TUDY
+
+                                                                        This section is dedicated to examining the disparities
+                                                                      between the outcomes of the proposed approximate divider
+                                                                      and the exact divider in practical applications. We conduct
+                                                                      several benchmark tests, include image processing approaches
+                                                                      such as change detection, background removal, K-Mean image
+                                                                      color quantization, and Softmax layers in neural networks.
+Fig. 12.   The proposed PLSAD hardware architecture for FP numbers.
+
+                                                                      A. Change Detection
+                          TABLE VII                                      Change detection is a widely used technique to identify dif-
+  C OMPARISONS OF 16-BIT FP D IVIDERS AND 32-BIT FP D IVIDERS         ferences between two greyscale images. This process involves
+                                                                      dividing the pixel values of two grey-scale images to obtain
+                                                                      an output image that displays only the dissimilarities between
+                                                                      them. If there are differences, the resulting pixels in the area
+                                                                      of intensity change deviates in value from 1, which indicates
+                                                                      the level of difference between the two input images.
+                                                                         This test used unsigned 8-by-8 PLSAD to verify the
+                                                                      applicability of the approximate divider in processing
+                                                                      two 8-bit greyscale images. Meanwhile, unsigned 8-by-8
+                                                                      AXDr3_TR(10), TruncApp_AM(5) and EAXHD(8) were
+                                                                      compared for image quality. The quotient obtained from this
+                                                                      process was then stretched to a range of [0,255] to restore
+                                                                      a normal display of the image in greyscale. Fig. 13 presents
+                                                                      the two input images alongside the peak signal-to-noise ratio
+                                                                      (PSNR) and structural similarity (SSIM) values of four output
+                                                                      images processed by both the exact divider and the PLSAD
+                                                                      with m = 8,6,4. Results indicate that the division effect with
+                                                                      m = 8 and 6 is almost identical to that of the exact divider.
+                                                                      Meanwhile, the division effect with m = 4 remains clear.
+
+
+                                                                      B. Background Removal
+                                                                         Background removal is a common pre-processing step in
+                                                                      image analysis that eliminates irrelevant background elements
+                                                                      to improve the visibility of the target object. In high-resolution
+                                                                      images processing, an approximate divider can be utilized
+                                                                      instead of exact division for enhanced computational efficiency
+For example, PLSAD(6) achieves lower EDP and MRED                     without much loss of accuracy. The implementation process
+compared to all variants of LPCAD, FPDME, and FPAD.                   involves dividing two pixels with identical coordinates in two
+This trend is also observed for ADP, with the exception               pictures. A higher accuracy is required in background removal,
+of FPDME4(7,1,3,nt = 17). When considering both error                 so we employ an unsigned 16-by-16 PLSAD with different m
+and overall performance metrics, these results position the           values and modern dividers to evaluate PSNR and SSIM in
+proposed design as competitive with state-of-the-art dividers.        this test.
+Because the EF Extract Unit and Shift Unit are not included              Fig. 14 illustrates the outcomes of employing PLSAD with
+in, and the output bit-widths (related to the number of output        m values of 8, 6, and 5. It is visually evident that the
+buffers) are different, the proposed floating-point dividers have     PLSAD(6) method still exhibits comparable results to the exact
+relatively much less area, delay and power than the proposed          divider. Hence, the selection of m-values can be based on the
+fixed-point designs in Section II.                                    desired PSNR threshold and available hardware resources.
+5026                                       IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 71, NO. 11, NOVEMBER 2024
+
+
+
+
+Fig. 13. The PSNR/SSIM of change-detection using exact divider, PLSAD
+with m = 8, 6, 4 and other dividers.
+
+
+
+C. K-Means Color Quantization
+    Color quantization is another typical technique in digital
+image processing to reduce the number of colors in an image
+and obtain a compressed image that resembles the original.
+The key problem in quantization is to find a suitable color
+palette by first selecting several random colors in the image
+color space as an initial palette. The K-Means algorithm is a
+prominent method employed for color quantization, wherein
+each pixel value in the image is divided into K classes and             Fig. 14. Background removal using exact divider, PLSAD with m = 8, 6,
+then mapped to the initial palette based on their proximity             5 and other approximate dividers.
+to the color pixel values. This generates K clustering centres,
+and the average of each class’s pixel values is calculated by
+dividing the sum by the number of pixels, which yields a new
+palette. This iterative process is repeated until the colors in
+the palette converge to a stable state.
+    The K-Means color quantization results are presented in
+Table VI, wherein image ‘Lena’ and ‘Peppers’ were quantized
+into six different colors, while image ‘kodim’ was quantized
+into ten different colors. After constant iterative division,
+it revealed that PLSAD with m = 8, 7, 6 exhibited satisfactory
+quality.
+
+
+D. Softmax Layer
+   The softmax function is usually placed as a normalisation
+function in the last layer of a neural network to deal with
+multi-classification problems. It converts the multiple outputs         Fig. 15.   Color quantization of ‘Kodim’ using Exact and PLSAD(8).
+of the fully connected layers into a probability distribution
+to predict the classification outcome of the neural network
+model. It’s expression is shown in Eq. 18. P is the predicted
+                                                                        is subtracted by c.
+probability of the j th class in the sample vector x. The weight
+vector W contains the weights of each class, and K denotes the                                         TW                    TW
+                                                                                               ex           j           ex        j −c
+total number of classes. To avoid numerical overflow during                               P = PK            TW
+                                                                                                                     = PK         TW
+                                                                                                                                              (18)
+                                             T
+computation, the maximum value of e x Wk , k = 1 . . . K ,                                         1   ex        k
+                                                                                                                        1    ex        k −c
+WU et al.: AREA-DELAY-ENERGY-EFFICIENT APPROXIMATE DIVIDERS BASED ON PLSAD                                                   5027
+
+
+
+                                                                   and biological significance of rhythmic activity [32]. The
+                                                                   DEAP dataset only stores EEG signal information in the
+                                                                   4-45 Hz frequency range to facilitate emotional classification
+                                                                   after preprocessing, so that the beta band information can
+                                                                   be ignored [33]. Among the 32 electrodes provided in the
+                                                                   DEAP dataset for recording EEG signals, 4 of them was used,
+                                                                   F p1 , F p2 , F3 and C4 . Each electrode recorded the changes
+                                                                   in the EEG signal of that subject during the viewing of a
+                                                                   1-minute music video at a sampling frequency of 512Hz. The
+                                                                   original EEG signal was first downsampled to 128Hz for each
+Fig. 16.   The structure of Lenet adopted in this paper.
+                                                                   channel separately. Next, the EEG signal was subjected to
+                                                                   discrete wavelet transform(DWT) to extract its approxima-
+                                 TABLE IX
+                                                                   tion and detail components, and we selected the 4th order
+                ACCURACY OF PLSAD W ITH D IFFERENT M
+                    VALUES FOR S OFTMAX L AYER
+                                                                   decomposition order according to the five EEG frequency
+                                                                   bands. Finally, the EEG signal was decomposed into four
+                                                                   detail coefficients D4 , D3 , D2 and D1 and an approximation
+                                                                   coefficients. After calculating, we obtain the energy of the
+                                                                   approximation and detail components of each EEG signal
+                                                                   segment and normalize the process to avoid excessive values.
+                                                                   The energies of the detail and approximation components of
+   In this test, a classical LeNet architecture is developed,      the EEG signal are given by
+which is composed of Convolutional Layer, Pooling Layer,
+                                                                                                     2
+                                                                                          X
+Activation Function, Full Connection Layer, and Softmax                            E Dj =       D j,k , j = 1, 2, 3, 4       (19)
+Output Layer. The neural network model comprises four                                     k
+layers, as depicted in Fig. 16, with each input image having                    E A4 =
+                                                                                         X
+                                                                                                 A4,k
+                                                                                                        2
+                                                                                                                            (20)
+dimensions of 28×28 pixels. The convolutional layer contains
+                                                                                          k
+20 features with a kernel size of 9 × 9, and pooling operations
+are performed with a size of 2 × 2. A fully connected              where j is the wavelet decomposition level, E D j is the
+layer comprising 100 neurons precedes the Softmax Layer            energy of the detail component, and E A4 is the energy of
+that outputs probabilities for ten distinct classes. We use the    the approximation component obtained from the 4th level
+MINST handwritten digit database [31] as our training dataset,     decomposition energy.
+which contains ten sample labels. To validate the practicality        Since the energy of the EEG signal is concentrated within
+and reliability of our proposed design, we replace the exact       the frequency band of 0-64 Hz, the total energy is defined as
+divider in the softmax layer with an approximate divider to                                      4
+                                                                                                 X
+evaluate the probability of correct classification when applying                     E total =          E D j + E A4        (21)
+test data.                                                                                       j=1
+   Upon conducting validation tests with a dataset comprised          According to Eq. 20-22, we calculated the sum of squares
+of 10000 MNIST test images, the results of LeNet exhibited         for each component separately to extract the energy of each
+remarkably accurate classifications, with the average proba-       frequency band of the EEG signal, and then sumed the energy
+bility being nearly identical to that achieved with the exact      of each frequency band to obtain the total energy of the EEG
+division. Consequently, there is minimal variance between the      signal. Subsequently, four dividers were used to obtain four
+network structures that utilize the approximate divider versus     eigenvalues as
+the exact division. Our results are shown in Table IX, which                         
+depicts the average probabilities of correct classification with                     
+                                                                                       γ % = E D1 /E total
+the exact divider being 95.8%, while the corresponding values                         β% = E D /E
+                                                                                     
+                                                                                                   2   total
+for different m using the approximate divider are 95.8%,                                                                    (22)
+                                                                                       α% = E D3 /E total
+95.8%, 95.65%, and 94.2%. In essence, these figures reveal
+                                                                                     
+                                                                                        θ% = E D4 /E total
+                                                                                     
+                                                                                     
+that no more than a 2% decrease in classification accuracy was
+observed. Thus, it is feasible to select PLSAD with varying           Here we replace the exact divider(based on 32-bit floating
+m values to achieve an optimal balance between hardware            point) with our signed 16-by-16 approximate divider(m = 8).
+performance and accuracy, depending on the specific demands        Fig. 17 displays the complete computation framework for the
+of the neural networks.                                            featured calculation module.
+                                                                      Taking subject 1 from DEAD dataset as an example, in order
+                                                                   to achieve real-time EEG signal analysis, the 1-minute EEG
+E. Real-Time EEG Signal Processing                                 signal was segmented by 32s with an interval of 0.0625s.
+   EEG signals hold promise for real-time classification of        We finally obtained 17,960 normalised energy data for each
+emotional states. These signals are characterized by the           frequency band of each channel, with 16 groups in total.
+presence of distinct frequency bands that offer valuable infor-    Table X shows the MRED of the exact and approximate
+mation for emotion recognition. These frequency bands are:         normalised energy for each frequency band of each channel,
+δ(< 4 H z), θ (4 − 8 H z), α(8 − 13 H z), β(13 − 30 H z), and      and most of them are less than 1%. Consequently, normaliza-
+γ (> 30 H z), each of which has a specific scalp distribution      tion yields almost identical discrepancies between approximate
+5028                                           IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS—I: REGULAR PAPERS, VOL. 71, NO. 11, NOVEMBER 2024
+
+
+
+                                                                                                       V. C ONCLUSION
+                                                                              This paper has proposed approximate divider designs based
+                                                                           on piecewise linear fitting of surface from new aspects. In con-
+                                                                           trast with conventional array dividers, the proposed design
+                                                                           replaces the geometric “3D surface” of the mantissa dividing
+                                                                           results with eight linear planes, accomplishing better experi-
+                                                                           mental error metrics and hardware performance. To improve
+                                                                           the designs in energy consumption and delay, we substitute
+                                                                           the exact adder with an approximate OR-gate adder in the
+                                                                           lower part computation. Therefore, the designs exhibit optimal
+                                                                           balance in accuracy, hardware resources, and performance
+                                                                           for low-power and energy efficient division. Notably, the
+                                                                           proposed designs indicate high computational quality in both
+                                                                           image processing, neural networks and real-time EEG signal
+                                                                           processing applications with few errors. Moreover, it can be
+                                                                           easily configured to trade-off among accuracy, power and
+                                                                           hardware complexity according to application requirements.
+
+Fig. 17.   The computation framework for the feature calculation module.                                 R EFERENCES
+                                                                            [1] H. Jiang, F. J. H. Santiago, H. Mo, L. Liu, and J. Han, “Approximate
+                             TABLE X                                            arithmetic circuits: A survey, characterization, and recent applications,”
+       T HE MRED OF N ORMALISED E NERGY FOR E ACH F REQUENCY                    Proc. IEEE, vol. 108, no. 12, pp. 2108–2135, Dec. 2020.
+                      BAND OF E ACH C HANNEL                                [2] B. Liu et al., “A low power DNN-based speech recognition processor
+                                                                                with precision recoverable approximate computing,” in Proc. IEEE Int.
+                                                                                Symp. Circuits Syst. (ISCAS), May 2022, pp. 2102–2106.
+                                                                            [3] V. Joshi, P. Mane, and C. K. Ramesha, “Cognitive approximate
+                                                                                adder design for image processing applications,” in Proc. Int. Conf.
+                                                                                Recent Trends Electron. Commun. (ICRTEC), Feb. 2023, pp. 1–6, doi:
+                                                                                10.1109/ICRTEC56977.2023.10111918.
+                                                                            [4] S. Venkataramani, S. T. Chakradhar, K. Roy, and A. Raghunathan,
+                                                                                “Approximate computing and the quest for computing efficiency,” in
+                                                                                Proc. 52nd ACM/EDAC/IEEE Design Autom. Conf. (DAC), Jul. 2015,
+                                                                                pp. 1–6.
+                                                                            [5] Q. Xu, T. Mytkowicz, and N. S. Kim, “Approximate computing: A
+                                                                                survey,” IEEE Design Test, vol. 33, no. 1, pp. 8–22, Feb. 2016.
+                                                                            [6] V. Gupta, D. Mohapatra, S. P. Park, A. Raghunathan, and K. Roy,
+                                                                                “IMPACT: IMPrecise adders for low-power approximate computing,”
+                                                                                in Proc. IEEE/ACM Int. Symp. Low Power Electron. Design, Oct. 2011,
+                                                                                pp. 409–414.
+                                                                            [7] Z. Yang, A. Jain, J. Liang, J. Han, and F. Lombardi, “Approximate
+                                                                                XOR/XNOR-based adders for inexact computing,” in Proc. 13th IEEE
+                                                                                Int. Conf. Nanotechnol., Aug. 2013, pp. 690–693.
+                                                                            [8] K. Yin Kyaw, W. Ling Goh, and K. Seng Yeo, “Low-power high-
+Fig. 18. The Structure of LSTM for Emotion Classification of EEG Signal.        speed multiplier for error-tolerant application,” in Proc. IEEE Int.
+                                                                                Conf. Electron Devices Solid-State Circuits (EDSSC), Dec. 2010,
+                                                                                pp. 1–4.
+                                                                            [9] P. Kulkarni, P. Gupta, and M. Ercegovac, “Trading accuracy for power
+and exact data, minimizing the impact on EEG signal                             with an underdesigned multiplier architecture,” in Proc. 24th Internatioal
+classification.                                                                 Conf. VLSI Design, Jan. 2011, pp. 346–351.
+   A two-layer Long Short Term Memory (LSTM) network                       [10] S. Venkatachalam and S.-B. Ko, “Design of power and area efficient
+                                                                                approximate multipliers,” IEEE Trans. Very Large Scale Integr. (VLSI)
+structure is shown in Fig. 18. The two-layer LSTM can                           Syst., vol. 25, no. 5, pp. 1782–1786, May 2017.
+analyse the inputs of energy features and extract more feature             [11] L. Chen, J. Han, W. Liu, and F. Lombardi, “On the design of approximate
+information. And batch Normalization layer (BN) normalizes                      restoring dividers for error-tolerant applications,” IEEE Trans. Comput.,
+the middle sample data. Dense layer further extracts the                        vol. 65, no. 8, pp. 2522–2533, Aug. 2016.
+                                                                           [12] L. Chen, J. Han, W. Liu, and F. Lombardi, “Design of approximate
+association between these features. The network can clssify                     unsigned integer non-restoring divider for inexact computing,” in Proc.
+8 labels, so the output node of the last full-connection layer                  25th Great Lakes Symp. VLSI, May 2015, pp. 51–56.
+is identified to be 8, and a Sigmoid activation function is                [13] H. Jiang, L. Liu, F. Lombardi, and J. Han, “Adaptive approximation
+connected after each output node to complete the classification                 in arithmetic circuits: A low-power unsigned divider design,” in Proc.
+                                                                                Design, Autom. Test Eur. Conf. Exhibition, Mar. 2018, pp. 1411–1416.
+of the 8 kinds of emotions.
+                                                                           [14] R. Zendegani, M. Kamal, A. Fayyazi, A. Afzali-Kusha, S. Safari, and
+   The validate accuracy for the emotion EEG classification                     M. Pedram, “SEERAD: A high speed yet energy-efficient rounding-
+using exact divider and approximate divider in feature cal-                     based approximate divider,” in Proc. Design, Autom. Test Eur. Conf.
+culation are 74.22% and 74.47%, respectively. It shows that                     Exhibition, Mar. 2016, pp. 1481–1484.
+our approximate method can retain almost all the energy                    [15] S. Vahdat, M. Kamal, A. Afzali-Kusha, M. Pedram, and Z. Navabi,
+                                                                                “TruncApp: A truncation-based approximate divider for energy efficient
+information in the feature extraction process and its small error               DSP applications,” in Proc. Design, Autom. Test Eur. Conf. Exhibition,
+does not significantly affect the network classification results.               Mar. 2017, pp. 1635–1638, doi: 10.23919/DATE.2017.7927254.
+WU et al.: AREA-DELAY-ENERGY-EFFICIENT APPROXIMATE DIVIDERS BASED ON PLSAD                                                                                   5029
+
+
+
+[16] J. N. Mitchell, “Computer multiplication and division using binary loga-                                 Weiwei Shi (Member, IEEE) received the B.S.
+     rithms,” IRE Trans. Electron. Comput., vols. EC-11, no. 4, pp. 512–517,                                  degree in electronic engineering and the M.E. degree
+     Aug. 1962, doi: 10.1109/TEC.1962.5219391.                                                                in microelectronics and solid-state electronics from
+[17] W. Liu, T. Xu, J. Li, C. Wang, P. Montuschi, and F. Lombardi, “Design                                    South China University of Technology in 2004 and
+     of unsigned approximate hybrid dividers based on restoring array and                                     2007, respectively, and the Ph.D. degree in elec-
+     logarithmic dividers,” IEEE Trans. Emerg. Topics Comput., vol. 10,                                       tronic engineering from The Chinese University of
+     no. 1, pp. 339–350, Jan. 2022.                                                                           Hong Kong (CUHK) in 2011. He is currently an
+[18] Y. Wu et al., “An energy-efficient approximate divider based on loga-                                    Associate Professor with the Department of Micro-
+     rithmic conversion and piecewise constant approximation,” IEEE Trans.                                    electronics, Shenzhen University, and also a member
+     Circuits Syst. I, Reg. Papers, vol. 69, no. 7, pp. 2655–2668, Jul. 2022,                                 of the State Key Laboratory of Radio Frequency
+     doi: 10.1109/TCSI.2022.3167894.                                                                          Heterogeneous Integration (Shenzhen University).
+[19] S. Gandhi, M. S. Ansari, B. F. Cockburn, and J. Han, “Approximate              His current research interests include IC designs on power-performance-area
+     leading one detector design for a hardware-efficient Mitchell multiplier,”     efficient AI chips, approximate computation, subthreshold digital systems, and
+     in Proc. IEEE Can. Conf. Electr. Comput. Eng. (CCECE), May 2019,               human–computer interface chips.
+     pp. 1–4.
+[20] Z. Babić, A. Avramović, and P. Bulić, “An iterative logarithmic
+     multiplier,” Microprocessors Microsystems, vol. 35, no. 1, pp. 23–33,
+     Feb. 2011.
+[21] K. Kunaraj and R. Seshasayanan, “Leading one detectors and leading
+     one position detectors–An evolutionary design methodology,” Can.                                        Yida Yuan received the B.S. degree in electrical
+     J. Electr. Comput. Eng., vol. 36, no. 3, pp. 103–110, Summer. 2013,                                     engineering from The Pennsylvania State University
+     doi: 10.1109/CJECE.2013.6704691.                                                                        in 2019 and the M.S. degree in electrical engineer-
+[22] S. Veeramachaneni, K. Krishna, L. Avinash, S. Puppala, and                                              ing from the University of Southern California in
+     M. B. Srinivas, “Novel architectures for high-speed and low-power 3–2,                                  2022. He is currently with WingSemi Technology
+     4–2 and 5–2 compressors,” in Proc. 20th Int. Conf. VLSI Design Held                                     (Shanghai), with a focus on RISC-V architecture and
+     Jointly 6th Int. Conf. Embedded Syst. (VLSID), 2007, pp. 324–329.                                       customized processor design.
+[23] H. R. Mahdiani, A. Ahmadi, S. M. Fakhraie, and C. Lucas, “Bio-inspired
+     imprecise computational blocks for efficient VLSI implementation of
+     soft-computing applications,” IEEE Trans. Circuits Syst. I, Reg. Papers,
+     vol. 57, no. 4, pp. 850–862, Apr. 2010.
+[24] (2011). Nangate 45 Nm Open Cell Library. [Online]. Available:
+     http://www.nangate.com/
+[25] S. Venkatachalam, E. Adams, and S.-B. Ko, “Design of approximate
+     restoring dividers,” in Proc. IEEE Int. Symp. Circuits Syst. (ISCAS),
+     May 2019, pp. 1–5.
+[26] E. Adams, S. Venkatachalam, and S.-B. Ko, “Approximate restoring                                        Zhuoliang Zou received the B.S. degree in micro-
+     dividers using inexact cells and estimation from partial remainders,”                                   electronic science and engineering from Shenzhen
+     IEEE Trans. Comput., vol. 69, no. 4, pp. 468–474, Apr. 2020.                                            University, Shenzhen, China, in 2023. He is cur-
+[27] J. Melchert, S. Behroozi, J. Li, and Y. Kim, “SAADI-EC: A quality-                                      rently pursuing the M.E. degree in electronic sci-
+     configurable approximate divider for energy efficiency,” IEEE Trans.                                    ence and technology with ShanghaiTech University,
+     Very Large Scale Integr. (VLSI) Syst., vol. 27, no. 11, pp. 2680–2692,                                  China. His current research interests include silicon
+     Nov. 2019.                                                                                              optical devices and photonic integrated circuit.
+[28] O. G. Ratnaparkhi and M. Rao, “LEAD: Logarithmic exponent approx-
+     imate divider for image quantization application,” in Proc. Great Lakes
+     Symp. VLSI, Jun. 2022, pp. 1–20.
+[29] G. Di Meo, A. G. M. Strollo, and D. De Caro, “Novel low-power
+     floating-point divider with linear approximation and minimum mean
+     relative error,” IEEE Trans. Circuits Syst. I, Reg. Papers, vol. 70, no. 12,
+     pp. 5275–5288, Dec. 2023, doi: 10.1109/tcsi.2023.3312974.
+[30] C. K. Jha, K. Prasad, V. K. Srivastava, and J. Mekie, “FPAD: A multi-
+     stage approximation methodology for designing floating point approxi-                                   Zhihong Mo received the B.S. degree from Dong-
+     mate dividers,” in Proc. IEEE Int. Symp. Circuits Syst. (ISCAS), Seville,                               guan University of Technology, China, in 2021. He is
+     Spain, Oct. 2020, pp. 1–5, doi: 10.1109/ISCAS45731.2020.9180768.                                        currently pursuing the M.E. degree in integrated
+[31] Y. LeCun, C. Cortes, and C. Burges. (2019). The MNIST                                                   circuit design with Shenzhen University, China. His
+     Database of Handwrittendigits. [Online]. Available: http://yann.                                        current research interests include approximate com-
+     lecun.com/exdb/mnist/                                                                                   puting circuits and brain–computer interface chips.
+[32] G. Chen, X. Zhang, Y. Sun, and J. Zhang, “Emotion feature analysis and
+     recognition based on reconstructed EEG sources,” IEEE Access, vol. 8,
+     pp. 11907–11916, 2020.
+[33] M. Khateeb, S. M. Anwar, and M. Alnowami, “Multi-domain feature
+     fusion for emotion classification using DEAP dataset,” IEEE Access,
+     vol. 9, pp. 12134–12142, 2021.
+
+
+
+
+                          Chaoyuan Wu received the B.S. degree from                                          Jiangwei He received the B.S. degree from
+                          Guangdong University of Technology, China,                                         Zhengzhou University, China, in 2021. He is cur-
+                          in 2021. He is currently pursuing the M.E. degree                                  rently pursuing the M.E. degree in integrated circuit
+                          in integrated circuit design with Shenzhen Univer-                                 design with Shenzhen University, China. His cur-
+                          sity, China. His current research interests include                                rent research interests include RISC-V and neural
+                          approximate computing circuits and brain–computer                                  network accelerator.
+                          interface chips.
+

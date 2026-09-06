@@ -1,0 +1,572 @@
+              Approximate Integer and Floating-Point Dividers with
+                             Near-Zero Error Bias
+                   Hassaan Saadat                                                  Haris Javaid                                             Sri Parameswaran
+     The University of New South Wales                                              Xilinx Inc.                                      The University of New South Wales
+             Sydney, Australia                                                      Singapore                                                 Sydney, Australia
+          h.saadat@unsw.edu.au                                                  harisj@xilinx.com                                     sri.parameswaran@unsw.edu.au
+ABSTRACT                                                                                                        20                                                               4
+
+
+
+
+                                                                                               Normalized ADP
+                                                                                                                                           ADP      Power
+
+
+
+
+                                                                                                                                                                                     Normalized
+We propose approximate dividers with near-zero error bias for both                                              15                                                               3
+
+
+
+
+                                                                                                                                                                                       Power
+integer and loating-point numbers. The integer divider, INZeD,                                                  10                                                               2
+is designed using a novel, analytically deduced error-correction                                                5                                                                1
+method in an approximate log based divider. The loating-point di-                                               0                                                                0
+vider, FaNZeD, is based on a highly optimized mantissa divider that                                                  8-bit Integer       16-bit Integer     IEEE sin. prec. FP
+is inspired by INZeD. Both of the dividers are error conigurable.
+    Our results show that the INZeD dividers have error bias in                              Figure 1: Resource consumption of division operation compared
+the range of 0.01 − 4.4% with area-delay product improvement of                              to multiplication operation.
+25× − 95× and power improvement of 4.7× − 15× when compared
+to the accurate integer divider. Likewise, compared to IEEE single-                             the alternative ixed-point representation of fractional numbers
+precision loating-point divider, FaNZeD dividers ofer up to 985×                                due to its ease-of-use. It saves the designer from the ordeals
+area-delay product and 77× power improvements with error bias                                   of overlow and underlow by ofering a large dynamic range
+in the range of 0.04 − 2.2%. Most importantly, using our FaNZeD                                 and bounded relative precision. Thus, approximate FP arithmetic
+dividers, loating-point arithmetic can be more resource-eicient                                 that may be less precise but is more resource-eicient is typically
+than ixed-point arithmetic because most of the FaNZeD dividers                                  preferable to ixed-point due to its beneit of ease-of-use [18].
+are even smaller and have better area-delay product than the 8-                                 While recent works on approximate dividers [8, 11, 20] provide
+bit and 16-bit accurate integer dividers. Finally, our dividers show                         error conigurability, they lack the feature of low error bias. More-
+negligible efect on the output quality when evaluated with AlexNet                           over, these works did not target approximate FP dividers. In this
+and JPEG compression applications.                                                           paper, we address these limitations by proposing not only approx-
+                                                                                             imate integer dividers but also loating-point dividers, both with
+1     INTRODUCTION                                                                           near-zero error bias and error-conigurability.
+Most of the modern compute-intensive applications such as audio                                 Motivation: Typically, dividers are avoided because they are
+and video encoding/decoding, neural networks, etc. can inherently                            highly resource-hungry when compared to multipliers and adders.
+tolerate controlled errors in the underlying computations without                            Nonetheless, they cannot always be avoided, and thus incur signii-
+drastic degradation of the output quality [5, 6]. This error-resiliency                      cant resource penalty when required. To demonstrate this, Fig. 1
+can be exploited by using approximate arithmetic computations                                presents the area-delay product (ADP) and power of the dividers for
+instead of the accurate ones to achieve better resource and energy                           IEEE single-precision FP, 16-bit integer and 8-bit integer divisions,
+eiciencies, typically known as approximate computing [15, 21].                               normalized with respect to their respective multiplication coun-
+   A popular approach of approximate computing at the hardware-                              terparts. The graph shows that the resource consumption of the
+level is to trim down and simplify the logic design of an arithmetic                         dividers is signiicantly more than that of the multipliers. Therefore,
+unit by relaxing the accuracy constraints, resulting in lower re-                            resource-eicient dividers are highly desirable when they cannot
+source consumption. Over the past decade, researchers primarily                              be avoided due to application needs.
+focused on approximation of adders and multipliers [9, 18]. How-                                Contributions: In this paper, we aim for resource-eiciency
+ever, in recent years, there is an increased interest in approximation                       of dividers through approximation with a particular focus on the
+of dividers [8, 11, 20]. In the approximation of arithmetic units, the                       above-mentioned features. Highlights of our contributions are:
+following features are highly desirable:                                                      • We present INZeD, a new approximate unsigned integer divider
+ • Low error bias: It leads to cancellation of errors instead of accu-                          with near-zero error bias. It is designed by augmenting a novel,
+   mulation in successive computations [7, 18].                                                 analytically deduced error-correction method with the classical
+ • Error conigurability: It allows a designer to trade-of the error                             linearly approximated log based integer divider.
+   with resource-eiciency for a particular application because dif-                           • Next, we propose a set of FP dividers, FaNZeD, that are inspired
+   ferent applications are tolerant to diferent degrees of error [21].                          by INZeD. An optimized version of INZeD is ingeniously used
+ • Resource-eicient loating-point units: Floating-point (FP) arith-                             as the mantissa divider to create FP dividers that are even more
+   metic, while being more resource-hungry, is advantageous over                                resource-eicient than ixed-point dividers.
+                                                                                              • Finally, we present error-conigurable versions of both INZeD
+                                                                                                and FaNZeD, where a designer can choose the most optimized
+Permission to make digital or hard copies of all or part of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed           divider based on the application requirements.
+for proit or commercial advantage and that copies bear this notice and the full citation        Our experiments show that INZeD is capable of providing near-
+on the irst page. Copyrights for components of this work owned by others than ACM
+must be honored. Abstracting with credit is permitted. To copy otherwise, or republish,      zero error bias, i.e., ≤ 0.02% error bias with 34.6× ADP and 5.6×
+to post on servers or to redistribute to lists, requires prior speciic permission and/or a   power improvement for 16-bit integer division. On the other hand,
+fee. Request permissions from permissions@acm.org.                                           FaNZeD can ofer up to 568× ADP and 42× power improvement
+DAC ’19, June 2ś6, 2019, Las Vegas, NV, USA                                                  when compared to IEEE single precision FP divider, with less than
+© 2019 Association for Computing Machinery.
+ACM ISBN 978-1-4503-6725-7/19/06. . . $15.00                                                 0.1% error bias. Our results further show that INZeD dividers con-
+https://doi.org/10.1145/3316781.3317773                                                      tribute to the Pareto front of the design space of state-of-the-art
+approximate dividers, while FaNZeD dividers ofer bettertrade-ofs
+                                                            trade-ofs
+                                                              oposed
+than traditional precision scaling. Results show that our proposed
+FaNZeD dividers can be even more resource-eicient than     than their
+                                                                  their
+                                                       valuation of
+ixed-point counterparts. Finally, application-level evaluation       of
+the proposed dividers demonstrates minuscule degradationof      of the
+                                                                    the
+output quality.
+   Organization: The related work and preliminaries arecoveredcovered
+in Section 2 and 3. The analytical analysis and derivationof  of near-
+                                                                  near-
+zero error bias method, and the approximate integer dividerINZeD
+                                                               INZeD
+are presented in Section 4. The approximate FP dividerFaNZeD
+                                                          FaNZeD isis
+                                                   erimental setup
+explained in Section 5. Section 6 presents the experimental      setup
+and results. Finally, the paper is concluded in Section 7.                      Figure
+                                                                                Figure 2: Error proile of the approximate log based divider (ALD).
+
+2   RELATED WORK                                                                where bi is the i-th bit and k x is the position of the leading-one,
+Most of the existing work on approximate arithmetic units fo-                                                         k xÍ−1
+cuses on adders and multipliers. Details can be found in [9, 10, 18].           such that 0 ≤ k x ≤ (N − 1). Let x =         2i−k x bi , then the binary
+                                                                                                                         i=0
+Nonetheless, in recent years, approximation of dividers has also                log of X can be linearly approximated as:
+become an active research topic.
+    A class of approximate integer dividers is based on using approx-                                     loд2′ (X ) = k x + x                      (1)
+imate adder or subtracter cells in 2N -by-N array dividers [16]. In             where k x is the characteristic part of the approximate log and
+[1] and [2], the accurate divider cells in a 2N -by-N non-restoring             0 ≤ x < 1 is the fractional part.
+and restoring array divider, respectively, are truncated or replaced               For division, suppose there are two N -bit integers X and Y , with
+by approximate divider cells. These approximate divider cells are               their leading ones at k x and ky respectively. Then, the approximate
+built using approximate full-subtracters. In [3, 4], an approximate             binary log of quotient Q is:
+signed-digit adder cell is designed and then used in combinational
+implementation of higher radix SRT divider. It is reported in [11]                                   loд2′ (Q) = k x − ky + x − y                   (2)
+that the resource improvements ofered by these dividers are small.                To obtain the approximate quotient, the inverse of the approxi-
+    A wider class of approximate division schemes propose approxi-              mate binary log is applied:
+mation at the algorithmic/architectural level. Some dividers [19, 22]                              (
+employ look-up tables in their approximation schemes, however,                                ′      2k x −ky −1 (2 + x − y) x − y < 0
+the area and power consumption of these dividers are substantial                             Q = k x −ky                                      (3)
+                                                                                                     2        (1 + x − y)    x −y ≥ 0
+due to the presence of look-up tables [11]. In TruncApp [20] ap-
+proximate inverse of the divisor is determined and multiplied with              This expression is decomposed into two cases because the inverse
+the truncated dividend. TruncApp-AM (TAM) is a variation of this                of log requires the fractional part to be in the range [0,1). The irst
+design in which the multiplication is also approximated.                        case happens when a borrow is taken from the characteristic part.
+    The DAXD design [8] consists of a dynamic selection of bits in
+a 2N-by-N divider depending on the position of the leading-one                  4     INZED: APPROXIMATE INTEGER DIVIDER
+and then uses a smaller accurate sub-divider. This divider sufers               In this section, we irst present our proposed near-zero error bias
+from large error due to overlow problem, as identiied by [11]. The              method. Then we present the hardware architecture of INZeD fol-
+authors in [11] also propose a solution to the overlow problem: they            lowed by an explanation of its error conigurability mechanism.
+use a larger sub-divider in their 2N -by-N AAXD divider design.
+    The classical approximate log based divider (ALD) [14] computes             4.1    Near-Zero Error Bias Method
+log of the operands through linear approximation and then uses the
+log-division property to perform division. This division scheme is              The accurate quotient from the division of X and Y is Q = 2k x −ky ·
+eicient but it is non-conigurable and sufers from high error bias               ((1 + x)/(1 + y)). Thus, the error in quotient can be computed as:
+as all error values have the same sign. A hybrid design (AXHD) [13]                                                     (y−1)−y 2 )
+combines an array divider and the ALD divider. This divider does                                 ′
+                                                                                                          2k x −ky (y+x2(1+y)
+                                                                                                         
+                                                                                                                                     x −y < 0
+not propose any modiication in the ALD design and thus it also                          EQ = Q − Q =                   (xy−y 2 )
+                                                                                                                                                     (4)
+                                                                                                           
+                                                                                                           2 k x −k y                x −y ≥ 0
+sufers from high error bias.                                                                                           (1+y)
+    Our proposed dividers are inspired by the work in [18] and difer               Fig. 2 plots this error. For better visualization, the plot is shown
+from all the above works in two major aspects: (1) a novel low-                 for X = {16, 17 . . . 255} and Y = {64, 65 . . . 255}. From Eq. 4 and
+overhead error-correction method to achieve near-zero error bias                the graphical representation in Fig. 2, we make the following key
+is introduced; (2) both integer and FP dividers are targetted.                  observations: (1) The error always has the same sign, thus the
+                                                                                classical log-based divider is highly biased. (2) Although the error
+3   PRELIMINARIES                                                               has an increasing trend, the error proiles in each power-of-two-
+The proposed approximate dividers are based on the classical ap-                interval (each pair of k x , ky ) are simply replicas of each other with
+proximate log based divider (ALD) proposed by Mitchell [14], so                 a scaling a factor of 2k x −ky .
+we irst present its mathematical formulation. An N -bit unsigned                   Based on these observations and our goal of reducing error bias
+integer X can be represented as:                                                with minimal overhead, we propose to subtract the average error
+                                                                                within each power-of-two-interval from the approximate quotient
+           N
+           Õ −1                     x −1
+                                   kÕ                       x −1
+                                                            kÕ                 values in that interval to achieve a near-zero average error. This
+     X =          2i bi = 2k x +           2i bi = 2k x 1 +       2i−k x bi     average error, for a given k x and ky over x ∈ [0, 1) and y ∈ [0, 1)
+           i=0                     i=0                        i=0               can be computed as follows:
+                                                                                                                         leading-one detectors (LOD) and barrel shifters of appropriate sizes.
+                                                                        ∫1 ∫1                                            Speciically, the LOD produces the characteristic part of the log
+                                                1                                                                        value, while the barrel shifter selects the bits next to the leading-one
+                       Avд(EQ ) =                                                   EQ dxdy
+                                          (1 − 0)(1 − 0)                                                                 to produce the fractional part (and inserts extra zeros to the right
+                                                                         0      0                                        to keep bit-width constant). The fractional part is appended to the
+                                                                                                                     !   right of the characteristic part, efectively implementing Equation 1.
+                  ∫1 ∫y                                                             ∫1 ∫1                                   The two approximate log values are then subtracted using the
+   k x −ky                   (y + x(y − 1) − y 2 )                                           (xy − y 2 )
+=2                                                 dxdy +                                                dxdy            main subtracter. Next step is the subtraction of the error-correction
+                                  2(1 + y)                                                    (1 + y)                    term ϵ from the fractional part of the log diference. The error-
+                  0     0                                                           0 y
+                                                                      k x −ky
+                                                                                                                         correction term is left shifted if a borrow was taken from the char-
+                                        = (0.043) × 2                                                                    acteristic part in the main subtracter. Next, a ’1’ or ’0’ is appended
+  As expected, the mean error in each power-of-two-interval is a                                                         to the left of the result if there is a borrow out in this second sub-
+constant ϵ = 0.043 scaled by 2k x −ky , thus our proposed division                                                       traction. This result is then scaled using another barrel shifter with
+method can mathematically be expressed as:                                                                               respect to the characteristic part from the main subtracter (which
+                (                                                                                                        is 2k x −ky or 2k x −ky −1 ).
+            ′     2k x −ky −1 (2 + x − y − 2ϵ) x − y < 0                                                                    Optimization of bit-widths: In a standard 2N -by-N divider, the
+          Q = k x −ky                                           (5)
+                  2        (1 + x − y − ϵ)     x +y ≥ 0                                                                  quotient is N -bit. To avoid overlow, the condition X < 2N Y must
+                                                                                                                         be satisied [16], which means that the inal scaling in our divider
+    We subtract ϵ before scaling of the fractional part to avoid the
+                                                                                                                         ranges from 20 to 2N −1 . Since we are dealing with an integer divider,
+extra scaling hardware (see Section 4.2). Our proposed near-zero
+                                                                                                                         any part of the expression that remains in the fractional part after
+error bias method consists of a single error-correction term which
+                                                                                                                         scaling needs to be ignored. Thus, for any possible output, we need
+is independent of the inputs as well as the size of the divider N . As
+                                                                                                                         a maximum of N − 1 bits in the fractional part of the expression
+we will demonstrate in Section 6.3, our near-zero error bias method
+                                                                                                                         before the inal scaling, which means that only N −1 bits are needed
+incurs a small resource overhead when compared to the classical
+                                                                                                                         from both subtracters. We truncate N lsb bits from loд ′ (X ), leaving
+log-based divider but results in a much improved error behavior.
+                                                                                                                         N − 1 bits in the fractional part. This reduces the logic size of the
+                                                                                                                         barrel shifter for dividend X , the main subtracter (loд(2N ) + N − 1-
+4.2        Hardware Architecture                                                                                         bits), and the inal barrel shifter. Note that these optimizations do
+As mentioned in Section 2, most of the previous works on approxi-                                                        not afect the accuracy of the divider because these truncated bits
+mate integer dividers are based on 2N -by-N dividers. Therefore, we                                                      do not contribute to the inal quotient. Fig. 3 reports the number of
+also present the architecture of a 2N -by-N divider for our near-zero                                                    bits at diferent stages of our divider.
+error bias method; however, our proposal is equally applicable to                                                           An exception here is when N ≤ 8 (e.g. 16-by-8 divider) because
+N -by-N dividers.                                                                                                        the error-correction term has 8 bits in the fractional part. Specii-
+   Approximation of the error-correction term: The error-correction                                                      cally for the 16-by-8 divider, we keep N bits in the fractional part
+term determined in the previous section needs a large number of                                                          of loд ′ (X ) and append an extra zero to the right of loд ′ (Y ). In this
+bits for accurate representation, which would require the use of                                                         case, the fractional part of the main and second subtracter would be
+a large subtracter. Instead, we approximate this term in 8-bits as                                                       N -bits wide, and the input to the inal barrel shifter would be N + 1
+ϵ = 2−5 +2−8 , so that only an 8-bit subtracter and an 8-bit 2x1                                                         bits when the inverted ro is appended. However, the extra least
+multiplexer (for left shift) are required, thus keeping the overhead                                                     signiicant bit will be dropped by the barrel shifter after scaling,
+to a minimum.                                                                                                            keeping the quotient to N -bits.
+   Explanation of the design: The logic design of the proposed di-
+vider is shown in Fig. 3. First, the approximate logs (Equation 1) of                                                    4.3    Error Conigurability
+the 2N -bit dividend (X ) and N -bit divisor (Y ) are computed using
+                                                                                                                         We introduce error conigurability in the proposed divider by trun-
+        X (2N-bit integer)                                            Y (N-bit integer)
+                                                                                                                         cating t least signiicant bits from the inputs of the main subtracter.
+                                                                                                                         This enables reduction in the size of the input barrel shifters, the
+   2N                                                             N
+                                                                                                                         main subtracter, as well as the inal barrel shifter, while introducing
+                                                                                                                         more error due to the loss of bits. When t ≥ N − 8, the number of
+     LOD                    Barrel Shifter                        LOD                  Barrel Shifter                    bits in the fractional part are < 8. In such a scenario, we also trun-
+            log22N                                                       log2N
+                              (2N-1)                                                       (N-1)                         cate t − (N − 1) + 8 bits from the second input of the error-correction
+      Characteristic                   Fractional part            Characteristic                   Fractional part       subtracter. When the number of bits in the fractional part from the
+                (kx)                   (x)                                  (ky)                   (b)
+                                                                                                                         output of the last subtracter is lower than N − 1, we append zeros
+           log22N+(2N-1)
+                                                                             log2N+(N-1)                                 to its right before the inal scaling. The error conigurable design is
+                  lg’ (X)    Truncate
+                              N lsb log22N+(N-1)             –                              lg’ (Y)
+                                                                                                                         referred to as INZeD-t in this paper.
+                                                                             borrow taken by the fractional part            For N = 8, i.e., in case of 16-by-8 divider, we used an extra bit as
+                  Characteristic
+                  (signed number)
+                                                   (N-1)
+                                                              Fractional part                                            explained in the previous subsection, keeping the fractional part
+                                                                                                          ε              to N bits. Therefore, truncating 1 bit (t = 1) means truncating that
+                               borrow out (ro)
+                                                             –                             <<1
+                                                                                                                         extra bit, and so on. Speciically, we will have N −1+1−t = N −t bit
+     log22N +1                                     (N-1)
+                                                                                                                         main subtracter.
+                                                         N                                                                  The truncation of bits may introduce the problem of overlow
+                                              Barrel Shifter                                                             in the 2N -by-N divider. Speciically, the characteristic from the
+                                                                                                                         main subtracter may have the value N instead of N − 1, which
+                                                         N
+                                                                                                                         consequently results in a inal scaling by a factor of 2N . This causes
+                                                             Q’
+                                                                                                                         the output quotient to become larger than what can be represented
+   Figure 3: The proposed approximate integer divider INZeD.                                                             in N -bits, resulting in overlow. To handle this, we put a comparator
+                                                                                                            Table 1: Results for the proposed INZeD dividers.
+    sa         sb   ea       eb      + bias   1.             ma           1.              mb
+                                                                                                                      Error      Mean        Area      Power     Freq.      ADP
+                                                                                                       Divider
+                                                                 –                                                   Bias (%)   Error (%) ( µm 2 )     ( µW )   (GHz)    ( µm 2 ×ns )
+                                                                          borrow from
+         XOR                                                            fractional part                                         32-by-16 Divider (N   = 16)
+                          Exponent
+                         subtraction
+                                              borrow out (ro )
+                                                                 –                    >>1      εε     Accurate   –       -           -      2980.9     397.9     0.16      18869
+                                                                                                      ALD [14]         3.91       3.91      1334.8       75.4    2.11      632.7
+                                                                                                      INZeD           ś0.02       2.74      1389.3    ε 84.9     1.91      728.0
+                                                                                                      INZeD-2         ś0.02       2.74      1315.9       79.7    1.93      680.3
+                                                                                                                 –
+                                                             2x1 Muxs
+                                                                                                      INZeD-4         ś0.01       2.74      1327.9       80.5    2.09      636.1
+                                                                                                      INZeD-6         ś0.01       2.74      1164.9       70.6    2.14      544.0
+                          Adjust e                      Normalization
+                                                                                                      INZeD-8          0.10       2.76       966.2       57.5    2.18      442.5
+                                                                                                      INZeD-10         0.47       2.74       778.0       43.6    2.38      327.6
+         so                  eo                                  mo                                   INZeD-11         1.43       3.42       763.9       40.0    2.43      314.7
+                                                                                                      INZeD-12         4.04       4.96       634.3       30.8    2.53      251.2
+                                                                                                      INZeD-13         4.42       7.16       541.2       26.8    2.72      198.6
+Figure 4: The proposed approximate FP divider FaNZeD. The opti-
+                                                                                                                                 16-by-8 Divider (N   = 8)
+mized mantissa divider reduces to extremely simple logic.
+                                                                                                      Accurate          -           -        810.3       67.5    0.58       1408
+                                                                                                      ALD [14]        3.93        3.93       600.7       34.4    2.61       230.1
+in the design that checks if the characteristic is N . In such a case,                                INZeD           0.001       2.75       724.9       44.4    2.46       294.3
+                                                                                                      INZeD-1         0.11        2.77       731.7       45.2    2.53       289.0
+the output quotient is set to the maximum possible value of 2N −1.                                    INZeD-2         0.52        2.69       626.8       36.3    2.55       245.7
+                                                                                                      INZeD-3         0.64        2.74       592.5       32.8    2.62       225.7
+5    FANZED: APPROXIMATE FP DIVIDER                                                                   INZeD-4
+                                                                                                      INZeD-5
+                                                                                                                      1.76
+                                                                                                                      4.50
+                                                                                                                                  3.52
+                                                                                                                                  5.29
+                                                                                                                                             542.1
+                                                                                                                                             416.8
+                                                                                                                                                         28.3
+                                                                                                                                                         21.1
+                                                                                                                                                                 3.07
+                                                                                                                                                                 3.36
+                                                                                                                                                                            176.7
+                                                                                                                                                                            124.2
+In an IEEE single-precision FP format, a number consists of a sign
+bit (s), an exponent (e), and a mantissa (m). The mantissa is nor-
+                                                                                                    FP dividers, where t bits from both the mantissas are truncated. We
+malized, so its irst bit is always ’1’, which is the hidden bit and
+                                                                                                    apply precision scaling both with and without the rounding unit,
+not stored with the number. The FP division consists of mantissa
+                                                                                                    essentially creating two versions of the IEEE FP divider, referred to
+division, exponent subtraction, rounding, normalization, and some
+                                                                                                    as IEEE-R and IEEE-NR in this paper, respectively.
+logic for exception handling.
+    To design our proposed approximate FP divider: FaNZeD, we
+make two key observations. (1) The synthesis of an IEEE single-
+                                                                                                    6.2    Implementation Details
+precision FP divider with restoring array divider for mantissa di-                                  For fairness of comparison, all the dividers are implemented as
+vision using Cadence RTL Compiler reported that the mantissa                                        single cycle combinational circuits. Each divider is coded in Verilog
+divider consumes more than 92% area and 95% power of the entire                                     HDL and synthesized with Cadence RTL Compiler using TSMC
+FP divider. (2) The mantissa division is essentially an unsigned divi-                              45nm standard-cell library at the maximum possible frequency. We
+sion (with additional zeros assumed to the right of the numerator to                                placed sequential elements at the inputs and outputs of a divider
+obtain the fractional bits). Based on these observations, we applied                                for timing constraints, however, we only used the combinational
+the following optimizations to INZeD, which naturally led us to use                                 logic area and power when reporting the results.
+it as a resource-eicient mantissa divider. (1) Since the positions                                      For INZeD, we implemented 16-by-8 and 32-by-16 dividers. The
+of the leading-ones in the mantissas are already known, the LODs                                    accurate integer divider, the sub-dividers in DAXD and AAXD,
+and barrel shifters at the inputs can be removed. This optimization                                 and the mantissa divider in IEEE FP dividers are implemented as
+further allows to replace the output barrel shifter with a simple                                   restoring array dividers [16]. The multiplier in TruncApp is imple-
+multiplexer and reduce the size of the main subtracter. (2) The over-                               mented as the Wallace tree multiplier. The bit-width optimization
+low check mentioned in the last section is not required, because                                    described in Section 4.2 is also applied to ALD for fair evaluation
+the characteristic part never becomes equal to N . Moreover, in the                                 of the overhead of the proposed near-zero error bias method.
+proposed approximate FP divider, the rounding unit is removed                                           For error analysis, behavioral models of the dividers are imple-
+because ine-precision is ignored. The exponent subtraction, nor-                                    mented in MATLAB. The functional equivalence of each model is
+malization and exception handling modules are kept the same. The                                    veriied by comparing the output of the Verilog HDL simulations
+error-correction term ϵ is approximated as 0.043 ≈ 2−5 + 2−7 . This                                 with that of the MATLAB simulations for the same set of random
+approximation is empirically ine-tuned to achieve best error bias                                   inputs. For 32-by-16 dividers, we performed Monte Carlo simula-
+with low overhead. Fig. 4 shows the overall hardware architecture                                   tions with 67 million inputs uniformly distributed in the range of
+of FaNZeD. For error conigurability, we vary the parameter t in the                                 X = {1....22N − 1} dividend and Y = {1...2N − 1} divisor. Only
+mantissa divider to create difering FP dividers, allowing trade-of                                  those values are selected where no overlow occurs in the accurate
+of error with resource-eiciency. The error conigurable version is                                   divider, i.e., X < 2N Y [16]. For 16-by-8 dividers, exhaustive sim-
+referred to as FaNZeD-t in this paper. Although we derive FaNZeD-                                   ulations were performed over the same choice of inputs. For FP
+t from single-precision, our proposal is equally applicable to half                                 dividers, 5 million random inputs from the interval [1,2) are used.
+or double-precision loating-point formats.                                                          Like previous works [18, 23], this interval is chosen because the
+                                                                                                    exponent part is not changed and hence the error analysis does not
+6 EXPERIMENTS AND RESULTS                                                                           get afected.
+                                                                                                        Two popular error metrics, mean of absolute relative error (mean
+6.1 Comparison with State-of-the-art                                                                error) and mean of relative error (error bias) are used to measure the
+We compare our integer dividers (INZeD-t) with the accurate and                                     eicacy of the proposed dividers. The reference for integer dividers
+state-of-the-art approximate integer dividers: DAXD [8], AAXD [11],                                 is accurate division, and that for FP dividers is the IEEE single-
+TruncApp [20], TruncApp-AM (TAM) [20], AXHD [13], and the                                           precision division output. In some approximate integer dividers,
+approximate log-based divider (ALD) [14]. Similar to most previous                                  the approximate output can be non-zero even when accurate output
+works, we use an array divider design for the accurate divider.                                     is zero, which results in an ininite relative error. We assign a penalty
+   The proposed approximate FP dividers (FaNZeD-t) are compared                                     of 100% error for pragmatic error analysis. If both the accurate and
+with traditional precision scaling method in IEEE single-precision                                  approximate values are zero, then we set the relative error as 0%.
+                      (a) APD Improvement vs error bias                                      (b) Power Improvement vs error bias                                     (a) ADP Improvement vs error bias                                                     (b) Power Improvement vs error bias
+                10                                                                     10                                                                   10                                                                                    10
+
+
+
+
+                                                                       Error Bias(%)
+
+
+
+
+                                                                                                                                            Error Bias(%)
+
+
+
+
+                                                                                                                                                                                                                                  Error Bias(%)
+Error Bias(%)
+
+
+
+
+                5                                                                       5                                                                       5                                                                                 5
+
+
+
+
+                0                                                                       0                                                                       0                                                                                 0
+                            20     40     60        80      100                                     5         10           15          20                             2          4         6         8      10      12                                 1        1.5        2         2.5        3        3.5
+                              ADP Improvement                                                       Power Improvement                                                            ADP Improvement                                                                 Power Improvement
+                     (c) ADP Improvement vs mean error                                      (d) Power Improvement vs mean error                                     (c) ADP Improvement vs mean error                                                  (d) Power Improvement vs mean error
+                15                                                                     15                                                                   15                                                                                    15
+                                                                     Mean Error(%)
+
+
+
+
+                                                                                                                                            Mean Error(%)
+
+
+
+
+                                                                                                                                                                                                                                  Mean Error(%)
+Mean Error(%)
+
+
+
+
+                10                                                                     10                                                                   10                                                                                    10
+
+
+                5                                                                      5                                                                        5                                                                                 5
+
+
+                0                                                                      0                                                                        0                                                                                 0
+                            20     40     60        80      100                                     5         10           15          20                             2          4         6         8      10      12                                 1        1.5        2         2.5        3        3.5
+                              ADP Improvement                                                       Power Improvement                                                            ADP Improvement                                                                 Power Improvement
+                     AAXD        AXHD        DAXD         Accurate                          ALD         TAM        INZeD         TruncApp                           AAXD          AXHD           DAXD            Accurate                             ALD            TAM         INZeD              TruncApp
+                        170         180             190           200                             210         220               230                                    170             180                190              200                                210              220              230
+
+ Figure 5: 16-bit divider design space. INZeD dividers are part of the                                                                        Figure 6: 8-bit divider design space. INZeD dividers are part of the
+ Pareto front.                                                                                                                                Pareto front.
+
+ 6.3                    INZeD Results                                                                                                         bias range of 0.01 − 4.4%, our dividers provide ADP improvements
+ALD comparison: Table 1 reports the results for INZeD, ALD, and                                                                               in the range of 25 − 95× and power improvements in the range
+the accurate dividers. The error bias for INZeD divider is 0.02% for                                                                          of 4.7 − 15×. Fig. 5 (c, d) demonstrates the eicacy of INZED-t
+N =16 and 0.001% for N =8. This error bias is orders of magnitude                                                                             dividers in terms of mean error. Again, the Pareto front includes
+smaller than the error bias of ALD (3.9%), while at the same time,                                                                            many points from our INZeD-t dividers. For N = 8, Fig. 6 depicts
+mean error is improved from 3.9% to 2.7%. In comparison to the ac-                                                                            similar observations.
+curate divider, INZeD ofers signiicant ADP improvements: 25.9×
+and 4.8× for N = 16 and N = 8 respectively (rows 1 and 3).
+                                                                                                                                              6.4                      FaNZeD Results
+   Error conigurability: Table 1 also lists the results for error conig-                                                                      Error conigurability: The results for FaNZeD-t dividers are reported
+urability in INZeD-t dividers. As expected, the resource footprint re-                                                                        in Table 2 and Fig. 7. From the table, it can be seen that our dividers
+duces at the cost of more error. For N =16, the parameter t manifests                                                                         ofer up to 985× ADP and 77× power improvements compared to
+increased errors when t ≥ 8 because at this point, the truncation                                                                             the IEEE single-precision divider (rows 1 and 7). In Fig. 7 (a,b), the
+of the 8-bit error-correction term starts. The INZeD-t dividers are                                                                           FaNZeD-t dividers exhibit near-zero error bias (< 0.1%) for nearly
+able to provide 57.6× ADP and 9.1× power improvement for less                                                                                 600× ADP improvement and 45× power improvement. The error
+than 0.5% error bias (rows 1 and 8). For N =8, the increased error                                                                                                   (a) ADP Improvement vs Error bias                                                 (b) Power Improvement vs Error bias
+trend is observed at the very start, i.e. t ≥1, again because of the                                                                                        5                                                                             5
+truncation of the error-correction term. Nonetheless, INZeD-t is                                                                                                                 IEEE-R                                                   4
+                                                                                                                                                                                                                                                                    IEEE-R
+                                                                                                                                                            4
+                                                                                                                                                                                                                          Error Bias(%)
+
+
+
+
+able to provide 5.7× ADP improvement for nearly 0.5% error bias                                                                                                                                                                                                     FaNZeD
+                                                                                                                                            Error Bias(%)
+
+
+
+
+                                                                                                                                                                                 FaNZeD
+                                                                                                                                                                                                                                                                    IEEE-NR
+(rows 1 and 5).                                                                                                                                             3                    IEEE-NR                                                  3
+   It is noteworthy that the INZeD-t dividers can be even more                                                                                              2                                                                             2
+eicient than the ALD divider while still providing lower error.
+                                                                                                                                                            1                                                                             1
+Speciically, this happens beyond t ≥6 for N =16 and t ≥3 for N =8.
+   State-of-the-art comparison: Fig. 5 and Fig. 6 compare INZeD-t                                                                                           0                                                                             0
+dividers with the state-of-the-art approximate integer dividers for                                                                                             0          200       400       600        800      1000                           0             20         40              60           80
+
+N = 16 and N = 8, respectively. The error metrics are plotted on                                                                                                             ADP Improvement                                                                   Power Improvement
+the y-axis while the improvement metrics are plotted on the x-axis.                                                                                                 (c) ADP Improvement vs Mean Error                                                 (d) Power Improvement vs Mean Error
+                                                                                                                                                                                                                                          6
+   In Fig. 5 (a, b) for N = 16, it can be observed that the INZeD-t                                                                                         6
+dividers ofer lower error bias than all the other state-of-the-art
+                                                                                                                                                                                                                          Mean Error(%)
+                                                                                                                                            Mean Error(%)
+
+
+
+
+approximate dividers, and are part of the Pareto front. With an error                                                                                       4                                                                             4
+
+                        Table 2: Results for the proposed FaNZeD dividers.                                                                                                                                                                                                                 IEEE-R
+                                                                                                                                                                                                         IEEE-R                           2
+                                                                                                                                                            2
+                                   Error        Mean             Area                         Power        Freq.          ADP                                                                            FaNZeD                                                                            FaNZeD
+                 Divider
+                                  Bias (%)     Error (%)        ( µm 2 )                      ( µW )      (GHz)       ( µm 2 ×ns )                                                                       IEEE-NR                                                                           IEEE-NR
+
+                IEEE FP              0             0            7584.7                        1343.0       0.06          123289                             0                                                                             0
+                FaNZeD-0           -0.04         2.89            904.6                          58.2       2.21           409.8                                 0          200       400       600        800      1000                           0             20         40              60           80
+                FaNZeD-10          -0.03         2.89            805.8                          47.5       2.24           360.2                                              ADP Improvement                                                                   Power Improvement
+                FaNZeD-15          -0.04         2.89            558.1                          31.9       2.48           225.5
+                FaNZeD-18          -0.36         2.97            472.8                          28.6       2.54           186.3               Figure 7: Floating-point divider design space. FaNZeD dividers are part of
+                FaNZeD-19          -0.86         2.89            386.4                          22.2       2.67           144.5               the Pareto front. IEEE-R and IEEE-NR mean precision scaling with and with-
+                FaNZeD-20          -2.22         3.81            363.9                          17.4       2.91           125.2               out rounding, respectively.
+  Table 3: AlexNet classiication results using diferent dividers.                         for only selected dividers are presented. It is evident that FaNZeD-
+         Divider
+                             IEEE                       FaNZeD-t                          t dividers provide similar image quality for all cases (maximum
+                              FP       t=0      t=10       t=15     t=18        t=20      loss of 0.4dB) as the IEEE single-precision FP divider even at the
+                    ADP        -      300 ×    342 ×      546 ×    661 ×       985 ×      maximum level of approximation (t = 20). More importantly, our
+ Improvement
+                    Power      -      23.1 ×   28.3 ×     42.1 ×   47.0 ×      77.0 ×
+ Error              Top-1    43.42    43.50    43.50      43.50    43.40       43.24      FaNZeD-t dividers provide signiicantly higher ADP and power
+ Rate (%)           Top-5    20.64    20.68    20.68      20.68    20.60       20.66      improvements (985× and 77× respectively) than the ixed-point
+                                                                                          dividers (both accurate and approximate versions), while providing
+bias increases to 2.2% for higher values of improvements. In contrast,                    similar (or even better) image quality.
+the error bias of traditional precision scaling with and without
+rounding shoots up for even less than 100× ADP improvement.                               7    CONCLUSIONS
+Although the mean error of FaNZeD-t dividers is higher (> 2.9%)
+                                                                                          We proposed approximate dividers for integer and loating-point
+than most of the precision scaling dividers, they ofer much higher
+                                                                                          division. The integer divider INZeD is designed by combining a
+ADP and power improvements than the later, and thus constitute
+                                                                                          novel error-correction method with the classical approximate log
+the extended Pareto front as shown in Fig. 7 (c,d).
+                                                                                          based divider with the aim of near-zero error bias. Our results
+   Fixed-point comparison: Since ixed-point arithmetic is imple-
+                                                                                          demonstrate that INZeD divider ofers Pareto optimal points in
+mented with integer dividers, our results show that FaNZeD-t
+                                                                                          the design space consisting of state-of-the-art approximate integer
+dividers enable FP arithmetic which can be even more resource-
+                                                                                          dividers. The loating-point divider FaNZeD is designed by using
+eicient than ixed-point arithmetic. For example, FaNZeD-10 (from
+                                                                                          an optimized mantissa divider based on the INZeD divider. Our
+Table 2) is smaller than both 16-bit accurate and INZeD dividers, as
+                                                                                          results show that a large set of FaNZeD dividers can be derived that
+well as smaller than 8-bit accurate integer divider (from Table 1).
+                                                                                          ofer better trade-ofs than traditional precision scaling. Moreover,
+6.5    AlexNet Application                                                                some of the FaNZeD dividers are even more resource-eicient than
+                                                                                          16-bit and 8-bit ixed-point (integer) dividers. Application-level
+AlexNet is a convolutional neural network (CNN) used for image                            evaluations show that our dividers have minuscule degradation of
+classiication [12]. While it is mostly dominated by multiply-and-                         the output quality.
+add operations, it also contains division operations. Speciically,
+there are two Local Response Normalization layers and one softmax                         REFERENCES
+layer which require division operation. The local response normal-                         [1] L. Chen et al. 2015. Design of Approximate Unsigned Integer Non-restoring
+ization layer is important as it reduces Top-1 and Top-5 error rates                           Divider for Inexact Computing. In Proc. 25th GLSVLSI ’15. 51ś56.
+by 1.4% and 1.2%, respectively [12], and involve nearly 0.5 million                        [2] L. Chen et al. 2016. On the Design of Approximate Restoring Dividers for Error-
+                                                                                               Tolerant Applications. IEEE Trans. Comput. 65, 8 (2016), 2522ś2533.
+division operations in the AlexNet.                                                        [3] L. Chen et al. 2017. Design of Approximate High-Radix Dividers by Inexact
+   We implemented AlexNet, pretrained on ILSVRC dataset [17],                                  Binary Signed-Digit Addition. In Proc. 27th GLSVLSI ’17. 293ś298.
+with IEEE single-precision FP arithmetic in software. We then re-                          [4] L. Chen et al. 2018. Design, Evaluation and Application of Approximate High-
+placed each division operation in all the layers with the software                             Radix Dividers. IEEE Trans. Multi-Scale Computing Systems 4, 3 (2018), 299ś312.
+                                                                                           [5] V. K. Chippa et al. 2013. Analysis and Characterization of Inherent Application
+model of FaNZeD-t dividers. We performed classiication of ive                                  Resilience for Approximate Computing. In Proc. 50th DAC ’13. 113:1ś113:9.
+thousand images from the ILSVRC 2012 validation set, and com-                              [6] H. Esmaeilzadeh et al. 2012. Architecture Support for Disciplined Approximate
+pared the classiication accuracy. The results reported in Table 3                              Programming. In Proc. 17th ASPLOS ’12. 301ś312.
+                                                                                           [7] S. Hashemi et al. 2015. DRUM: A Dynamic Range Unbiased Multiplier for Ap-
+show that FaNZeD-t dividers have a negligible impact on the accu-                              proximate Applications. In Proc ICCAD ’15. 418ś425.
+racy of AlexNet, while ofering more than 900× ADP improvement.                             [8] S. Hashemi et al. 2016. A low-power dynamic divider for approximate applications.
+                                                                                               In In Proc. 53rd DAC. 1ś6.
+                                                                                           [9] H. Jiang et al. 2015. A Comparative Review and Evaluation of Approximate
+6.6    JPEG Compression Application                                                            Adders. In Proc. 25th GLSVLSI ’15.
+JPEG compression is a lossy image compression technique in which                          [10] H. Jiang et al. 2016. A comparative evaluation of approximate multipliers. In
+                                                                                               Proc. NANOARCH ’16. 191ś196.
+the compressed image sufers from quality loss. It provides the                            [11] H. Jiang et al. 2018. Adaptive Approximation in Arithmetic Circuits: A Low-power
+option of diferent quality speciications, where the quality of the                             Unsigned Divider Design. In Proc. DATE ’18. 1411ś1416.
+compressed image is determined by comparing it with the original                          [12] Alex Krizhevsky et al. 2012. Imagenet classiication with deep convolutional
+uncompressed image using a quantitative metric such as PSNR.                                   neural networks. In Advances in neural information processing systems. 1097ś
+                                                                                               1105.
+   For achieving diferent quality compressions, the discrete co-                          [13] W. Liu et al. 2018. Combining Restoring Array and Logarithmic Dividers into an
+sine transform (DCT) coeicients are divided by a quality map                                   Approximate Hybrid Design. In Proc. 25th ARITH ’18. 92ś98.
+(determined by the user-speciied quality level). The DCT coei-                            [14] J. N. Mitchell. 1962. Computer Multiplication and Division Using Binary Loga-
+                                                                                               rithms. IRE Trans. on Electronic Computers EC-11, 4 (1962), 512ś517.
+cients are real numbers, so we implemented JPEG compression                               [15] Sparsh Mittal. 2016. A Survey of Techniques for Approximate Computing. ACM
+using FP arithmetic and 16-bit ixed-point (integer) arithmetic. For                            Comput. Surv. 48, 4, Article 62 (March 2016), 33 pages.
+both implementations, we used accurate and approximate versions                           [16] Behrooz Parhami. 2000. Computer Arithmetic: Algorithms and Hardware Designs.
+                                                                                               Oxford University Press, Inc., New York, NY, USA.
+(INZeD-t and FaNZeD-t) of dividers. Table 4 reports the results of                        [17] O. Russakovsky et al. 2015. ImageNet Large Scale Visual Recognition Challenge.
+JPEG compression on two 512x512-pixel grayscale images at three                                International Journal of Computer Vision (IJCV) 115, 3 (2015), 211ś252.
+diferent quality levels (Q). Due to the limitation of space, results                      [18] H. Saadat et al. 2018. Minimally Biased Multipliers for Approximate Integer and
+                                                                                               Floating-Point Multiplication. IEEE Trans. Computer-Aided Design of Integrated
+ Table 4: JPEG quality results (in PSNR) using diferent dividers.                              Circuits and Systems 37, 11 (2018), 2623ś2635.
+                                                                                          [19] M. Vaeztourshizi et al. 2018. An Energy-Eicient, Yet Highly-Accurate, Approxi-
+                   Improvement          Image: Mandrill           Image: Lena                  mate Non-Iterative Divider. In Proc. ISLPED ’18. 14:1ś14:6.
+   Divider
+                   ADP    Power      Q: 25 Q: 50 Q: 75        Q: 25 Q: 50 Q: 75           [20] S. Vahdat et al. 2017. TruncApp: A truncation-based approximate divider for
+                                     Floating-Point                                            energy eicient DSP applications. In Proc. DATE ’17. 1635ś1638.
+ IEEE sp FP       -           -       28.3    31.4  34.6      31.6      34.0       36.1   [21] S. Venkataramani et al. 2015. Approximate Computing and the Quest for Com-
+ FaNZeD-20      985 ×       77.0×     28.3    31.5  34.5      31.6      33.9       35.7        puting Eiciency. In Proc. 52nd DAC ’15. 120:1ś120:6.
+                                                                                          [22] R. Zendegani et al. 2016. SEERAD: A high speed yet energy-eicient rounding-
+                                       Fixed-Point                                             based approximate divider. In Proc. DATE ’16. 1481ś1484.
+ Acc. Integer   6.5×        3.4 ×     28.2    31.4  34.5      31.5      33.9       36.0   [23] H. Zhang et al. 2014. A low-power accuracy-conigurable loating point multiplier.
+   INZeD-0      15.8×       169×      28.0    31.1  34.1      30.9      33.3       35.2        In Proc. 32nd ICCD ’14. 48ś54.
+  INZeD-13      620×        50.2×     28.3    30.9  33.1      30.0      31.2       32.1
+

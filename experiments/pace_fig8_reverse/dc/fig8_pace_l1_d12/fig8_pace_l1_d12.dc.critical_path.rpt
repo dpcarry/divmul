@@ -1,0 +1,786 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : fig8_pace_l1_d12
+Version: U-2022.12-SP7
+Date   : Sat Sep  5 12:50:00 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: x[12] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fig8_pace_l1_d12   ZeroWireload          tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc12 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH13 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                              Incr       Path
+  -----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                             0.00       0.00
+  clock network delay (ideal)                                                        0.00       0.00
+  input external delay                                                               0.02       0.02 f
+  x[12] (in)                                                                         0.00       0.02 f
+  shell/x[12] (FP_DIV_WRAPPER_32_width_trunc12)                                      0.00       0.02 f
+  shell/shared_wrapper/x[12] (fp32_normal_finite_wrapper)                            0.00       0.02 f
+  shell/shared_wrapper/U97/Z (CKBD1)                                                 0.03       0.05 f
+  shell/shared_wrapper/fraction_x[12] (fp32_normal_finite_wrapper)                   0.00       0.05 f
+  shell/mantissa_x[0] (FP_DIV_WRAPPER_32_width_trunc12)                              0.00       0.05 f
+  core/Mantissa_X[0] (Mantissa_Div_L1_MANTISSA_WIDTH11)                              0.00       0.05 f
+  core/sub_16/A[0] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)          0.00       0.05 f
+  core/sub_16/U2/ZN (IND2D0)                                                         0.04       0.09 f
+  core/sub_16/U2_1/CO (FA1D0)                                                        0.06       0.15 f
+  core/sub_16/U2_2/CO (FA1D0)                                                        0.06       0.20 f
+  core/sub_16/U2_3/CO (FA1D0)                                                        0.06       0.26 f
+  core/sub_16/U2_4/CO (FA1D0)                                                        0.06       0.31 f
+  core/sub_16/U2_5/CO (FA1D0)                                                        0.06       0.37 f
+  core/sub_16/U2_6/CO (FA1D0)                                                        0.06       0.42 f
+  core/sub_16/U2_7/CO (FA1D0)                                                        0.06       0.48 f
+  core/sub_16/U2_8/CO (FA1D0)                                                        0.06       0.53 f
+  core/sub_16/U2_9/CO (FA1D0)                                                        0.06       0.59 f
+  core/sub_16/U2_10/S (FA1D0)                                                        0.08       0.67 r
+  core/sub_16/DIFF[10] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)      0.00       0.67 r
+  core/U22/ZN (INR2D1)                                                               0.05       0.72 r
+  core/Stage_0_0/In_3[9] (CSA3_2_Array_WIDTH13)                                      0.00       0.72 r
+  core/Stage_0_0/U1/Z (CKXOR2D1)                                                     0.05       0.78 r
+  core/Stage_0_0/S[9] (CSA3_2_Array_WIDTH13)                                         0.00       0.78 r
+  core/add_38/A[9] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                     0.00       0.78 r
+  core/add_38/U1_9/CO (FA1D0)                                                        0.09       0.87 r
+  core/add_38/U1_10/CO (FA1D0)                                                       0.05       0.92 r
+  core/add_38/U1_11/CO (FA1D0)                                                       0.05       0.97 r
+  core/add_38/U1_12/Z (XOR3D1)                                                       0.07       1.04 f
+  core/add_38/SUM[12] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                  0.00       1.04 f
+  core/Shift (Mantissa_Div_L1_MANTISSA_WIDTH11)                                      0.00       1.04 f
+  U2/ZN (INVD1)                                                                      0.08       1.12 r
+  shell/shift[0] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.12 r
+  shell/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)               0.00       1.12 r
+  shell/shared_wrapper/U38/CO (FA1D0)                                                0.10       1.22 r
+  shell/shared_wrapper/U39/CO (FA1D0)                                                0.05       1.27 r
+  shell/shared_wrapper/U40/CO (FA1D0)                                                0.05       1.32 r
+  shell/shared_wrapper/U41/CO (FA1D0)                                                0.05       1.37 r
+  shell/shared_wrapper/U42/CO (FA1D0)                                                0.05       1.42 r
+  shell/shared_wrapper/U43/CO (FA1D0)                                                0.05       1.47 r
+  shell/shared_wrapper/U53/Z (XOR3D1)                                                0.08       1.55 f
+  shell/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                       0.00       1.55 f
+  shell/out0[30] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.55 f
+  result[30] (out)                                                                   0.00       1.55 f
+  data arrival time                                                                             1.55
+
+  clock vclk (rise edge)                                                            10.00      10.00
+  clock network delay (ideal)                                                        0.00      10.00
+  output external delay                                                             -0.02       9.98
+  data required time                                                                            9.98
+  -----------------------------------------------------------------------------------------------------
+  data required time                                                                            9.98
+  data arrival time                                                                            -1.55
+  -----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                   8.43
+
+
+  Startpoint: x[12] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fig8_pace_l1_d12   ZeroWireload          tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc12 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH13 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                              Incr       Path
+  -----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                             0.00       0.00
+  clock network delay (ideal)                                                        0.00       0.00
+  input external delay                                                               0.02       0.02 f
+  x[12] (in)                                                                         0.00       0.02 f
+  shell/x[12] (FP_DIV_WRAPPER_32_width_trunc12)                                      0.00       0.02 f
+  shell/shared_wrapper/x[12] (fp32_normal_finite_wrapper)                            0.00       0.02 f
+  shell/shared_wrapper/U97/Z (CKBD1)                                                 0.03       0.05 f
+  shell/shared_wrapper/fraction_x[12] (fp32_normal_finite_wrapper)                   0.00       0.05 f
+  shell/mantissa_x[0] (FP_DIV_WRAPPER_32_width_trunc12)                              0.00       0.05 f
+  core/Mantissa_X[0] (Mantissa_Div_L1_MANTISSA_WIDTH11)                              0.00       0.05 f
+  core/sub_16/A[0] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)          0.00       0.05 f
+  core/sub_16/U2/ZN (IND2D0)                                                         0.04       0.09 f
+  core/sub_16/U2_1/CO (FA1D0)                                                        0.06       0.15 f
+  core/sub_16/U2_2/CO (FA1D0)                                                        0.06       0.20 f
+  core/sub_16/U2_3/CO (FA1D0)                                                        0.06       0.26 f
+  core/sub_16/U2_4/CO (FA1D0)                                                        0.06       0.31 f
+  core/sub_16/U2_5/CO (FA1D0)                                                        0.06       0.37 f
+  core/sub_16/U2_6/CO (FA1D0)                                                        0.06       0.42 f
+  core/sub_16/U2_7/CO (FA1D0)                                                        0.06       0.48 f
+  core/sub_16/U2_8/CO (FA1D0)                                                        0.06       0.53 f
+  core/sub_16/U2_9/CO (FA1D0)                                                        0.06       0.59 f
+  core/sub_16/U2_10/S (FA1D0)                                                        0.08       0.67 r
+  core/sub_16/DIFF[10] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)      0.00       0.67 r
+  core/U22/ZN (INR2D1)                                                               0.05       0.72 r
+  core/Stage_0_0/In_3[9] (CSA3_2_Array_WIDTH13)                                      0.00       0.72 r
+  core/Stage_0_0/U1/Z (CKXOR2D1)                                                     0.05       0.78 r
+  core/Stage_0_0/S[9] (CSA3_2_Array_WIDTH13)                                         0.00       0.78 r
+  core/add_38/A[9] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                     0.00       0.78 r
+  core/add_38/U1_9/CO (FA1D0)                                                        0.09       0.87 r
+  core/add_38/U1_10/CO (FA1D0)                                                       0.05       0.92 r
+  core/add_38/U1_11/CO (FA1D0)                                                       0.05       0.97 r
+  core/add_38/U1_12/Z (XOR3D1)                                                       0.07       1.04 f
+  core/add_38/SUM[12] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                  0.00       1.04 f
+  core/Shift (Mantissa_Div_L1_MANTISSA_WIDTH11)                                      0.00       1.04 f
+  U2/ZN (INVD1)                                                                      0.08       1.12 r
+  shell/shift[0] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.12 r
+  shell/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)               0.00       1.12 r
+  shell/shared_wrapper/U38/CO (FA1D0)                                                0.10       1.22 r
+  shell/shared_wrapper/U39/CO (FA1D0)                                                0.05       1.27 r
+  shell/shared_wrapper/U40/CO (FA1D0)                                                0.05       1.32 r
+  shell/shared_wrapper/U41/CO (FA1D0)                                                0.05       1.37 r
+  shell/shared_wrapper/U42/CO (FA1D0)                                                0.05       1.42 r
+  shell/shared_wrapper/U43/CO (FA1D0)                                                0.05       1.47 r
+  shell/shared_wrapper/U53/Z (XOR3D1)                                                0.08       1.55 f
+  shell/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                       0.00       1.55 f
+  shell/out0[30] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.55 f
+  result[30] (out)                                                                   0.00       1.55 f
+  data arrival time                                                                             1.55
+
+  clock vclk (rise edge)                                                            10.00      10.00
+  clock network delay (ideal)                                                        0.00      10.00
+  output external delay                                                             -0.02       9.98
+  data required time                                                                            9.98
+  -----------------------------------------------------------------------------------------------------
+  data required time                                                                            9.98
+  data arrival time                                                                            -1.55
+  -----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                   8.43
+
+
+  Startpoint: x[12] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fig8_pace_l1_d12   ZeroWireload          tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc12 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH13 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                              Incr       Path
+  -----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                             0.00       0.00
+  clock network delay (ideal)                                                        0.00       0.00
+  input external delay                                                               0.02       0.02 f
+  x[12] (in)                                                                         0.00       0.02 f
+  shell/x[12] (FP_DIV_WRAPPER_32_width_trunc12)                                      0.00       0.02 f
+  shell/shared_wrapper/x[12] (fp32_normal_finite_wrapper)                            0.00       0.02 f
+  shell/shared_wrapper/U97/Z (CKBD1)                                                 0.03       0.05 f
+  shell/shared_wrapper/fraction_x[12] (fp32_normal_finite_wrapper)                   0.00       0.05 f
+  shell/mantissa_x[0] (FP_DIV_WRAPPER_32_width_trunc12)                              0.00       0.05 f
+  core/Mantissa_X[0] (Mantissa_Div_L1_MANTISSA_WIDTH11)                              0.00       0.05 f
+  core/sub_16/A[0] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)          0.00       0.05 f
+  core/sub_16/U2/ZN (IND2D0)                                                         0.04       0.09 f
+  core/sub_16/U2_1/CO (FA1D0)                                                        0.06       0.15 f
+  core/sub_16/U2_2/CO (FA1D0)                                                        0.06       0.20 f
+  core/sub_16/U2_3/CO (FA1D0)                                                        0.06       0.26 f
+  core/sub_16/U2_4/CO (FA1D0)                                                        0.06       0.31 f
+  core/sub_16/U2_5/CO (FA1D0)                                                        0.06       0.37 f
+  core/sub_16/U2_6/CO (FA1D0)                                                        0.06       0.42 f
+  core/sub_16/U2_7/CO (FA1D0)                                                        0.06       0.48 f
+  core/sub_16/U2_8/CO (FA1D0)                                                        0.06       0.53 f
+  core/sub_16/U2_9/CO (FA1D0)                                                        0.06       0.59 f
+  core/sub_16/U2_10/S (FA1D0)                                                        0.08       0.67 r
+  core/sub_16/DIFF[10] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)      0.00       0.67 r
+  core/U22/ZN (INR2D1)                                                               0.05       0.72 r
+  core/Stage_0_0/In_3[9] (CSA3_2_Array_WIDTH13)                                      0.00       0.72 r
+  core/Stage_0_0/U1/Z (CKXOR2D1)                                                     0.05       0.78 r
+  core/Stage_0_0/S[9] (CSA3_2_Array_WIDTH13)                                         0.00       0.78 r
+  core/add_38/A[9] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                     0.00       0.78 r
+  core/add_38/U1_9/CO (FA1D0)                                                        0.09       0.87 r
+  core/add_38/U1_10/CO (FA1D0)                                                       0.05       0.92 r
+  core/add_38/U1_11/CO (FA1D0)                                                       0.05       0.97 r
+  core/add_38/U1_12/Z (XOR3D1)                                                       0.07       1.04 f
+  core/add_38/SUM[12] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                  0.00       1.04 f
+  core/Shift (Mantissa_Div_L1_MANTISSA_WIDTH11)                                      0.00       1.04 f
+  U2/ZN (INVD1)                                                                      0.08       1.12 r
+  shell/shift[0] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.12 r
+  shell/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)               0.00       1.12 r
+  shell/shared_wrapper/U38/CO (FA1D0)                                                0.10       1.22 r
+  shell/shared_wrapper/U39/CO (FA1D0)                                                0.05       1.27 r
+  shell/shared_wrapper/U40/CO (FA1D0)                                                0.05       1.32 r
+  shell/shared_wrapper/U41/CO (FA1D0)                                                0.05       1.37 r
+  shell/shared_wrapper/U42/CO (FA1D0)                                                0.05       1.42 r
+  shell/shared_wrapper/U43/CO (FA1D0)                                                0.05       1.47 r
+  shell/shared_wrapper/U53/Z (XOR3D1)                                                0.08       1.55 f
+  shell/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                       0.00       1.55 f
+  shell/out0[30] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.55 f
+  result[30] (out)                                                                   0.00       1.55 f
+  data arrival time                                                                             1.55
+
+  clock vclk (rise edge)                                                            10.00      10.00
+  clock network delay (ideal)                                                        0.00      10.00
+  output external delay                                                             -0.02       9.98
+  data required time                                                                            9.98
+  -----------------------------------------------------------------------------------------------------
+  data required time                                                                            9.98
+  data arrival time                                                                            -1.55
+  -----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                   8.43
+
+
+  Startpoint: x[12] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fig8_pace_l1_d12   ZeroWireload          tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc12 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH13 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                              Incr       Path
+  -----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                             0.00       0.00
+  clock network delay (ideal)                                                        0.00       0.00
+  input external delay                                                               0.02       0.02 f
+  x[12] (in)                                                                         0.00       0.02 f
+  shell/x[12] (FP_DIV_WRAPPER_32_width_trunc12)                                      0.00       0.02 f
+  shell/shared_wrapper/x[12] (fp32_normal_finite_wrapper)                            0.00       0.02 f
+  shell/shared_wrapper/U97/Z (CKBD1)                                                 0.03       0.05 f
+  shell/shared_wrapper/fraction_x[12] (fp32_normal_finite_wrapper)                   0.00       0.05 f
+  shell/mantissa_x[0] (FP_DIV_WRAPPER_32_width_trunc12)                              0.00       0.05 f
+  core/Mantissa_X[0] (Mantissa_Div_L1_MANTISSA_WIDTH11)                              0.00       0.05 f
+  core/sub_16/A[0] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)          0.00       0.05 f
+  core/sub_16/U2/ZN (IND2D0)                                                         0.04       0.09 f
+  core/sub_16/U2_1/CO (FA1D0)                                                        0.06       0.15 f
+  core/sub_16/U2_2/CO (FA1D0)                                                        0.06       0.20 f
+  core/sub_16/U2_3/CO (FA1D0)                                                        0.06       0.26 f
+  core/sub_16/U2_4/CO (FA1D0)                                                        0.06       0.31 f
+  core/sub_16/U2_5/CO (FA1D0)                                                        0.06       0.37 f
+  core/sub_16/U2_6/CO (FA1D0)                                                        0.06       0.42 f
+  core/sub_16/U2_7/CO (FA1D0)                                                        0.06       0.48 f
+  core/sub_16/U2_8/CO (FA1D0)                                                        0.06       0.53 f
+  core/sub_16/U2_9/CO (FA1D0)                                                        0.06       0.59 f
+  core/sub_16/U2_10/S (FA1D0)                                                        0.08       0.67 r
+  core/sub_16/DIFF[10] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)      0.00       0.67 r
+  core/U22/ZN (INR2D1)                                                               0.05       0.72 r
+  core/Stage_0_0/In_3[9] (CSA3_2_Array_WIDTH13)                                      0.00       0.72 r
+  core/Stage_0_0/U1/Z (CKXOR2D1)                                                     0.05       0.78 r
+  core/Stage_0_0/S[9] (CSA3_2_Array_WIDTH13)                                         0.00       0.78 r
+  core/add_38/A[9] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                     0.00       0.78 r
+  core/add_38/U1_9/CO (FA1D0)                                                        0.09       0.87 r
+  core/add_38/U1_10/CO (FA1D0)                                                       0.05       0.92 r
+  core/add_38/U1_11/CO (FA1D0)                                                       0.05       0.97 r
+  core/add_38/U1_12/Z (XOR3D1)                                                       0.07       1.04 f
+  core/add_38/SUM[12] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                  0.00       1.04 f
+  core/Shift (Mantissa_Div_L1_MANTISSA_WIDTH11)                                      0.00       1.04 f
+  U2/ZN (INVD1)                                                                      0.08       1.12 r
+  shell/shift[0] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.12 r
+  shell/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)               0.00       1.12 r
+  shell/shared_wrapper/U38/CO (FA1D0)                                                0.10       1.22 r
+  shell/shared_wrapper/U39/CO (FA1D0)                                                0.05       1.27 r
+  shell/shared_wrapper/U40/CO (FA1D0)                                                0.05       1.32 r
+  shell/shared_wrapper/U41/CO (FA1D0)                                                0.05       1.37 r
+  shell/shared_wrapper/U42/CO (FA1D0)                                                0.05       1.42 r
+  shell/shared_wrapper/U43/CO (FA1D0)                                                0.05       1.47 r
+  shell/shared_wrapper/U53/Z (XOR3D1)                                                0.08       1.55 f
+  shell/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                       0.00       1.55 f
+  shell/out0[30] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.55 f
+  result[30] (out)                                                                   0.00       1.55 f
+  data arrival time                                                                             1.55
+
+  clock vclk (rise edge)                                                            10.00      10.00
+  clock network delay (ideal)                                                        0.00      10.00
+  output external delay                                                             -0.02       9.98
+  data required time                                                                            9.98
+  -----------------------------------------------------------------------------------------------------
+  data required time                                                                            9.98
+  data arrival time                                                                            -1.55
+  -----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                   8.43
+
+
+  Startpoint: x[12] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fig8_pace_l1_d12   ZeroWireload          tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc12 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH13 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                              Incr       Path
+  -----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                             0.00       0.00
+  clock network delay (ideal)                                                        0.00       0.00
+  input external delay                                                               0.02       0.02 f
+  x[12] (in)                                                                         0.00       0.02 f
+  shell/x[12] (FP_DIV_WRAPPER_32_width_trunc12)                                      0.00       0.02 f
+  shell/shared_wrapper/x[12] (fp32_normal_finite_wrapper)                            0.00       0.02 f
+  shell/shared_wrapper/U97/Z (CKBD1)                                                 0.03       0.05 f
+  shell/shared_wrapper/fraction_x[12] (fp32_normal_finite_wrapper)                   0.00       0.05 f
+  shell/mantissa_x[0] (FP_DIV_WRAPPER_32_width_trunc12)                              0.00       0.05 f
+  core/Mantissa_X[0] (Mantissa_Div_L1_MANTISSA_WIDTH11)                              0.00       0.05 f
+  core/sub_16/A[0] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)          0.00       0.05 f
+  core/sub_16/U2/ZN (IND2D0)                                                         0.04       0.09 f
+  core/sub_16/U2_1/CO (FA1D0)                                                        0.06       0.15 f
+  core/sub_16/U2_2/CO (FA1D0)                                                        0.06       0.20 f
+  core/sub_16/U2_3/CO (FA1D0)                                                        0.06       0.26 f
+  core/sub_16/U2_4/CO (FA1D0)                                                        0.06       0.31 f
+  core/sub_16/U2_5/CO (FA1D0)                                                        0.06       0.37 f
+  core/sub_16/U2_6/CO (FA1D0)                                                        0.06       0.42 f
+  core/sub_16/U2_7/CO (FA1D0)                                                        0.06       0.48 f
+  core/sub_16/U2_8/CO (FA1D0)                                                        0.06       0.53 f
+  core/sub_16/U2_9/CO (FA1D0)                                                        0.06       0.59 f
+  core/sub_16/U2_10/S (FA1D0)                                                        0.08       0.67 r
+  core/sub_16/DIFF[10] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)      0.00       0.67 r
+  core/U22/ZN (INR2D1)                                                               0.05       0.72 r
+  core/Stage_0_0/In_3[9] (CSA3_2_Array_WIDTH13)                                      0.00       0.72 r
+  core/Stage_0_0/U1/Z (CKXOR2D1)                                                     0.05       0.78 r
+  core/Stage_0_0/S[9] (CSA3_2_Array_WIDTH13)                                         0.00       0.78 r
+  core/add_38/A[9] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                     0.00       0.78 r
+  core/add_38/U1_9/CO (FA1D0)                                                        0.09       0.87 r
+  core/add_38/U1_10/CO (FA1D0)                                                       0.05       0.92 r
+  core/add_38/U1_11/CO (FA1D0)                                                       0.05       0.97 r
+  core/add_38/U1_12/Z (XOR3D1)                                                       0.07       1.04 f
+  core/add_38/SUM[12] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                  0.00       1.04 f
+  core/Shift (Mantissa_Div_L1_MANTISSA_WIDTH11)                                      0.00       1.04 f
+  U2/ZN (INVD1)                                                                      0.08       1.12 r
+  shell/shift[0] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.12 r
+  shell/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)               0.00       1.12 r
+  shell/shared_wrapper/U38/CO (FA1D0)                                                0.10       1.22 r
+  shell/shared_wrapper/U39/CO (FA1D0)                                                0.05       1.27 r
+  shell/shared_wrapper/U40/CO (FA1D0)                                                0.05       1.32 r
+  shell/shared_wrapper/U41/CO (FA1D0)                                                0.05       1.37 r
+  shell/shared_wrapper/U42/CO (FA1D0)                                                0.05       1.42 r
+  shell/shared_wrapper/U43/CO (FA1D0)                                                0.05       1.47 r
+  shell/shared_wrapper/U53/Z (XOR3D1)                                                0.08       1.55 f
+  shell/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                       0.00       1.55 f
+  shell/out0[30] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.55 f
+  result[30] (out)                                                                   0.00       1.55 f
+  data arrival time                                                                             1.55
+
+  clock vclk (rise edge)                                                            10.00      10.00
+  clock network delay (ideal)                                                        0.00      10.00
+  output external delay                                                             -0.02       9.98
+  data required time                                                                            9.98
+  -----------------------------------------------------------------------------------------------------
+  data required time                                                                            9.98
+  data arrival time                                                                            -1.55
+  -----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                   8.43
+
+
+  Startpoint: x[12] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fig8_pace_l1_d12   ZeroWireload          tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc12 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH13 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                              Incr       Path
+  -----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                             0.00       0.00
+  clock network delay (ideal)                                                        0.00       0.00
+  input external delay                                                               0.02       0.02 f
+  x[12] (in)                                                                         0.00       0.02 f
+  shell/x[12] (FP_DIV_WRAPPER_32_width_trunc12)                                      0.00       0.02 f
+  shell/shared_wrapper/x[12] (fp32_normal_finite_wrapper)                            0.00       0.02 f
+  shell/shared_wrapper/U97/Z (CKBD1)                                                 0.03       0.05 f
+  shell/shared_wrapper/fraction_x[12] (fp32_normal_finite_wrapper)                   0.00       0.05 f
+  shell/mantissa_x[0] (FP_DIV_WRAPPER_32_width_trunc12)                              0.00       0.05 f
+  core/Mantissa_X[0] (Mantissa_Div_L1_MANTISSA_WIDTH11)                              0.00       0.05 f
+  core/sub_16/A[0] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)          0.00       0.05 f
+  core/sub_16/U2/ZN (IND2D0)                                                         0.04       0.09 f
+  core/sub_16/U2_1/CO (FA1D0)                                                        0.06       0.15 f
+  core/sub_16/U2_2/CO (FA1D0)                                                        0.06       0.20 f
+  core/sub_16/U2_3/CO (FA1D0)                                                        0.06       0.26 f
+  core/sub_16/U2_4/CO (FA1D0)                                                        0.06       0.31 f
+  core/sub_16/U2_5/CO (FA1D0)                                                        0.06       0.37 f
+  core/sub_16/U2_6/CO (FA1D0)                                                        0.06       0.42 f
+  core/sub_16/U2_7/CO (FA1D0)                                                        0.06       0.48 f
+  core/sub_16/U2_8/CO (FA1D0)                                                        0.06       0.53 f
+  core/sub_16/U2_9/CO (FA1D0)                                                        0.06       0.59 f
+  core/sub_16/U2_10/S (FA1D0)                                                        0.08       0.67 r
+  core/sub_16/DIFF[10] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)      0.00       0.67 r
+  core/U22/ZN (INR2D1)                                                               0.05       0.72 r
+  core/Stage_0_0/In_3[9] (CSA3_2_Array_WIDTH13)                                      0.00       0.72 r
+  core/Stage_0_0/U1/Z (CKXOR2D1)                                                     0.05       0.78 r
+  core/Stage_0_0/S[9] (CSA3_2_Array_WIDTH13)                                         0.00       0.78 r
+  core/add_38/A[9] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                     0.00       0.78 r
+  core/add_38/U1_9/CO (FA1D0)                                                        0.09       0.87 r
+  core/add_38/U1_10/CO (FA1D0)                                                       0.05       0.92 r
+  core/add_38/U1_11/CO (FA1D0)                                                       0.05       0.97 r
+  core/add_38/U1_12/Z (XOR3D1)                                                       0.07       1.04 f
+  core/add_38/SUM[12] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                  0.00       1.04 f
+  core/Shift (Mantissa_Div_L1_MANTISSA_WIDTH11)                                      0.00       1.04 f
+  U2/ZN (INVD1)                                                                      0.08       1.12 r
+  shell/shift[0] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.12 r
+  shell/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)               0.00       1.12 r
+  shell/shared_wrapper/U38/CO (FA1D0)                                                0.10       1.22 r
+  shell/shared_wrapper/U39/CO (FA1D0)                                                0.05       1.27 r
+  shell/shared_wrapper/U40/CO (FA1D0)                                                0.05       1.32 r
+  shell/shared_wrapper/U41/CO (FA1D0)                                                0.05       1.37 r
+  shell/shared_wrapper/U42/CO (FA1D0)                                                0.05       1.42 r
+  shell/shared_wrapper/U43/CO (FA1D0)                                                0.05       1.47 r
+  shell/shared_wrapper/U53/Z (XOR3D1)                                                0.08       1.55 f
+  shell/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                       0.00       1.55 f
+  shell/out0[30] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.55 f
+  result[30] (out)                                                                   0.00       1.55 f
+  data arrival time                                                                             1.55
+
+  clock vclk (rise edge)                                                            10.00      10.00
+  clock network delay (ideal)                                                        0.00      10.00
+  output external delay                                                             -0.02       9.98
+  data required time                                                                            9.98
+  -----------------------------------------------------------------------------------------------------
+  data required time                                                                            9.98
+  data arrival time                                                                            -1.55
+  -----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                   8.43
+
+
+  Startpoint: x[12] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fig8_pace_l1_d12   ZeroWireload          tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc12 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH13 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                              Incr       Path
+  -----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                             0.00       0.00
+  clock network delay (ideal)                                                        0.00       0.00
+  input external delay                                                               0.02       0.02 f
+  x[12] (in)                                                                         0.00       0.02 f
+  shell/x[12] (FP_DIV_WRAPPER_32_width_trunc12)                                      0.00       0.02 f
+  shell/shared_wrapper/x[12] (fp32_normal_finite_wrapper)                            0.00       0.02 f
+  shell/shared_wrapper/U97/Z (CKBD1)                                                 0.03       0.05 f
+  shell/shared_wrapper/fraction_x[12] (fp32_normal_finite_wrapper)                   0.00       0.05 f
+  shell/mantissa_x[0] (FP_DIV_WRAPPER_32_width_trunc12)                              0.00       0.05 f
+  core/Mantissa_X[0] (Mantissa_Div_L1_MANTISSA_WIDTH11)                              0.00       0.05 f
+  core/sub_16/A[0] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)          0.00       0.05 f
+  core/sub_16/U2/ZN (IND2D0)                                                         0.04       0.09 f
+  core/sub_16/U2_1/CO (FA1D0)                                                        0.06       0.15 f
+  core/sub_16/U2_2/CO (FA1D0)                                                        0.06       0.20 f
+  core/sub_16/U2_3/CO (FA1D0)                                                        0.06       0.26 f
+  core/sub_16/U2_4/CO (FA1D0)                                                        0.06       0.31 f
+  core/sub_16/U2_5/CO (FA1D0)                                                        0.06       0.37 f
+  core/sub_16/U2_6/CO (FA1D0)                                                        0.06       0.42 f
+  core/sub_16/U2_7/CO (FA1D0)                                                        0.06       0.48 f
+  core/sub_16/U2_8/CO (FA1D0)                                                        0.06       0.53 f
+  core/sub_16/U2_9/CO (FA1D0)                                                        0.06       0.59 f
+  core/sub_16/U2_10/S (FA1D0)                                                        0.08       0.67 r
+  core/sub_16/DIFF[10] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)      0.00       0.67 r
+  core/U22/ZN (INR2D1)                                                               0.05       0.72 r
+  core/Stage_0_0/In_3[9] (CSA3_2_Array_WIDTH13)                                      0.00       0.72 r
+  core/Stage_0_0/U1/Z (CKXOR2D1)                                                     0.05       0.78 r
+  core/Stage_0_0/S[9] (CSA3_2_Array_WIDTH13)                                         0.00       0.78 r
+  core/add_38/A[9] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                     0.00       0.78 r
+  core/add_38/U1_9/CO (FA1D0)                                                        0.09       0.87 r
+  core/add_38/U1_10/CO (FA1D0)                                                       0.05       0.92 r
+  core/add_38/U1_11/CO (FA1D0)                                                       0.05       0.97 r
+  core/add_38/U1_12/Z (XOR3D1)                                                       0.07       1.04 f
+  core/add_38/SUM[12] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                  0.00       1.04 f
+  core/Shift (Mantissa_Div_L1_MANTISSA_WIDTH11)                                      0.00       1.04 f
+  U2/ZN (INVD1)                                                                      0.08       1.12 r
+  shell/shift[0] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.12 r
+  shell/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)               0.00       1.12 r
+  shell/shared_wrapper/U38/CO (FA1D0)                                                0.10       1.22 r
+  shell/shared_wrapper/U39/CO (FA1D0)                                                0.05       1.27 r
+  shell/shared_wrapper/U40/CO (FA1D0)                                                0.05       1.32 r
+  shell/shared_wrapper/U41/CO (FA1D0)                                                0.05       1.37 r
+  shell/shared_wrapper/U42/CO (FA1D0)                                                0.05       1.42 r
+  shell/shared_wrapper/U43/CO (FA1D0)                                                0.05       1.47 r
+  shell/shared_wrapper/U53/Z (XOR3D1)                                                0.08       1.55 f
+  shell/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                       0.00       1.55 f
+  shell/out0[30] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.55 f
+  result[30] (out)                                                                   0.00       1.55 f
+  data arrival time                                                                             1.55
+
+  clock vclk (rise edge)                                                            10.00      10.00
+  clock network delay (ideal)                                                        0.00      10.00
+  output external delay                                                             -0.02       9.98
+  data required time                                                                            9.98
+  -----------------------------------------------------------------------------------------------------
+  data required time                                                                            9.98
+  data arrival time                                                                            -1.55
+  -----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                   8.43
+
+
+  Startpoint: x[12] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fig8_pace_l1_d12   ZeroWireload          tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc12 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH13 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                              Incr       Path
+  -----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                             0.00       0.00
+  clock network delay (ideal)                                                        0.00       0.00
+  input external delay                                                               0.02       0.02 f
+  x[12] (in)                                                                         0.00       0.02 f
+  shell/x[12] (FP_DIV_WRAPPER_32_width_trunc12)                                      0.00       0.02 f
+  shell/shared_wrapper/x[12] (fp32_normal_finite_wrapper)                            0.00       0.02 f
+  shell/shared_wrapper/U97/Z (CKBD1)                                                 0.03       0.05 f
+  shell/shared_wrapper/fraction_x[12] (fp32_normal_finite_wrapper)                   0.00       0.05 f
+  shell/mantissa_x[0] (FP_DIV_WRAPPER_32_width_trunc12)                              0.00       0.05 f
+  core/Mantissa_X[0] (Mantissa_Div_L1_MANTISSA_WIDTH11)                              0.00       0.05 f
+  core/sub_16/A[0] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)          0.00       0.05 f
+  core/sub_16/U2/ZN (IND2D0)                                                         0.04       0.09 f
+  core/sub_16/U2_1/CO (FA1D0)                                                        0.06       0.15 f
+  core/sub_16/U2_2/CO (FA1D0)                                                        0.06       0.20 f
+  core/sub_16/U2_3/CO (FA1D0)                                                        0.06       0.26 f
+  core/sub_16/U2_4/CO (FA1D0)                                                        0.06       0.31 f
+  core/sub_16/U2_5/CO (FA1D0)                                                        0.06       0.37 f
+  core/sub_16/U2_6/CO (FA1D0)                                                        0.06       0.42 f
+  core/sub_16/U2_7/CO (FA1D0)                                                        0.06       0.48 f
+  core/sub_16/U2_8/CO (FA1D0)                                                        0.06       0.53 f
+  core/sub_16/U2_9/CO (FA1D0)                                                        0.06       0.59 f
+  core/sub_16/U2_10/S (FA1D0)                                                        0.08       0.67 r
+  core/sub_16/DIFF[10] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)      0.00       0.67 r
+  core/U22/ZN (INR2D1)                                                               0.05       0.72 r
+  core/Stage_0_0/In_3[9] (CSA3_2_Array_WIDTH13)                                      0.00       0.72 r
+  core/Stage_0_0/U1/Z (CKXOR2D1)                                                     0.05       0.78 r
+  core/Stage_0_0/S[9] (CSA3_2_Array_WIDTH13)                                         0.00       0.78 r
+  core/add_38/A[9] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                     0.00       0.78 r
+  core/add_38/U1_9/CO (FA1D0)                                                        0.09       0.87 r
+  core/add_38/U1_10/CO (FA1D0)                                                       0.05       0.92 r
+  core/add_38/U1_11/CO (FA1D0)                                                       0.05       0.97 r
+  core/add_38/U1_12/Z (XOR3D1)                                                       0.07       1.04 f
+  core/add_38/SUM[12] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                  0.00       1.04 f
+  core/Shift (Mantissa_Div_L1_MANTISSA_WIDTH11)                                      0.00       1.04 f
+  U2/ZN (INVD1)                                                                      0.08       1.12 r
+  shell/shift[0] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.12 r
+  shell/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)               0.00       1.12 r
+  shell/shared_wrapper/U38/CO (FA1D0)                                                0.10       1.22 r
+  shell/shared_wrapper/U39/CO (FA1D0)                                                0.05       1.27 r
+  shell/shared_wrapper/U40/CO (FA1D0)                                                0.05       1.32 r
+  shell/shared_wrapper/U41/CO (FA1D0)                                                0.05       1.37 r
+  shell/shared_wrapper/U42/CO (FA1D0)                                                0.05       1.42 r
+  shell/shared_wrapper/U43/CO (FA1D0)                                                0.05       1.47 r
+  shell/shared_wrapper/U53/Z (XOR3D1)                                                0.08       1.55 f
+  shell/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                       0.00       1.55 f
+  shell/out0[30] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.55 f
+  result[30] (out)                                                                   0.00       1.55 f
+  data arrival time                                                                             1.55
+
+  clock vclk (rise edge)                                                            10.00      10.00
+  clock network delay (ideal)                                                        0.00      10.00
+  output external delay                                                             -0.02       9.98
+  data required time                                                                            9.98
+  -----------------------------------------------------------------------------------------------------
+  data required time                                                                            9.98
+  data arrival time                                                                            -1.55
+  -----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                   8.43
+
+
+  Startpoint: x[12] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fig8_pace_l1_d12   ZeroWireload          tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc12 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH13 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                              Incr       Path
+  -----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                             0.00       0.00
+  clock network delay (ideal)                                                        0.00       0.00
+  input external delay                                                               0.02       0.02 f
+  x[12] (in)                                                                         0.00       0.02 f
+  shell/x[12] (FP_DIV_WRAPPER_32_width_trunc12)                                      0.00       0.02 f
+  shell/shared_wrapper/x[12] (fp32_normal_finite_wrapper)                            0.00       0.02 f
+  shell/shared_wrapper/U97/Z (CKBD1)                                                 0.03       0.05 f
+  shell/shared_wrapper/fraction_x[12] (fp32_normal_finite_wrapper)                   0.00       0.05 f
+  shell/mantissa_x[0] (FP_DIV_WRAPPER_32_width_trunc12)                              0.00       0.05 f
+  core/Mantissa_X[0] (Mantissa_Div_L1_MANTISSA_WIDTH11)                              0.00       0.05 f
+  core/sub_16/A[0] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)          0.00       0.05 f
+  core/sub_16/U2/ZN (IND2D0)                                                         0.04       0.09 f
+  core/sub_16/U2_1/CO (FA1D0)                                                        0.06       0.15 f
+  core/sub_16/U2_2/CO (FA1D0)                                                        0.06       0.20 f
+  core/sub_16/U2_3/CO (FA1D0)                                                        0.06       0.26 f
+  core/sub_16/U2_4/CO (FA1D0)                                                        0.06       0.31 f
+  core/sub_16/U2_5/CO (FA1D0)                                                        0.06       0.37 f
+  core/sub_16/U2_6/CO (FA1D0)                                                        0.06       0.42 f
+  core/sub_16/U2_7/CO (FA1D0)                                                        0.06       0.48 f
+  core/sub_16/U2_8/CO (FA1D0)                                                        0.06       0.53 f
+  core/sub_16/U2_9/CO (FA1D0)                                                        0.06       0.59 f
+  core/sub_16/U2_10/S (FA1D0)                                                        0.08       0.67 r
+  core/sub_16/DIFF[10] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)      0.00       0.67 r
+  core/U22/ZN (INR2D1)                                                               0.05       0.72 r
+  core/Stage_0_0/In_3[9] (CSA3_2_Array_WIDTH13)                                      0.00       0.72 r
+  core/Stage_0_0/U1/Z (CKXOR2D1)                                                     0.05       0.78 r
+  core/Stage_0_0/S[9] (CSA3_2_Array_WIDTH13)                                         0.00       0.78 r
+  core/add_38/A[9] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                     0.00       0.78 r
+  core/add_38/U1_9/CO (FA1D0)                                                        0.09       0.87 r
+  core/add_38/U1_10/CO (FA1D0)                                                       0.05       0.92 r
+  core/add_38/U1_11/CO (FA1D0)                                                       0.05       0.97 r
+  core/add_38/U1_12/Z (XOR3D1)                                                       0.07       1.04 f
+  core/add_38/SUM[12] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                  0.00       1.04 f
+  core/Shift (Mantissa_Div_L1_MANTISSA_WIDTH11)                                      0.00       1.04 f
+  U2/ZN (INVD1)                                                                      0.08       1.12 r
+  shell/shift[0] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.12 r
+  shell/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)               0.00       1.12 r
+  shell/shared_wrapper/U38/CO (FA1D0)                                                0.10       1.22 r
+  shell/shared_wrapper/U39/CO (FA1D0)                                                0.05       1.27 r
+  shell/shared_wrapper/U40/CO (FA1D0)                                                0.05       1.32 r
+  shell/shared_wrapper/U41/CO (FA1D0)                                                0.05       1.37 r
+  shell/shared_wrapper/U42/CO (FA1D0)                                                0.05       1.42 r
+  shell/shared_wrapper/U43/CO (FA1D0)                                                0.05       1.47 r
+  shell/shared_wrapper/U53/Z (XOR3D1)                                                0.08       1.55 f
+  shell/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                       0.00       1.55 f
+  shell/out0[30] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.55 f
+  result[30] (out)                                                                   0.00       1.55 f
+  data arrival time                                                                             1.55
+
+  clock vclk (rise edge)                                                            10.00      10.00
+  clock network delay (ideal)                                                        0.00      10.00
+  output external delay                                                             -0.02       9.98
+  data required time                                                                            9.98
+  -----------------------------------------------------------------------------------------------------
+  data required time                                                                            9.98
+  data arrival time                                                                            -1.55
+  -----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                   8.43
+
+
+  Startpoint: x[12] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  fig8_pace_l1_d12   ZeroWireload          tcbn65gplustc_ccs
+  FP_DIV_WRAPPER_32_width_trunc12 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1 ZeroWireload tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH13 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                              Incr       Path
+  -----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                             0.00       0.00
+  clock network delay (ideal)                                                        0.00       0.00
+  input external delay                                                               0.02       0.02 f
+  x[12] (in)                                                                         0.00       0.02 f
+  shell/x[12] (FP_DIV_WRAPPER_32_width_trunc12)                                      0.00       0.02 f
+  shell/shared_wrapper/x[12] (fp32_normal_finite_wrapper)                            0.00       0.02 f
+  shell/shared_wrapper/U97/Z (CKBD1)                                                 0.03       0.05 f
+  shell/shared_wrapper/fraction_x[12] (fp32_normal_finite_wrapper)                   0.00       0.05 f
+  shell/mantissa_x[0] (FP_DIV_WRAPPER_32_width_trunc12)                              0.00       0.05 f
+  core/Mantissa_X[0] (Mantissa_Div_L1_MANTISSA_WIDTH11)                              0.00       0.05 f
+  core/sub_16/A[0] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)          0.00       0.05 f
+  core/sub_16/U2/ZN (IND2D0)                                                         0.04       0.09 f
+  core/sub_16/U2_1/CO (FA1D0)                                                        0.06       0.15 f
+  core/sub_16/U2_2/CO (FA1D0)                                                        0.06       0.20 f
+  core/sub_16/U2_3/CO (FA1D0)                                                        0.06       0.26 f
+  core/sub_16/U2_4/CO (FA1D0)                                                        0.06       0.31 f
+  core/sub_16/U2_5/CO (FA1D0)                                                        0.06       0.37 f
+  core/sub_16/U2_6/CO (FA1D0)                                                        0.06       0.42 f
+  core/sub_16/U2_7/CO (FA1D0)                                                        0.06       0.48 f
+  core/sub_16/U2_8/CO (FA1D0)                                                        0.06       0.53 f
+  core/sub_16/U2_9/CO (FA1D0)                                                        0.06       0.59 f
+  core/sub_16/U2_10/S (FA1D0)                                                        0.08       0.67 r
+  core/sub_16/DIFF[10] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_sub_0_DW01_sub_1)      0.00       0.67 r
+  core/U22/ZN (INR2D1)                                                               0.05       0.72 r
+  core/Stage_0_0/In_3[9] (CSA3_2_Array_WIDTH13)                                      0.00       0.72 r
+  core/Stage_0_0/U1/Z (CKXOR2D1)                                                     0.05       0.78 r
+  core/Stage_0_0/S[9] (CSA3_2_Array_WIDTH13)                                         0.00       0.78 r
+  core/add_38/A[9] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                     0.00       0.78 r
+  core/add_38/U1_9/CO (FA1D0)                                                        0.09       0.87 r
+  core/add_38/U1_10/CO (FA1D0)                                                       0.05       0.92 r
+  core/add_38/U1_11/CO (FA1D0)                                                       0.05       0.97 r
+  core/add_38/U1_12/Z (XOR3D1)                                                       0.07       1.04 f
+  core/add_38/SUM[12] (Mantissa_Div_L1_MANTISSA_WIDTH11_DW01_add_0)                  0.00       1.04 f
+  core/Shift (Mantissa_Div_L1_MANTISSA_WIDTH11)                                      0.00       1.04 f
+  U2/ZN (INVD1)                                                                      0.08       1.12 r
+  shell/shift[0] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.12 r
+  shell/shared_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)               0.00       1.12 r
+  shell/shared_wrapper/U38/CO (FA1D0)                                                0.10       1.22 r
+  shell/shared_wrapper/U39/CO (FA1D0)                                                0.05       1.27 r
+  shell/shared_wrapper/U40/CO (FA1D0)                                                0.05       1.32 r
+  shell/shared_wrapper/U41/CO (FA1D0)                                                0.05       1.37 r
+  shell/shared_wrapper/U42/CO (FA1D0)                                                0.05       1.42 r
+  shell/shared_wrapper/U43/CO (FA1D0)                                                0.05       1.47 r
+  shell/shared_wrapper/U53/Z (XOR3D1)                                                0.08       1.55 f
+  shell/shared_wrapper/result[30] (fp32_normal_finite_wrapper)                       0.00       1.55 f
+  shell/out0[30] (FP_DIV_WRAPPER_32_width_trunc12)                                   0.00       1.55 f
+  result[30] (out)                                                                   0.00       1.55 f
+  data arrival time                                                                             1.55
+
+  clock vclk (rise edge)                                                            10.00      10.00
+  clock network delay (ideal)                                                        0.00      10.00
+  output external delay                                                             -0.02       9.98
+  data required time                                                                            9.98
+  -----------------------------------------------------------------------------------------------------
+  data required time                                                                            9.98
+  data arrival time                                                                            -1.55
+  -----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                   8.43
+
+
+1

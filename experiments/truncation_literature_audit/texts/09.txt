@@ -1,0 +1,297 @@
+        CADE: Configurable Approximate Divider for
+                    Energy Efficiency
+                         Mohsen Imani, Ricardo Garcia, Andrew Huang, and Tajana Rosing
+               Computer Science and Engineering Department, UC San Diego, La Jolla, CA 92093, USA
+                                   {moimani, rag023, anh162, tajana}@ucsd.edu
+
+   Abstract—Approximate computing is a promising solution to                   to be the least utilized due to its high energy consumption and
+design faster and more energy efﬁcient systems, which provides                 low speed [20].
+an adequate quality for a variety of functions. Division, in                      Recent work has tried to accelerate division by enabling
+particular, ﬂoating point division, is one of the most important
+operations in multimedia applications, which has been imple-                   approximation [21]–[25]. Work in [21], [22] focused on the
+mented less in hardware due to its signiﬁcant cost and complexity.             truncation of bits to a better approximate division. Although
+In this paper, we proposed CADE, a Conﬁgurable Approximate                     this approach reduces the size of the required division, (i)
+Divider which performs ﬂoating point division operation with a                 it still utilizes a costly divider, and (ii) it does not offer a
+runtime controllable accuracy. The approximation of the CADE                   way to change the level of accuracy at runtime. Work in [22]
+is accomplished by removing the costly division operation and
+replacing it with a subtraction of the input operands mantissa.                approximate the division functionality by enabling a truncated
+To increase the level of accuracy, CADE analyses the ﬁrst N                    value to be multiplied by an approximated inverse value of
+bits (called tuning bits) of both input operands mantissa to                   the dividend. Work in [26] changed the standard division
+estimate the division error. If CADE determines that the ﬁrst                  functionality by incorporating new or modifying logic blocks
+approximation is unacceptable, a pre-computed value is retrieved               in order to stray away from the division. This improves the
+from memory and subtracted from the ﬁrst approximation
+mantissa. At runtime, CADE can provide a higher accuracy                       divider area and energy efficiency by reducing the number
+by increasing the number of tuning bits. The proposed CADE                     of processing bits or area. However, these approaches do not
+was integrated on the AMD GPU architecture. Our evaluation                     include tuning methods that can be used at runtime. Thus,
+shows that CADE is at least 4.1× more energy efﬁcient, 1.5×                    limiting the generality of these approaches to Application-
+faster, and 1.7× higher area efﬁcient as compared to state-of-                 Specific Integrated Circuit (ASIC), where the applications that
+the-art approximate dividers while providing 25% lower error
+rate. In addition, CADE gives a new knob to GPU in order to                    require a lower error rate can be predetermined prior to chip
+conﬁgure the level of approximation at runtime depending on                    design.
+the application/user accuracy requirement.                                        In this paper, a runtime configurable floating point divider,
+   Index Terms—Approximate computing, Energy-efﬁciency,                        called CADE, is proposed capable of high error runtime
+GPGPU                                                                          correction without alienating specific inputs and simple in-
+                                                                               tegration into general processors. CADE replaces the floating
+                         I. I NTRODUCTION                                      point division with a subtraction of the two input operands
+                                                                               mantissa. The methodology behind the design arises from
+   The number of smart devices has been increasing exponen-                    analyzing the division process which consists of shifting and
+tially over the past decade to a point where they outnumbered                  subtraction process that occurs. The design ensures less than
+human beings [1]. As the Internet of Things (IoT) is realized,                 12.5% error rate with runtime approximate configuration with
+devices will be ready to react to a person’s every desire.                     high energy efficiency performance. CADE was integrated as
+With humans still highly dependent on their senses, IoT                        a new floating point unit in AMD GPU architecture. Our
+systems would need to be able to interact with humans through                  evaluation shows that CADE is at least 4.1× more energy
+embedded devices [2]. As a result, a large amount of data                      efficient, 1.5× faster, and 1.7× higher area efficient as com-
+would be gathered from the interactions between humans and                     pared to state-of-the-art approximate dividers while providing
+devices, requiring fast and real-time data processing [3]–[5].                 25% lower error rate. In addition, CADE creates a knob for
+This poses a challenge as current embedded devices lack                        multi-level configuration of approximation during runtime for
+resources and battery life to process enormous amount of                       the GPU to better adjust to each application error tolerance.
+data [3].
+   Current sensory data algorithms tend to be, at their core,                                           II. P ROPOSED CADE
+statistical, capable of functioning with approximate computa-
+tions [6]–[12]. As approximate computing continues to gain                     A. IEEE-754 Floating Point
+traction for its low energy consumption, precision would be                       Implementing the IEEE-754 32 bit floating point notation
+replaced with energy efficiency in embedded devices [6].                       that is characterized as a 32-bit number string (X32 , . . . , X1 )
+Recently, attention has been focused on designing approximate                  consisting of three distinct elements: a sign bit, exponent bits,
+arithmetic units such as adder [13]–[15] and multipliers [9],                  and fractional value bits. The initial bit in the floating point
+[16]–[18]. However, division, in particular, floating point di-                notation (X32 ) indicates the sign bit. The following 8 bits
+vision, is one of the most important operations in multimedia                  indicate the exponent of a binary number (X31 , . . . , X24 ), with
+applications. For example, in the OpenCV library [19], a large                 a range of -126 to 127. The final 23 bits (X23 , . . . , X1 ) indicate
+amount of image processing applications utilize division in                    the fractional element, also referred to as the mantissa, with a
+their computation. In current architectures, the division tends                value range between 1 and 2. (Figure 1)
+
+
+
+
+978-3-9819263-2-3/DATE19/2019
+                         c     EDAA                                         586
+
+   Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:10:33 UTC from IEEE Xplore. Restrictions apply.
+     Fig. 1. Proposed division between X and Y floating point values.
+
+
+                                                                                Fig. 3. Proposed CADE tuning method using lookup table with pre-computed
+                                                                                values
+
+
+
+
+Fig. 2. The error distribution for X divided by Y as the mantissa values for                D 1R7XQLQJ                            E 1 7XQLQJ
+X and Y increase from 1 to 2.
+
+
+B. Approximate Division
+
+   In this paper, a runtime configurable floating point divider,
+called CADE, is proposed that is capable of supporting ap-
+proximate division. Figure 1 illustrates an overview of the
+CADE approximate model. The division process starts by
+XORing the sign bits of X and Y input operands, followed by                                F 1 7XQLQJ                            G 1 7XQLQJ
+the subtracting of both the exponent and mantissa elements of
+X and Y . If mantissa X is less than mantissa Y , subtraction will              Fig. 4. Heatmap error rate distribution for CADE with (a) no tuning, and
+                                                                                (b-d) after tuning with N =2, 3 and 4.
+result in an underflow; to correct the underflow, an additional
+1 is subtracted from the exponent. Thus, approximations are                     C. Tuning Approximation
+applicable to the fixed-point division between the mantissa                        To achieve the desired accuracy, we design a tuning method
+because it can be achieved by subtraction and shifting of the                   which allows CADE to configure the maximum acceptable
+operation between the partial products. Since in floating point                 error rate. Figure 3 shows the overview of the CADE tuning
+representation, the shift is already applied by representing the                approach. The tuning operation consists of a second stage
+mantissa with a value between 1-2, thus, this subtraction is a                  approximation where the lookup table contains the offsets
+good approximation of the mantissa division.                                    required to reduce the error of the CADE. For a given
+   Figure 2 shows the error distribution of the proposed divider                application, X and Y are the inputs, A is the approximation
+design for X and Y input operands, with mantissa values                         with no tuning, B is the selected offset, and Z is the final
+ranging from 1 to 2. Assume the input X mantissa is constant,                   approximation post tuning. Since the error is deterministic
+thus in CADE, the division error reaches to its maximum                         based on the inputs, specific input cases that produce high
+12.5% when mantissa Y value increases to 1.5. From another                      error can be detected and then corrected accordingly. As a
+hand, the error decreases to 0% as mantissa Y reaches to                        result, CADE maintains the benefits of approximating the
+value 2. The same trend occurs when Y is constant and the X                     result without having to resort the exact computation for cases
+mantissa increases to 2. Although the maximum error rate for                    with a high error rate. The tuning design takes advantage of
+the proposed divider without proper tuning is 12.5%, the error                  the mantissa representation where the most significant bits of
+rate is highly dependent on its input operands. For example,                    each input mantissa have the most weight in determining the
+if X = 35 and Y = 10 then in exact mode the division answer                     result of a computation in both exact and approximate modes.
+is 3.5. However, using CADE results in 3.69 approximation                       Thus, the N most significant bits of each input mantissa are
+with an error rate of 5.36%. To further control the error, a                    used to estimate the error that CADE produces.
+tuning process that limits the maximum error rate that CADE                        The N value is determined by the maximum error that an
+accepts is required. This would allow all inputs to be run in                   application is willing to accept. A higher N value results in
+approximate mode.                                                               2(N×2) regions of resolution to tune for error, however, it
+
+
+
+                                          Design, Automation And Test in Europe (DATE 2019)                                                                587
+
+   Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:10:33 UTC from IEEE Xplore. Restrictions apply.
+                                                                                                            TABLE I
+                                                                                    C OMPARISON OF THE PROPOSED CADE WITH STATE - OF - THE - ART
+                                                                                                     APPROXIMATE DIVIDERS .
+
+                                                                                                    Max         Energy    Execution                  Runtime   Floating
+                                                                                                    Error        (pJ)       (ns)          Tunable    Tunable   Support
+                                                                                   LPDivider [21]   36.0%       3.17pJ         5.70ns                           
+                                                                                  SEERAD(1) [29]    37.5%       0.75pJ         0.76ns                           
+                                                                                   Truncapp [22]    50.0%       1.14pJ         1.08ns                           
+                                                                                    AXDur [23]      60.0%       2.06pJ         2.46ns                           
+                                                                                      CADE          12.5%       0.18pJ         0.51ns                           
+                (a)                                  (b)
+Fig. 5. Distribution of error rate (a) before tuning (b) tuning in different
+configurations N# of tuning bits).                                                                          TABLE II
+                                                                                 AVERAGE , M AXIMUM , AND M INIMUM ERROR RATE FOR CADE USING
+requires a larger lookup table to store the values utilized in                                       DIFFERENT TUNING BITS .
+
+the second stage of approximation. Each lookup table entry
+corresponds to a region with a maximum and minimum error                                  N                 0              1              2           3          4
+range that is used to determine the optimal error correction                       Average Error       4.06%             0.22%          0.58%       0.42%      0.05%
+offset. Figure 4a illustrates the error rate with no tuning                         Max Error          12.5%             9.01%          6.03%       4.72%      3.03%
+through a heat map, where the error rate is highest when                           Lookup Size          NA                 4B            16B         64B       256B
+mantissa X is both closer to 1 and 2 and mantissa Y is in
+the range of 1.2 and 1.8. Through the detection of the values                      Table I also compares different designs in terms config-
+that produce the highest error rate, an adequate value of N                     urability. Our evaluation shows that although most of the
+can be selected to decrease the error rate around the mantissa                  approaches can configure the level of accuracy, their config-
+values of X and Y that produce a high error rate. Figure 4b-d                   uration can only happen in offline. In contrast, to the best of
+show how the error rate around the mantissa values of X and                     our knowledge, CADE is the first floating point divider which
+Y decreases as the value of N increased. Once a N value is                      can configure the level of accuracy at runtime depending on
+selected, the offset values are stored in a programmable table,                 the application requirement. In addition, the lack of floating
+rather than having them hardwired through combinational                         point support further reduces the generality of the prior work,
+logic or a static table, this allows the design to be optimized                 for platforms such as CPU and GPU.
+for specific applications past the general case. For example,
+                                                                                C. CADE Exploration
+when dividing by power of 2’s CADE requires no tuning;
+however, for an application that requires a lower error rate, the                  CADE & Tuning Bits: In CADE, the number of tuning
+tuning method can be implemented to satisfy the application’s                   bits and lookup table bit-width provide a tradeoff between
+error rate restrictions. The error distribution for random inputs               CADE accuracy and efficiency. The number of tuning bits, N,
+with no tuning is illustrated in Figure 5a and with tuning                      determines a granularity that we can detect different regions.
+in Figure 5b whereas the value of N increases, the error                        Table II lists the average and maximum CADE error rate using
+distribution begins to center around 0.                                         a different number of tuning bits. Our result shows that both
+                                                                                maximum and average CADE error decrease by increasing
+                             III. R ESULTS                                      the number of tuning bits. However, as N increases, CADE
+A. Experimental Setup                                                           requires more memory to store the pre-computed offset values.
+                                                                                For example, CADE using N = 4 requires 4× larger memory
+   CADE was integrated into an AMD GPU architecture,                            to store pre-computed results.
+Radeon HD 7970 device, by modifying Multi2sim, a cycle                             Lookup Table Resolution: Table III shows the impact of
+accurate CPU-GPU simulator [27]. We add CADE as a new                           the tuning bits (N) and the offset bit width (L) on CADE
+floating point approximate divider. The FPUs are balanced for                   error rate. The results show that as the value of L increases
+6-stage using FloPoCo [28] and are synthesized by Synopsys                      (while N remains a constant value), the error rate gradually
+Design Compiler in 45-nm ASIC flow and optimized for                            reduces. However, this error reduction is smooth and stops
+power consumption using Synopsys Prime Time. The energy                         for offsets with larger than L = 8 bitwidth. Furthermore, as L
+consumption and execution time of the proposed CADE are                         increases, the memory size also scales accordingly with L ×
+measured using HSPICE circuit-level simulation in 45-nm                         22N . Therefore, increasing the offset larger than 8-bits only
+technology. For the application level, the effectiveness of                     results in degradation of CADE energy-delay product (EDP)
+the proposed CADE was tested by running a wide range                            and memory size. Since CADE error rate has a higher effect
+of applications three popular applications including image                      on the error rate, it is ideal to use CADE with N = 4 and
+compression, image filtering, and Taylor series approximation.                  L = 8. Of course, one can decide to use smaller tuning bits, if
+                                                                                the running applications have higher error tolerate. However,
+B. Design vs Other Dividers
+                                                                                increasing L large than 8 has minimal effect on error rate
+   Comparing the efficiency and accuracy of the proposed                        reduction.
+CADE with state-of-the-art dividers including the Low-Power
+Divider(LPDivider) [21], SEERAD [29], TruncApp [22], and                        D. Accuracy Vs CADE Tuning
+AXDnr [23]. Our evaluation shows that CADE can achieve at                          As explained in Section II-C, CADE can achieve high
+least 4.1× energy efficiency improvement and 1.5× speedup                       accuracy through the incorporation of the tuning method.
+as compared to prior work while providing 25% lower error                       Table IV show the quality of computation in three different
+rate.                                                                           applications for CADE with and without tuning. We have
+
+
+
+
+588                                            Design, Automation And Test in Europe (DATE 2019)
+
+   Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:10:33 UTC from IEEE Xplore. Restrictions apply.
+                           TABLE III                                                                                                    TABLE IV
+I MPACT OF THE LOOKUP TABLE BIT- WIDTH ON THE CADE ERROR RATE ,                                                  T HE COMPUTATION ACCURACY OF CADE USING DIFFERENT TUNING
+        EDP IMPROVEMENT AND LOOKUP TABLE SIZE (N = 4).                                                                                     BITS .
+
+
+        Bit-width L                          2             4            8             12             16             Tuning Bits (N)                0             1            2            3             4
+            Error Rate                6.62%             6.05%       6.03%          6.03%          6.03%          JPEG Compression               35.1dB       37.4dB       42.7dB        47.7dB       50.0dB
+  N=2      EDP Improv.                14.9×             13.6×       12.4×          11.1×           9.8×              Blur Filter                35.2dB       39.0dB       38.7dB        41.2dB       47.8dB
+           Memory Size                  4B                8B         16B            24B            32B                       sin(x)             1.03%        0.51%        0.42%         0.24%        0.17%
+            Error Rate                6.63%             6.00%       4.72%          4.72%          4.72%          Taylor     exp(x)              3.54%        1.36%        1.22%         0.59%        0.21%
+  N=3      EDP Improv.                14.9×             13.6×       12.4×          11.1×           9.8×          Series      ln(x)              1.40%        0.84%        0.75%         0.33%        0.19%
+           Memory Size                 16B               32B         64B            96B           128B                     Average              1.81%        1.09%        0.80%         0.39%        0.19%
+            Error Rate                5.58%             4.41%       3.03%          3.03%          3.03%
+  N=4      EDP Improv.                14.9×             13.6×       12.4×          11.1×           9.8×
+           Memory Size                 64B              128B        256B           384B           512B         set to different levels of accuracy based on the value of N.
+                          -3(*&RPSUHVVLRQ                                        %OXU)LOWHU
+                                                                                                               Our evaluation shows that CADE is the first floating point
+                                                                                                               divider which provides a new knob for GPU in order to
+   ([DFW                                                                                                      configure the level of approximation at runtime depending on
+ &RPSXWDWLRQ
+                                                                                                               the application/user accuracy requirement.
+$SSUR[LPDWH
+&RPSXWDWLRQ
+                                                                                                                                 ACKNOWLEDGEMENTS
+   1                                                                                                             This work was partially supported by CRISP, one of six
+               3615G%   3615G%       3615G%    3615G%   3615G%    3615G%
+                                                                                                               centers in JUMP, an SRC program sponsored by DARPA, and
+Fig. 6. Quality of computation using approximate divider on JPEG compres-
+                                                                                                               also NSF grants #1730158 and #1527034.
+sion.                                                                                                                                               R EFERENCES
+tested the quality of applications on 1000 random image from                                                    [1] A. Fehske et al., “The global footprint of mobile communications: The ecological and
+                                                                                                                    economic perspective,” IEEE Communications Magazine, vol. 49, no. 8, 2011.
+Caltech 101 [30] dataset. For the JPEG and Blur applications,                                                   [2] F. Xia et al., “Internet of things,” IJCS, vol. 25, no. 9, p. 1101, 2012.
+PSNR was the quality metric used, while the average relative                                                    [3] J. Gubbi et al., “Internet of things (iot): A vision, architectural elements, and future
+                                                                                                                    directions,” Future generation computer systems, vol. 29, no. 7, pp. 1645–1660, 2013.
+error is used to check the accuracy of the Taylor series.                                                       [4] B. Yao et al., “Multifractal analysis of image profiles for the characterization and detection
+                                                                                                                    of defects in additive manufacturing,” Journal of Manufacturing Science and Engineering,
+Both JPEG compression and Blur filter application resulted                                                          vol. 140, no. 3, p. 031014, 2018.
+in an increase in PSNR value as N increased. Comparing                                                          [5] M. Imani et al., “Hierarchical hyperdimensional computing for energy efficient classifica-
+                                                                                                                    tion,” in DAC, pp. 1–6, IEEE, 2018.
+the average PSNR values across different data and differ-                                                       [6] J. Han et al., “Approximate computing: An emerging paradigm for energy-efficient
+                                                                                                                    design,” in IEEE ETS, pp. 1–6, IEEE, 2013.
+ent N values, observations illustrate that JEPG compression                                                     [7] H. Amrouch et al., “Towards aging-induced approximations,” in DAC, pp. 1–6, IEEE,
+quality computation increases from 35.1dB with no tuning to                                                         2017.
+                                                                                                                [8] M. Imani et al., “Approximate computing using multiple-access single-charge associative
+50.0dB with N = 4. Similarly, for the Blur filter application,                                                      memory,” TETC, vol. 6, no. 3, pp. 305–316, 2018.
+                                                                                                                [9] C. Liu et al., “A low-power, high-performance approximate multiplier with configurable
+the average PSNR increases from 35.2dB with no tuning                                                               partial error recovery,” in DATE, pp. 1–4, IEEE, 2014.
+to 47.08dB with N = 4. In the Taylor series, for all three                                                     [10] M. Imani et al., “Cfpu: Configurable floating point multiplier for energy-efficient comput-
+                                                                                                                    ing,” in DAC, p. 76, ACM, 2017.
+tested functions (sin(x), exp(x), and ln(x)), however significant                                              [11] X. Jiao et al., “Energy-efficient neural networks using approximate computation reuse,” in
+decrease occurs in the average relative error when CADE                                                             DATE, pp. 1223–1228, IEEE, 2018.
+                                                                                                               [12] M. Imani et al., “Masc: Ultra-low energy multiple-access single-charge tcam for approxi-
+configuration changes from no tuning to tuning with N = 4.                                                          mate computing,” in IEEE/ACM DATE, pp. 373–378, IEEE, 2017.
+                                                                                                               [13] A. B. Kahng and S. Kang, “Accuracy-configurable adder for approximate arithmetic
+   Figure 6 illustrates multiple images tested with no tuning                                                       designs,” in DAC, pp. 820–825, ACM, 2012.
+and a tuning value of N = 4 for the Blur filter and JPEG                                                       [14] R. Ye et al., “On reconfiguration-oriented approximate adder design and its application,”
+                                                                                                                    in ICCAD, pp. 48–54, IEEE, 2013.
+compression. With no tuning, the Blur filter showed brighter                                                   [15] Z. Yang et al., “Approximate xor/xnor-based adders for inexact computing,” in Nanotech-
+                                                                                                                    nology (IEEE-NANo), 2013 13th IEEE Conference on, pp. 690–693, IEEE, 2013.
+images with lost details due to over-saturated pixels from over-                                               [16] S. Hashemi et al., “Drum: A dynamic range unbiased multiplier for approximate appli-
+approximation. JPEG images ran with no tuning, resulted in                                                          cations,” in Proceedings of the IEEE/ACM International Conference on Computer-Aided
+                                                                                                                    Design, pp. 418–425, IEEE Press, 2015.
+no noticeable impact on the DCT, but showed an over color                                                      [17] P. Kulkarni et al., “Trading accuracy for power with an underdesigned multiplier architec-
+                                                                                                                    ture,” in IVLSI, pp. 346–351, IEEE, 2011.
+saturation for certain areas resulting in a loss of detail. When                                               [18] C.-H. Lin and C. Lin, “High accuracy approximate multiplier with error correction,” in
+tuning was introduced, the resulting images’ color values                                                           ICCD, pp. 33–38, IEEE, 2013.
+                                                                                                               [19] G. Bradski and A. Kaehler, “Opencv,” Dr. Dobbs journal of software tools, vol. 3, 2000.
+were more accurately calculated to the point where the exact                                                   [20] W. Liu and A. Nannarelli, “Power efficient division and square root unit,” IEEE Transac-
+                                                                                                                    tions on Computers, vol. 61, no. 8, pp. 1059–1070, 2012.
+image and the image produced through approximation were                                                        [21] S. Hashemi, R. Bahar, and S. Reda, “A low-power dynamic divider for approximate
+indistinguishable to the naked eye. Overall, tuning the design                                                      applications,” in Proceedings of the 53rd Annual Design Automation Conference, p. 105,
+                                                                                                                    ACM, 2016.
+has an enormous upside in relation to error reduction of                                                       [22] S. Vahdat et al., “Truncapp: A truncation-based approximate divider for energy efficient
+                                                                                                                    dsp applications,” in DATE, pp. 1639–1642, IEEE, 2017.
+different applications. The proposed tuning approach in CADE                                                   [23] L. Chen et al., “Design of approximate unsigned integer non-restoring divider for inexact
+provides an opportunity to change the level of approximation                                                        computing,” in GLSVLSI, pp. 51–56, ACM, 2015.
+                                                                                                               [24] M. Imani et al., “Ultra-efficient processing in-memory for data intensive applications,” in
+at runtime, based on the running application on GPU.                                                                DAC, p. 6, ACM, 2017.
+                                                                                                               [25] M. Imani et al., “Acam: Approximate computing based on adaptive associative memory
+                       IV. C ONCLUSION                                                                              with online learning,” in ISLPED, pp. 162–167, ACM, 2016.
+                                                                                                               [26] S. Jain et al., “Binary division algorithm and high speed deconvolution algorithm (based
+                                                                                                                    on ancient indian vedic mathematics),” in ECTI-CON, pp. 1–5, IEEE, 2014.
+   In this paper, we propose a novel configurable approximate                                                  [27] Ubal et al., “Multi2sim: a simulation framework for cpu-gpu computing,” in Proceedings
+divider that efficiency divides floating point values with high                                                     of the 21st international conference on Parallel architectures and compilation techniques,
+                                                                                                                    pp. 335–344, ACM, 2012.
+accuracy. CADE removes the costly mantissa division and                                                        [28] “Aflopoco [online]. available:http://flopoco.gforge.inria.fr/,”
+                                                                                                               [29] R. Zendegani et al., “Seerad: A high speed yet energy-efficient rounding-based approxi-
+replaces it with a single subtraction between the two input                                                         mate divider,” in Proceedings of the 2016 Conference on Design, Automation & Test in
+operands mantissa. The tuning process consists of using the                                                         Europe, pp. 1481–1484, EDA Consortium, 2016.
+                                                                                                               [30] L. Fei-Fei et al., “Learning generative visual models from few training examples: An
+first N bits of both input mantissas to determine the amount                                                        incremental bayesian approach tested on 101 object categories,” Computer vision and
+of error and correcting it accordingly. The CADE can be                                                             Image understanding, vol. 106, no. 1, pp. 59–70, 2007.
+
+
+
+
+                                                                Design, Automation And Test in Europe (DATE 2019)                                                                                            589
+
+   Authorized licensed use limited to: Columbia University Libraries. Downloaded on August 24,2026 at 23:10:33 UTC from IEEE Xplore. Restrictions apply.
+

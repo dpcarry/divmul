@@ -1,0 +1,157 @@
+--- original
++++ csd
+@@ -1,4 +1,4 @@
+-module oadm_fixed_divmul_root_opt #(
++module oadm_fixed_divmul_root_opt_csd #(
+     parameter integer LEVEL = 0,
+     parameter integer DIV_RESIDUAL_DROP = 18,
+     parameter integer MUL_RESIDUAL_DROP = 16,
+@@ -110,8 +110,82 @@
+         end
+     end
+ 
+-    wire [24-SCALE_DROP+COEFFICIENT_BITS:0] reduced_scale_product =
+-        plane_value[24:SCALE_DROP] * coefficient;
++    localparam integer SA_WIDTH = 25-SCALE_DROP+COEFFICIENT_BITS+1;
++    wire [SA_WIDTH-1:0] sa_w = {{(COEFFICIENT_BITS+1){1'b0}}, plane_value[24:SCALE_DROP]};
++    reg [8:0] sa_pos, sa_neg;
++    always @* begin
++        sa_pos = 9'd0; sa_neg = 9'd0;
++        case (LEVEL)
++            0: begin
++                    begin sa_pos=9'd64; sa_neg=9'd5; end
++            end
++            1: begin
++                case (y_mantissa[22:22])
++                    1'd0: begin sa_pos=9'd84; sa_neg=9'd1; end
++                    1'd1: begin sa_pos=9'd42; sa_neg=9'd0; end
++                    default: begin sa_pos=9'd0; sa_neg=9'd0; end
++                endcase
++            end
++            2: begin
++                case (y_mantissa[22:21])
++                    2'd0: begin sa_pos=9'd272; sa_neg=9'd69; end
++                    2'd1: begin sa_pos=9'd136; sa_neg=9'd0; end
++                    2'd2: begin sa_pos=9'd129; sa_neg=9'd32; end
++                    2'd3: begin sa_pos=9'd73; sa_neg=9'd0; end
++                    default: begin sa_pos=9'd0; sa_neg=9'd0; end
++                endcase
++            end
++            3: begin
++                case (y_mantissa[22:20])
++                    3'd0: begin sa_pos=9'd260; sa_neg=9'd33; end
++                    3'd1: begin sa_pos=9'd256; sa_neg=9'd74; end
++                    3'd2: begin sa_pos=9'd149; sa_neg=9'd0; end
++                    3'd3: begin sa_pos=9'd128; sa_neg=9'd4; end
++                    3'd4: begin sa_pos=9'd137; sa_neg=9'd32; end
++                    3'd5: begin sa_pos=9'd130; sa_neg=9'd40; end
++                    3'd6: begin sa_pos=9'd80; sa_neg=9'd2; end
++                    3'd7: begin sa_pos=9'd68; sa_neg=9'd0; end
++                    default: begin sa_pos=9'd0; sa_neg=9'd0; end
++                endcase
++            end
++        endcase
++    end
++    wire [SA_WIDTH-1:0] sa_pos_t0 = sa_pos[0] ? (sa_w << 0) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_pos_t1 = sa_pos[1] ? (sa_w << 1) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_pos_t2 = sa_pos[2] ? (sa_w << 2) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_pos_t3 = sa_pos[3] ? (sa_w << 3) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_pos_t4 = sa_pos[4] ? (sa_w << 4) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_pos_t5 = sa_pos[5] ? (sa_w << 5) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_pos_t6 = sa_pos[6] ? (sa_w << 6) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_pos_t7 = sa_pos[7] ? (sa_w << 7) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_pos_t8 = sa_pos[8] ? (sa_w << 8) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_pos_sum_0_0 = sa_pos_t0 + sa_pos_t1;
++    wire [SA_WIDTH-1:0] sa_pos_sum_0_1 = sa_pos_t2 + sa_pos_t3;
++    wire [SA_WIDTH-1:0] sa_pos_sum_0_2 = sa_pos_t4 + sa_pos_t5;
++    wire [SA_WIDTH-1:0] sa_pos_sum_0_3 = sa_pos_t6 + sa_pos_t7;
++    wire [SA_WIDTH-1:0] sa_pos_sum_1_0 = sa_pos_sum_0_0 + sa_pos_sum_0_1;
++    wire [SA_WIDTH-1:0] sa_pos_sum_1_1 = sa_pos_sum_0_2 + sa_pos_sum_0_3;
++    wire [SA_WIDTH-1:0] sa_pos_sum_2_0 = sa_pos_sum_1_0 + sa_pos_sum_1_1;
++    wire [SA_WIDTH-1:0] sa_pos_sum_3_0 = sa_pos_sum_2_0 + sa_pos_t8;
++    wire [SA_WIDTH-1:0] sa_neg_t0 = sa_neg[0] ? (sa_w << 0) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_neg_t1 = sa_neg[1] ? (sa_w << 1) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_neg_t2 = sa_neg[2] ? (sa_w << 2) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_neg_t3 = sa_neg[3] ? (sa_w << 3) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_neg_t4 = sa_neg[4] ? (sa_w << 4) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_neg_t5 = sa_neg[5] ? (sa_w << 5) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_neg_t6 = sa_neg[6] ? (sa_w << 6) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_neg_t7 = sa_neg[7] ? (sa_w << 7) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_neg_t8 = sa_neg[8] ? (sa_w << 8) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_neg_sum_0_0 = sa_neg_t0 + sa_neg_t1;
++    wire [SA_WIDTH-1:0] sa_neg_sum_0_1 = sa_neg_t2 + sa_neg_t3;
++    wire [SA_WIDTH-1:0] sa_neg_sum_0_2 = sa_neg_t4 + sa_neg_t5;
++    wire [SA_WIDTH-1:0] sa_neg_sum_0_3 = sa_neg_t6 + sa_neg_t7;
++    wire [SA_WIDTH-1:0] sa_neg_sum_1_0 = sa_neg_sum_0_0 + sa_neg_sum_0_1;
++    wire [SA_WIDTH-1:0] sa_neg_sum_1_1 = sa_neg_sum_0_2 + sa_neg_sum_0_3;
++    wire [SA_WIDTH-1:0] sa_neg_sum_2_0 = sa_neg_sum_1_0 + sa_neg_sum_1_1;
++    wire [SA_WIDTH-1:0] sa_neg_sum_3_0 = sa_neg_sum_2_0 + sa_neg_t8;
++    wire [SA_WIDTH-1:0] sa_difference = sa_pos_sum_3_0 - sa_neg_sum_3_0;
++    wire [24-SCALE_DROP+COEFFICIENT_BITS:0] reduced_scale_product = sa_difference[SA_WIDTH-2:0];
+     wire signed [28:0] divided_value =
+         $signed({4'b0000, reduced_scale_product,
+                  {(SCALE_DROP-COEFFICIENT_BITS){1'b0}}});
+@@ -145,43 +219,43 @@
+     );
+ endmodule
+ 
+-module oadm_fixed_l0_divmul_root_opt (
+-    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
+-    output wire [31:0] result
+-);
+-    oadm_fixed_divmul_root_opt #(
++module oadm_fixed_l0_divmul_root_opt_csd (
++    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
++    output wire [31:0] result
++);
++    oadm_fixed_divmul_root_opt_csd #(
+         .LEVEL(0), .DIV_RESIDUAL_DROP(18), .MUL_RESIDUAL_DROP(16),
+         .SCALE_DROP(18), .COEFFICIENT_BITS(7), .C0(8'd59)
+     ) implementation (x, y, divide_mode, result);
+ endmodule
+ 
+-module oadm_fixed_l1_divmul_root_opt (
+-    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
+-    output wire [31:0] result
+-);
+-    oadm_fixed_divmul_root_opt #(
++module oadm_fixed_l1_divmul_root_opt_csd (
++    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
++    output wire [31:0] result
++);
++    oadm_fixed_divmul_root_opt_csd #(
+         .LEVEL(1), .DIV_RESIDUAL_DROP(16), .MUL_RESIDUAL_DROP(14),
+         .SCALE_DROP(16), .COEFFICIENT_BITS(7),
+         .C0(8'd83), .C1(8'd42)
+     ) implementation (x, y, divide_mode, result);
+ endmodule
+ 
+-module oadm_fixed_l2_divmul_root_opt (
+-    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
+-    output wire [31:0] result
+-);
+-    oadm_fixed_divmul_root_opt #(
++module oadm_fixed_l2_divmul_root_opt_csd (
++    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
++    output wire [31:0] result
++);
++    oadm_fixed_divmul_root_opt_csd #(
+         .LEVEL(2), .DIV_RESIDUAL_DROP(16), .MUL_RESIDUAL_DROP(12),
+         .SCALE_DROP(16), .COEFFICIENT_BITS(8),
+         .C0(8'd203), .C1(8'd136), .C2(8'd97), .C3(8'd73)
+     ) implementation (x, y, divide_mode, result);
+ endmodule
+ 
+-module oadm_fixed_l3_divmul_root_opt (
+-    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
+-    output wire [31:0] result
+-);
+-    oadm_fixed_divmul_root_opt #(
++module oadm_fixed_l3_divmul_root_opt_csd (
++    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
++    output wire [31:0] result
++);
++    oadm_fixed_divmul_root_opt_csd #(
+         .LEVEL(3), .DIV_RESIDUAL_DROP(16), .MUL_RESIDUAL_DROP(10),
+         .SCALE_DROP(16), .COEFFICIENT_BITS(8),
+         .C0(8'd227), .C1(8'd182), .C2(8'd149), .C3(8'd124),

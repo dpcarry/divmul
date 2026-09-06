@@ -68,6 +68,22 @@ if [[ ${PRIOR_ONLY:-0} != 1 ]]; then
 fi
 
 if [[ ${PACE_ONLY:-0} != 1 ]]; then
+run_prior_miter plsad_m4 DESIGN_PLSAD_M4 plsad_m4_fp32_paceio \
+    "$DC_ROOT/prior/plsad_m4/plsad_m4_fp32_paceio.nl.v" \
+    "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
+    "$ROOT/rtl/paper_repro/plsad_prior_fp32_paceio.v"
+
+run_prior_miter plsad_m6 DESIGN_PLSAD_M6 plsad_m6_fp32_paceio \
+    "$DC_ROOT/prior/plsad_m6/plsad_m6_fp32_paceio.nl.v" \
+    "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
+    "$ROOT/rtl/paper_repro/plsad_prior_fp32_paceio.v"
+
+run_prior_miter plsad_m8 DESIGN_PLSAD_M8 plsad_m8_fp32_paceio \
+    "$DC_ROOT/prior/plsad_m8/plsad_m8_fp32_paceio.nl.v" \
+    "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
+    "$ROOT/rtl/paper_repro/plsad_prior_fp32_paceio.v"
+
+if [[ ${PLSAD_ONLY:-0} != 1 ]]; then
 run_prior_miter qiad DESIGN_QIAD qiad_prior_fp32_paceio \
     "$DC_ROOT/prior/qiad/qiad_prior_fp32_paceio.nl.v" \
     "$WORKTREES/qiad-repro/rtl/qiad_prior/ref_core/qiad/top.v" \
@@ -99,6 +115,7 @@ run_prior_miter lead DESIGN_LEAD lead_fp32_paceio_comb \
     "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
     "$WORKTREES/lead-repro/rtl/lead/lead_comb_core.v" \
     "$WORKTREES/lead-repro/rtl/lead/lead_fp32_paceio_comb.v"
+fi
 fi
 
 echo "Hierarchy-preserving compile gate miters complete."

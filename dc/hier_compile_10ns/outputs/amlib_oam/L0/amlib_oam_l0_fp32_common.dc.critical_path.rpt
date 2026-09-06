@@ -1,0 +1,876 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : amlib_oam_l0_fp32_common
+Version: U-2022.12-SP7
+Date   : Thu Sep  3 21:46:27 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: x[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  amlib_oam_l0_fp32_common ZeroWireload    tcbn65gplustc_ccs
+  amlib_oam_fp32_common_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH24 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH25 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                 Incr       Path
+  --------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                0.00       0.00
+  clock network delay (ideal)                                                           0.00       0.00
+  input external delay                                                                  0.02       0.02 r
+  x[1] (in)                                                                             0.01       0.03 r
+  impl/x[1] (amlib_oam_fp32_common_LEVEL0)                                              0.00       0.03 r
+  impl/fp_wrapper/x[1] (fp32_normal_finite_wrapper)                                     0.00       0.03 r
+  impl/fp_wrapper/U108/Z (CKBD1)                                                        0.04       0.06 r
+  impl/fp_wrapper/fraction_x[1] (fp32_normal_finite_wrapper)                            0.00       0.06 r
+  impl/oam_core/Mantissa_X[16] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                  0.00       0.06 r
+  impl/oam_core/Stage_0_0/In_1[2] (CSA3_2_Array_WIDTH24)                                0.00       0.06 r
+  impl/oam_core/Stage_0_0/U40/Z (CKXOR2D1)                                              0.07       0.13 r
+  impl/oam_core/Stage_0_0/U8/Z (CKXOR2D1)                                               0.06       0.19 r
+  impl/oam_core/Stage_0_0/S[2] (CSA3_2_Array_WIDTH24)                                   0.00       0.19 r
+  impl/oam_core/Stage_1_0/In_1[2] (CSA3_2_Array_WIDTH25)                                0.00       0.19 r
+  impl/oam_core/Stage_1_0/U41/Z (CKXOR2D1)                                              0.06       0.26 r
+  impl/oam_core/Stage_1_0/U8/Z (CKXOR2D1)                                               0.06       0.32 f
+  impl/oam_core/Stage_1_0/S[2] (CSA3_2_Array_WIDTH25)                                   0.00       0.32 f
+  impl/oam_core/add_131/A[2] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)         0.00       0.32 f
+  impl/oam_core/add_131/U1_2/CO (FA1D0)                                                 0.10       0.42 f
+  impl/oam_core/add_131/U1_3/CO (FA1D0)                                                 0.06       0.47 f
+  impl/oam_core/add_131/U1_4/CO (FA1D0)                                                 0.06       0.53 f
+  impl/oam_core/add_131/U1_5/CO (FA1D0)                                                 0.06       0.58 f
+  impl/oam_core/add_131/U1_6/CO (FA1D0)                                                 0.06       0.64 f
+  impl/oam_core/add_131/U1_7/CO (FA1D0)                                                 0.06       0.69 f
+  impl/oam_core/add_131/U1_8/CO (FA1D0)                                                 0.06       0.75 f
+  impl/oam_core/add_131/U1_9/CO (FA1D0)                                                 0.06       0.80 f
+  impl/oam_core/add_131/U1_10/CO (FA1D0)                                                0.06       0.86 f
+  impl/oam_core/add_131/U1_11/CO (FA1D0)                                                0.06       0.92 f
+  impl/oam_core/add_131/U1_12/CO (FA1D0)                                                0.06       0.97 f
+  impl/oam_core/add_131/U1_13/CO (FA1D0)                                                0.06       1.03 f
+  impl/oam_core/add_131/U1_14/CO (FA1D0)                                                0.06       1.08 f
+  impl/oam_core/add_131/U1_15/CO (FA1D0)                                                0.06       1.14 f
+  impl/oam_core/add_131/U1_16/CO (FA1D0)                                                0.06       1.19 f
+  impl/oam_core/add_131/U1_17/CO (FA1D0)                                                0.06       1.25 f
+  impl/oam_core/add_131/U1_18/CO (FA1D0)                                                0.06       1.30 f
+  impl/oam_core/add_131/U1_19/CO (FA1D0)                                                0.06       1.36 f
+  impl/oam_core/add_131/U1_20/CO (FA1D0)                                                0.06       1.41 f
+  impl/oam_core/add_131/U1_21/CO (FA1D0)                                                0.07       1.48 f
+  impl/oam_core/add_131/U1/Z (AN2XD1)                                                   0.03       1.51 f
+  impl/oam_core/add_131/U1_23/CO (FA1D0)                                                0.05       1.56 f
+  impl/oam_core/add_131/U1_24/CO (FA1D0)                                                0.06       1.61 f
+  impl/oam_core/add_131/U1_25/Z (XOR3D1)                                                0.05       1.66 f
+  impl/oam_core/add_131/SUM[25] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)      0.00       1.66 f
+  impl/oam_core/Shift[1] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                        0.00       1.66 f
+  impl/U3/ZN (NR2D1)                                                                    0.13       1.79 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.79 r
+  impl/fp_wrapper/U29/CO (FA1D0)                                                        0.11       1.90 r
+  impl/fp_wrapper/U30/CO (FA1D0)                                                        0.05       1.95 r
+  impl/fp_wrapper/U31/CO (FA1D0)                                                        0.05       2.01 r
+  impl/fp_wrapper/U32/CO (FA1D0)                                                        0.05       2.06 r
+  impl/fp_wrapper/U33/CO (FA1D0)                                                        0.05       2.11 r
+  impl/fp_wrapper/U34/CO (FA1D0)                                                        0.05       2.16 r
+  impl/fp_wrapper/U44/Z (XOR3D1)                                                        0.08       2.24 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.24 f
+  impl/result[30] (amlib_oam_fp32_common_LEVEL0)                                        0.00       2.24 f
+  result[30] (out)                                                                      0.00       2.24 f
+  data arrival time                                                                                2.24
+
+  clock vclk (rise edge)                                                               10.00      10.00
+  clock network delay (ideal)                                                           0.00      10.00
+  output external delay                                                                -0.02       9.98
+  data required time                                                                               9.98
+  --------------------------------------------------------------------------------------------------------
+  data required time                                                                               9.98
+  data arrival time                                                                               -2.24
+  --------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                      7.74
+
+
+  Startpoint: x[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  amlib_oam_l0_fp32_common ZeroWireload    tcbn65gplustc_ccs
+  amlib_oam_fp32_common_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH24 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH25 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                 Incr       Path
+  --------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                0.00       0.00
+  clock network delay (ideal)                                                           0.00       0.00
+  input external delay                                                                  0.02       0.02 r
+  x[1] (in)                                                                             0.01       0.03 r
+  impl/x[1] (amlib_oam_fp32_common_LEVEL0)                                              0.00       0.03 r
+  impl/fp_wrapper/x[1] (fp32_normal_finite_wrapper)                                     0.00       0.03 r
+  impl/fp_wrapper/U108/Z (CKBD1)                                                        0.04       0.06 r
+  impl/fp_wrapper/fraction_x[1] (fp32_normal_finite_wrapper)                            0.00       0.06 r
+  impl/oam_core/Mantissa_X[16] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                  0.00       0.06 r
+  impl/oam_core/Stage_0_0/In_1[2] (CSA3_2_Array_WIDTH24)                                0.00       0.06 r
+  impl/oam_core/Stage_0_0/U40/Z (CKXOR2D1)                                              0.07       0.13 r
+  impl/oam_core/Stage_0_0/U8/Z (CKXOR2D1)                                               0.06       0.19 r
+  impl/oam_core/Stage_0_0/S[2] (CSA3_2_Array_WIDTH24)                                   0.00       0.19 r
+  impl/oam_core/Stage_1_0/In_1[2] (CSA3_2_Array_WIDTH25)                                0.00       0.19 r
+  impl/oam_core/Stage_1_0/U41/Z (CKXOR2D1)                                              0.06       0.26 r
+  impl/oam_core/Stage_1_0/U8/Z (CKXOR2D1)                                               0.06       0.32 f
+  impl/oam_core/Stage_1_0/S[2] (CSA3_2_Array_WIDTH25)                                   0.00       0.32 f
+  impl/oam_core/add_131/A[2] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)         0.00       0.32 f
+  impl/oam_core/add_131/U1_2/CO (FA1D0)                                                 0.10       0.42 f
+  impl/oam_core/add_131/U1_3/CO (FA1D0)                                                 0.06       0.47 f
+  impl/oam_core/add_131/U1_4/CO (FA1D0)                                                 0.06       0.53 f
+  impl/oam_core/add_131/U1_5/CO (FA1D0)                                                 0.06       0.58 f
+  impl/oam_core/add_131/U1_6/CO (FA1D0)                                                 0.06       0.64 f
+  impl/oam_core/add_131/U1_7/CO (FA1D0)                                                 0.06       0.69 f
+  impl/oam_core/add_131/U1_8/CO (FA1D0)                                                 0.06       0.75 f
+  impl/oam_core/add_131/U1_9/CO (FA1D0)                                                 0.06       0.80 f
+  impl/oam_core/add_131/U1_10/CO (FA1D0)                                                0.06       0.86 f
+  impl/oam_core/add_131/U1_11/CO (FA1D0)                                                0.06       0.92 f
+  impl/oam_core/add_131/U1_12/CO (FA1D0)                                                0.06       0.97 f
+  impl/oam_core/add_131/U1_13/CO (FA1D0)                                                0.06       1.03 f
+  impl/oam_core/add_131/U1_14/CO (FA1D0)                                                0.06       1.08 f
+  impl/oam_core/add_131/U1_15/CO (FA1D0)                                                0.06       1.14 f
+  impl/oam_core/add_131/U1_16/CO (FA1D0)                                                0.06       1.19 f
+  impl/oam_core/add_131/U1_17/CO (FA1D0)                                                0.06       1.25 f
+  impl/oam_core/add_131/U1_18/CO (FA1D0)                                                0.06       1.30 f
+  impl/oam_core/add_131/U1_19/CO (FA1D0)                                                0.06       1.36 f
+  impl/oam_core/add_131/U1_20/CO (FA1D0)                                                0.06       1.41 f
+  impl/oam_core/add_131/U1_21/CO (FA1D0)                                                0.07       1.48 f
+  impl/oam_core/add_131/U1/Z (AN2XD1)                                                   0.03       1.51 f
+  impl/oam_core/add_131/U1_23/CO (FA1D0)                                                0.05       1.56 f
+  impl/oam_core/add_131/U1_24/CO (FA1D0)                                                0.06       1.61 f
+  impl/oam_core/add_131/U1_25/Z (XOR3D1)                                                0.05       1.66 f
+  impl/oam_core/add_131/SUM[25] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)      0.00       1.66 f
+  impl/oam_core/Shift[1] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                        0.00       1.66 f
+  impl/U3/ZN (NR2D1)                                                                    0.13       1.79 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.79 r
+  impl/fp_wrapper/U29/CO (FA1D0)                                                        0.11       1.90 r
+  impl/fp_wrapper/U30/CO (FA1D0)                                                        0.05       1.95 r
+  impl/fp_wrapper/U31/CO (FA1D0)                                                        0.05       2.01 r
+  impl/fp_wrapper/U32/CO (FA1D0)                                                        0.05       2.06 r
+  impl/fp_wrapper/U33/CO (FA1D0)                                                        0.05       2.11 r
+  impl/fp_wrapper/U34/CO (FA1D0)                                                        0.05       2.16 r
+  impl/fp_wrapper/U44/Z (XOR3D1)                                                        0.08       2.24 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.24 f
+  impl/result[30] (amlib_oam_fp32_common_LEVEL0)                                        0.00       2.24 f
+  result[30] (out)                                                                      0.00       2.24 f
+  data arrival time                                                                                2.24
+
+  clock vclk (rise edge)                                                               10.00      10.00
+  clock network delay (ideal)                                                           0.00      10.00
+  output external delay                                                                -0.02       9.98
+  data required time                                                                               9.98
+  --------------------------------------------------------------------------------------------------------
+  data required time                                                                               9.98
+  data arrival time                                                                               -2.24
+  --------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                      7.74
+
+
+  Startpoint: x[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  amlib_oam_l0_fp32_common ZeroWireload    tcbn65gplustc_ccs
+  amlib_oam_fp32_common_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH24 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH25 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                 Incr       Path
+  --------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                0.00       0.00
+  clock network delay (ideal)                                                           0.00       0.00
+  input external delay                                                                  0.02       0.02 r
+  x[1] (in)                                                                             0.01       0.03 r
+  impl/x[1] (amlib_oam_fp32_common_LEVEL0)                                              0.00       0.03 r
+  impl/fp_wrapper/x[1] (fp32_normal_finite_wrapper)                                     0.00       0.03 r
+  impl/fp_wrapper/U108/Z (CKBD1)                                                        0.04       0.06 r
+  impl/fp_wrapper/fraction_x[1] (fp32_normal_finite_wrapper)                            0.00       0.06 r
+  impl/oam_core/Mantissa_X[16] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                  0.00       0.06 r
+  impl/oam_core/Stage_0_0/In_1[2] (CSA3_2_Array_WIDTH24)                                0.00       0.06 r
+  impl/oam_core/Stage_0_0/U40/Z (CKXOR2D1)                                              0.07       0.13 r
+  impl/oam_core/Stage_0_0/U8/Z (CKXOR2D1)                                               0.06       0.19 r
+  impl/oam_core/Stage_0_0/S[2] (CSA3_2_Array_WIDTH24)                                   0.00       0.19 r
+  impl/oam_core/Stage_1_0/In_1[2] (CSA3_2_Array_WIDTH25)                                0.00       0.19 r
+  impl/oam_core/Stage_1_0/U41/Z (CKXOR2D1)                                              0.06       0.26 r
+  impl/oam_core/Stage_1_0/U8/Z (CKXOR2D1)                                               0.06       0.32 f
+  impl/oam_core/Stage_1_0/S[2] (CSA3_2_Array_WIDTH25)                                   0.00       0.32 f
+  impl/oam_core/add_131/A[2] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)         0.00       0.32 f
+  impl/oam_core/add_131/U1_2/CO (FA1D0)                                                 0.10       0.42 f
+  impl/oam_core/add_131/U1_3/CO (FA1D0)                                                 0.06       0.47 f
+  impl/oam_core/add_131/U1_4/CO (FA1D0)                                                 0.06       0.53 f
+  impl/oam_core/add_131/U1_5/CO (FA1D0)                                                 0.06       0.58 f
+  impl/oam_core/add_131/U1_6/CO (FA1D0)                                                 0.06       0.64 f
+  impl/oam_core/add_131/U1_7/CO (FA1D0)                                                 0.06       0.69 f
+  impl/oam_core/add_131/U1_8/CO (FA1D0)                                                 0.06       0.75 f
+  impl/oam_core/add_131/U1_9/CO (FA1D0)                                                 0.06       0.80 f
+  impl/oam_core/add_131/U1_10/CO (FA1D0)                                                0.06       0.86 f
+  impl/oam_core/add_131/U1_11/CO (FA1D0)                                                0.06       0.92 f
+  impl/oam_core/add_131/U1_12/CO (FA1D0)                                                0.06       0.97 f
+  impl/oam_core/add_131/U1_13/CO (FA1D0)                                                0.06       1.03 f
+  impl/oam_core/add_131/U1_14/CO (FA1D0)                                                0.06       1.08 f
+  impl/oam_core/add_131/U1_15/CO (FA1D0)                                                0.06       1.14 f
+  impl/oam_core/add_131/U1_16/CO (FA1D0)                                                0.06       1.19 f
+  impl/oam_core/add_131/U1_17/CO (FA1D0)                                                0.06       1.25 f
+  impl/oam_core/add_131/U1_18/CO (FA1D0)                                                0.06       1.30 f
+  impl/oam_core/add_131/U1_19/CO (FA1D0)                                                0.06       1.36 f
+  impl/oam_core/add_131/U1_20/CO (FA1D0)                                                0.06       1.41 f
+  impl/oam_core/add_131/U1_21/CO (FA1D0)                                                0.07       1.48 f
+  impl/oam_core/add_131/U1/Z (AN2XD1)                                                   0.03       1.51 f
+  impl/oam_core/add_131/U1_23/CO (FA1D0)                                                0.05       1.56 f
+  impl/oam_core/add_131/U1_24/CO (FA1D0)                                                0.06       1.61 f
+  impl/oam_core/add_131/U1_25/Z (XOR3D1)                                                0.05       1.66 f
+  impl/oam_core/add_131/SUM[25] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)      0.00       1.66 f
+  impl/oam_core/Shift[1] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                        0.00       1.66 f
+  impl/U3/ZN (NR2D1)                                                                    0.13       1.79 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.79 r
+  impl/fp_wrapper/U29/CO (FA1D0)                                                        0.11       1.90 r
+  impl/fp_wrapper/U30/CO (FA1D0)                                                        0.05       1.95 r
+  impl/fp_wrapper/U31/CO (FA1D0)                                                        0.05       2.01 r
+  impl/fp_wrapper/U32/CO (FA1D0)                                                        0.05       2.06 r
+  impl/fp_wrapper/U33/CO (FA1D0)                                                        0.05       2.11 r
+  impl/fp_wrapper/U34/CO (FA1D0)                                                        0.05       2.16 r
+  impl/fp_wrapper/U44/Z (XOR3D1)                                                        0.08       2.24 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.24 f
+  impl/result[30] (amlib_oam_fp32_common_LEVEL0)                                        0.00       2.24 f
+  result[30] (out)                                                                      0.00       2.24 f
+  data arrival time                                                                                2.24
+
+  clock vclk (rise edge)                                                               10.00      10.00
+  clock network delay (ideal)                                                           0.00      10.00
+  output external delay                                                                -0.02       9.98
+  data required time                                                                               9.98
+  --------------------------------------------------------------------------------------------------------
+  data required time                                                                               9.98
+  data arrival time                                                                               -2.24
+  --------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                      7.74
+
+
+  Startpoint: x[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  amlib_oam_l0_fp32_common ZeroWireload    tcbn65gplustc_ccs
+  amlib_oam_fp32_common_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH24 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH25 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                 Incr       Path
+  --------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                0.00       0.00
+  clock network delay (ideal)                                                           0.00       0.00
+  input external delay                                                                  0.02       0.02 r
+  x[1] (in)                                                                             0.01       0.03 r
+  impl/x[1] (amlib_oam_fp32_common_LEVEL0)                                              0.00       0.03 r
+  impl/fp_wrapper/x[1] (fp32_normal_finite_wrapper)                                     0.00       0.03 r
+  impl/fp_wrapper/U108/Z (CKBD1)                                                        0.04       0.06 r
+  impl/fp_wrapper/fraction_x[1] (fp32_normal_finite_wrapper)                            0.00       0.06 r
+  impl/oam_core/Mantissa_X[16] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                  0.00       0.06 r
+  impl/oam_core/Stage_0_0/In_1[2] (CSA3_2_Array_WIDTH24)                                0.00       0.06 r
+  impl/oam_core/Stage_0_0/U40/Z (CKXOR2D1)                                              0.07       0.13 r
+  impl/oam_core/Stage_0_0/U8/Z (CKXOR2D1)                                               0.06       0.19 r
+  impl/oam_core/Stage_0_0/S[2] (CSA3_2_Array_WIDTH24)                                   0.00       0.19 r
+  impl/oam_core/Stage_1_0/In_1[2] (CSA3_2_Array_WIDTH25)                                0.00       0.19 r
+  impl/oam_core/Stage_1_0/U41/Z (CKXOR2D1)                                              0.06       0.26 r
+  impl/oam_core/Stage_1_0/U8/Z (CKXOR2D1)                                               0.06       0.32 f
+  impl/oam_core/Stage_1_0/S[2] (CSA3_2_Array_WIDTH25)                                   0.00       0.32 f
+  impl/oam_core/add_131/A[2] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)         0.00       0.32 f
+  impl/oam_core/add_131/U1_2/CO (FA1D0)                                                 0.10       0.42 f
+  impl/oam_core/add_131/U1_3/CO (FA1D0)                                                 0.06       0.47 f
+  impl/oam_core/add_131/U1_4/CO (FA1D0)                                                 0.06       0.53 f
+  impl/oam_core/add_131/U1_5/CO (FA1D0)                                                 0.06       0.58 f
+  impl/oam_core/add_131/U1_6/CO (FA1D0)                                                 0.06       0.64 f
+  impl/oam_core/add_131/U1_7/CO (FA1D0)                                                 0.06       0.69 f
+  impl/oam_core/add_131/U1_8/CO (FA1D0)                                                 0.06       0.75 f
+  impl/oam_core/add_131/U1_9/CO (FA1D0)                                                 0.06       0.80 f
+  impl/oam_core/add_131/U1_10/CO (FA1D0)                                                0.06       0.86 f
+  impl/oam_core/add_131/U1_11/CO (FA1D0)                                                0.06       0.92 f
+  impl/oam_core/add_131/U1_12/CO (FA1D0)                                                0.06       0.97 f
+  impl/oam_core/add_131/U1_13/CO (FA1D0)                                                0.06       1.03 f
+  impl/oam_core/add_131/U1_14/CO (FA1D0)                                                0.06       1.08 f
+  impl/oam_core/add_131/U1_15/CO (FA1D0)                                                0.06       1.14 f
+  impl/oam_core/add_131/U1_16/CO (FA1D0)                                                0.06       1.19 f
+  impl/oam_core/add_131/U1_17/CO (FA1D0)                                                0.06       1.25 f
+  impl/oam_core/add_131/U1_18/CO (FA1D0)                                                0.06       1.30 f
+  impl/oam_core/add_131/U1_19/CO (FA1D0)                                                0.06       1.36 f
+  impl/oam_core/add_131/U1_20/CO (FA1D0)                                                0.06       1.41 f
+  impl/oam_core/add_131/U1_21/CO (FA1D0)                                                0.07       1.48 f
+  impl/oam_core/add_131/U1/Z (AN2XD1)                                                   0.03       1.51 f
+  impl/oam_core/add_131/U1_23/CO (FA1D0)                                                0.05       1.56 f
+  impl/oam_core/add_131/U1_24/CO (FA1D0)                                                0.06       1.61 f
+  impl/oam_core/add_131/U1_25/Z (XOR3D1)                                                0.05       1.66 f
+  impl/oam_core/add_131/SUM[25] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)      0.00       1.66 f
+  impl/oam_core/Shift[1] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                        0.00       1.66 f
+  impl/U3/ZN (NR2D1)                                                                    0.13       1.79 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.79 r
+  impl/fp_wrapper/U29/CO (FA1D0)                                                        0.11       1.90 r
+  impl/fp_wrapper/U30/CO (FA1D0)                                                        0.05       1.95 r
+  impl/fp_wrapper/U31/CO (FA1D0)                                                        0.05       2.01 r
+  impl/fp_wrapper/U32/CO (FA1D0)                                                        0.05       2.06 r
+  impl/fp_wrapper/U33/CO (FA1D0)                                                        0.05       2.11 r
+  impl/fp_wrapper/U34/CO (FA1D0)                                                        0.05       2.16 r
+  impl/fp_wrapper/U44/Z (XOR3D1)                                                        0.08       2.24 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.24 f
+  impl/result[30] (amlib_oam_fp32_common_LEVEL0)                                        0.00       2.24 f
+  result[30] (out)                                                                      0.00       2.24 f
+  data arrival time                                                                                2.24
+
+  clock vclk (rise edge)                                                               10.00      10.00
+  clock network delay (ideal)                                                           0.00      10.00
+  output external delay                                                                -0.02       9.98
+  data required time                                                                               9.98
+  --------------------------------------------------------------------------------------------------------
+  data required time                                                                               9.98
+  data arrival time                                                                               -2.24
+  --------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                      7.74
+
+
+  Startpoint: x[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  amlib_oam_l0_fp32_common ZeroWireload    tcbn65gplustc_ccs
+  amlib_oam_fp32_common_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH24 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH25 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                 Incr       Path
+  --------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                0.00       0.00
+  clock network delay (ideal)                                                           0.00       0.00
+  input external delay                                                                  0.02       0.02 r
+  x[1] (in)                                                                             0.01       0.03 r
+  impl/x[1] (amlib_oam_fp32_common_LEVEL0)                                              0.00       0.03 r
+  impl/fp_wrapper/x[1] (fp32_normal_finite_wrapper)                                     0.00       0.03 r
+  impl/fp_wrapper/U108/Z (CKBD1)                                                        0.04       0.06 r
+  impl/fp_wrapper/fraction_x[1] (fp32_normal_finite_wrapper)                            0.00       0.06 r
+  impl/oam_core/Mantissa_X[16] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                  0.00       0.06 r
+  impl/oam_core/Stage_0_0/In_1[2] (CSA3_2_Array_WIDTH24)                                0.00       0.06 r
+  impl/oam_core/Stage_0_0/U40/Z (CKXOR2D1)                                              0.07       0.13 r
+  impl/oam_core/Stage_0_0/U8/Z (CKXOR2D1)                                               0.06       0.19 r
+  impl/oam_core/Stage_0_0/S[2] (CSA3_2_Array_WIDTH24)                                   0.00       0.19 r
+  impl/oam_core/Stage_1_0/In_1[2] (CSA3_2_Array_WIDTH25)                                0.00       0.19 r
+  impl/oam_core/Stage_1_0/U41/Z (CKXOR2D1)                                              0.06       0.26 r
+  impl/oam_core/Stage_1_0/U8/Z (CKXOR2D1)                                               0.06       0.32 f
+  impl/oam_core/Stage_1_0/S[2] (CSA3_2_Array_WIDTH25)                                   0.00       0.32 f
+  impl/oam_core/add_131/A[2] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)         0.00       0.32 f
+  impl/oam_core/add_131/U1_2/CO (FA1D0)                                                 0.10       0.42 f
+  impl/oam_core/add_131/U1_3/CO (FA1D0)                                                 0.06       0.47 f
+  impl/oam_core/add_131/U1_4/CO (FA1D0)                                                 0.06       0.53 f
+  impl/oam_core/add_131/U1_5/CO (FA1D0)                                                 0.06       0.58 f
+  impl/oam_core/add_131/U1_6/CO (FA1D0)                                                 0.06       0.64 f
+  impl/oam_core/add_131/U1_7/CO (FA1D0)                                                 0.06       0.69 f
+  impl/oam_core/add_131/U1_8/CO (FA1D0)                                                 0.06       0.75 f
+  impl/oam_core/add_131/U1_9/CO (FA1D0)                                                 0.06       0.80 f
+  impl/oam_core/add_131/U1_10/CO (FA1D0)                                                0.06       0.86 f
+  impl/oam_core/add_131/U1_11/CO (FA1D0)                                                0.06       0.92 f
+  impl/oam_core/add_131/U1_12/CO (FA1D0)                                                0.06       0.97 f
+  impl/oam_core/add_131/U1_13/CO (FA1D0)                                                0.06       1.03 f
+  impl/oam_core/add_131/U1_14/CO (FA1D0)                                                0.06       1.08 f
+  impl/oam_core/add_131/U1_15/CO (FA1D0)                                                0.06       1.14 f
+  impl/oam_core/add_131/U1_16/CO (FA1D0)                                                0.06       1.19 f
+  impl/oam_core/add_131/U1_17/CO (FA1D0)                                                0.06       1.25 f
+  impl/oam_core/add_131/U1_18/CO (FA1D0)                                                0.06       1.30 f
+  impl/oam_core/add_131/U1_19/CO (FA1D0)                                                0.06       1.36 f
+  impl/oam_core/add_131/U1_20/CO (FA1D0)                                                0.06       1.41 f
+  impl/oam_core/add_131/U1_21/CO (FA1D0)                                                0.07       1.48 f
+  impl/oam_core/add_131/U1/Z (AN2XD1)                                                   0.03       1.51 f
+  impl/oam_core/add_131/U1_23/CO (FA1D0)                                                0.05       1.56 f
+  impl/oam_core/add_131/U1_24/CO (FA1D0)                                                0.06       1.61 f
+  impl/oam_core/add_131/U1_25/Z (XOR3D1)                                                0.05       1.66 f
+  impl/oam_core/add_131/SUM[25] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)      0.00       1.66 f
+  impl/oam_core/Shift[1] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                        0.00       1.66 f
+  impl/U3/ZN (NR2D1)                                                                    0.13       1.79 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.79 r
+  impl/fp_wrapper/U29/CO (FA1D0)                                                        0.11       1.90 r
+  impl/fp_wrapper/U30/CO (FA1D0)                                                        0.05       1.95 r
+  impl/fp_wrapper/U31/CO (FA1D0)                                                        0.05       2.01 r
+  impl/fp_wrapper/U32/CO (FA1D0)                                                        0.05       2.06 r
+  impl/fp_wrapper/U33/CO (FA1D0)                                                        0.05       2.11 r
+  impl/fp_wrapper/U34/CO (FA1D0)                                                        0.05       2.16 r
+  impl/fp_wrapper/U44/Z (XOR3D1)                                                        0.08       2.24 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.24 f
+  impl/result[30] (amlib_oam_fp32_common_LEVEL0)                                        0.00       2.24 f
+  result[30] (out)                                                                      0.00       2.24 f
+  data arrival time                                                                                2.24
+
+  clock vclk (rise edge)                                                               10.00      10.00
+  clock network delay (ideal)                                                           0.00      10.00
+  output external delay                                                                -0.02       9.98
+  data required time                                                                               9.98
+  --------------------------------------------------------------------------------------------------------
+  data required time                                                                               9.98
+  data arrival time                                                                               -2.24
+  --------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                      7.74
+
+
+  Startpoint: x[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  amlib_oam_l0_fp32_common ZeroWireload    tcbn65gplustc_ccs
+  amlib_oam_fp32_common_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH24 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH25 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                 Incr       Path
+  --------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                0.00       0.00
+  clock network delay (ideal)                                                           0.00       0.00
+  input external delay                                                                  0.02       0.02 r
+  x[1] (in)                                                                             0.01       0.03 r
+  impl/x[1] (amlib_oam_fp32_common_LEVEL0)                                              0.00       0.03 r
+  impl/fp_wrapper/x[1] (fp32_normal_finite_wrapper)                                     0.00       0.03 r
+  impl/fp_wrapper/U108/Z (CKBD1)                                                        0.04       0.06 r
+  impl/fp_wrapper/fraction_x[1] (fp32_normal_finite_wrapper)                            0.00       0.06 r
+  impl/oam_core/Mantissa_X[16] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                  0.00       0.06 r
+  impl/oam_core/Stage_0_0/In_1[2] (CSA3_2_Array_WIDTH24)                                0.00       0.06 r
+  impl/oam_core/Stage_0_0/U40/Z (CKXOR2D1)                                              0.07       0.13 r
+  impl/oam_core/Stage_0_0/U8/Z (CKXOR2D1)                                               0.06       0.19 r
+  impl/oam_core/Stage_0_0/S[2] (CSA3_2_Array_WIDTH24)                                   0.00       0.19 r
+  impl/oam_core/Stage_1_0/In_1[2] (CSA3_2_Array_WIDTH25)                                0.00       0.19 r
+  impl/oam_core/Stage_1_0/U41/Z (CKXOR2D1)                                              0.06       0.26 r
+  impl/oam_core/Stage_1_0/U8/Z (CKXOR2D1)                                               0.06       0.32 f
+  impl/oam_core/Stage_1_0/S[2] (CSA3_2_Array_WIDTH25)                                   0.00       0.32 f
+  impl/oam_core/add_131/A[2] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)         0.00       0.32 f
+  impl/oam_core/add_131/U1_2/CO (FA1D0)                                                 0.10       0.42 f
+  impl/oam_core/add_131/U1_3/CO (FA1D0)                                                 0.06       0.47 f
+  impl/oam_core/add_131/U1_4/CO (FA1D0)                                                 0.06       0.53 f
+  impl/oam_core/add_131/U1_5/CO (FA1D0)                                                 0.06       0.58 f
+  impl/oam_core/add_131/U1_6/CO (FA1D0)                                                 0.06       0.64 f
+  impl/oam_core/add_131/U1_7/CO (FA1D0)                                                 0.06       0.69 f
+  impl/oam_core/add_131/U1_8/CO (FA1D0)                                                 0.06       0.75 f
+  impl/oam_core/add_131/U1_9/CO (FA1D0)                                                 0.06       0.80 f
+  impl/oam_core/add_131/U1_10/CO (FA1D0)                                                0.06       0.86 f
+  impl/oam_core/add_131/U1_11/CO (FA1D0)                                                0.06       0.92 f
+  impl/oam_core/add_131/U1_12/CO (FA1D0)                                                0.06       0.97 f
+  impl/oam_core/add_131/U1_13/CO (FA1D0)                                                0.06       1.03 f
+  impl/oam_core/add_131/U1_14/CO (FA1D0)                                                0.06       1.08 f
+  impl/oam_core/add_131/U1_15/CO (FA1D0)                                                0.06       1.14 f
+  impl/oam_core/add_131/U1_16/CO (FA1D0)                                                0.06       1.19 f
+  impl/oam_core/add_131/U1_17/CO (FA1D0)                                                0.06       1.25 f
+  impl/oam_core/add_131/U1_18/CO (FA1D0)                                                0.06       1.30 f
+  impl/oam_core/add_131/U1_19/CO (FA1D0)                                                0.06       1.36 f
+  impl/oam_core/add_131/U1_20/CO (FA1D0)                                                0.06       1.41 f
+  impl/oam_core/add_131/U1_21/CO (FA1D0)                                                0.07       1.48 f
+  impl/oam_core/add_131/U1/Z (AN2XD1)                                                   0.03       1.51 f
+  impl/oam_core/add_131/U1_23/CO (FA1D0)                                                0.05       1.56 f
+  impl/oam_core/add_131/U1_24/CO (FA1D0)                                                0.06       1.61 f
+  impl/oam_core/add_131/U1_25/Z (XOR3D1)                                                0.05       1.66 f
+  impl/oam_core/add_131/SUM[25] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)      0.00       1.66 f
+  impl/oam_core/Shift[1] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                        0.00       1.66 f
+  impl/U3/ZN (NR2D1)                                                                    0.13       1.79 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.79 r
+  impl/fp_wrapper/U29/CO (FA1D0)                                                        0.11       1.90 r
+  impl/fp_wrapper/U30/CO (FA1D0)                                                        0.05       1.95 r
+  impl/fp_wrapper/U31/CO (FA1D0)                                                        0.05       2.01 r
+  impl/fp_wrapper/U32/CO (FA1D0)                                                        0.05       2.06 r
+  impl/fp_wrapper/U33/CO (FA1D0)                                                        0.05       2.11 r
+  impl/fp_wrapper/U34/CO (FA1D0)                                                        0.05       2.16 r
+  impl/fp_wrapper/U44/Z (XOR3D1)                                                        0.08       2.24 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.24 f
+  impl/result[30] (amlib_oam_fp32_common_LEVEL0)                                        0.00       2.24 f
+  result[30] (out)                                                                      0.00       2.24 f
+  data arrival time                                                                                2.24
+
+  clock vclk (rise edge)                                                               10.00      10.00
+  clock network delay (ideal)                                                           0.00      10.00
+  output external delay                                                                -0.02       9.98
+  data required time                                                                               9.98
+  --------------------------------------------------------------------------------------------------------
+  data required time                                                                               9.98
+  data arrival time                                                                               -2.24
+  --------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                      7.74
+
+
+  Startpoint: x[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  amlib_oam_l0_fp32_common ZeroWireload    tcbn65gplustc_ccs
+  amlib_oam_fp32_common_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH24 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH25 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                 Incr       Path
+  --------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                0.00       0.00
+  clock network delay (ideal)                                                           0.00       0.00
+  input external delay                                                                  0.02       0.02 r
+  x[1] (in)                                                                             0.01       0.03 r
+  impl/x[1] (amlib_oam_fp32_common_LEVEL0)                                              0.00       0.03 r
+  impl/fp_wrapper/x[1] (fp32_normal_finite_wrapper)                                     0.00       0.03 r
+  impl/fp_wrapper/U108/Z (CKBD1)                                                        0.04       0.06 r
+  impl/fp_wrapper/fraction_x[1] (fp32_normal_finite_wrapper)                            0.00       0.06 r
+  impl/oam_core/Mantissa_X[16] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                  0.00       0.06 r
+  impl/oam_core/Stage_0_0/In_1[2] (CSA3_2_Array_WIDTH24)                                0.00       0.06 r
+  impl/oam_core/Stage_0_0/U40/Z (CKXOR2D1)                                              0.07       0.13 r
+  impl/oam_core/Stage_0_0/U8/Z (CKXOR2D1)                                               0.06       0.19 r
+  impl/oam_core/Stage_0_0/S[2] (CSA3_2_Array_WIDTH24)                                   0.00       0.19 r
+  impl/oam_core/Stage_1_0/In_1[2] (CSA3_2_Array_WIDTH25)                                0.00       0.19 r
+  impl/oam_core/Stage_1_0/U41/Z (CKXOR2D1)                                              0.06       0.26 r
+  impl/oam_core/Stage_1_0/U8/Z (CKXOR2D1)                                               0.06       0.32 f
+  impl/oam_core/Stage_1_0/S[2] (CSA3_2_Array_WIDTH25)                                   0.00       0.32 f
+  impl/oam_core/add_131/A[2] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)         0.00       0.32 f
+  impl/oam_core/add_131/U1_2/CO (FA1D0)                                                 0.10       0.42 f
+  impl/oam_core/add_131/U1_3/CO (FA1D0)                                                 0.06       0.47 f
+  impl/oam_core/add_131/U1_4/CO (FA1D0)                                                 0.06       0.53 f
+  impl/oam_core/add_131/U1_5/CO (FA1D0)                                                 0.06       0.58 f
+  impl/oam_core/add_131/U1_6/CO (FA1D0)                                                 0.06       0.64 f
+  impl/oam_core/add_131/U1_7/CO (FA1D0)                                                 0.06       0.69 f
+  impl/oam_core/add_131/U1_8/CO (FA1D0)                                                 0.06       0.75 f
+  impl/oam_core/add_131/U1_9/CO (FA1D0)                                                 0.06       0.80 f
+  impl/oam_core/add_131/U1_10/CO (FA1D0)                                                0.06       0.86 f
+  impl/oam_core/add_131/U1_11/CO (FA1D0)                                                0.06       0.92 f
+  impl/oam_core/add_131/U1_12/CO (FA1D0)                                                0.06       0.97 f
+  impl/oam_core/add_131/U1_13/CO (FA1D0)                                                0.06       1.03 f
+  impl/oam_core/add_131/U1_14/CO (FA1D0)                                                0.06       1.08 f
+  impl/oam_core/add_131/U1_15/CO (FA1D0)                                                0.06       1.14 f
+  impl/oam_core/add_131/U1_16/CO (FA1D0)                                                0.06       1.19 f
+  impl/oam_core/add_131/U1_17/CO (FA1D0)                                                0.06       1.25 f
+  impl/oam_core/add_131/U1_18/CO (FA1D0)                                                0.06       1.30 f
+  impl/oam_core/add_131/U1_19/CO (FA1D0)                                                0.06       1.36 f
+  impl/oam_core/add_131/U1_20/CO (FA1D0)                                                0.06       1.41 f
+  impl/oam_core/add_131/U1_21/CO (FA1D0)                                                0.07       1.48 f
+  impl/oam_core/add_131/U1/Z (AN2XD1)                                                   0.03       1.51 f
+  impl/oam_core/add_131/U1_23/CO (FA1D0)                                                0.05       1.56 f
+  impl/oam_core/add_131/U1_24/CO (FA1D0)                                                0.06       1.61 f
+  impl/oam_core/add_131/U1_25/Z (XOR3D1)                                                0.05       1.66 f
+  impl/oam_core/add_131/SUM[25] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)      0.00       1.66 f
+  impl/oam_core/Shift[1] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                        0.00       1.66 f
+  impl/U3/ZN (NR2D1)                                                                    0.13       1.79 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.79 r
+  impl/fp_wrapper/U29/CO (FA1D0)                                                        0.11       1.90 r
+  impl/fp_wrapper/U30/CO (FA1D0)                                                        0.05       1.95 r
+  impl/fp_wrapper/U31/CO (FA1D0)                                                        0.05       2.01 r
+  impl/fp_wrapper/U32/CO (FA1D0)                                                        0.05       2.06 r
+  impl/fp_wrapper/U33/CO (FA1D0)                                                        0.05       2.11 r
+  impl/fp_wrapper/U34/CO (FA1D0)                                                        0.05       2.16 r
+  impl/fp_wrapper/U44/Z (XOR3D1)                                                        0.08       2.24 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.24 f
+  impl/result[30] (amlib_oam_fp32_common_LEVEL0)                                        0.00       2.24 f
+  result[30] (out)                                                                      0.00       2.24 f
+  data arrival time                                                                                2.24
+
+  clock vclk (rise edge)                                                               10.00      10.00
+  clock network delay (ideal)                                                           0.00      10.00
+  output external delay                                                                -0.02       9.98
+  data required time                                                                               9.98
+  --------------------------------------------------------------------------------------------------------
+  data required time                                                                               9.98
+  data arrival time                                                                               -2.24
+  --------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                      7.74
+
+
+  Startpoint: x[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  amlib_oam_l0_fp32_common ZeroWireload    tcbn65gplustc_ccs
+  amlib_oam_fp32_common_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH24 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH25 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                 Incr       Path
+  --------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                0.00       0.00
+  clock network delay (ideal)                                                           0.00       0.00
+  input external delay                                                                  0.02       0.02 r
+  x[1] (in)                                                                             0.01       0.03 r
+  impl/x[1] (amlib_oam_fp32_common_LEVEL0)                                              0.00       0.03 r
+  impl/fp_wrapper/x[1] (fp32_normal_finite_wrapper)                                     0.00       0.03 r
+  impl/fp_wrapper/U108/Z (CKBD1)                                                        0.04       0.06 r
+  impl/fp_wrapper/fraction_x[1] (fp32_normal_finite_wrapper)                            0.00       0.06 r
+  impl/oam_core/Mantissa_X[16] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                  0.00       0.06 r
+  impl/oam_core/Stage_0_0/In_1[2] (CSA3_2_Array_WIDTH24)                                0.00       0.06 r
+  impl/oam_core/Stage_0_0/U40/Z (CKXOR2D1)                                              0.07       0.13 r
+  impl/oam_core/Stage_0_0/U8/Z (CKXOR2D1)                                               0.06       0.19 r
+  impl/oam_core/Stage_0_0/S[2] (CSA3_2_Array_WIDTH24)                                   0.00       0.19 r
+  impl/oam_core/Stage_1_0/In_1[2] (CSA3_2_Array_WIDTH25)                                0.00       0.19 r
+  impl/oam_core/Stage_1_0/U41/Z (CKXOR2D1)                                              0.06       0.26 r
+  impl/oam_core/Stage_1_0/U8/Z (CKXOR2D1)                                               0.06       0.32 f
+  impl/oam_core/Stage_1_0/S[2] (CSA3_2_Array_WIDTH25)                                   0.00       0.32 f
+  impl/oam_core/add_131/A[2] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)         0.00       0.32 f
+  impl/oam_core/add_131/U1_2/CO (FA1D0)                                                 0.10       0.42 f
+  impl/oam_core/add_131/U1_3/CO (FA1D0)                                                 0.06       0.47 f
+  impl/oam_core/add_131/U1_4/CO (FA1D0)                                                 0.06       0.53 f
+  impl/oam_core/add_131/U1_5/CO (FA1D0)                                                 0.06       0.58 f
+  impl/oam_core/add_131/U1_6/CO (FA1D0)                                                 0.06       0.64 f
+  impl/oam_core/add_131/U1_7/CO (FA1D0)                                                 0.06       0.69 f
+  impl/oam_core/add_131/U1_8/CO (FA1D0)                                                 0.06       0.75 f
+  impl/oam_core/add_131/U1_9/CO (FA1D0)                                                 0.06       0.80 f
+  impl/oam_core/add_131/U1_10/CO (FA1D0)                                                0.06       0.86 f
+  impl/oam_core/add_131/U1_11/CO (FA1D0)                                                0.06       0.92 f
+  impl/oam_core/add_131/U1_12/CO (FA1D0)                                                0.06       0.97 f
+  impl/oam_core/add_131/U1_13/CO (FA1D0)                                                0.06       1.03 f
+  impl/oam_core/add_131/U1_14/CO (FA1D0)                                                0.06       1.08 f
+  impl/oam_core/add_131/U1_15/CO (FA1D0)                                                0.06       1.14 f
+  impl/oam_core/add_131/U1_16/CO (FA1D0)                                                0.06       1.19 f
+  impl/oam_core/add_131/U1_17/CO (FA1D0)                                                0.06       1.25 f
+  impl/oam_core/add_131/U1_18/CO (FA1D0)                                                0.06       1.30 f
+  impl/oam_core/add_131/U1_19/CO (FA1D0)                                                0.06       1.36 f
+  impl/oam_core/add_131/U1_20/CO (FA1D0)                                                0.06       1.41 f
+  impl/oam_core/add_131/U1_21/CO (FA1D0)                                                0.07       1.48 f
+  impl/oam_core/add_131/U1/Z (AN2XD1)                                                   0.03       1.51 f
+  impl/oam_core/add_131/U1_23/CO (FA1D0)                                                0.05       1.56 f
+  impl/oam_core/add_131/U1_24/CO (FA1D0)                                                0.06       1.61 f
+  impl/oam_core/add_131/U1_25/Z (XOR3D1)                                                0.05       1.66 f
+  impl/oam_core/add_131/SUM[25] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)      0.00       1.66 f
+  impl/oam_core/Shift[1] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                        0.00       1.66 f
+  impl/U3/ZN (NR2D1)                                                                    0.13       1.79 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.79 r
+  impl/fp_wrapper/U29/CO (FA1D0)                                                        0.11       1.90 r
+  impl/fp_wrapper/U30/CO (FA1D0)                                                        0.05       1.95 r
+  impl/fp_wrapper/U31/CO (FA1D0)                                                        0.05       2.01 r
+  impl/fp_wrapper/U32/CO (FA1D0)                                                        0.05       2.06 r
+  impl/fp_wrapper/U33/CO (FA1D0)                                                        0.05       2.11 r
+  impl/fp_wrapper/U34/CO (FA1D0)                                                        0.05       2.16 r
+  impl/fp_wrapper/U44/Z (XOR3D1)                                                        0.08       2.24 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.24 f
+  impl/result[30] (amlib_oam_fp32_common_LEVEL0)                                        0.00       2.24 f
+  result[30] (out)                                                                      0.00       2.24 f
+  data arrival time                                                                                2.24
+
+  clock vclk (rise edge)                                                               10.00      10.00
+  clock network delay (ideal)                                                           0.00      10.00
+  output external delay                                                                -0.02       9.98
+  data required time                                                                               9.98
+  --------------------------------------------------------------------------------------------------------
+  data required time                                                                               9.98
+  data arrival time                                                                               -2.24
+  --------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                      7.74
+
+
+  Startpoint: x[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  amlib_oam_l0_fp32_common ZeroWireload    tcbn65gplustc_ccs
+  amlib_oam_fp32_common_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH24 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH25 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                 Incr       Path
+  --------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                0.00       0.00
+  clock network delay (ideal)                                                           0.00       0.00
+  input external delay                                                                  0.02       0.02 r
+  x[1] (in)                                                                             0.01       0.03 r
+  impl/x[1] (amlib_oam_fp32_common_LEVEL0)                                              0.00       0.03 r
+  impl/fp_wrapper/x[1] (fp32_normal_finite_wrapper)                                     0.00       0.03 r
+  impl/fp_wrapper/U108/Z (CKBD1)                                                        0.04       0.06 r
+  impl/fp_wrapper/fraction_x[1] (fp32_normal_finite_wrapper)                            0.00       0.06 r
+  impl/oam_core/Mantissa_X[16] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                  0.00       0.06 r
+  impl/oam_core/Stage_0_0/In_1[2] (CSA3_2_Array_WIDTH24)                                0.00       0.06 r
+  impl/oam_core/Stage_0_0/U40/Z (CKXOR2D1)                                              0.07       0.13 r
+  impl/oam_core/Stage_0_0/U8/Z (CKXOR2D1)                                               0.06       0.19 r
+  impl/oam_core/Stage_0_0/S[2] (CSA3_2_Array_WIDTH24)                                   0.00       0.19 r
+  impl/oam_core/Stage_1_0/In_1[2] (CSA3_2_Array_WIDTH25)                                0.00       0.19 r
+  impl/oam_core/Stage_1_0/U41/Z (CKXOR2D1)                                              0.06       0.26 r
+  impl/oam_core/Stage_1_0/U8/Z (CKXOR2D1)                                               0.06       0.32 f
+  impl/oam_core/Stage_1_0/S[2] (CSA3_2_Array_WIDTH25)                                   0.00       0.32 f
+  impl/oam_core/add_131/A[2] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)         0.00       0.32 f
+  impl/oam_core/add_131/U1_2/CO (FA1D0)                                                 0.10       0.42 f
+  impl/oam_core/add_131/U1_3/CO (FA1D0)                                                 0.06       0.47 f
+  impl/oam_core/add_131/U1_4/CO (FA1D0)                                                 0.06       0.53 f
+  impl/oam_core/add_131/U1_5/CO (FA1D0)                                                 0.06       0.58 f
+  impl/oam_core/add_131/U1_6/CO (FA1D0)                                                 0.06       0.64 f
+  impl/oam_core/add_131/U1_7/CO (FA1D0)                                                 0.06       0.69 f
+  impl/oam_core/add_131/U1_8/CO (FA1D0)                                                 0.06       0.75 f
+  impl/oam_core/add_131/U1_9/CO (FA1D0)                                                 0.06       0.80 f
+  impl/oam_core/add_131/U1_10/CO (FA1D0)                                                0.06       0.86 f
+  impl/oam_core/add_131/U1_11/CO (FA1D0)                                                0.06       0.92 f
+  impl/oam_core/add_131/U1_12/CO (FA1D0)                                                0.06       0.97 f
+  impl/oam_core/add_131/U1_13/CO (FA1D0)                                                0.06       1.03 f
+  impl/oam_core/add_131/U1_14/CO (FA1D0)                                                0.06       1.08 f
+  impl/oam_core/add_131/U1_15/CO (FA1D0)                                                0.06       1.14 f
+  impl/oam_core/add_131/U1_16/CO (FA1D0)                                                0.06       1.19 f
+  impl/oam_core/add_131/U1_17/CO (FA1D0)                                                0.06       1.25 f
+  impl/oam_core/add_131/U1_18/CO (FA1D0)                                                0.06       1.30 f
+  impl/oam_core/add_131/U1_19/CO (FA1D0)                                                0.06       1.36 f
+  impl/oam_core/add_131/U1_20/CO (FA1D0)                                                0.06       1.41 f
+  impl/oam_core/add_131/U1_21/CO (FA1D0)                                                0.07       1.48 f
+  impl/oam_core/add_131/U1/Z (AN2XD1)                                                   0.03       1.51 f
+  impl/oam_core/add_131/U1_23/CO (FA1D0)                                                0.05       1.56 f
+  impl/oam_core/add_131/U1_24/CO (FA1D0)                                                0.06       1.61 f
+  impl/oam_core/add_131/U1_25/Z (XOR3D1)                                                0.05       1.66 f
+  impl/oam_core/add_131/SUM[25] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)      0.00       1.66 f
+  impl/oam_core/Shift[1] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                        0.00       1.66 f
+  impl/U3/ZN (NR2D1)                                                                    0.13       1.79 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.79 r
+  impl/fp_wrapper/U29/CO (FA1D0)                                                        0.11       1.90 r
+  impl/fp_wrapper/U30/CO (FA1D0)                                                        0.05       1.95 r
+  impl/fp_wrapper/U31/CO (FA1D0)                                                        0.05       2.01 r
+  impl/fp_wrapper/U32/CO (FA1D0)                                                        0.05       2.06 r
+  impl/fp_wrapper/U33/CO (FA1D0)                                                        0.05       2.11 r
+  impl/fp_wrapper/U34/CO (FA1D0)                                                        0.05       2.16 r
+  impl/fp_wrapper/U44/Z (XOR3D1)                                                        0.08       2.24 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.24 f
+  impl/result[30] (amlib_oam_fp32_common_LEVEL0)                                        0.00       2.24 f
+  result[30] (out)                                                                      0.00       2.24 f
+  data arrival time                                                                                2.24
+
+  clock vclk (rise edge)                                                               10.00      10.00
+  clock network delay (ideal)                                                           0.00      10.00
+  output external delay                                                                -0.02       9.98
+  data required time                                                                               9.98
+  --------------------------------------------------------------------------------------------------------
+  data required time                                                                               9.98
+  data arrival time                                                                               -2.24
+  --------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                      7.74
+
+
+  Startpoint: x[1] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  amlib_oam_l0_fp32_common ZeroWireload    tcbn65gplustc_ccs
+  amlib_oam_fp32_common_LEVEL0 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH24 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30 ZeroWireload tcbn65gplustc_ccs
+  CSA3_2_Array_WIDTH25 ZeroWireload        tcbn65gplustc_ccs
+  Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                 Incr       Path
+  --------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                0.00       0.00
+  clock network delay (ideal)                                                           0.00       0.00
+  input external delay                                                                  0.02       0.02 r
+  x[1] (in)                                                                             0.01       0.03 r
+  impl/x[1] (amlib_oam_fp32_common_LEVEL0)                                              0.00       0.03 r
+  impl/fp_wrapper/x[1] (fp32_normal_finite_wrapper)                                     0.00       0.03 r
+  impl/fp_wrapper/U108/Z (CKBD1)                                                        0.04       0.06 r
+  impl/fp_wrapper/fraction_x[1] (fp32_normal_finite_wrapper)                            0.00       0.06 r
+  impl/oam_core/Mantissa_X[16] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                  0.00       0.06 r
+  impl/oam_core/Stage_0_0/In_1[2] (CSA3_2_Array_WIDTH24)                                0.00       0.06 r
+  impl/oam_core/Stage_0_0/U40/Z (CKXOR2D1)                                              0.07       0.13 r
+  impl/oam_core/Stage_0_0/U8/Z (CKXOR2D1)                                               0.06       0.19 r
+  impl/oam_core/Stage_0_0/S[2] (CSA3_2_Array_WIDTH24)                                   0.00       0.19 r
+  impl/oam_core/Stage_1_0/In_1[2] (CSA3_2_Array_WIDTH25)                                0.00       0.19 r
+  impl/oam_core/Stage_1_0/U41/Z (CKXOR2D1)                                              0.06       0.26 r
+  impl/oam_core/Stage_1_0/U8/Z (CKXOR2D1)                                               0.06       0.32 f
+  impl/oam_core/Stage_1_0/S[2] (CSA3_2_Array_WIDTH25)                                   0.00       0.32 f
+  impl/oam_core/add_131/A[2] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)         0.00       0.32 f
+  impl/oam_core/add_131/U1_2/CO (FA1D0)                                                 0.10       0.42 f
+  impl/oam_core/add_131/U1_3/CO (FA1D0)                                                 0.06       0.47 f
+  impl/oam_core/add_131/U1_4/CO (FA1D0)                                                 0.06       0.53 f
+  impl/oam_core/add_131/U1_5/CO (FA1D0)                                                 0.06       0.58 f
+  impl/oam_core/add_131/U1_6/CO (FA1D0)                                                 0.06       0.64 f
+  impl/oam_core/add_131/U1_7/CO (FA1D0)                                                 0.06       0.69 f
+  impl/oam_core/add_131/U1_8/CO (FA1D0)                                                 0.06       0.75 f
+  impl/oam_core/add_131/U1_9/CO (FA1D0)                                                 0.06       0.80 f
+  impl/oam_core/add_131/U1_10/CO (FA1D0)                                                0.06       0.86 f
+  impl/oam_core/add_131/U1_11/CO (FA1D0)                                                0.06       0.92 f
+  impl/oam_core/add_131/U1_12/CO (FA1D0)                                                0.06       0.97 f
+  impl/oam_core/add_131/U1_13/CO (FA1D0)                                                0.06       1.03 f
+  impl/oam_core/add_131/U1_14/CO (FA1D0)                                                0.06       1.08 f
+  impl/oam_core/add_131/U1_15/CO (FA1D0)                                                0.06       1.14 f
+  impl/oam_core/add_131/U1_16/CO (FA1D0)                                                0.06       1.19 f
+  impl/oam_core/add_131/U1_17/CO (FA1D0)                                                0.06       1.25 f
+  impl/oam_core/add_131/U1_18/CO (FA1D0)                                                0.06       1.30 f
+  impl/oam_core/add_131/U1_19/CO (FA1D0)                                                0.06       1.36 f
+  impl/oam_core/add_131/U1_20/CO (FA1D0)                                                0.06       1.41 f
+  impl/oam_core/add_131/U1_21/CO (FA1D0)                                                0.07       1.48 f
+  impl/oam_core/add_131/U1/Z (AN2XD1)                                                   0.03       1.51 f
+  impl/oam_core/add_131/U1_23/CO (FA1D0)                                                0.05       1.56 f
+  impl/oam_core/add_131/U1_24/CO (FA1D0)                                                0.06       1.61 f
+  impl/oam_core/add_131/U1_25/Z (XOR3D1)                                                0.05       1.66 f
+  impl/oam_core/add_131/SUM[25] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30_DW01_add_0)      0.00       1.66 f
+  impl/oam_core/Shift[1] (Mantissa_OAUM_MANTISSA_WIDTH23_ACC_30)                        0.00       1.66 f
+  impl/U3/ZN (NR2D1)                                                                    0.13       1.79 r
+  impl/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.79 r
+  impl/fp_wrapper/U29/CO (FA1D0)                                                        0.11       1.90 r
+  impl/fp_wrapper/U30/CO (FA1D0)                                                        0.05       1.95 r
+  impl/fp_wrapper/U31/CO (FA1D0)                                                        0.05       2.01 r
+  impl/fp_wrapper/U32/CO (FA1D0)                                                        0.05       2.06 r
+  impl/fp_wrapper/U33/CO (FA1D0)                                                        0.05       2.11 r
+  impl/fp_wrapper/U34/CO (FA1D0)                                                        0.05       2.16 r
+  impl/fp_wrapper/U44/Z (XOR3D1)                                                        0.08       2.24 f
+  impl/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.24 f
+  impl/result[30] (amlib_oam_fp32_common_LEVEL0)                                        0.00       2.24 f
+  result[30] (out)                                                                      0.00       2.24 f
+  data arrival time                                                                                2.24
+
+  clock vclk (rise edge)                                                               10.00      10.00
+  clock network delay (ideal)                                                           0.00      10.00
+  output external delay                                                                -0.02       9.98
+  data required time                                                                               9.98
+  --------------------------------------------------------------------------------------------------------
+  data required time                                                                               9.98
+  data arrival time                                                                               -2.24
+  --------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                      7.74
+
+
+1

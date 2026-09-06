@@ -93,6 +93,15 @@ if enabled canonical; then
         "$SIMD/top_module.v" \
         "$ROOT/rtl/simdive_original/simdive_original_fp32_wrapper.v"
 
+    if [[ -z ${ONLY_TAG:-} || ${ONLY_TAG:-} == simdive/sisd32_specialized ]]; then
+        printf 'Running source-specialized SIMDive 32-bit point.\n'
+        run_one simdive/sisd32_specialized \
+            simdive_sisd32_fp32_wrapper "" \
+            "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
+            "$SIMD/add_4_bit.v" "$SIMD/add_8_bit.v" \
+            "$ROOT/rtl/simdive_original_compat/simdive_sisd32_specialized.v"
+    fi
+
     INDEX="$WORKTREES/centered-index-sharing"
     mapfile -t index_rtl < <(oadm_files "$INDEX")
     run_one "variant_audit/L0_centered_index/full" oadm_fixed_l0_opt "" \
@@ -101,7 +110,10 @@ if enabled canonical; then
     for level in 0 1 2 3; do
         mapfile -t oam_rtl < <(find "$ROOT/third_party/amlib_oam/L${level}/src" \
             -maxdepth 1 -type f -name '*.v' -print | sort)
-        run_one "amlib_oam/L${level}" top "" "${oam_rtl[@]}"
+        run_one "amlib_oam/L${level}" "amlib_oam_l${level}_fp32_common" "" \
+            "${oam_rtl[@]}" \
+            "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
+            "$ROOT/rtl/amlib_oam/amlib_oam_fp32_common_wrapper.v"
     done
 fi
 
@@ -119,6 +131,12 @@ if enabled pace; then
 fi
 
 if enabled prior; then
+    for m in 4 6 8; do
+        run_one "prior/plsad_m${m}" "plsad_m${m}_fp32_paceio" "" \
+            "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v" \
+            "$ROOT/rtl/paper_repro/plsad_prior_fp32_paceio.v"
+    done
+
     QIAD="$WORKTREES/qiad-repro/rtl/qiad_prior"
     run_one prior/qiad qiad_prior_fp32_paceio \
         "$QIAD/ref_core/common" \
@@ -191,6 +209,18 @@ if enabled root_shared; then
     for level in 0 1 2 3; do
         top="oadm_fixed_l${level}_divmul_root_opt"
         run_one "root_shared/$top" "$top" "" "${shared_rtl[@]}"
+    done
+fi
+
+if enabled correction_chain; then
+    correction_rtl=(
+        "$ROOT/PACE/common/FP_DIV_WRAPPER_32.v"
+        "$ROOT/rtl/csa3.v"
+        "$ROOT/rtl/baseline/oadm_fixed_divmul_correction_chain.v"
+    )
+    for level in 0 1 2 3; do
+        top="oadm_fixed_l${level}_divmul_correction_chain"
+        run_one "correction_chain/$top" "$top" "" "${correction_rtl[@]}"
     done
 fi
 

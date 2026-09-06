@@ -1,0 +1,100 @@
+--- original
++++ binary
+@@ -1,4 +1,4 @@
+-module oadm_fixed_divmul_root_opt #(
++module oadm_fixed_divmul_root_opt_binary #(
+     parameter integer LEVEL = 0,
+     parameter integer DIV_RESIDUAL_DROP = 18,
+     parameter integer MUL_RESIDUAL_DROP = 16,
+@@ -110,8 +110,25 @@
+         end
+     end
+ 
+-    wire [24-SCALE_DROP+COEFFICIENT_BITS:0] reduced_scale_product =
+-        plane_value[24:SCALE_DROP] * coefficient;
++    localparam integer SA_WIDTH = 25-SCALE_DROP+COEFFICIENT_BITS+1;
++    wire [SA_WIDTH-1:0] sa_w = {{(COEFFICIENT_BITS+1){1'b0}}, plane_value[24:SCALE_DROP]};
++    wire [7:0] sa_coefficient = coefficient;
++    wire [SA_WIDTH-1:0] sa_t0 = sa_coefficient[0] ? (sa_w << 0) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_t1 = sa_coefficient[1] ? (sa_w << 1) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_t2 = sa_coefficient[2] ? (sa_w << 2) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_t3 = sa_coefficient[3] ? (sa_w << 3) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_t4 = sa_coefficient[4] ? (sa_w << 4) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_t5 = sa_coefficient[5] ? (sa_w << 5) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_t6 = sa_coefficient[6] ? (sa_w << 6) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_t7 = sa_coefficient[7] ? (sa_w << 7) : {SA_WIDTH{1'b0}};
++    wire [SA_WIDTH-1:0] sa_sum_0_0 = sa_t0 + sa_t1;
++    wire [SA_WIDTH-1:0] sa_sum_0_1 = sa_t2 + sa_t3;
++    wire [SA_WIDTH-1:0] sa_sum_0_2 = sa_t4 + sa_t5;
++    wire [SA_WIDTH-1:0] sa_sum_0_3 = sa_t6 + sa_t7;
++    wire [SA_WIDTH-1:0] sa_sum_1_0 = sa_sum_0_0 + sa_sum_0_1;
++    wire [SA_WIDTH-1:0] sa_sum_1_1 = sa_sum_0_2 + sa_sum_0_3;
++    wire [SA_WIDTH-1:0] sa_sum_2_0 = sa_sum_1_0 + sa_sum_1_1;
++    wire [24-SCALE_DROP+COEFFICIENT_BITS:0] reduced_scale_product = sa_sum_2_0[SA_WIDTH-2:0];
+     wire signed [28:0] divided_value =
+         $signed({4'b0000, reduced_scale_product,
+                  {(SCALE_DROP-COEFFICIENT_BITS){1'b0}}});
+@@ -145,43 +162,43 @@
+     );
+ endmodule
+ 
+-module oadm_fixed_l0_divmul_root_opt (
+-    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
+-    output wire [31:0] result
+-);
+-    oadm_fixed_divmul_root_opt #(
++module oadm_fixed_l0_divmul_root_opt_binary (
++    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
++    output wire [31:0] result
++);
++    oadm_fixed_divmul_root_opt_binary #(
+         .LEVEL(0), .DIV_RESIDUAL_DROP(18), .MUL_RESIDUAL_DROP(16),
+         .SCALE_DROP(18), .COEFFICIENT_BITS(7), .C0(8'd59)
+     ) implementation (x, y, divide_mode, result);
+ endmodule
+ 
+-module oadm_fixed_l1_divmul_root_opt (
+-    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
+-    output wire [31:0] result
+-);
+-    oadm_fixed_divmul_root_opt #(
++module oadm_fixed_l1_divmul_root_opt_binary (
++    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
++    output wire [31:0] result
++);
++    oadm_fixed_divmul_root_opt_binary #(
+         .LEVEL(1), .DIV_RESIDUAL_DROP(16), .MUL_RESIDUAL_DROP(14),
+         .SCALE_DROP(16), .COEFFICIENT_BITS(7),
+         .C0(8'd83), .C1(8'd42)
+     ) implementation (x, y, divide_mode, result);
+ endmodule
+ 
+-module oadm_fixed_l2_divmul_root_opt (
+-    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
+-    output wire [31:0] result
+-);
+-    oadm_fixed_divmul_root_opt #(
++module oadm_fixed_l2_divmul_root_opt_binary (
++    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
++    output wire [31:0] result
++);
++    oadm_fixed_divmul_root_opt_binary #(
+         .LEVEL(2), .DIV_RESIDUAL_DROP(16), .MUL_RESIDUAL_DROP(12),
+         .SCALE_DROP(16), .COEFFICIENT_BITS(8),
+         .C0(8'd203), .C1(8'd136), .C2(8'd97), .C3(8'd73)
+     ) implementation (x, y, divide_mode, result);
+ endmodule
+ 
+-module oadm_fixed_l3_divmul_root_opt (
+-    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
+-    output wire [31:0] result
+-);
+-    oadm_fixed_divmul_root_opt #(
++module oadm_fixed_l3_divmul_root_opt_binary (
++    input wire [31:0] x, input wire [31:0] y, input wire divide_mode,
++    output wire [31:0] result
++);
++    oadm_fixed_divmul_root_opt_binary #(
+         .LEVEL(3), .DIV_RESIDUAL_DROP(16), .MUL_RESIDUAL_DROP(10),
+         .SCALE_DROP(16), .COEFFICIENT_BITS(8),
+         .C0(8'd227), .C1(8'd182), .C2(8'd149), .C3(8'd124),

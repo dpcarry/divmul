@@ -25,7 +25,7 @@ def metrics(expected, actual):
     }
 
 
-def run(points, residual_drop, scale_drop):
+def run(points, residual_drop, scale_drop, lower, upper):
     mantissas = uniform_mantissas(points)
     x_mantissa = mantissas[:, np.newaxis]
     y_mantissa = mantissas[np.newaxis, :]
@@ -34,7 +34,7 @@ def run(points, residual_drop, scale_drop):
         x_mantissa, y_mantissa, 0, True, residual_drop
     )
     rows = []
-    for coefficient in range(1, 128):
+    for coefficient in range(lower, upper + 1):
         core = scale_plane(plane, coefficient, 7, scale_drop)
         result = metrics(expected, fp32_bits_to_real(pack_fp32(core)))
         rows.append({
@@ -80,7 +80,7 @@ def plot(rows, output_pdf, output_png, lower, upper):
                  alpha=0.65)
     axis.axvline(optimum["coefficient_integer"], color="#b42318",
                  linewidth=0.8, linestyle="--", alpha=0.65)
-    axis.set_xlabel(r"Q0.7 LUT integer $C$ (scale $C/128$)")
+    axis.set_xlabel(r"Q0.7 coefficient integer $C$ (value $C/128$)")
     axis.set_ylabel("RMSE of FP32 quotient")
     axis.set_xticks(np.arange(lower, upper + 1))
     axis.grid(axis="y", color="#d0d5dd", linewidth=0.55)
@@ -115,7 +115,10 @@ def main():
         default=Path("paper_hardware/pictures/l0_q07_coefficient_sweep.png"),
     )
     args = parser.parse_args()
-    rows = run(args.points, args.residual_drop, args.scale_drop)
+    rows = run(
+        args.points, args.residual_drop, args.scale_drop,
+        args.plot_lower, args.plot_upper
+    )
     args.csv.parent.mkdir(parents=True, exist_ok=True)
     with args.csv.open("w", newline="") as output:
         writer = csv.DictWriter(
@@ -129,7 +132,7 @@ def main():
     for metric in ("mae", "mred", "rmse"):
         best = min(rows, key=lambda row: row[metric])
         print(
-            "global Q0.7 {} minimum: C={}, scale={:.9f}, value={:.9f}"
+            "Q0.7 neighborhood {} minimum: C={}, value={:.9f}, metric={:.9f}"
             .format(metric.upper(), best["coefficient_integer"],
                     best["coefficient_q07"], best[metric])
         )

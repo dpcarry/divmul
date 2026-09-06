@@ -1,0 +1,320 @@
+ A Curve Fitting Approach for Non-Iterative Divider
+  Design with Accuracy and Performance Trade-off
+
+                                                           Lei Wu, Ching Chuen Jong
+                    VIRTUS IC Design Center of Excellence, School of Electrical and Electronic Engineering,
+                         Nanyang Technological University, 50 Nanyang Avenue, Singapore 639798
+                                          Email: {lwu010, eccjong}@ntu.edu.sg
+
+    Abstract—This paper presents an approach based on the                        graphic processing [8], where multiplications and divisions
+curve ﬁtting method for the design of non-iterative divider                      are simpliﬁed as addition/subtraction operations in logarithmic
+circuits with accuracy and area-delay product (ADP) trade-offs.                  domain using the Mitchell-based logarithmic approximation
+The curved surfaces representing the quotient are partitioned                    method [9] [10]. For fast division, a non-iterative Mitchell-
+into several regions, each of which is then approximated by a                    based design was proposed for the ﬁrst time in [11], which
+square/triangular plane. The planes are obtained by using the
+curve ﬁtting method for accuracy optimization. The proposed
+                                                                                 achieves an accuracy of 0.20% in terms of the maximum
+architecture for implementing the planes contains only simple                    absolute error percentage (MAEP). However, the details of
+arithmetic operations and a look-up table. Several non-iterative                 the method used to obtain the approximation functions are
+divider circuits with different accuracies and ADPs are obtained.                not reported. As such, the design is unlikely to be optimized
+The accuracy achieved in terms of the maximum absolute error                     for accuracy, performance and hardware complexity. Moreover,
+percentage (MAEP) ranges from 1.87% to 0.14%. The MAEP of                        when a divider with another accuracy and/or speed and size is
+0.14% is 30% better than the one achieved by the best existing                   needed, it cannot be obtained systematically.
+non-iterative divider.
+                                                                                     In this paper, we propose a systematical approach based
+                                                                                 on curve ﬁtting to obtain the approximation functions for the
+                       I.    I NTRODUCTION
+                                                                                 designs of fast non-iterative divider. By trading-off accuracy
+    Arithmetic divider is a basic yet complex module in                          and area-delay product (ADP), several designs with different
+integrated circuits. It plays an increasingly important role in a                MAEPs ranging from 0.14% to 1.87% and hardware complexi-
+variety of ﬁelds and is widely used in graphic processing [1].                   ty are obtained to suit the requirements of various applications.
+However, divider is often a performance limiting module in                       To the best of our knowledge, there is no divider designed
+these applications due to its complexity. In the VLSI imple-                     based on the curve ﬁtting approach. With such divider designs,
+mentation of digital signal processing (DSP) systems, division                   the applications that can tolerate lower accuracy can employ
+is also a costly operation [2], often realized by multiplication                 more compact but less accurate dividers. For those applications
+using multiply-and-accumulate (MAC) units. The lack of fast                      that demand higher accuracy, larger but more accurate dividers
+and compact division module in integrated circuits has for a                     can be used. In the current implementations, the most accurate
+long time been the bottleneck for some real-time multimedia                      quotient achieved has a MAEP of 0.14%, which is 30% better
+applications, such as high performance graphics rendering                        than of the one achieved by the only existing non-iterative
+pipelines [3]. The design of division circuit has received far                   divider [11].
+less attention than the designs of adder and multiplier have                        The proposed approximation method is described next in
+[4], hindering the performance in many applications.                             Section II. Section III presents the hardware architecture. The
+    Other than those implemented with multiplications, the                       synthesis results and comparisons are presented in Section IV.
+division circuits can be generally categorized into two main                     Section V concludes the paper.
+classes [4], the digit recurrence method and the functional
+iteration algorithm. The digit recurrence method evolves from                                           II.    P ROPOSED M ETHOD
+the concept of the manual long division to obtain one or several                 A. Formulation of Division
+digits each cycle, and its representation is the well-known
+SRT (Sweeny, Robertson, and Tocher) division method [5].                             For the purpose of proper normalization and fair perfor-
+The functional iteration algorithm tries to estimate an initial                  mance comparison with the existing designs, the proposed
+approximation, and then converges to the actual result itera-                    divider takes as inputs two 22-bit inputs, Na and Nb , as given
+tively based on a functional algorithm. The Newton-Raphson                       in (1) and (2). For reasonable precision and dynamic range,
+algorithm [6] is a typical functional iteration method. Both                     both the inputs and the output have 1 sign bit, 5 bits of
+types of dividers have low hardware complexity, but suffer                       exponent and 16 bits of mantissa. It is implied that there is
+from large latencies and/or long delay, resulting in a bottleneck                always a “1.” in front of the 16-bit mantissa.
+in real-time applications such as 3D graphic computing [7].
+   We have observed that many real-time applications have                                                Na = (1 + ma ) × 2ea −15                    (1)
+a good tolerance for computation accuracy, thus leaving s-
+pace for exploring the trade-off among accuracy, computation                          and
+speed and hardware complexity. One such example is the 3D                                                Nb = (1 + mb ) × 2eb −15                    (2)
+
+
+         Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:26:53 UTC from IEEE Xplore. Restrictions apply.
+   The quotient Q of Na divided by Nb is hence given as (3).
+                        Na   1 + ma
+                 Q=        =        × 2ea −eb                           (3)
+                        Nb   1 + mb
+
+     If the mantissa (1 + ma )/(1 + mb ) is normalized to be in
+the range of [1, 2), the quotient Q of (3) can be expressed as
+(4).
+
+                ⎧
+           Na   ⎨ M × 2ea −eb −1 , if ma < mb
+        Q=    =                                                         (4)
+           Nb   ⎩ M × 2ea −eb , otherwise
+
+   where
+                    ⎧         1+ma
+                                                                                 Fig. 1.     (a) Normalized division curved surfaces. (b) Percentage error
+                    ⎨ 2×      1+mb       , if ma < mb                            distribution when approximated by planes.
+             M=                                                         (5)
+                    ⎩    1+ma
+                         1+mb            , otherwise
+                                                                                     As the original curved surfaces are approximated by s-
+is the normalized mantissa. Hence the exponent and mantissa                      mall square/triangular planes, there are approximation errors,
+of Q can be computed independently, other than there could be                    leading to loss of accuracy. A design is acceptable as long
+a carry from the mantissa to the exponent due to normalization.                  as the approximation errors are within the accuracy tolerance
+                                                                                 speciﬁed in an application. The approximation error, η, in
+    The normalized quotient is conﬁned within the same small                     terms of the MAEP can be derived from (4), (5) and (6)
+range [1, 2) and falls on two curved surfaces along the diagonal                 as given in (7), which shows that η is independent of the
+ma = mb when the quotient is graphically plotted against ma                      exponent.
+and mb as shown in Fig. 1(a). Thus, the quotient Q can be
+obtained by ﬁnding the value on the surfaces corresponding to
+ma and mb . As it is complicated and costly to implement the                                             Q̂ − Q     M̂ − M
+curved surfaces, we propose to approximate them with planes                                       η=|           |=|        | × 100%                   (7)
+                                                                                                            Q          M
+as described in the next section. Fig. 1(b) shows an example of
+percentage error distribution when the curved quotient surface                   where Q̂ denotes the approximated quotient of Q.
+is approximated by 16 × 16 planes.
+                                                                                     The accuracy and the complexity of the design are impact-
+                                                                                 ed by several parameters, speciﬁcally, the number of planes
+B. Approximation of Division                                                     used for the approximation, the values of the constant coefﬁ-
+    The proposed approach is based on the curve ﬁtting method                    cients p, q and r, as well as their wordlengths. It is possible to
+to approximate the curved surfaces with small square planes                      obtain designs that are more accurate but complex, or simpler
+for efﬁcient hardware implementation. The original curved sur-                   but less accurate, providing a trade-off of accuracy and ADP.
+faces are ﬁrst evenly partitioned into certain number of regions.                In this work, the parameters are obtained as described below.
+The curved surface in each region is then approximated with                          We ﬁrst decide the partition scheme and adopt the curve
+a plane represented by (6).                                                      ﬁtting approach to ﬁnd the coefﬁcients p, q and r for the
+                                                                                 square/triangular plane to approximate the individual region of
+                M̂ = 1 + p × ma − q × mb + r                            (6)      the curved surfaces. During the curve ﬁtting, uniform sampling
+                                                                                 points are selected from each partitioned curved surface. The
+where M̂ represents the approximated M in (5), and p, q and                      function [za, goodness] = f it([ma, mb], z0, poly11 ) from
+r are the constant coefﬁcients within each partitioned region                    the Matlab curve-ﬁtting toolbox is then used to ﬁnd a two-
+to form the corresponding plane.                                                 variable expression that best ﬁts all the sampling points, and
+                                                                                 the approximation error for each region is then calculated. In
+    It is worth mentioning that the quotient surfaces in Fig.                    the function, za and goodness are respectively the returned
+1(a) are disjoint along the diagonal where ma = mb . Large                       ﬁtting function, i.e. equation (6) in this case, and the ﬁtting
+approximation error may be resulted in these regions if square                   quality. ma and mb are the sets of sampling points and z0
+planes are used to approximate them, because the approxi-                        is the set of values of the function corresponding to the
+mated mantissa may fall on the totally wrong location and                        sampling points. Type  poly11 indicates that the ﬁtted function
+the exponent may also be wrongly computed due to wrong                           type is a linear polynomial surface. We have experimented
+carry bit. As such, each square region along the diagonal is                     using different number of sampling points for the ﬁtting and
+further divided into two triangular regions, each approximated                   found that the approximation error varies negligibly when the
+by a triangular plane. The triangular planes are represented                     sampling points are more than 100 points. The coefﬁcients p,
+by the same equation (6). The hardware implementation of                         q and r for each region are obtained after the curve ﬁtting.
+(6) is straightforward and efﬁcient as only simple arithmetic
+modules such as shifters, adders/subtractors and look-up tables                     We also experimented with two schemes of partitioning the
+are required.                                                                    curved surface, an 8 × 8 and a 16 × 16 partitions, each with
+
+
+         Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:26:53 UTC from IEEE Xplore. Restrictions apply.
+                                                                                                                                          ZĞŐŝƐƚĞƌ
+
+                 ZĞŐŝƐƚĞƌ                                           ^ŝŐŶĂŶĚǆƉŽŶĞŶƚ                                                                    KǀĞƌĨůŽǁͺĨůĂŐ
+                                                                          DŽĚƵůĞ
+                        ϲ
+                                                                                                                    DĂŶƚŝƐƐĂDŽĚƵůĞ
+     ϮϮ
+EĂ                                                                                                EĂ΀ϭϱ͗Ϭ΁
+                        ϭϲ       EĂ΀ϭϱ͗Ϭ΁                                   ĐĂƌƌǇ
+                                               EĂ΀ϭϱ͗ϭϱͲŚнϭ΁   Ś
+                                                                        ŽŵƉĂƌŝƐŽŶ                                                       ZĞŐŝƐƚĞƌ
+                                                                Ś
+                                                                          DŽĚƵůĞ
+                                               Eď΀ϭϱ͗ϭϱͲŚнϭ΁                                                               н
+                                                                                             хх
+                                                                                                              ĚĚĞƌdƌĞĞ             ϲ
+                                                                       ф с     х                                  ϭ
+                                                                                         Ɖ
+                 ZĞŐŝƐƚĞƌ                                                                                                                            ϮϮ
+                                                                                                                                                           Y
+                        ϲ                                                                                                             ϭϲ
+                                               EĂ΀ϭϱ͗ϭϱͲƐнϭ΁   Ɛ                                                               н
+                                                                                         Ƌ                    ĚĚĞƌdƌĞĞ   Ͳ
+     ϮϮ                                                                >ŽŽŬͲƵƉdĂďůĞ         хх
+Eď                                                              Ɛ                                                 Ϯ
+                            ϭϲ     Eď΀ϭϱ͗Ϭ΁   Eď΀ϭϱ͗ϭϱͲƐнϭ΁
+
+                                                                                         ƌ                                  н
+                                                                                              Eď΀ϭϱ͗Ϭ΁
+
+
+
+Fig. 2.   Hardware architecture for the proposed non-iterative divider
+
+
+different wordlength of the constants, and obtained several di-                                  4) Summation Module: The results of the adder trees and
+vider designs with different accuracies and ADPs. The detailed                               the coefﬁcient r are summed in this module to produce the
+results, including the wordlengths of the coefﬁcients, the areas                             approximated mantissa of the quotient in (6).
+and delays are presented in Section IV.
+                                                                                             B. Sign and Exponent Module with Overﬂow Indication
+          III.     P ROPOSED H ARDWARE A RCHITECTURE
+                                                                                                 The module generates the sign bit and the 5-bit exponent
+    Based on the above approach, the architecture of the non-                                for the quotient. The sign bit is simply realized by an XOR
+iterative divider is proposed as shown in Fig. 2. The main                                   operation of the two input sign bits. The exponent is produced
+functional modules are elaborated below.                                                     by a 5-bit subtractor, performing ea − eb + 15 − carry. Note
+                                                                                             that the exponent is not approximated.
+A. Mantissa Module
+                                                                                                The module also generates an overﬂow ﬂag if the resulting
+   The mantissa module takes as inputs the 16-bit mantissas of                               exponent of the quotient Q is out of the valid range of
+Na and Nb and produces the 16-bit mantissa of their quotient                                 [−15, 16].
+Q. It consists of a comparison module, a look-up table,
+two shift modules, two adder-tree modules and a summation                                            IV.      P ERFORMANCE E VALUATION AND C OMPARISON
+module.
+                                                                                                 There are only a couple of existing non-iterative divider
+    1) Comparison Module: The module compares h MSBs
+                                                                                             circuits [12] [11] and both of them perform the division as
+(Most Signiﬁcant Bits) of the mantissa. h is determined after
+                                                                                             subtraction in the logarithmic domain. The proposed approach
+the coefﬁcients p, q and r are found and the overall approxi-
+                                                                                             uses the curve-ﬁtting method to systematically obtain several
+mation error is calculated. It is chosen as the smallest integer
+                                                                                             non-iterative divider circuits with different accuracy and ADP
+that satisﬁes 2−h < error, as any values smaller than 2−h
+                                                                                             trade-offs as listed in Table I, where the number of partitions,
+are insigniﬁcant and can be ignored for hardware simplicity.
+                                                                                             the wordlengths of the coefﬁcients, the MAEPs achieved and
+The comparison results, ma < mb , ma = mb or ma > mb ,
+                                                                                             the synthesis results are included. The synthesis results are
+determine whether a square plane is on the diagonal and if
+                                                                                             obtained from coding the proposed architecture of Fig. 2 in
+so, on which triangular plane (see the situations discussed in
+                                                                                             Verilog RTL for synthesis in 90 nm CMOS process with
+Section II). The module also produces a carry for the Sign and
+                                                                                             the Synopsys Design Compiler. The MAEP achieved by the
+Exponent Module.
+                                                                                             proposed approach ranges from 1.87% to 0.14%. The circuit
+    2) Look-up Table: The Look-up Table stores the coefﬁ-                                    with the best MAEP is obtained by partitioning the curved
+cients p, q and r. s MSBs of the mantissa are used to read                                   surfaces of the quotient into 16 × 16 square planes. It is
+the coefﬁcients, where s = 3 and 4 respectively for the 8 × 8                                worth mentioning that the MAEP in Table I is reduced when
+and 16×16 partition scheme. The comparison results from the                                  the number of partitions and the wordlength of p, q and r
+Comparison Module are used for accessing the coefﬁcients of                                  are increased, resulting in larger ADPs. On the other hand,
+the triangular planes if a square plane is on the diagonal.                                  increasing the wordlength of the input mantissas does not help
+                                                                                             in reducing the MAEP. The wordlength of the input exponents
+    3) Shift Modules and Adder Trees: The module is to                                       has no impact on the MAEP but marginally on only the area.
+produce the partial products of p × ma and q × mb of (6).
+The mantissas ma and mb are ﬁrst shifted using hardwired                                         Table II compares the two most accurate designs, i.e. the
+shifters for all the required shifted positions and multiplexed.                             last two designs in Table I, with the existing non-iterative
+The shifted values are selected by the corresponding non-zero                                dividers reported in [11]. Compared with the single-stage
+bits of p and q to be summed by the carry-save adder trees.                                  method [11], Design A and B have a lower MAEP by 20% and
+
+
+            Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:26:53 UTC from IEEE Xplore. Restrictions apply.
+  TABLE I.           D IVIDER CIRCUITS WITH MAEP           AND    ADP TRADE - OFF
+                                                                                                                DWϴǆϴ          DWϭϲǆϭϲ
+ 3DUWLWLRQ   :RUGOHQJWK   ELWV                     'HOD\           $UHD
+                                   K       0$(3                               $'3                Ϯ͘Ϭй
+  3ODQHV     S DQG T        U                       QV             PP                                          Wϴǆϴ           Wϭϲǆϭϲ
+                                                                                                                                                               ϯϴ
+                                                                          ϭ͘ϴй
+  u                                                      
+  V                                                                                             ϭ͘ϲй                                                          ϯϯ
+                                                           
+                                                                         ϭ͘ϰй
+
+
+
+
+                                                                                                                                                                    W;PŵϮͲŶƐuϭϬϯͿ
+                                                                                                                                       Ϯϴ
+                                                                                                ϭ͘Ϯй
+ u                                                    
+
+
+
+
+                                                                                          DW
+   V                                                                 ϭ͘Ϭй
+                                                                                                                                                             Ϯϯ
+                                                          
+                                                                                                 Ϭ͘ϴй
+                                                                                                 Ϭ͘ϲй                                                          ϭϴ
+  TABLE II.            P ERFORMANCE COMPARISON WITH PREVIOUS WORKS
+                                                                                                 Ϭ͘ϰй
+                'HVLJQV                  0$(3      'HOD\ QV      $UHD PP     $'3                                                                            ϭϯ
+                                                                                                 Ϭ͘Ϯй
+         VWDJHPHWKRG>@                                      
+       6LQJOHVWDJHPHWKRG>@                                               Ϭ͘Ϭй                                                          ϴ
+        7KLVZRUN ± 'HVLJQ$                                                         ϱ   ϲ    ϳ           ϴ         ϵ        ϭϬ   ϭϭ   ϭϮ
+        7KLV ZRUN ± 'HVLJQ%                                                                      tŽƌĚůĞŶŐƚŚŽĨƉĂŶĚƋ;ďŝƚƐͿ
+
+
+
+30% respectively. Design A has shorter delay and comparable                            Fig. 3. MAEP and ADP trade-off for various partition scheme and coefﬁcients
+                                                                                       wordlengths
+ADP while Design B has the same delay but larger ADP.
+    The distribution of the MAEP and ADP of the eight designs
+obtained can be visualized from Fig. 3. It is observed that the                         [4] S. F. Oberman and M. Flynn, “Division algorithms and implementa-
+                                                                                            tions,” Computers, IEEE Transactions on, vol. 46, no. 8, pp. 833–854,
+8 × 8 and 16 × 16 partitions have different design spaces. With                             1997.
+the former, lower hardware complexity and shorter delay due
+                                                                                        [5] M. D. Ercegovac and T. Lang, Division and square root: digit-
+to smaller look-up table and simpler adder trees are achieved,                              recurrence algorithms and implementations. Kluwer Academic Pub-
+but the accuracy is limited. With the latter, higher accuracy is                            lishers, 1994.
+achieved at the expense of higher complexity and longer delay.                          [6] M. Flynn, “On division by functional iteration,” Computers, IEEE
+Hence, a series of divider designs with different accuracy-                                 Transactions on, vol. C-19, no. 8, pp. 702–706, Aug 1970.
+ADP trade-offs are obtained for various applications where                              [7] N. Ide, M. Hirano, Y. Endo, S. Yoshioka, H. Murakami, A. Kunimatsu,
+fast division is needed in integrated circuits.                                             T. Sato, T. Kamei, T. Okada, and M. Suzuoki, “2.44-GFLOPS 300-MHz
+                                                                                            ﬂoating-point vector-processing unit for high-performance 3D graphics
+    In the future, work can be done to obtain divider circuits                              computing,” Solid-State Circuits, IEEE Journal of, vol. 35, no. 7, pp.
+with other accuracies and ADPs by adopting other partition                                  1025–1033, 2000.
+schemes, including irregular partition schemes. The imple-                              [8] F. Sheikh, S. K. Mathew, M. A. Anders, H. Kaul, S. K. Hsu, A. Agarwal,
+                                                                                            R. K. Krishnamurthy, and S. Borkar, “A 2.05 Gvertices/s 151 mW
+mentation of the proposed architecture can also be further                                  lighting accelerator for 3D graphics vertex and pixel shading in 32
+optimized by merging the adder trees and the summation                                      nm CMOS,” Solid-State Circuits, IEEE Journal of, vol. 48, no. 1, pp.
+module in the mantissa module.                                                              128–139, 2013.
+                                                                                        [9] J. Y. L. Low and C. C. Jong, “Uniﬁed Mitchell-based approximation for
+                                                                                            efﬁcient logarithmic conversion circuit,” Computers, IEEE Transactions
+                                  V.    C ONCLUSION                                         on, 2014.
+    An approach based on the curve ﬁtting method is pro-                               [10] J. N. Mitchell, “Computer multiplication and division using binary
+                                                                                            logarithms,” Electronic Computers, IRE Transactions on, no. 4, pp. 512–
+posed for non-iterative divider designs. The curved sur-                                    517, 1962.
+faces representing the quotients are approximated by several                           [11] J. Y. L. Low and C. C. Jong, “Non-iterative high speed division
+square/triangular planes. The constant coefﬁcients for the plane                            computation based on Mitchell logarithmic method,” in Circuits and
+equations are obtained by the curve ﬁtting method to optimize                               Systems (ISCAS), 2013 IEEE International Symposium on. IEEE, 2013,
+the accuracy. A series of designs with accuracy and ADP trade-                              pp. 2219–2222.
+offs are obtained, providing various solutions for applications                        [12] H. Kim, B.-G. Nam, J.-H. Sohn, J.-H. Woo, and H.-J. Yoo, “A 231-
+that have different complexity and accuracy requirements. With                              MHz, 2.18-mW 32-bit logarithmic arithmetic unit for ﬁxed-point 3-D
+                                                                                            graphics system,” Solid-State Circuits, IEEE Journal of, vol. 41, no. 11,
+the systematical curve ﬁtting method, the accuracy achieved                                 pp. 2373–2381, 2006.
+in terms of MAEP ranges from 1.87% to 0.14%, where the
+MAEP of 0.14% is 30% better than the best existing accuracy
+achieved by the non-iterative design reported in [11].
+
+                                       R EFERENCES
+ [1]    K. Yoshida, T. Sakamoto, and T. Hase, “A 3D graphics library for 32-bit
+        microprocessors for embedded systems,” Consumer Electronics, IEEE
+        Transactions on, vol. 44, no. 3, pp. 1107–1114, 1998.
+ [2]    B. Pasca, “Correctly rounded ﬂoating-point division for DSP-enabled
+        FPGAs,” in Field Programmable Logic and Applications (FPL), 2012
+        22nd International Conference on. IEEE, 2012, pp. 249–254.
+ [3]    R. Woo, S. Choi, J.-H. Sohn, S.-J. Song, and H.-J. Yoo, “A 210-
+        mW graphics LSI implementing full 3-D pipeline with 264 Mtexels/s
+        texturing for mobile multimedia applications,” Solid-State Circuits,
+        IEEE Journal of, vol. 39, no. 2, pp. 358–367, 2004.
+
+
+
+             Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:26:53 UTC from IEEE Xplore. Restrictions apply.
+

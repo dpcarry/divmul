@@ -1,30 +1,43 @@
-# Paper-Derived FP32 Divider Reconstructions
+# PLSAD Paper-Derived FP32 Reconstruction
 
-All entries use the same combinational FP32 wrapper, TSMC65 DC flow, 10 ns
-virtual clock, and vectorless PrimeTime activity (`P=0.5`, toggle rate `0.1`).
-The wrapper handles sign/exponent and finite special cases, flushes subnormals,
-and truncates the result rather than adding a rounding unit.
+The current PLSAD points reconstruct Eq. (14) and Figs. 4, 6, 7, and 12 of Wu
+et al., TCAS-I 2024. The core selects one of eight shift-add planes from the
+three most-significant divisor-fraction bits. In accordance with the paper's
+FP32 description, both input fractions are truncated to ten bits. Four Q1.14
+addends are combined by an LOA: the most-significant `m` bits are added
+exactly, the lower `15-m` bits are ORed, and the two boundary carries encode
+the cases of at least two and exactly four asserted input bits. Negative
+shifted terms use one's complement, as stated by the paper.
 
-| Design | Status | Mantissa treatment | MRED (100k [1,2) pairs) | Area (um^2) | PT delay (ns) | PT power (uW) |
+All local rows use the shared normal-finite FP32 wrapper, TSMC65 typical CCS,
+a 10 ns virtual clock, no pipeline, hierarchy-preserving ordinary `compile`,
+and vectorless PrimeTime activity (`P=0.5`, toggle rate `0.1`). No flattening
+or `compile_ultra` is used.
+
+| Design | Local MRED | Paper MRED | Area (um^2) | PT delay (ns) | PT power (uW) | Reproduction status |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
-| PLSAD-derived | accuracy matched | Paper Eq. (14), 10-bit input mantissas | 0.8216% | 1202.76 | 2.346 | 125.41 |
-| PLSAD-derived | accuracy matched | Paper Eq. (14), full 23-bit mantissas | 0.8229% | 1994.40 | 2.933 | 218.80 |
-| FaNZeD-derived | paper-derived formula reconstruction | Eq. (5), shift-add epsilon `2^-5 + 2^-7`, t=0 | 3.1699% | 718.92 | 2.623 | 81.26 |
-| FaNZeD-derived | paper-derived formula reconstruction | Eq. (5), shift-add epsilon `2^-5 + 2^-7`, t=15 | 3.1100% | 470.88 | 1.723 | 45.76 |
+| PLSAD-derived m=4 | 6.0174% | 7.10% | 552.60 | 1.648 | 18.58 | Formula/architecture reconstruction; paper error not exactly matched |
+| PLSAD-derived m=6 | 1.3559% | 1.21% | 611.28 | 1.722 | 21.64 | Formula/architecture reconstruction; paper error not exactly matched |
+| PLSAD-derived m=8 | 0.8732% | 0.85% | 659.88 | 1.738 | 24.14 | Accuracy-matched paper-derived reconstruction |
 
-The PLSAD paper reports 0.82% mean error for its eight-plane FP experiment,
-which the 10-bit reconstruction reproduces.  Both PLSAD synthesized netlists
-passed 20,000 normal-FP32 gate-level vectors against an independent reference.
+The local MRED values use the same 10,000 normal-finite `[1,2)` FP32 operand
+pairs as the OADM rows in `plsad_vs_oadm_hier_compile_10ns.csv`. All three RTL
+points match an independent bit-level PLSAD model, and all three synthesized
+netlists pass 20,000 gate-level vectors against RTL. DC and PT report no
+setup/max-delay or min-delay violations.
 
-FaNZeD has no public RTL.  The paper gives Eq. (5), describes an optimized
-finite-width mantissa subtractor, and reports 2.89% mean error with near-zero
-bias.  The explicit Eq. (5) plus stated shift-add epsilon does reproduce the
-architecture's qualitative behavior but yields the error shown above; forcing
-the continuous epsilon 0.043 makes bias near zero but does not recover 2.89%
-mean error.  Therefore these two rows must not be described as an exact FaNZeD
-reproduction.  Their gate-level regressions also passed 20,000 normal-FP32
-vectors each, but only establish equivalence to the documented formula model.
+No author PLSAD RTL was available locally or found in the public searches.
+The paper does not specify every RTL-level sizing and carry detail sufficiently
+to explain the remaining m=4 and m=6 MRED differences. Therefore these results
+must not be described as author RTL or as an exact reproduction. The paper's
+45 nm PPA is also not mixed with the local 65 nm PPA; its reported MRED is used
+only as an accuracy cross-check.
 
-RTL: `rtl/paper_repro/paper_fp32_dividers.v`.
-Regression scripts: `qsim_rtl/paper_repro/run_accuracy.sh`,
-`qsim_rtl/paper_repro/run_plsad_gate.sh`, and `qsim_rtl/paper_repro/run_fanzed_gate.sh`.
+Current RTL: `rtl/paper_repro/plsad_prior_fp32_paceio.v`.
+Accuracy regression: `qsim_rtl/plsad_repro/run_common_accuracy.sh`.
+Gate regression: `PLSAD_ONLY=1 qsim_rtl/hier_compile_gate/run_gate_miters.sh`.
+
+The earlier exact-adder Eq. (14) points in
+`rtl/paper_repro/paper_fp32_dividers.v` used the superseded explicit-flatten/
+`compile_ultra` flow and omitted the paper's LOA. Their 1202.76 and 1994.40
+um2 areas are historical reconstruction data, not current PLSAD PPA.

@@ -1,8 +1,50 @@
 # OADM PPA Result Index
 
-This directory contains the current paper-facing results, supporting selection
-tables, and mapping-policy audits. Every retained CSV has a defined purpose;
-files that were superseded or only duplicated newer data have been removed.
+This directory contains current results and historical experiment records.
+Use `csv_usage_index.csv` as the explicit allowlist: only `usage=current` rows
+are current result tables. Historical CSVs are not current PPA sources even
+where their old prose says "canonical" or "best". Their hashes are recorded
+so changes after the refresh are detectable.
+
+## September 5 Current-Data Audit
+
+`scripts/refresh_current_oadm_tables.py` regenerates the selected tables from
+the existing DC/PT reports and checks fixed DIV, MUL, and integrated gate logs.
+The arithmetic-sharing source/report hashes and RTL/model/gate evidence were
+also rechecked. This is a result refresh, not a new synthesis or simulation run.
+
+- Fixed standalone DIV: elaboration-time LEVEL, residual/w_n drops 18/18 at
+  L0 and 16/16 at L1-L3. Areas: 516.96/1130.40/1484.64/1865.52 um2.
+- Selected standalone MUL: balanced residual drops 16/14/12/10, analytic
+  compensation retained. Areas: 516.60/948.60/1317.60/1645.92 um2.
+- Fixed integrated DIV+MUL: areas 957.96/1696.68/2106.72/2663.64 um2.
+- Runtime selection remains the existing 10/14 control (3174.12 um2).
+  Isolated runtime alternatives have not silently replaced it.
+- Today's input masking and explicitly narrowed datapath experiment is not
+  promoted. Existing internal residual/w_n truncation remains part of OADM.
+
+`div_only_vs_pace_hier_compile_10ns.csv` now includes the existing common
+10,000-vector accuracy results alongside current PPA and ADP. The specialized
+DIV output equivalence permits retaining this dataset; no error values are
+borrowed from a different sampling population.
+
+`oadm_fixed_current_ppa_accuracy_10ns.csv` joins current standalone and shared
+PPA with the arithmetic-sharing 100,000-pair uniform dataset. Shared and
+standalone outputs matched bitwise in that experiment. Integrated area/power
+is repeated by mode for convenience, not summed or split between modes.
+Sampled maximum errors are not formal worst-case bounds. This dataset must
+not be mixed with the PACE, PLSAD, or SIMDive populations for accuracy claims.
+
+`divmul_arithmetic_sharing_hier_compile_10ns.csv` is the measured one-wrapper
+B/C comparison; `divmul_arithmetic_sharing_hierarchy_10ns.csv` gives inclusive
+hierarchical areas. B-to-C area savings are 5.94/19.64/23.44/22.89%.
+The older A-sum-to-C table remains a separate area-sum reference, not a
+matched-throughput baseline or a measurement of arithmetic sharing alone.
+
+The local manuscript still hard-codes older standalone DIV and sharing
+numbers (for example 764.28 um2 at DIV L0); it does not import these CSVs.
+Refreshing CSVs does not update those LaTeX tables or existing figure binaries.
+The manuscript was not edited by this data-only audit.
 
 ## Common PPA Boundary
 
@@ -33,10 +75,25 @@ Accuracy values require an additional same-vector and same-interface check.
 
 ## Current Hierarchy-Preserving CSVs
 
+September 4 fixed-DIV refresh: L0-L3 now point to
+`experiments/fixed_div_level_specialization` (elaboration-time `LEVEL`), with
+areas 516.96/1130.40/1484.64/1865.52 um2. The master/root tables contain the
+actual specialized top names and raw report paths. PACE/PLSAD comparison PPA
+and sharing ratios use these replacements; their original accuracy datasets
+are unchanged. `scripts/collect_hier_compile_results.py` reproduces this selection.
+Runtime and integrated DIV+MUL measurements are unchanged.
+
+Sharing area savings are now 7.31/18.39/24.82/24.14% for L0-L3. The denominator
+is the sum of two standalone units including their FP32 wrappers, not a
+measured unshared one-wrapper selectable top. Vectorless power sums are not
+matched-workload energy measurements; the shared unit performs one operation
+at a time. The separate PACE difference-truncation and plain-MUL/OAM ablations
+remain in their isolated experiment directories, not substituted for these rows.
+
 The September 3 rerun replaces the explicit-flatten/`compile_ultra` PPA
 numbers as the current comparison boundary. The authoritative tables are:
 
-- `hier_compile_master_10ns.csv`: all 38 retained points, report paths,
+- `hier_compile_master_10ns.csv`: all 42 retained points, report paths,
   hierarchy/cell counts, and machine-checkable pass status.
 - `exact_baselines_hier_compile_10ns.csv`: exact MUL, DIV, and selectable
   DIV+MUL.
@@ -45,13 +102,17 @@ numbers as the current comparison boundary. The authoritative tables are:
 - `mul_root_opt_hier_compile_10ns.csv`: all 12 MUL root-opt variants.
 - `div_only_vs_pace_hier_compile_10ns.csv`: root-opt OADM DIV L0-L3 against
   PACE L1-L4 under one wrapper and mapping boundary.
-- `priorwork_hier_compile_10ns.csv`: QIAD, FaNZeD, TruncApp, and LEAD.
+- `priorwork_hier_compile_10ns.csv`: QIAD, FaNZeD, TruncApp, LEAD, and the
+  PLSAD-derived m=4/6/8 reconstructions.
+- `plsad_vs_oadm_hier_compile_10ns.csv`: PLSAD-derived m=4/6/8 and OADM
+  fixed DIV L0-L3 with accuracy recomputed on the same 10,000 operand pairs.
 - `divmul_sharing_ablation_hier_compile_10ns.csv`: current root-opt DIV-only
   plus balanced MUL-only versus the fixed-level integrated OADM hardware.
-- `amlib_oam_vs_oadm_mul_hier_compile_10ns.csv`: AM-Lib OAM against the
-  current balanced root-opt OADM MUL-only view.
+- `amlib_oam_vs_oadm_mul_hier_compile_10ns.csv`: unmodified AM-Lib OAM
+  mantissa cores against the current balanced OADM MUL-only view, all using
+  the shared normal-finite FP32 wrapper.
 
-Of the 38 retained points, 37 are valid combinational DC/PT results. The
+Of the 42 retained points, 41 are valid combinational DC/PT results. The
 SIMDive-derived wrapper is retained in the master audit with status
 `check_timing_failed;sequential_present`: ordinary `compile` preserves 23
 RTL-inferred latches, so it is excluded from strict combinational comparison.
@@ -76,7 +137,8 @@ The selectable row is the valid exact baseline for full OADM DIV+MUL.
 The strict DIV-only OADM/PACE comparison. OADM L0-L3 use the selected root-opt
 centered-residual normal-finite FP32 wrappers and are paired with PACE L1-L4.
 The file contains same-vector error metrics, canonical PPA, percentage
-differences, and gate-regression notes. These root-opt points prune internal
+differences, and gate-regression notes. These root-opt points apply LSB
+truncation to internal
 precision and calibrate the quantized reciprocal coefficients, so they are not
 bit-exact to the pre-root-opt OADM baselines. PACE is DIV-only and must not be
 compared directly with the area of a full selectable OADM DIV+MUL unit.
@@ -93,22 +155,22 @@ in this CSV even though it is omitted from the ADP plot to preserve plot scale.
 
 ### `simdive_original_fp32.csv`
 
-Results for the **SIMDive-derived integer-core FP32 wrapper** in MUL and DIV
-modes. Both rows describe the same selectable synthesized unit; mode-specific
-accuracy is listed separately. Its local PPA is structurally comparable with
-OADM under the canonical flow. Error is qualitative context only because the
-current OADM and SIMDive runs use different vector sequences, and DIV includes
-a Q8 quotient adapter. This is not a native FP32 SIMDive implementation.
+Results for the **SIMDive-derived SISD32 FP32 wrapper** in MUL and DIV modes.
+Both rows describe the same selectable synthesized unit. The valid current PPA
+uses the author mode=01 data path source specialization under hierarchy-
+preserving ordinary `compile`; the as-received all-mode RTL remains a negative
+audit row in `hier_compile_master_10ns.csv`. OADM and SIMDive accuracy now use
+the same 10,000 input pairs. DIV still includes a Q8 quotient adapter, so this
+is not a native FP32 SIMDive implementation.
 
 ## Selection and Audit CSVs
 
 ### `divmul_best_by_level.csv`
 
-Compact paper-facing selection index for full OADM L0-L3 and the runtime
-L0-L3 unit. It preserves the distinction between the full-unit L0
-centered-index area/delay point and the centered-residual L0 used by the
-sharing table. It also keeps centered-residual L3 as the area/power point.
-PACE columns are structural DIV-only references, not full-unit competitors.
+Current selected fixed OADM L0-L3 and runtime L0-L3 full units, with actual
+top names, report paths, configuration, PPA and ADP. Superseded pre-root-opt
+centered-index/residual selections were replaced during the September 5 audit.
+PACE is not included because it is not a selectable DIV+MUL competitor.
 
 ### `divmul_pareto_candidates.csv`
 
@@ -195,6 +257,13 @@ bash qsim_rtl/root_opt/run_fixed_divmul_gate_miter.sh
 bash qsim_rtl/hier_compile_gate/run_gate_miters.sh
 ```
 
+Refresh all current OADM selection/comparison exports, including the usage
+index, without rerunning hardware tools:
+
+```text
+.venv/bin/python scripts/refresh_current_oadm_tables.py
+```
+
 Raw DC and PT evidence is under `dc/hier_compile_10ns/outputs/` and
 `pt_dc/hier_compile_10ns/reports/`. The collector requires every report and
 netlist, checks for black boxes and sequential cells, verifies hierarchy is
@@ -213,12 +282,12 @@ invalid points.
   `mul_root_opt_results_10ns.csv`: old mapping-policy summaries superseded by
   the hierarchy-preserving root-opt tables.
 - `canonical_refresh_10ns.csv`, `divmul_sharing_ablation_10ns.csv`, and
-  `amlib_oam_vs_oadm_mul_10ns.csv`: pre-pruning tables whose sharing evidence
+  `amlib_oam_vs_oadm_mul_10ns.csv`: pre-truncation tables whose sharing evidence
   was removed after the current integrated root-opt rerun.
 - `div_only_explicit_flatten_10ns.csv`: duplicate detailed table containing
   stale pre-unification PPA; current report paths and validation are carried by
   `div_only_vs_pace.csv` and `priorwork_comparison_10ns.csv`.
 
 Most historical raw reports remain timeline evidence. The obsolete
-pre-pruning sharing reports were explicitly deleted so they cannot be mistaken
+pre-truncation sharing reports were explicitly deleted so they cannot be mistaken
 for current integrated OADM results.

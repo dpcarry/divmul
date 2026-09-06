@@ -1,0 +1,430 @@
+Session 5B: VLSI Design + VLSI Circuits and Power Aware Design 2                                                          GLSVLSI ’22, June 6–8, 2022, Irvine, CA, USA
+
+
+
+
+    LEAD: Logarithmic Exponent Approximate Divider For Image
+                    Quantization Application
+                            Omkar G Ratnaparkhi                                                                            Madhav Rao
+                                 IIIT Bangalore                                                                           IIIT Bangalore
+                           Bangalore, Karnataka, India                                                              Bangalore, Karnataka, India
+                          omkar.ratnaparkhi@iiitb.ac.in                                                                   mr@iiitb.ac.in
+
+ABSTRACT                                                                                            1   INTRODUCTION
+Most of the applications of modern day VLSI designs are approach-                                   Most of the mobile and datacentric applications expects energy
+ing towards energy efficient and high speed computing solutions.                                    efficient and high speed computational system design. Semiconduc-
+Approximate computing is considered a suitable design methodol-                                     tor technology scaling was the major driving factor for designing
+ogy that satisfies the current requirements of hardware and perfor-                                 computationally efficient system, however with limitations posed
+mance metrics without compromising on the outcome significantly.                                    by the ever shrinking technology node, new approach is desired for
+Many of the arithmetic operations are realized using approximate                                    designing performance and energy aware system to satisfy the ever
+computing techniques, and many successful implementations are                                       growing consumer demands [1–4]. Approximate computing allows
+reported at system level designs. However divider operations in gen-                                to leverage the current CMOS technology, by minimizing the gates
+eral are rarely realized in hardware and this needs much attention                                  but generate inexact output, that is resilient to the changes in the
+considering the surge in neural networks implementation in hard-                                    final outcome [5]. This strategy has extended the current CMOS
+ware. In this paper, a novel approximate divider is proposed which                                  technology life to many more years, and at the same time con-
+is not only characterized to have better accuracy and hardware                                      serves the hardware metrics including power, delay, and footprint
+efficient when compared to the other accurate dividers. The pro-                                    with a compromise in the accuracy [5]. Besides, given the rising
+posed divider is built on logarithmic divider and approximates the                                  demand for various multimedia applications on edge computing
+exponent part to achieve the desired hardware characteristics. The                                  device, hardware implementation of image and video processing
+proposed 8-bit, and 16-bit divider design were realized in 45-NM                                    modules with approximate design technique is considered highly
+CMOS technology for different input and output data format includ-                                  suitable, especially when it is targetted towards low power, and
+ing integer, fixed-point, and floating-point. The proposed divider                                  faster computing. Many real time imaging, and video processing ap-
+was characterized for error and hardware metrics and compared                                       plications have relaxed output requirement with no real emphasis
+with other dividers. The novel divider was validated on K-means                                     on the precision, but conserving the exact outcome [1, 5, 6]. How-
+color quantization algorithm, showcasing improved quantization                                      ever high loss in the precision [7] hampers the outcome, especially
+results.                                                                                            when the hardware accelerator is intended towards autonomous
+                                                                                                    system design.
+CCS CONCEPTS                                                                                           Many arithmetic operations are realized in hardware using ap-
+• Hardware → Arithmetic and datapath circuits; Combina-                                             proximate design methodologies in the recent past [8]. Approxi-
+tional circuits; Application specific integrated circuits.                                          mate adders and multipliers are studied immensely, and applied
+                                                                                                    to discrete cosine transforms, edge detection, and various other
+                                                                                                    applications, with acceptable outcomes [9–11]. However not many
+KEYWORDS
+                                                                                                    work has been explored on the implementation of division opera-
+Approximate divider, color quantization, exponent series, hardware                                  tion [12]. Hardware division is generally ignored since the opera-
+accelerator.                                                                                        tion is compute intensive, and essentially loads the overall design.
+ACM Reference Format:                                                                               Look-up-Table (LuT) based implementations are generally utilized,
+Omkar G Ratnaparkhi and Madhav Rao. 2022. LEAD: Logarithmic Exponent                                however due to the recent emergence of neural network computing
+Approximate Divider For Image Quantization Application. In Proceedings                              and accelerators within the design, the need for division operation
+of the Great Lakes Symposium on VLSI 2022 (GLSVLSI ’22), June 6–8, 2022,                            in most of the activation functions have come back to the fore. In
+Irvine, CA, USA. ACM, New York, NY, USA, 6 pages. https://doi.org/10.1145/                          terms of comparison with multiplier, division generally costs more
+3526241.3530323                                                                                     energy and delay along with its complex architecture. Around 9 cy-
+                                                                                                    cles are required to complete the division operation when compared
+Permission to make digital or hard copies of all or part of this work for personal or               to three clock cycles for multiplication operation [13]. Traditionally
+classroom use is granted without fee provided that copies are not made or distributed               a single precision divider concedes 35% more hardware resources
+for profit or commercial advantage and that copies bear this notice and the full citation
+on the first page. Copyrights for components of this work owned by others than ACM                  than multiplier design, and is reported with 27% slower than that of
+must be honored. Abstracting with credit is permitted. To copy otherwise, or republish,             multiplier design [14]. Division operation is broadly implemented
+to post on servers or to redistribute to lists, requires prior specific permission and/or a         in either of five techniques that includes digit recurrence, func-
+fee. Request permissions from permissions@acm.org.
+GLSVLSI ’22, June 6–8, 2022, Irvine, CA, USA.                                                       tional iterations, high radix, lookup table, and variable latency [12].
+© 2022 Association for Computing Machinery.                                                         Digit recurrence is a class of design, that uses shift and subtraction
+ACM ISBN 978-1-4503-9322-5/22/06. . . $15.00
+https://doi.org/10.1145/3526241.3530323
+
+
+
+
+                                                                                              437
+Session 5B: VLSI Design + VLSI Circuits and Power Aware Design 2                                       GLSVLSI ’22, June 6–8, 2022, Irvine, CA, USA
+
+
+
+
+operations. The popular SRT division falls in this category of de-               zero positive integers. The dividend and divisor are redefined as
+sign [15]. Functional iteration class involves multiplication instead            𝐴 = 2𝑒𝑎 × (1+𝑎), and 𝐵 = 2𝑒𝑏 × (1+𝑏), where ea and eb are positions
+of subtraction [12]. High radix method is similar to digit recurrence,           of leading one bit in the binary forms, and a, and b are the mantissa
+however the number of quotient digit initialized in one iteration                that lies in the range of [0,1]. The division operation generating quo-
+is comparatively high. Variable latency class is similar to previous             tient (Q) is further expressed in the following set of mathematical
+category, with different quotient bits reinitiated at different itera-                                         2𝑒𝑎 ×(1+𝑎)
+                                                                                 representations. 𝑄 = 𝐴   𝐵 = 2𝑒𝑏 ×(1+𝑏) The logarithmic equivalence is
+tions. Look-up-table (LUT) type utilizes high memory resources to                considered as log2 𝑄 = 𝑒𝑎 − 𝑒𝑏 + log2 (1 + 𝑎) − log2 (1 + 𝑏). The first
+store the pre-computed values and retrieve the same for estimating               approximation is applied to establish and simplify the logarithmic
+the quotient values.                                                             expression resulting in log2 (1 + 𝑎) = 𝑎, and log2 (1 + 𝑏) = 𝑏. The
+   Exact dividers offering precision and range is always a challenge             logarithmic quotient is represented as 𝐿𝑜𝑔2𝑄 = 𝑒𝑎 − 𝑒𝑏 + 𝑎 − 𝑏,
+in terms of hardware metrics and resources, and hence approximate
+                                                                                 and the quotient as 𝑄 = 2 (𝑒𝑎−𝑒𝑏) 2𝑎−𝑏 . A second approximation of
+dividers with a loss in accuracy is a reliable alternative for realizing
+                                                                                 2 (𝑎−𝑏) = 1 + (𝑎 − 𝑏) further simplifies the divider realization stated
+hardware efficient accelerator designs. Few approximate dividers
+                                                                                 in the equation 1.
+were proposed in the past. Truncapp is based on truncated value                                  (
+of dividend, which is then multiplied by the approximate inverse                                   2 (𝑒𝑎−𝑒𝑏) × (1 + 𝑎 − 𝑏) 𝑓 𝑜𝑟 𝑎 − 𝑏 > 0
+value of the divisor [16]. SEERAD uses rounding of divisor, besides                         𝑄 = (𝑒𝑎−𝑒𝑏−1)                                             (1)
+                                                                                                   2           × (2 + 𝑎 − 𝑏) 𝑜𝑡ℎ𝑒𝑟𝑤𝑖𝑠𝑒
+using shifting and add operations to estimate the final division
+value [17]. LUT based approximate divider proposed in CADE em-                   Overall the division operation realized in [7] requires four subsys-
+ploys subtraction of mantissa part of the input operands and also                tem designs involving leading one detector (LOD), logarithmic to
+utilizes first 𝑁 − 𝑏𝑖𝑡𝑠 of input operands, referred to as tuning bit,            binary converter (LBC), subtractor, and binary to logarithmic con-
+to predict division error [18]. Besides the division error was pre-              verter (BLC). Th block level representation of division operation
+dicted by tuning first N bits of input operands. Hybrid design which             is shown in the Figure 1 where 8-bits of mantissa and 3 bits of
+combines restoring array with logarithmic divider was proposed                   exponent is realized at the output.
+in [7]. Most of the dividers mentioned in the literature are either
+hardware efficient, but concedes substantial error, or vice-versa.
+Additionally most of the design caters to integer division, hence
+an hardware efficient design with minimal difference from the true
+output, and applicable to all different data-formats including inte-
+ger, fixed-point, and floating-point with similar design blocks, is
+desirable.
+   The paper proposes a design that adopts logarithmic divider [7],
+and minimizes the approximations by employing exponent expan-
+sion series. The proposed divider was compared with logarithmic
+divider and Scalable Accuracy Approximate Divider with Error
+Compensation (SAADI-EC) [13]. SAADI-EC employed Taylor series
+expansion to establish multiplication of the inverse of divisor with
+dividend. A Newton Raphson method to establish inverse of divisor
+and then multiplying with dividend was also proposed in [10]. The
+proposed divider is utilized for color quantization scheme which
+is widely used in image and video processing applications. Color
+quantization is a regular method employed to compress the im-
+age preserving overall appearance and information. K-mean color
+quantization technique is one of the quantization algorithm which
+uses mean update step in each of the iterations, thereby an efficient
+                                                                                 Figure 1: Block diagram representing non iterative logarith-
+hardware-efficient divider is expected to improve the performance
+                                                                                 mic divider [7].
+of the overall process. The improvement in the logarithmic divider
+and characterizing along the design level and at application level
+is performed for the first time, as per the authors knowledge. The
+novel divider design is also benchmarked against other dividers to               2.2    Novel divider design
+showcase the benefits and drawbacks if any.                                      The Logarithmic exponent approximate divider (LEAD) design is
+                                                                                 proposed for three types of data format: integer, fixed point, and
+2 PROPOSED DESIGN                                                                floating point. The former divider is realized only for integer data-
+                                                                                 format. A divider design incorporating all data-formats is consid-
+2.1 Logarithmic divider                                                          ered highly useful for running different algorithms related to image
+Logarithmic divider proposed by [7] inherently employs two ap-                   processing, and hence can be reused efficiently. The proposed LEAD
+proximations in its operations. To elaborate the discussion, consider            divider design comprises of similar blocks of LOD and BLC to nor-
+A and B as dividend and divisor respectively, and both are non                   malize the operands: divisor and dividend, similar to logarithmic
+
+
+
+
+                                                                           438
+Session 5B: VLSI Design + VLSI Circuits and Power Aware Design 2                                        GLSVLSI ’22, June 6–8, 2022, Irvine, CA, USA
+
+
+
+
+divider. The position of leading one bit is stored in the form of                 and adder-or-subtractor blocks respectively. The multiplexer unit
+exponent ea and eb respectively. It is expressed as 𝐴 = 2𝑒𝑎 × (1 + 𝑎),            controls re-using of multiplier block to generate (0.693 × (𝑎 − 𝑏)) 2
+and 𝐵 = 2𝑒𝑏 × (1 + 𝑏) where, a and b are in the range of 0 ≤ 𝑎 < 1                term. A timed data-flow generating the quotient result is shown
+and 0 ≤ 𝑏 < 1. The subtraction of ea and eb results in the difference             in the Figure 3, where the division operation is completed in two
+in the exponent terms which is eventually employed for shifting                   clock cycles. The arithmetic units of normalizer, subtractor, adder,
+the data-bits of the generated normalized quotient. The proposed                  multiplier, registers, and shifter are used along with Look-up-table
+design redesigns the subtraction result of mantissa a, and b for mini-            (LUTs) to generate the division result. Figure 3 shows the vertically
+mizing the second approximation, and improving the accuracy over                  stacked hardware blocks, and the flow of the data operations are
+the logarithmic divider. The proposed design employs exponent                     captured horizontally in 2 clock cycles. The design shows two input
+series to yield the result of 2𝑎−𝑏 . The exponent series in general               operands dividend and divisor represented as A and B respectively,
+form is expressed in the equation 4. Only initial two terms of this               ea and eb as exponent terms which is calculated by estimating the
+series are employed, resulting in sufficiently faster convergence                 position of leading "1" of dividend and divisor. Both A and B are
+when compared with the current accurate division technique of                     normalized to a and b respectively by left-shifting to the most sig-
+SAADI-EC considering iterative terms of 7 for 8-bits (t=7), and 15                nificant bits (MSB), and truncating to n bit-width. Two normalizer
+for 16-bits (t=15) data. in the literature [14].                                  blocks are positioned in the first cycle parallely and the output of
+                                                                                  the normalizer block is fed to the subtractor module. The output of
+                              𝑥       𝑥2    𝑥3
+                 𝑒𝑥 = 1 ± (      ) + ( ) ± ( ) + ...                              the subtractor block is fed to multiplier block which seeks another
+                              1!      2!    3!                        (2)
+                                                                                  operand from LUT to generate 𝑥 × 0.693 result. Depending on the
+                 𝑎𝑥 = 𝑒 𝑥 ln 𝑎                                                    borrow generated by subtractor block, addition or subtraction is
+                                                                                  performed by add-sub block, to yield 1 ± (𝑥 ∗ 0.693), where 𝑥 is
+   2𝑥 = 1 ± (𝑥 ln 2) + (𝑥 ln 2) 2 × 0.5 ± (𝑥 ln 2) 3 × 0.1667 + ...   (3)
+                                                                                  considered 𝑎 − 𝑏. The multiplier output generated in the first clock
+  𝑥                               2                   3                           cycle (𝑥 × 0.693) was utilized in the subsequent clock cycle to gener-
+ 2 = 1±(𝑥 ×0.693)+(𝑥 ×0.693) ×0.5±(𝑥 ×0.693) ×0.1667+... (4)
+Hence the overall quotient generated from the proposed LEAD                       ate (𝑥 × 0.693) 2 . The square result obtained from multiplier block
+divider is stated in the equation 5.                                              is of 2𝑛 bit-width, for an 𝑛 bit multiplier operands. The 2𝑛 bit-width
+                                                                                  is further truncated to 𝑛 bit-width by considering the first 𝑛 bits of
+  𝑄 = 2 (𝑒𝑎−𝑒𝑏) × (1 ± (0.693(𝑎 − 𝑏)) + 0.5 × (0.693(𝑎 − 𝑏)) 2 ) (5)              the results. The square result is subsequently left shifted by a bit to
+The result generated from the exponent series is utilized to es-                  generate 0.5 × (𝑥 × 0.693) 2 result. The Adder subsystem yields the
+tablish the mantissa, and used along with the resultant exponent,                 final mantissa output, which is fed to the shifter subsystem to get
+to generate the final quotient in the fixed point representation.                 the final quotient. For floating-point data, quotient in floating-point
+The datapath design of the proposed LEAD divider shown in the                     is generated by utilizing mantissa and exponent term. A detailed
+                                                                                  example to explain the sequenced flow of the divider operation is
+                                                                                  discussed below in the Table 1. Here we consider an example of
+                                                                                  190 ÷ 11 for 8-bit operands. An approximate Quotient of 17.3028 is
+                                                                                  achieved by the 8-bit design, and is close to the accurate quotient
+                                                                                  of 17.2727.
+
+                                                                                  3   RESULTS AND DISCUSSIONS
+                                                                                  The proposed LEAD design for different input data-format as listed
+                                                                                  below were designed and evaluated.
+                                                                                      • 8-bit input integer data format,
+                                                                                      • 16-bit input integer data format,
+                                                                                      • 16-bit fixed-point data-formatted input representing 8-bit of
+                                                                                        integer and 8-bit of fractional part,
+                                                                                      • 16-bit floating point data with 12-bit mantissa and 4-bit ex-
+                                                                                        ponent.
+                                                                                  The 8-bit divider design output is formatted to represent 8-bits
+                                                                                  of mantissa and 3-bits of exponent as discussed in SAADI-EC de-
+                                                                                  sign [14]. The 16-bit divider design for integer and floating-point
+                                                                                  format is realized with output format similar to input format. All
+                                                                                  these divider design were realized in 45 nm technology node using
+Figure 2: Block diagram representing datapath design for                          Cadence Genus tool. Standard configuration of 1V rail voltage, and
+the proposed LEAD divider.                                                        room temperature (25 ◦ C) were considered for the divider designs.
+                                                                                  Silicon area, delay, power and energy consumed were realized for
+Figure 2, presents sequential flow to complete the division oper-                 all the designs. The hardware metrics of the proposed LEAD de-
+ation. The blocks referred to as Norm, Reg, Demux, Mux, and Ad-                   sign were compared with the earlier logarithmic divider [19], and
+d/Sub refers to Normalizer, Register, Demultiplexer, Multiplexer,                 SAADI-EC of integer data-format [14]. SAADI-EC of 7 iterative
+
+
+
+
+                                                                            439
+Session 5B: VLSI Design + VLSI Circuits and Power Aware Design 2                                     GLSVLSI ’22, June 6–8, 2022, Irvine, CA, USA
+
+
+
+
+                                                                                errors generated by the Logarithmic shows wide range on the pos-
+                                                                                itive side, whereas the SAADI (t=7) with error-correction shows
+                                                                                higher frequency of smaller errors. The range of error is minimal
+                                                                                for SAADI-EC. The LEAD divider showcases a symmetrical dis-
+                                                                                tribution of positive and negative errors, which is more feasible
+                                                                                considering the lower magnitude of errors. The error metrics in the
+                                                                                form of mean absolute error (MAE), and root mean square error
+                                                                                (RMSE) were also evaluated for these divider designs. The hardware
+                                                                                metrics and error metrics of 8-bit, and 16-bit divider designs are
+                                                                                mentioned in the Table 2, and 3 respectively.
+
+
+
+
+                                                                                                                 (a)
+
+
+Figure 3: Block diagram representing hardware blocks used
+for timed data flow.
+
+Table 1: Example showing the LEAD division operations for
+190 ÷ 11.
+
+ Operations       Terms                   Values
+ Normalization    A=(2𝑒𝑎 (1 + 𝑎))         27 × (1 + 0.484375), ea = 7,
+                                          a = 0.484375
+                                                                                                                (b)
+ Normalization B=(2𝑒𝑏 (1 + 𝑏))            23 × (1 + 0.375), eb = 3, b =
+                                          0.375
+ Subtractor       𝑙𝑜𝑔2𝑄 = (𝑒𝑎 − 𝑒𝑏) +     7 − 3 + 𝑙𝑜𝑔2 (1 + 0.484375) −
+                  (𝑎 − 𝑏)                 𝑙𝑜𝑔2 (1 + 0.375)
+                  Q=(2𝑒𝑎−𝑒𝑏 × 2𝑎−𝑏 )      24 × 20.484375−0.375
+ Multiplier       (𝑎 − 𝑏) × 0.693         0.109375 × 0.693=0.0757
+ Multiplier       ((𝑎 − 𝑏) × 0.693) 2     0.0757 × 0.0757 = 0.00573
+ Shifter          ((𝑎 − 𝑏) × 0.693) 2 ×   0.002865
+                  0.5
+ AddSub           1 + ((𝑎 − 𝑏) × 0.693)   1.0757
+ Adder            1+ ((𝑎 −𝑏) ×0.693) +    1.08143
+                  ((𝑎 − 𝑏) × 0.693) 2 ×
+                  0.5                                                                                            (c)
+ Shifter          Q                       24 × 1.08143=17.3028
+                                                                                Figure 4: Error distribution characterized for 8-bits (a) Loga-
+                                                                                rithmic divider, (b) SAADI-EC divider, and (c) Proposed LEAD
+terms (t=7), and 3 iterative terms (t=3) for 8-bits design, besides             divider.
+15 iterative terms (t=15) for 16-bits design were implemented. The
+error probability distribution of the novel LEAD divider, along with               The LEAD design with single multiplier block utilizes additional
+SAADI-EC with 7 iterations (t=7), and logarithmic divider were                  finite state machine design for achieving datapath flow, and extra
+evaluated for all combinations of 8-bit operands and is presented in            logic blocks such as multiplexers, and registers to store data and is
+the Figure 4. Error distribution plot clearly depicts that the output           bound to have larger footprint than Logarithmic design. The LEAD
+
+
+
+
+                                                                          440
+Session 5B: VLSI Design + VLSI Circuits and Power Aware Design 2                                   GLSVLSI ’22, June 6–8, 2022, Irvine, CA, USA
+
+
+
+Table 2: Characterized hardware design metrics and error                      and error metrics as shown in the Table 3. The fixed-point output
+metrics for 8-bit divider designs.                                            format generally losses the precision when compared to floating-
+                                                                              point output, and hence the increase in error metrics. The LEAD
+   Divider      Area      Power    Delay Energy MAE        RMSE               divider design was inherently designed to generate floating-point
+                (𝜇𝑚 2 )   (mw)     (ns) (nJ)                                  output, hence no reconfiguration blocks was needed to reformat
+                                                                              the output. Whereas the fixed-point format required the output to
+   Logarithmic 198.702 0.003278 2.183 0.00715 0.0392 0.0523
+                                                                              be reconfigured to fixed-point output, hence an added hardware
+   LEAD         1775.271 0.42815 6.82      2.92    0.0225 0.0326              cost is conceded by the LEAD design. The design is highly efficient
+                                                                              for floating-type division.
+   SAADI-       3035      0.67     8.54    5.72    0.0223 0.0303
+                                                                                  For evaluating the divider design at application level, K-mean
+   EC(t=7)
+                                                                              color quantization, that preserves appearance of the image while
+                                                                              reducing the number of unique colours rendered to the image, was
+Table 3: Characterized hardware design metrics and error                      implemented. Based on the euclidean distance from cluster centroid,
+metrics for 16-bit divider designs.                                           unique color is assigned to the clusters in the image, and the process
+                                                                              is iterated several times by updating the mean of the clusters. The
+                                                                              cluster averaging requires division operations at every iterations,
+   Divider      Area      Power    Delay Energy MAE        RMSE
+                                                                              where the hardware efficient division accelerator design is realized.
+                (𝜇𝑚 2 )   (mw)     (ns) (nJ)
+                                                                              Both 8-bit and 16-bit logical implementation of LEAD, Logarithmic,
+   Logarithmic 599.526 0.0099      3.835 0.0379 0.0448 0.0554                 and SAADI-EC divider designs were applied individually for K-
+   LEAD         5482.038 0.7283    9.907 7.2152 0.0218 0.0280                 means color quantization operations in Matlab. The output of the
+                                                                              color quantized images obtained from different divider designs
+   SAADI-       6105      2.11     23.55 49.71     0.0028 0.0081              were evaluated with three quality metrics - Peak-signal-to-noise-
+   EC(t=15)                                                                   ratio (PSNR)in db, Structural similarity index (SSIM) in %, and Mean
+   LEAD-        5829.065 0.8159    10.052 8.2014 0.0249 0.0485                square error (MSE). The K-Mean color quantization algorithm with
+   fixed                                                                      𝐾 = 8 was utilized to evaluate the divider designs. Tables 4, and 5
+                                                                              shows the quantization quality metrics for the original image as
+   LEAD-        2138.047 0.2855    9.515 2.7165 0.0210 0.0270
+                                                                              shown in the Figure 5 (a). For evaluating the divider performance,
+   floating
+                                                                              the initial center of the cluster was randomized for each of 10
+                                                                              runs, whereas the same initial cluster center was maintained for all
+                                                                              the quantization implementations deduced from different dividers.
+for 8-bit design offers 42.6% improvement in MAE, and 37.66%                  Tables 4 and 5 shows that LEAD outperforms logarithmic divider
+benefits in RMSE, compared to the Logarithmic divider as shown                in all three metrics. Additionally it performs better in terms of
+in the Table 2. The error metrics are comparable to the SAADI with            MSE and PSNR compared to SAADI-EC (t=7), and SAADI-EC (t=3)
+error compensation module (SAADI-EC), however LEAD has larger                 for 8-bit design, which is considered an accurate hardware divider.
+benefits in terms of area, power, and delay: 41.50%, 37.04%, and              The SSIM index are comparable for both SAADI-EC (t=7), and
+20.14% respectively, over the SAADI-EC design, which makes LEAD               LEAD divider design. However the performance of 16-bit LEAD
+as the hardware efficient and accurate accelerator division design.           design is comparable with that of SAADI-EC (t=3), and SAADI-EC
+The accuracy of SAADI-EC is dependent on the allowable clock                  (t=15). The quantization metrics for both 8-bit and 16-bit LEAD
+cycle operations thereby improving the precision of the results, with         designs outperforms the logarithmic design. Between the LEAD
+maximum accuracy reported for 7𝑡ℎ clock cycle for the 8-bit division.         data-format variants, the floating-point design is preferred over
+The LEAD design considering 2 clock cycles achieves accuracy                  Integer and fixed-point format owing to slight improvements in
+results comparable to SAADI-EC configured for 7𝑡ℎ clock cycles. As            MSE, PSNR, and SSM metrics. Figure 5 shows the output of color
+reported in Table 3, LEAD design offers 10.2% less footprint, 65.48%          quantized image using k-mean clustering algorithm using different
+less power and 57.93% improvement in delay when compared with                 dividers separately. The k-mean method developed using LEAD
+SAADI-EC for t=15 iteration design. Around 51%, and 49% error                 divider design shows visually similar appearance as that of SAADI-
+improvements are offered for the LEAD divider over Logarithmic                EC (t=7) and exact divider.
+divider design.
+   The LEAD design for fixed-point and floating-point input data
+format for 16-bit division were also designed in similar methodol-            4   CONCLUSIONS
+ogy to yield output in fixed-point and floating-point respectively,           The paper discusses about a novel divider accelerator design based
+and the results were compared. For the floating-point design, the             on exponent series expansion, adopted to the logarithmic divider.
+input operands skipped the Normalization blocks, hence the design             The proposed divider offered better accuracy and performance
+was expected to be hardware-efficient than other format designs.              than the existing divider designs. The proposed design yields faster
+The LEAD design for integer formatted input operand was config-               results when compared with a divider which employs taylor series
+ured to generate output in floating-point format. Between Integer,            expansion with 3, 7 and 15 iterations. The accuracy of the proposed
+fixed-point and floating-point division for 16-bit data-format, LEAD          divider is equivalent to error compensated SAADI design, hence
+floating-point design was considered the best in terms of hardware            no additional error compensation module was required, leading to
+
+
+
+
+                                                                        441
+Session 5B: VLSI Design + VLSI Circuits and Power Aware Design 2                                     GLSVLSI ’22, June 6–8, 2022, Irvine, CA, USA
+
+
+
+
+                                                                          catering to different input data-formats involving integer, fixed-
+                                                                          point, and floating-point. The proposed hardware divider design is
+                                                                          shown to be an hardware efficient, and accurate accelerator design
+                                                                          compared to the SAADI and Logarithmic divider, both of which
+                                                                          falters either in performance, or accuracy. The proposed divider
+                                                                          showcased improved color quantization results when when applied
+                                                                          for K-means color clustering approach, as compared to other two
+                                                                          dividers especially for 8-bit designs. Thus the proposed hardware
+         (a)                        (b)                  (c)
+                                                                          accelerator divider is a step towards developing efficient system on
+                                                                          chip design especially for image and video processing applications.
+                                                                          REFERENCES
+                                                                           [1] Swagath Venkataramani, Srimat T. Chakradhar, Kaushik Roy, and Anand Raghu-
+                                                                               nathan. Approximate computing and the quest for computing efficiency. In 2015
+                                                                               52nd ACM/EDAC/IEEE Design Automation Conference (DAC), pages 1–6, 2015.
+                                                                           [2] Mark T. Bohr and Ian A. Young. Cmos scaling trends and beyond. IEEE Micro,
+                                                                               37(6):20–29, 2017.
+                                                                           [3] Xuan Hu, Naimul Hassan, Wesley H. Brigner, Maverick Chauwin, and Joseph S.
+                                                                               Friedman. Device modeling and circuit design for scalable beyond-cmos comput-
+                                                                               ing. In 2020 IFIP/IEEE 28th International Conference on Very Large Scale Integration
+                         (d)                   (e)                             (VLSI-SOC), pages 210–211, 2020.
+                                                                           [4] Samiha Lubaba, K. M. Faisal, Moumita Sadia Islam, and Mehedi Hasan. Design
+                                                                               of a two-bit magnitude comparator based on pass transistor, transmission gate
+Figure 5: K-mean color quantization algorithm when ap-                         and conventional static cmos logic. In 2020 11th International Conference on
+plied on (a) original image showing processed output im-                       Computing, Communication and Networking Technologies (ICCCNT), pages 1–5,
+                                                                               2020.
+age for individual dividers employed: (b) exact divider (c) 8-             [5] Jie Han and Michael Orshansky. Approximate computing: An emerging paradigm
+bit SAADI-EC(t=7) (d) 8-bit Logarithmic divider, and (e) 8-bit                 for energy-efficient design. In 2013 18th IEEE European Test Symposium (ETS),
+LEAD designs.                                                                  pages 1–6, 2013.
+                                                                           [6] Qiang Xu, Todd Mytkowicz, and Nam Sung Kim. Approximate computing: A
+                                                                               survey. IEEE Design Test, 33(1):8–22, 2016.
+                                                                           [7] Weiqiang Liu, Jing Li, Tao Xu, Chenghua Wang, Paolo Montuschi, and Fabrizio
+Table 4: Comparison of MSE, PSNR AND SSIM for color                            Lombardi. Combining restoring array and logarithmic dividers into an approx-
+quantized output derived from different 8-bit divider de-                      imate hybrid design. In 2018 IEEE 25th Symposium on Computer Arithmetic
+signs.                                                                         (ARITH), pages 92–98, 2018.
+                                                                           [8] Honglan Jiang, Cong Liu, Leibo Liu, Fabrizio Lombardi, and Jie Han. A review,
+                                                                               classification, and comparative evaluation of approximate arithmetic circuits.
+                                                                               ACM Journal on Emerging Technologies in Computing Systems (JETC), 13(4):1–34,
+               Divider          MSE       PSNR (db)    SSIM                    2017.
+                                                                           [9] Yashaswi Mannepalli, Viraj Bharadwaj Korede, and Madhav Rao. Novel Approxi-
+           Accurate            129.043     27.0244    0.96048                  mate Multiplier Designs for Edge Detection Application, page 371–377. Association
+                                                                               for Computing Machinery, New York, NY, USA, 2021.
+         Logarithmic           219.578     24.766     0.94306             [10] K J N S Bhargav, Sairam Palisetti, and Madhav Rao. A newton raphson method
+               LEAD            144.653     26.533     0.95906                  based approximate divider design for color quantization application. In 2021 18th
+                                                                               International SoC Design Conference (ISOCC), pages 115–116, 2021.
+        SAADI-EC(t=3)          166.914    25.91772    0.95804             [11] Masoud Pashaeifar, Mehdi Kamal, Ali Afzali-Kusha, and Massoud Pedram. Ap-
+                                                                               proximate reverse carry propagate adder for energy-efficient dsp applications.
+        SAADI-EC(t=7)          153.649    26.26706    0.95972                  IEEE Transactions on Very Large Scale Integration (VLSI) Systems, 26(11):2530–2541,
+                                                                               2018.
+                                                                          [12] Udayan S. Patankar and Ants Koel. Review of basic classes of dividers based on
+Table 5: Comparison of MSE, PSNR AND SSIM for color                            division algorithm. IEEE Access, 9:23035–23069, 2021.
+                                                                          [13] Jackson Melchert, Setareh Behroozi, Jingjie Li, and Younghyun Kim. Saadi-ec: A
+quantized output derived from different 16-bit divider de-                     quality-configurable approximate divider for energy efficiency. IEEE Transactions
+signs.                                                                         on Very Large Scale Integration (VLSI) Systems, 27(11):2680–2692, 2019.
+                                                                          [14] Setareh Behroozi, Jingjie Li, Jackson Melchert, and Younghyun Kim. Saadi: A
+                                                                               scalable accuracy approximate divider for dynamic energy-quality scaling. In
+           Divider              MSE       PSNR (db)     SSIM                   Proceedings of the 24th Asia and South Pacific Design Automation Conference,
+                                                                               pages 481–486, 2019.
+          Accurate             131.2008    26.95312   0.960442            [15] Lohita S. Niwal and S. P. Hajare. Design of radix 4 divider circuit using srt algo-
+                                                                               rithm. In 2015 International Conference on Communications and Signal Processing
+        Logarithmic            230.7066    24.54668   0.940768                 (ICCSP), pages 1107–1110, 2015.
+                                                                          [16] Shaghayegh Vahdat, Mehdi Kamal, Ali Afzali-Kusha, Massoud Pedram, and
+      SAADI-EC(t=15)           131.2397    26.95182   0.960446                 Zainalabedin Navabi. Truncapp: A truncation-based approximate divider for
+                                                                               energy efficient dsp applications. In Design, Automation Test in Europe Conference
+       SAADI-EC(t=3)           137.5566    26.75026   0.960433                 Exhibition (DATE), 2017, pages 1635–1638, 2017.
+                                                                          [17] Reza Zendegani, Mehdi Kamal, Arash Fayyazi, Ali Afzali-Kusha, Saeed Safari,
+               LEAD            149.0771    26.40436   0.957458                 and Massoud Pedram. Seerad: A high speed yet energy-efficient rounding-
+                                                                               based approximate divider. In 2016 Design, Automation Test in Europe Conference
+        LEAD-fixed             151.083     26.34574   0.957262                 Exhibition (DATE), pages 1481–1484, 2016.
+                                                                          [18] Mohsen Imani, Ricardo Garcia, Andrew Huang, and Tajana Rosing. Cade: Con-
+       LEAD-floating           148.3129    26.42778   0.957758                 figurable approximate divider for energy efficiency. In 2019 Design, Automation
+                                                                               Test in Europe Conference Exhibition (DATE), pages 586–589, 2019.
+                                                                          [19] John N. Mitchell. Computer multiplication and division using binary logarithms.
+large benefits in footprint, performance, and power savings. The               IRE Transactions on Electronic Computers, EC-11(4):512–517, 1962.
+proposed design was also minimally modified to generate 3 designs
+
+
+
+
+                                                                    442
+

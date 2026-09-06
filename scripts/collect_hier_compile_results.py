@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DC_ROOT = ROOT / "dc/hier_compile_10ns/outputs"
 PT_ROOT = ROOT / "pt_dc/hier_compile_10ns/reports"
 PPA = ROOT / "ppa_results"
+SPECIALIZED = ROOT / "experiments/fixed_div_level_specialization"
 
 
 def text(path: Path) -> str:
@@ -50,10 +51,30 @@ def fmt(value: float, digits: int) -> str:
 
 def collect() -> dict[str, dict[str, object]]:
     points: dict[str, dict[str, object]] = {}
-    for dc_report in sorted(DC_ROOT.rglob("*.dc.rpt")):
-        tag = dc_report.parent.relative_to(DC_ROOT).as_posix()
+    for filename, marker in (
+        ("rtl_equiv.log", "FIXED_DIV_LEVEL_SPECIALIZATION_RTL_EQUIV PASS: 20002"),
+        ("gate_miter.log", "FIXED_DIV_LEVEL_SPECIALIZATION_GATE_MITER PASS: 20002"),
+    ):
+        log = text(SPECIALIZED / "results" / filename)
+        if marker not in log or "MISMATCH" in log or "Errors: 0" not in log:
+            raise RuntimeError(f"specialized DIV validation failed: {filename}")
+    reports = []
+    for path in sorted(DC_ROOT.rglob("*.dc.rpt")):
+        tag = path.parent.relative_to(DC_ROOT).as_posix()
+        if re.fullmatch(r"root_div/oadm_fixed_l[0-3]_div_root_opt", tag):
+            continue
+        reports.append((tag, path, PT_ROOT / tag))
+    for level in range(4):
+        top = f"oadm_fixed_l{level}_div_specialized"
+        reports.append((f"root_div/{top}", SPECIALIZED / "dc" / top / f"{top}.dc.rpt",
+                        SPECIALIZED / "pt" / top))
+    for tag, dc_report, pt_dir in reports:
+        # A diagnostic of the local legacy recurrence, not AM-Lib OAM RTL.
+        if tag.startswith("correction_chain/"):
+            continue
+        if tag in points:
+            raise RuntimeError(f"multiple DC reports for tag {tag}")
         top = dc_report.name.removesuffix(".dc.rpt")
-        pt_dir = PT_ROOT / tag
         dc_dir = dc_report.parent
         dc = text(dc_report)
         qor = text(pt_dir / f"{top}.pt.qor.rpt")
@@ -91,6 +112,8 @@ def collect() -> dict[str, dict[str, object]]:
             errors.append("plain_compile_missing")
         if re.search(r"(?m)^(?:ungroup|compile_ultra)(?:\s|$)", console):
             errors.append("forbidden_mapping_command")
+        if re.search(r"(?m)^Error:", console):
+            errors.append("dc_error")
 
         status = "pass" if not errors else ";".join(errors)
         if sequential:
@@ -116,8 +139,22 @@ def collect() -> dict[str, dict[str, object]]:
             "boundary": "TSMC65 typical CCS; 10 ns; no pipeline; INVD0; "
                         "0.004 output load; vectorless PT",
         }
-    if len(points) != 38:
-        raise RuntimeError(f"expected 38 points, found {len(points)}")
+        if top.endswith("_div_specialized"):
+            if status != "pass":
+                raise RuntimeError(f"specialized DIV report failed: {top}: {status}")
+            points[tag]["boundary"] += (
+                "; common normal-finite FP32 wrapper; elaboration-time LEVEL; "
+                "RTL/gate 20002 vectors per level"
+            )
+        if tag == "simdive/sisd32_specialized":
+            points[tag]["mapping"] += "; source-specialized mode=01"
+            points[tag]["boundary"] = (
+                "TSMC65 typical CCS; 10 ns; no pipeline; shared "
+                "fp32_normal_finite_wrapper; INVD0; 0.004 output load; "
+                "vectorless PT"
+            )
+    if len(points) != 42:
+        raise RuntimeError(f"expected 42 points, found {len(points)}")
     return points
 
 
@@ -144,9 +181,13 @@ def main() -> None:
     prior = subset(points, "prior/")
     write(PPA / "priorwork_hier_compile_10ns.csv", master_fields, prior)
 
+    accuracy_path = ROOT / "qsim_rtl/root_opt/root_opt_accuracy.csv"
+    _, accuracy_rows = load(accuracy_path)
+    accuracy = {(r["candidate"], r["level"]): r for r in accuracy_rows
+                if r["mode"] == "DIV"}
     pairs = []
     for level in range(4):
-        oadm = points[f"root_div/oadm_fixed_l{level}_div_root_opt"]
+        oadm = points[f"root_div/oadm_fixed_l{level}_div_specialized"]
         pace = points[f"pace/L{level + 1}"]
         oa = float(oadm["area_um2"])
         od = float(oadm["delay_ns"])
@@ -169,12 +210,24 @@ def main() -> None:
             "validation": f"{oadm['status']};{pace['status']}",
             "mapping": oadm["mapping"],
         })
+        pair = pairs[-1]
+        oa_error = accuracy[("fixed_root", f"L{level}")]
+        pa_error = accuracy[(f"pace_l{level + 1}", f"L{level + 1}")]
+        assert oa_error["cases"] == pa_error["cases"]
+        pair["accuracy_cases"] = oa_error["cases"]
+        pair["accuracy_source"] = accuracy_path.relative_to(ROOT).as_posix()
+        for metric in ("mae", "mred", "rmse"):
+            pair[f"oadm_{metric}"] = oa_error[metric]
+            pair[f"pace_{metric}"] = pa_error[metric]
+        pair["oadm_adp_um2_ns"] = fmt(oa * od, 6)
+        pair["pace_adp_um2_ns"] = fmt(pa * pd, 6)
+        pair["oadm_adp_vs_pace_pct"] = fmt(100 * (oa * od / (pa * pd) - 1), 2)
     write(PPA / "div_only_vs_pace_hier_compile_10ns.csv",
           list(pairs[0].keys()), pairs)
 
     sharing = []
     for level in range(4):
-        div = points[f"root_div/oadm_fixed_l{level}_div_root_opt"]
+        div = points[f"root_div/oadm_fixed_l{level}_div_specialized"]
         mul_point = points[f"mul_root/oadm_fixed_l{level}_mul_root_opt"]
         full = points[f"root_shared/oadm_fixed_l{level}_divmul_root_opt"]
         da = float(div["area_um2"])
@@ -212,6 +265,23 @@ def main() -> None:
     write(PPA / "divmul_sharing_ablation_hier_compile_10ns.csv",
           list(sharing[0].keys()), sharing)
 
+    # Preserve the existing same-vector PLSAD accuracy population. The new DIV
+    # RTL passed equivalence to the old arithmetic; only its PPA source changes.
+    fields, plsad = load(PPA / "plsad_vs_oadm_hier_compile_10ns.csv")
+    for row in plsad:
+        if row["family"] != "OADM":
+            continue
+        level = int(row["configuration"].removeprefix("fixed_L"))
+        point = points[f"root_div/oadm_fixed_l{level}_div_specialized"]
+        for field in ("area_um2", "delay_ns", "setup_slack_ns", "power_mw", "status"):
+            row[field] = point[field]
+        row["implementation_scope"] = (
+            f"{point['top']}; elaboration-time LEVEL; unchanged residual and w_n "
+            "truncation; accuracy retained via RTL equivalence; "
+            "source experiments/fixed_div_level_specialization/specialized_rtl.v"
+        )
+    write(PPA / "plsad_vs_oadm_hier_compile_10ns.csv", fields, plsad)
+
     amlib = []
     for level in range(4):
         oam = points[f"amlib_oam/L{level}"]
@@ -221,7 +291,7 @@ def main() -> None:
           master_fields, amlib)
 
     statuses = {str(point["status"]) for point in points.values()}
-    print(f"wrote 8 CSVs from {len(points)} points; statuses={sorted(statuses)}")
+    print(f"wrote 9 CSVs from {len(points)} points; statuses={sorted(statuses)}")
 
 
 if __name__ == "__main__":

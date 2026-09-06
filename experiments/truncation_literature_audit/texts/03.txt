@@ -1,0 +1,504 @@
+                              2024 Design, Automation & Test in Europe Conference (DATE 2024)
+
+
+
+                 PACE: A Piece-Wise Approximate and
+                 Conﬁgurable Floating-Point Divider for
+                     Energy-Efﬁcient Computing
+                  Chenyi Wen1 , Haonan Du1 , Zhengrui Chen1 , Li Zhang2,∗ , Qi Sun1 , Cheng Zhuo1,3,∗
+                                                                 1
+                                                    Zhejiang University
+                                                         2
+                                              Hubei University Of Technology
+        3
+          Key Laboratory of Collaborative Sensing and Autonomous Unmanned Systems of Zhejiang Province, China
+                             ∗
+                               Corresponding author: zhangli@hbut.edu.cn, czhuo@zju.edu.cn
+   Abstract—Approximate computing is a promising alternative                    face high latency issues due to their array structure [12]–[15],
+to improve energy efﬁciency for human perception related appli-                 while reciprocal-based designs often require multiple (1-3)
+cations on the edge. This work proposes a piece-wise approximate                multipliers for completing computations [21]–[25]. Neverthe-
+ﬂoating-point divider, which is resource-efﬁcient and run-time
+conﬁgurable. We provide a piece-wise approximation algorithm                    less, since an exact ﬂoating-point (FP) divider incurs more than
+for 1/y, utilizing powers of 2. This approach enables the                       15× Area-Delay-Product and over 1.5× power consumption
+implementation of a reciprocal-based ﬂoating-point divider that                 compared to an exact FP multiplier [17], the above approx-
+is independent of multipliers, which not only reduces hardware                  imate dividers are still beneﬁcial in hardware resource efﬁ-
+consumption but also results in shorter latency. Furthermore,                   ciency. On the other hand, logarithm-based designs are more
+a multi-level run-time conﬁgurable hardware structure is intro-
+duced, enhancing the adaptability to various application scenar-                hardware-efﬁcient but struggle with accuracy and conﬁg-
+ios. When compared to the prior state-of-the-art approximate                    urability during runtime [16]–[20]. Usually, logarithm-based
+divider, the proposed divider strikes an advantageous balance                   designs rely on pre-loaded lookup tables (LUTs), making
+between accuracy and resource efﬁciency. The application-level                  runtime adjustments to accuracy impossible [19], [20].
+evaluation of the proposed dividers demonstrates manageable
+and minimal degradation of the output quality when compared                        To address the above issues, we propose PACE (a Piece-
+to the exact divider.                                                           wise Approximate and ConﬁgurablE FP divider), a resource-
+   Index Terms—Approximate computation, Divider, Floating-                      efﬁcient and run-time conﬁgurable design. Our major contri-
+Point, Energy Efﬁciency                                                         butions include:
+                         I. I NTRODUCTION                                          •   We implemented a multiplier-independent reciprocal-
+                                                                                       based ﬂoating-point divider, which replaced the multi-
+   Recently, with the growing popularity of human perception
+                                                                                       plication by 1/y with much simpler shifts and additions,
+related tasks (e.g., audio/image processing, machine learning),
+                                                                                       reducing both hardware resource demands and latency.
+it is observed that the requirements of full precision and
+                                                                                   •   A piece-wise approximation algorithm is introduced for
+exactness are not always essential [1]–[3]. This observation
+                                                                                       1/y operation. By increasing the number of piece-wise
+has led to growing interest in approximate computing, a
+                                                                                       linear segments to approximate 1/y, this method easily
+method that trades off computational accuracy for energy
+                                                                                       improves overall division accuracy.
+efﬁciency [4], [5]. Thus, approximate arithmetic units like
+                                                                                   •   Finally, a multi-level run-time conﬁgurable circuit
+adders and multipliers have been explored to reduce power
+                                                                                       structure is designed for greater adaptability across vari-
+consumption with a tolerable loss in accuracy [6], [7].
+                                                                                       ous applications. Based on the application speciﬁcations,
+   Among the four basic arithmetic operations, division is gen-
+                                                                                       designers are empowered to decide approximation levels
+erally more time-consuming and energy-intensive [8]. Despite
+                                                                                       at run-time to balance delay and energy consumption.
+this, division is crucial in various applications, such as the
+OpenCV library in multimedia [9], normalization in page-                           The experimental results clearly demonstrate that, in com-
+ranking [10], and even derivatives in robotics control [11], etc.               parison to state-of-the-art dividers, PACE strikes an advan-
+There are signiﬁcant demands to resource-efﬁcient dividers                      tageous balance between accuracy and resource efﬁciency.
+for applications, where division cannot be bypassed.                            Speciﬁcally, PACE achieves comparable accuracy to the most
+   Recent works have proposed several types of approximate                      precise approximate divider, QIAD [25], while consuming a
+dividers, which can be grouped into three main categories:                      mere 11.61% of the resources in Area-Delay-Product. FaNZeD
+subtractor-array-based [12]–[15], logarithm-based [16]–[20],                    [17] is the only other divider that occupies less hardware
+and reciprocal-based dividers [8], [21]–[25]. However, each                     resource than PACE, but its errors are about 5× greater than
+category of the existing designs has its own limitations.                       PACE’s. The application-level evaluation of PACE demon-
+Subtractor-array-based and reciprocal-based dividers can                        strates marginal degradation of the output quality, resulting
+achieve high computational accuracy, but often impose sub-                      in a mere 0.09dB average PSNR reduction in K-means color
+stantial hardware overhead. Subtractor-array-based dividers                     quantization and a 0.63dB average PSNR reduction in JPEG.
+
+
+
+                                                                                                       979-8-3503-4859-0/DATE24/© 2024 EDAA
+       Authorized licensed use limited to: Zhejiang University. Downloaded on September 25,2024 at 11:53:37 UTC from IEEE Xplore. Restrictions apply.
+                      II. R ELATED W ORK                                        where signx , x, and Ex refer to the sign, mantissa, and
+   Early approaches to approximate dividers often simply                        exponent of the FP number Fx , with x ∈ [1, 2). For the
+modiﬁed the conventional, precise array dividers. The work                      division between two FP numbers Fx and Fy , we have:
+in [12], [15] replaced core units in non-restoring and high-                                Fx /Fy = signx signy × (x/y) × 2Ex −E y                      (3)
+radix dividers with approximate units. The approximation level
+could be tuned by adjusting the extent of the replacement.                      Given that computing the mantissa x/y is much more energy-
+Another strategy, as seen in [13], [14], added a pruning circuit                and delay-consuming than the other two parts, its energy
+to a standard divider. This circuit truncated the input to fewer                efﬁcient design is the focus of the rest of the paper.
+bits after identifying the leading one, thereby simplifying                       To alleviate the computational complexity of x/y, we pro-
+the existing divider module. However, these approaches are                      pose a transformation as presented in Equation (4):
+limited by the underlying principles of precise division, lead-                                      x/y = (1/y) × (x − y) + 1                           (4)
+ing to hardware redundancy and sub-optimal approximation
+performance.                                                                    Here, we approximate 1/y based on the value of y, and
+   Then the approximation techniques leveraging the principle                   as a result, Eq. (4) intrinsically leverages a linear plane to
+of logarithms have been proposed, known as the Mitchell                         interpolate the surface of x/y. Now assume that y falls within
+Method [16], in which complex division can be converted to                      the interval [y1 , y2 ), with y1 and y2 deﬁned as:
+the straightforward subtraction in the logarithmic domain. A                                                               t
+                                                                                                       y1 = 1 + f 1 = 1 + n                (5)
+typical logarithmic divider consists of three main stages: log-                                                           2
+arithmic conversion, subtraction, and anti-logarithmic conver-                                                           t+1
+sion. To facilitate binary operations, logarithmic calculations                                      y2 = 1 + f 2 = 1 + n                  (6)
+                                                                                                                          2
+are approximated as linear functions, as outlined in Eq. (1):                   where f1 , f2 ∈ [0, 1), n refers to approximate level, and t
+               log N = k + log(1 + x) ≈ k + x,                          (1)     depends on y.
+                                                                                   The mean value of 1/y across the range of [y1 , y2 ] can be
+where N = 2 (1 + x), 0 ⩽ x < 1. Despite its simplicity,
+                 k
+                                                                                denoted as ynt :
+the logarithmic divider introduces non-negligible error. To                                                  ∫ y2
+offset this, FaNZeD [17] and LEAD [18] used compensation                                                1         1      ln y2 − ln y1
+                                                                                           ynt =                    dy =                   (7)
+coefﬁcients and exponential series expansions, respectively, to                                    y2 − y 1 y1 y            y2 − y 1
+improve the accuracy.                                                           Then, to further simplify Eq. (7), we employ the Taylor series
+   An alternative category of dividers transforms division A/B                  expansion of ln(1 + f ) shown in Eq. (8):
+into multiplication A × (1/B), as multiplication is gener-
+ally more resource-efﬁcient [25]. Various methods have been                                               f2    f3                  fk
+                                                                                     ln(1 + f ) = 1 + f −     +     + ... + (−1)k+1                      (8)
+proposed to compute the reciprocal 1/B [25]. For exam-                                                     2     3                  k
+ple, ILAFD [21] directly applied bit-wise inversion, while                         We substitute Eq. (8) into Eq. (7):
+TruncApp [8] used a speciﬁc approximation for 1/XB ≈                                                ln(1 + f2 ) − ln(1 + f1 )
+((XB + 1)/2), with XB ∈ [1, 2) denoting the normalized                                            ynt =
+                                                                                                      (1 + f2 ) − (1 + f1 )
+fractional component of B. SEERAD [22] pre-computed the
+                                                                                          1                   f 2 − f12   f 3 − f13
+optimal parameters for transforming the reciprocal into multi-                       =         × (f2 − f1 − 2           + 2         − ...)               (9)
+plication and shift operations. While these dividers are simple,                       f2 − f1                    2           3
+they often incur higher error rates and typically require lookup                           f2 + f1    f 2 + f12 + f1 f2
+                                                                                     =1−           + 2                  − ...
+tables to store parameters or error-compensation values.                                      2               3
+   Finally, some researches have focused on the mathematical                    The ﬁrst two terms of Eq. (9), namely 1 and − f2 +f   1
+                                                                                                                                   2 , are re-
+approximations of the function 1/x. For example, SAADI-                         tained in their original form. For computational simplicity, the
+EC [23] employed Taylor expansions, ADNR-EC [24] used                           remaining terms are approximated as f12f2 . This approximation
+Newton’s iteration, and QIAD [25] utilized quadratic curve ﬁt-                  is chosen because it captures the ﬁrst-order behavior of the
+ting. These methods offer high precision but the mathematical                   remaining terms while accounting for hardware friendliness.
+approximations typically require multiple multipliers within                    The approximated expression for ynt is denoted as knt :
+one clock cycle or additional clock cycles using one multiplier.
+                                                                                                 f2 + f1 f1 f2          2t + 1 t2 + t
+   In summary, while there has been considerable progress in                     ynt ≈ knt = 1 −          +      = 1 − n+1 + 2n+1 (10)
+the ﬁeld, ﬁnding an approximate divider that balances both                                           2       2           2        2
+precision and resource efﬁciency remains a challenge.                           Here, n and t have the same meanings as in Eq.(5) and Eq.(6).
+                                                                                By substituting this approximation into Eq. (4), we arrive at
+     III. P ROPOSED A PPROXIMATE D IVIDER D ESIGN
+A. Proposed Approximate Division                                                          x/y ≈ ynt × (x − y) + 1 ≈ knt × (x − y) + 1                   (11)
+                                                                                                                        n
+  According to the IEEE 754 standard for FP arithmetic, any                     To aid in further analysis, let        fapprox
+                                                                                                                      represent the approxi-
+FP number Fx can be represented as below:                                       mate mantissa division at the approximation level n:
+                      Fx = signx × x × 2Ex                              (2)                           n
+                                                                                                     fapprox = knt × (x − y) + 1                        (12)
+
+
+
+
+       Authorized licensed use limited to: Zhejiang University. Downloaded on September 25,2024 at 11:53:37 UTC from IEEE Xplore. Restrictions apply.
+                        t , and k t for different approximate levels n, where y is in the range of [1,2): (a) approximate level n = 1; (b) approximate level
+Fig. 1. Values of 1/y, yn        n
+n = 2; (c) approximate level n = 3; (d) approximate level n = 4; (e) approximate level n = 5; (f) approximate level n = 4 with error compensation kec .
+
+With the above mathematical formulations, we lay the ground-                            Sign       Exponent               Mantissa                            Control
+work for an energy-efﬁcient and computationally simpler                             X    0       1 0 0…1 0            1 0 0 0 0…1 1                            Bits
+method to approximate division.                                                     /                                                                        1 1 1 0
+                                                                                    Y    1       1 0 0…0 1            0 0 0 1 0…0 1
+B. Error Compensation                                                                                   −
+   The accuracy of the approximate division is characterized                                     0 0 0…0 1                              x-y           y-x
+by the difference between ynt and knt . Fig. 1(a)-(e) compare the
+values of 1/y, ynt , and knt , as the approximate level n varies
+from 1 to 5. To quantitatively assess the disparity between ynt                          ⨁
+
+
+
+
+                                                                                                                           Level 1
+
+
+                                                                                                                                         Level 2
+
+
+                                                                                                                                                   Level 3
+
+
+                                                                                                                                                                Level 4
+and knt , we deﬁne the mean error ynerr between them at each                                            + Exp Bias
+level n as follows:
+                                  1 ∑ t                                                                        ∑
+                                    n−1
+                       ynerr =          (y − knt )                      (13)
+                                 2n t=0 n                                                                                            𝑛𝑡ℎ Approximate Module
+                                                                                                      Normalization
+
+
+                                                                                    Z    1       1 0 0…0 0            0 1 1 0 1…1 1
+
+                                                                                          Fig. 3. Architecture of the proposed approximate divider.
+
+                                                                                                   IV. C IRCUIT I MPLEMENTATION
+                                                                                 A. Multi-Level Approximation Architecture
+                   err (with/without error compensation) when approximate
+Fig. 2. Values of yn                                                                 In the preceding sections, we introduced a novel method
+level n varies.                                                                  for approximate division that enhances computational accu-
+   Fig. 2 reveals that ynerr signiﬁcantly decreases as n increases               racy through piece-wise approximation. This section further
+from 1 to 4. Beyond n = 4, however, the error plateaus, sug-                     presents a multi-level architecture designed to implement this
+gesting that further levels of approximation are not beneﬁcial                   algorithm, allowing for dynamic conﬁguration at run-time,
+for accuracy. This motivates the need for error compensation                     which is illustrated in Fig. 3.
+mechanisms at the fourth or lower level of approximation.                            Inside the module designated for mantissa division, two
+   For example, Fig. 1(d) shows that k4t closely approximates                    initial subtractors calculate x−y and y−x. Their outputs, along
+y when y is near 1 or 2 but is generally underestimated oth-                     with the mantissa y and control bits, feed into a multi-level
+erwise. An effective solution for error compensation involves                    computation structure. In this structure, Level 1 serves as the
+adding a constant term kec,4 to k4t :                                            fundamental approximation unit, producing an initial estimate
+                                                                                  1
+                                                                                 fapprox . Subsequent levels act as deviation correction layers,
+                      0, y < 1.125 or y ≥ 1.875                                 iteratively reﬁning the approximation and thereby enhancing
+            kec,4 =       1                                   (14)
+                            , 1.125 ≤ y < 1.875                                 overall accuracy. This architecture enables simple run-time
+                          25
+                                                                                 conﬁguration by selecting the desired number of layers.
+                                                                                                                                        n
+Fig. 1(f) and 2 show that introducing kec signiﬁcantly reduces                       To facilitate the following discussions, we deﬁne fec as the
+y4err compared to y5err without compensation.                                    discrepancy between consecutive approximation levels, n and
+
+
+
+
+        Authorized licensed use limited to: Zhejiang University. Downloaded on September 25,2024 at 11:53:37 UTC from IEEE Xplore. Restrictions apply.
+                                                                                                                        TABLE I
+                                                                                                                                                                             t.
+                           y[1:4]                𝑝4,1                                        R ELATIONSHIP BETWEEN THE FIRST 4 DIGITS OF y              MANTISSA AND        Kn
+                                                 𝑝4,2
+                                                                            ∑                                                                Knt
+                                             𝑘𝑒𝑐 (𝑥 − 𝑦)
+                                                                                             y[1:4]∗
+                                                                                                                n=2                        n=3                n=4
+                                      Level 4: 𝑓𝑒𝑐
+                                                 4
+  y[1:4]
+
+
+
+
+                                                   + 𝑘𝑒𝑐,4 (𝑥 − 𝑦)
+                                                                                               0000                                                     K40 = 2−5
+                                                                                                                               K30   =     2−4
+                                                                                               0001                                                     K41 = −2−5 + 2−8
+                                                                                                          K20 = 2−3
+                           y[1:3]                                                              0010                                                     K42 = 2−5 − 2−8
+                                                 𝑝3,1                                                                          K31 = −2−4 + 2−6
+                                                                           𝑛𝑡ℎ                 0011                                                     K43 = −2−5 + 2−7
+                                                 𝑝3,2
+                                                                           Approximate         0100                                                     K44 = 2−5 − 2−7
+                                              Level 3: 𝑓𝑒𝑐
+                                                         3                 Module                                              K32 = 2−4 − 2−6
+                                                                                                                                                        K45 = −2−6 − 2−8
+  SUB
+
+
+
+
+                                                                                               0101
+                                                                                                          K21   =   −2−4
+                           y[1:2]
+                                                                                               0110                                                     K46 = 2−6 + 2−8
+                                                                                                                               K33 = −2−5
+                                                 𝑝2,1                      Partial Sum
+                                                                                               0111                                                     K47 = −2−6
+                                                                                               1000                                                     K48 = 2−6
+                                              Level 2: 𝑓𝑒𝑐
+                                                         2
+                                                                                                                               K34 = 2−5
+                                                                                                                                                        K49 = −2−7 − 2−8
+  Control Bits
+
+
+
+
+                                                                                               1001
+                                                                                                          K22 = 2−4
+                                                                                               1010                                                     K410 = 2−7 + 2−8
+                                                                                                                               K35 = −2−6
+                                               𝑝1,𝑐 = 1                                        1011                                                     K411 = −2−7
+                            y[1]
+                                                                                               1100                                                     K412 = 2−7
+                                          𝑝1,1 = 0.5(𝑥 − 𝑦)                                                                    K36 = 2−6
+                                                                                               1101                                                     K413 = −2−8
+                                     𝑝1,2 = 𝑦 1 ? 0 ∶ 0.25 𝑥 − 𝑦                                          K23 = 0
+                                                                                               1110                                                     K414 = 2−8
+                                           Level 1: 𝑓𝑎𝑝𝑝𝑟𝑜𝑥
+                                                      1                                                                        K37 = 0
+                                                                                               1111                                                     K415 = 0
+                                                                                             ∗ The ﬁrst   4 digits of y mantissa.
+   Fig. 4. Detailed Architecture of the multi-level mantissa computation.
+
+n − 1. Thus, fec
+               n
+                  represents the output from the nth level.                                                                     L1
+
+
+
+
+                                                                                                                                                                 MUX
+The proposed architecture in Fig. 3 simply implements an                                                                                    L2
+accuracy-conﬁgurable approximation through the control of                                     Level 1 PSs
+approximation granularity as:                                                                                                                      L3
+                                                                                                                                                           L4
+                                                              ∑
+                                                              n                               Level 2 PS
+                              n
+                             fapprox    1
+                                     = fapprox +                      i
+                                                                     fec             (15)                                                                           Final
+                                                                                                                                                                    Adder
+                                                              i=2
+                                                                                              Level 3 PSs
+                                       1
+We can easily compute                 fapprox
+                               by Eq. (10) and (12):
+             
+                   1           1                                                             Level 4 PSs
+              1 + (x − y) + (x − y), y ≤ 1.5
+    1               2           4                                                                                                                  Partial Sum
+   fapprox =                                                                         (16)
+                   1
+              1 + (x − y), y > 1.5                                                           Level 4 𝑘𝑒𝑐                                          3-2 compressor
+                    2
+                       n                                                                                            Direct transfer wire           Sum of 3-2 compressor
+Then we can calculate fec based on Eq. (12):
+                                                                                                                    Output node with the final     Carry of 3-2 compressor
+                                            f loor(t/2)
+                          n
+                         fec = (knt − kn−1                   ) × (x − y)             (17)                           product in redundant form
+
+                                                                                            Fig. 5. Partial sum reduction tree structure for the proposed divider with
+where f loor(.) is the round-down function. For the con-                                    run-time conﬁgurability.
+venience of following discussion, we denote the deviation
+                                                                                            circuitry for mantissa computation is depicted in Fig. 4, where
+correction of knt between different levels as Knt :
+                                                                                           pn,i is employed to represent the ith partial sum production
+                               1        t                                                  at the level n.
+                             n+1 − 2n+1 , t mod 2 = 0
+Kn = kn − kn−1
+  t     t     f loor(t/2)
+                          =   2        2
+                            
+                             − 1 + t + 1 , t mod 2 = 1                                     B. Design for Run-Time Conﬁgurability
+                                 2n+1     22n+1                                                To enhance the efﬁciency of partial sum accumulations, we
+                                                     (18)
+                                                                                            propose a novel tree structure that employs 3-to-2 compres-
+   The values of all Knt ’s for n = 2, 3, 4 can be readily                                  sors. This innovative design allows for dynamic switching be-
+derived depending on the ﬁrst 4 digits of y’s mantissa, as                                  tween various levels of approximation within a single circuit.
+shown in Table I. The architecture capitalizes on the fact that                             Fig. 5 details this structure. In this ﬁgure, each dot signiﬁes a
+all Knt values consist solely of powers of 2. This simpliﬁes                                partial sum, brackets denote 3-to-2 compressors, and squares
+                     n                                                                      and triangles indicate the sum and carry outputs from these
+the calculation of fec to basic shift and add operations. The
+architecture uses the notion of Partial Sums (PS) for level-                                compressors, respectively. A dotted arrow represents a direct
+wise conﬁguration. Depending on the value of Knt , Level 2                                  wire that transfers a partial sum to a subsequent stage.
+requires a single PS conﬁguration, followed by two for Level 3                                 Notably, the tree features four output nodes, highlighted
+and two for Level 4. Level 1 requires three PS conﬁgurations,                               in red rectangles. These correspond to approximation levels
+and an additional PS is needed for the term kec . The elaborate                             1, 2, 3, and a 4th level that includes an error compensation
+
+
+
+
+                 Authorized licensed use limited to: Zhejiang University. Downloaded on September 25,2024 at 11:53:37 UTC from IEEE Xplore. Restrictions apply.
+term, kec , which is determined based on the chosen approxi-                       Compared to other approximate dividers, PACE also demon-
+mation level. When operating at lower approximation levels,                     strates signiﬁcant advantages in area, delay, and power. For
+the architecture bypasses the need to navigate through the                      example, PACE(L4) uses only a third of the area and is three
+entire tree. This not only simpliﬁes computational tasks but                    times faster than QIAD [25], which offers similar accuracy.
+also minimizes delays along the critical path. Such design                      FaNZeD [17] is the only other divider that takes up less area
+versatility renders the architecture highly amenable to run-time                than PACE(L4), but its errors are about 5-6 times greater.
+conﬁgurability. It’s important to emphasize that the inclusion                  Among prior works, LEAD [18] is the most balanced in terms
+of the kec term in the Level 4 approximation module does not                    of area, delay, power, and accuracy. However, compared to
+extend the circuit’s critical path. Thus, we strongly recommend                 PACE(L4), LEAD is 70% larger, 120% slower, and incurs
+employing this error compensation term to improve accuracy.                     nearly 4× larger errors.
+For the sake of clarity, all the further discussions in this paper
+will use “L4” to signify Level 4 approximation, denoted as
+  4
+fapprox , which includes the kec,4 term.
+
+              V. E VALUATION AND D ISCUSSION
+   We evaluated the proposed divider across four approxima-
+tion levels (L1-L4), focusing on accuracy, resource utilization,
+and performance. For comparison, we also tested several
+state-of-the-art approximate dividers, including TruncApp [8],
+                                                                                   Fig. 6. Comparison on ADP v.s. MAE among PACE and prior works.
+FaNZeD [17], LEAD [18], and QIAD [25]. Some dividers
+were proposed as ﬁxed point dividers but can be easily                            Fig. 6 compared ADP and MAE to further illustrate PACE’s
+converted to FP dividers by removing the LOD modules and                        superior performance. Data points closer to the origin indicate
+the barrel shifters.                                                            a better trade-off between accuracy and resource utilization.
+                                                                                PACE achieves substantial accuracy gains with minimal re-
+A. Accuracy Comparison                                                          source overhead. Compared to LEAD [18], PACE’s L4 im-
+   To evaluate the accuracy of the proposed divider, we uni-                    plementation shows a 72.41% improvement in ADP and an
+formly sampled 10,000 points within the range of [1, 2) to                      76.19% increase in MAE-based accuracy. Moreover, PACE
+serve as both divisors x and dividends y. We then tested each                   matches the near-lossless accuracy of QIAD [25] while using
+possible combination of x and y, and compared the results                       only 11.61% of the ADP resources.
+with those from an exact FP divider. We employed three error
+metrics for evaluation: Mean Absolute Error (MAE), Mean                         C. Application-Level Comparison
+Relative Error Distance (MRED), and Root Mean Square Error                         To assess the performance of approximate dividers in real-
+(RMSE). The results are shown in the ﬁrst three columns of                      world applications, similar as prior works [17], [18], [21],
+Table II. Clearly, as the approximation level increases, the                    [23]–[25], we integrated them into two multimedia application
+accuracy of the PACE improves. For most metrics, PACE                           algorithms that heavily depend on division operations: K-
+outperforms FaNZeD [17] and TruncApp [8] even with L1                           means color quantization and JPEG. In K-means color quanti-
+approximation. PACE is superior to LEAD from level 2. While                     zation, we employed the approximate dividers for the standard
+QIAD [25] achieves high accuracy, PACE at L4 can achieve                        cluster averaging operation in each K-means iteration [18]. In
+similar accuracy with much smaller resource cost.                               JPEG, the element-wise division in DCT was replaced with the
+                                                                                approximate dividers to quantize the DCT coefﬁcients [17].
+B. Resource Utilization and Performance Comparison                                 We evaluated the modiﬁed algorithms on the Caltech101
+   To assess hardware resource utilization and performance,                     dataset [26], which contains 102 categories and 9144 images
+we implemented all the dividers in 32-bit FP using Verilog                      in total. To measure the output quality, we calculated the
+HDL. All the designs were synthesized and evaluated using                       difference in Peak Signal-to-Noise Ratio (PSNR) between
+the Synopsys Design Compiler with UMC’s 40-nm library,                          images processed with approximate and accurate dividers,
+with consistent design constraints and options. The exact 32-                   denoted as PSNRdegradation = PSNRaccurate − PSNRapprox .
+bit FP divider and multiplier IPs from Synopsys DesignWare                         Fig. 7 shows the PSNR degradation due to the use of ap-
+library were employed for comparison purpose.                                   proximate dividers on the Caltech101 dataset. As the approxi-
+   Columns 6-9 in Table II display the hardware resource                        mation level of PACE increases, image quality consistently im-
+and performance results, including area, delay, power, and                      proves. At level 2, PACE outperforms most other approximate
+normalized area-delay-product (Norm. ADP). We use the exact                     dividers for both applications, except for QIAD [25]. At level
+32-bit FP divider from the Synopsys DesignWare library as                       4, PACE exhibits a mere 0.09dB average reduction in K-means
+a reference, normalizing its results to 1. Even at its most                     and a 0.63dB average reduction in JPEG compared to the exact
+resource-intensive level (L4), PACE is 70% smaller and 65%                      divider. Notably, PACE(L4) achieves better quality in both two
+faster than the exact divider. In fact, PACE(L4) outperforms                    applications when compared to QIAD, while using much fewer
+even the exact multiplier IP in size and speed.                                 resources with much lower latency. Such consistent results
+
+
+
+
+       Authorized licensed use limited to: Zhejiang University. Downloaded on September 25,2024 at 11:53:37 UTC from IEEE Xplore. Restrictions apply.
+                                                         TABLE II
+            ACCURACY EVALUATION AND HARDWARE RESOURCE CONSUMPTION FOR                       AN EXACT MULTIPLIER ,   PACE   AND PRIOR DIVIDERS .
+
+                Designs               MAE       MRED       RMSE      Area  (µm2 ) / ratio     Delay (ns) / ratio   Power (mW) / ratio     Norm. ADP
+        Synopsys        Divider         -         -          -           15143 / 1×              9.54 / 1×             20.15 / 1×            1×
+       DesignWare     Multiplier        -         -          -          7574 / 0.50×           4.63 / 0.48×           6.62 / 0.32×         0.242×
+                          L1          0.028     0.026      0.045       1978 / 0.13×            2.11 / 0.22×          1.23 / 0.06×          0.028×
+        Proposed          L2          0.015     0.014      0.022        2756 / 0.18×           2.48 / 0.25×           1.89 / 0.09×         0.047×
+         PACE             L3          0.011     0.011      0.014        3275 / 0.21×           2.93 / 0.30×           2.41 / 0.11×         0.066×
+                          L4          0.005     0.005      0.007        4590 / 0.30×           3.43 / 0.35×           3.58 / 0.17×         0.108×
+                        FaNZeD        0.030     0.028      0.039       1660 / 0.11×            1.47 / 0.15×          0.93 / 0.05×          0.017×
+          Prior
+       Approximate    TruncApp        0.085     0.083      0.095        5643 / 0.37×           5.48 / 0.57×           4.61 / 0.22×         0.214×
+        Dividers         LEAD         0.021     0.020      0.028        7814 / 0.51×           7.31 / 0.77×           3.82 / 0.19×         0.395×
+                         QIAD         0.006     0.005      0.006       13594 / 0.89×           9.89 / 1.04×          11.82 / 0.59×         0.930×
+
+
+                                                                                  [3] C. Chen et al., “Pam: A piecewise-linearly-approximated ﬂoating-
+                                                                                      point multiplier with unbiasedness and conﬁgurability,” IEEE Trans. on
+                                                                                      Computers, vol. 71, no. 10, pp. 2473–2486, 2021.
+                                                                                  [4] S. Mittal, “A survey of techniques for approximate computing,” ACM
+                                                                                      Comput. Surv., vol. 48, no. 4, 2016.
+                                                                                  [5] W. Xiao et al., “OPACT: Optimization of Approximate Compressor Tree
+                                                                                      for Approximate Multiplier,” in DATE’22, pp. 178–183.
+                                                                                  [6] H. Jiang et al., “Approximate arithmetic circuits: A survey, characteri-
+                                                                                      zation, and recent applications,” in Proc. of the IEEE, vol. 108, no. 12,
+                                                                                      pp. 2108–2135, 2020.
+                                                                                  [7] Y. Wu et al., “A survey on approximate multiplier designs for energy
+                                                                                      efﬁciency: From algorithms to circuits,” ACM Trans. Des. Autom.
+                                                                                      Electron. Syst., 2023.
+                                                                                  [8] S. Vahdat et al., “TruncApp: A truncation-based approximate divider for
+                                                                                      energy efﬁcient DSP applications,” in DATE’17, pp. 1635–1638.
+                                                                                  [9] G. Bradski, “The OpenCV Library,” Dr. Dobb’s Journal of Software
+                                                                                      Tools, 2000.
+                                                                                 [10] T. Haveliwala, “Topic-sensitive pagerank: a context-sensitive ranking
+                                                                                      algorithm for web search,” IEEE Trans. on Knowledge and Data
+                                                                                      Engineering, vol. 15, no. 4, pp. 784–796, 2003.
+Fig. 7. Statistics of PSNR degradation due to approximate divisions on           [11] J. Cortes et al., “Coverage control for mobile sensing networks,” IEEE
+Caltech101 dataset.                                                                   Trans. on Robotics and Automation, vol. 20, no. 2, pp. 243–255, 2004.
+                                                                                 [12] L. Chen et al., “Design of Approximate Unsigned Integer Non-restoring
+highlight the wide applicability and effectiveness of our PACE                        Divider for Inexact Computing,” in GLSVLSI’15, pp. 51–56.
+divider in various division scenarios.                                           [13] S. Hashemi et al., “A low-power dynamic divider for approximate
+                                                                                      applications,” in DAC’16, pp. 1–6.
+                                                                                 [14] H. Jiang et al., “Low-Power Unsigned Divider and Square Root Circuit
+                         VI. C ONCLUSIONS                                             Designs Using Adaptive Approximation,” IEEE Trans. on Computers,
+                                                                                      vol. 68, no. 11, pp. 1635–1646, 2019.
+   In this work, a piece-wise approximate FP divider PACE                        [15] L. Chen et al., “Design of approximate high-radix dividers by inexact
+is proposed. The multi-level architecture seamlessly integrates                       binary signed-digit addition,” in GLSVLSI’17, pp. 293-298.
+                                                                                 [16] J. N. Mitchell, “Computer Multiplication and Division Using Binary
+run-time conﬁgurability without signiﬁcantly increasing area                          Logarithms,” IRE Trans. on Elect. Comput., vol. EC-11, no. 4, pp. 512–
+and delay overhead, while inherently achieving a commend-                             517, 1962.
+able level of accuracy. When compared to the state-of-the-art                    [17] H. Saadat et al., “Approximate Integer and Floating-Point Dividers with
+                                                                                      Near-Zero Error Bias,” in DAC’19, pp. 1–6.
+designs, the proposed divider strikes an advantageous balance                    [18] O. G. Ratnaparkhi and M. Rao, “LEAD: Logarithmic Exponent Approx-
+between accuracy and resource efﬁciency. Furthermore, the                             imate Divider For Image Quantization Application,” in GLSVLSI’22, pp.
+application-level evaluation attests to the marginal decline in                       437–442.
+                                                                                 [19] J. Y. L. Low and Ching Chuen Jong, “Non-iterative high speed division
+output quality when utilizing the proposed dividers.                                  computation based on Mitchell logarithmic method,” in ISCAS’13, pp.
+                                                                                      2219–2222.
+                     ACKNOWLEDGMENT                                              [20] M. Imani et al., “CADE: Conﬁgurable Approximate Divider for Energy
+                                                                                      Efﬁciency,” in DATE’19, pp. 586–589.
+   The authors thank the supports from NSFC (Grant No.                           [21] J. Oelund and S. Kim, “ILAFD: Accuracy-Conﬁgurable Floating-Point
+                                                                                      Divider Using an Approximate Reciprocal and an Iterative Logarithmic
+62034007, 62141404 and 62304074), Major Program of Zhe-                               Multiplier,” in GLSVLSI’23, pp. 639–644.
+jiang Provincial NSF (Grant No. D24F040002), SGC Cooper-                         [22] R. Zendegani et al., “SEERAD: A High Speed yet Energy-Efﬁcient
+ation Project (Grant No. M-0612) and the Zhejiang University                          Rounding-based Approximate Divider,” in DATE’16, pp. 1481–1484.
+                                                                                 [23] J. Melchert et al., “SAADI-EC: A Quality-Conﬁgurable Approximate
+Education Foundation Qizhen Scholar Foundation.                                       Divider for Energy Efﬁciency,” IEEE Trans. on VLSI Systems, vol. 27,
+                                                                                      no. 11, pp. 2680–2692, 2019.
+                             R EFERENCES                                         [24] K. J. N. S. Bhargav et al., “A newton raphson method based approximate
+                                                                                      divider design for color quantization application,” in ISOCC’21, pp.
+ [1] W. Liu et al., “A retrospective and prospective view of approximate              115–116.
+     computing,” in Proc. of the IEEE, vol. 108, no. 3, pp. 394–399, 2020.       [25] H. Liu et al., “QIAD: A quadratic interpolation approximate divider,”
+ [2] C. Wen et al., “Approximate ﬂoating-point FFT design with wide                   IEICE Electronics Express, vol. 20, no. 11, pp. 20230167, 2023.
+     precision-range and high energy efﬁciency,” in ASP-DAC’23, p. 134-          [26] F.-F. Li et al., “Caltech 101,” Apr 2022.
+     139.
+
+
+
+
+        Authorized licensed use limited to: Zhejiang University. Downloaded on September 25,2024 at 11:53:37 UTC from IEEE Xplore. Restrictions apply.
+

@@ -8,13 +8,18 @@ I/O constraints, and PrimeTime vectorless activity are unchanged.
 
 ## Coverage and Validity
 
-- 38 DC/PT points are retained.
-- 38 netlists and complete DC/PT report sets were generated.
-- 37 points are combinational, retain hierarchy, contain no black boxes, pass
+- 39 DC/PT points are retained, including the separately labeled SIMDive
+  single-32-bit source specialization.
+- 39 canonical netlists and complete DC/PT report sets were generated.
+- 38 points are combinational, retain hierarchy, contain no black boxes, pass
   PrimeTime `check_timing`, and have no setup or minimum-delay violations.
 - SIMDive retains 23 inferred latches under ordinary `compile`; its timing
   check is therefore invalid for this combinational comparison. It remains in
   `hier_compile_master_10ns.csv` as a transparent negative datapoint.
+- The SIMDive SISD32 specialization removes only unreachable 16/8-bit lane
+  hardware from fixed `mode=01`. It has zero sequential cells, passes PT and a
+  20,000-vector original-RTL-to-specialized-gate check, and is the valid local
+  FP32 DIV+MUL comparison point.
 - Root-opt DIV/runtime, all 12 root-opt MUL netlists, and all four integrated
   root-opt DIV+MUL netlists pass RTL-to-gate miters. PACE and prior-work gate
   logs are under `qsim_rtl/hier_compile_gate/logs/`.
@@ -30,7 +35,13 @@ boundary. Accuracy is unchanged because no RTL or vector set changed.
 ablation. Each fixed L0-L3 integrated top shares its midpoint/residual
 multipliers between modes, matches the current root-opt DIV and balanced MUL
 outputs bit for bit, and is compared against the sum of those exact standalone
-views. The obsolete pre-pruning sharing CSV and raw evidence were removed.
+views. The obsolete pre-truncation sharing CSV and raw evidence were removed.
+
+The four `correction_chain/` report sets are retained outside the canonical
+CSV only as diagnostics for the project's legacy arithmetic recurrence. They
+are not ports of the AM-Lib OAM partial-product/CSA implementation and must not
+be reported as OAM PPA. The unmodified AM-Lib mantissa cores, placed behind
+the shared normal-finite FP32 wrapper, are the external OAM MUL-only reference.
 
 The previous unsuffixed CSVs use explicit flattening and `compile_ultra`.
 Retain them for provenance, but do not combine their PPA values with this
@@ -45,6 +56,7 @@ campaign.
 | OADM DIV L2 | 1560.240008 | 2.64331 | 0.0844278 |
 | OADM DIV L3 | 1915.920006 | 2.97591 | 0.0902047 |
 | OADM runtime DIV+MUL | 3174.120010 | 3.96574 | 0.1284270 |
+| SIMDive-derived SISD32 DIV+MUL | 3729.240087 | 7.64970 | 0.1099120 |
 | OADM integrated DIV+MUL L0 | 957.960008 | 2.49427 | 0.0382199 |
 | OADM integrated DIV+MUL L1 | 1696.680006 | 2.89371 | 0.0732530 |
 | OADM integrated DIV+MUL L2 | 2106.720010 | 3.31142 | 0.0911738 |

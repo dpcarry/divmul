@@ -1,0 +1,420 @@
+                                                                                                        IEICE Electronics Express, Vol.20, No.11, 1–6
+
+
+
+
+LETTER
+QIAD: A quadratic interpolation approximate divider
+Hao Liu1, a) , Ming-Jiang Wang1 , and Ming Liu2, b)
+
+
+
+
+Abstract The balance between computational performance and power              improving performance and power efficiency.
+consumption is a key constraint in computing systems, with integrated cir-       Arithmetic blocks consume a large fraction of the total
+cuit technology posing a bottleneck. Approximate computation can trade        power consumption of a digital processing system, and their
+off accuracy for performance or power improvement in error-tolerant scenar-
+ios. Division, with high computational demands and latency, is a bottleneck   speed has a significant impact on the overall system perfor-
+for computational efficiency. We propose a quadratic interpolation approx-    mance. Among the four basic arithmetic operations, while
+imate divider (QIAD) based on multiplicative division, which has superior     the division operation is executed less frequently, its latency
+statistical performance. The design is simulated and synthesized at TSMC      and energy consumption are larger than the other operations.
+65 nm process and tested on image color quantization, showing the best        In application scenarios with high computational demands
+quantization effect using evaluation indicators such as PSNR, MSE, and
+SSIM.                                                                         division computation becomes a bottleneck in computational
+Keywords: approximate computing, divider, hardware design                     efficiency, and improving the computational efficiency of di-
+Classification: Integrated circuit (logic)                                    vision can significantly improve the computational efficiency
+                                                                              of the whole system.
+1.    Introduction                                                               The rest of the paper is organized as follows: Section 2
+                                                                              discusses the related work and summarizes the existing ap-
+Energy efficiency is a formidable challenge in computing                      proximate dividers. Quadratic interpolation approximate di-
+system design, and these requirements for most compu-                         vider is proposed and the circuit structure of the approximate
+tational devices are accompanied by a demand for low                          divider will be introduced in Section 3. The performance
+power/energy consumption. And energy-efficient arithmetic                     evaluation and error analysis of the proposed approximate
+units are a key building block to achieve this goal [1, 2]. Re-               divider will be presented in Section 4. Also application tests
+searchers have been seeking to develop fast and low-power                     are performed to verify the usability of the approximate di-
+arithmetic algorithms and circuit implementations, and as a                   vider. Finally, conclusions are presented in Section 5.
+result, various designs have been proposed to improve the
+performance of arithmetic operations and reduce power con-                    2.   Previous work
+sumption. In the traditional computing paradigm, arithmetic
+operations are expected to be always accurate, so arithmetic                  For the present stage, a large number of divider designs have
+units are designed to produce strictly accurate results at all                been proposed by many scholars [5, 6, 7, 8, 9, 10, 11, 12, 13,
+times. However, some applications are more forgiving and                      14, 15, 16, 17, 18, 19, 20, 21]. This section will give a brief
+do not require such a high precision level depending on                       introduction to the common approximate divider designs.
+the environment [3]. For such applications, using always-                        An energy-efficient, high-performance divider [22] is pro-
+accurate arithmetic units is a waste of energy without any                    posed based on logarithmic conversion and piecewise linear
+quality improvement. Many applications, such as multime-                      approximation. A heuristic search algorithm is then de-
+dia and image processing, can tolerate errors and inaccura-                   signed to find the most accurate set of constants to approx-
+cies in computation and still produce meaningful and useful                   imate the reciprocal of the divisor by minimizing statistical
+results. Approximate computing is an emerging computa-                        errors. This paper [23] presents an approximate hybrid di-
+tional paradigm that accomplishes energy-efficient compu-                     vider (AXHD). It exploits the advantages of both logarith-
+tation by relaxing the accuracy requirements for applications                 mic divider (LD) and exact array divider (EXD) to achieve a
+that do not always require exact computational results [4].                   trade-off between hardware performance and accuracy. The
+This method will redirect existing design processes by ex-                    accurate recovery division unit generates the most significant
+ploiting reductions in complexity and cost, and potentially                   bits (MSBs) of the quotient to achieve high accuracy. In con-
+                                                                              trast, the other quotient bits are generated using LD as an
+  1 Faculty of Electronics and Information Engineering, Harbin                approximate scheme to improve power consumption, area,
+    Institute of Technology, Shenzhen 518055, GuangDong, China                and latency advantages. This paper [24] presents an energy-
+  2 Sino-German School, Shenzhen Institute of Information Tech-
+                                                                              efficient and logarithm-based approximate divider (LEAD)
+    nology, Shenzhen 518055, GuangDong, China
+ a) gabriel.carson.law@outlook.com                                            for ASIC and FPGA-based applications. The LEAD is based
+ b) lm_hit_1986@126.com                                                       on a functional approximation of an arithmetic divider by
+                                                                              rounding the input to the nearest power of two and calculat-
+DOI: 10.1587/elex.20.20230167                                                 ing the division using basic addition/subtraction operations
+Received April 12, 2023                                                       and shifters. The proposed approximation design is error
+Accepted April 18, 2023
+                                                                              configurable and can be used for both signed and unsigned
+Publicized May 2, 2023
+Copyedited June 10, 2023
+
+                                                                                                                                                   1
+                      Copyright © 2023 The Institute of Electronics, Information and Communication Engineers
+                                                                                              IEICE Electronics Express, Vol.20, No.11, 1–6
+
+
+integers. In this paper [25], researchers presented an ap-         number of divisor. We can regularize A and B by expressing
+proximate model for recovering a divider. To improve the           them as the following equation.
+accuracy over other existing approximate dividers, they de-
+signed the divider unit to produce a truth table similar to the                      A = 2ea × a, B = 2eb × b                          (1)
+accurate divider. An approximate divider [26] for dynamic
+                                                                   In which 0.5 ≤ a < 1, 0.5 ≤ b < 1, where eb and ea stand
+energy mass scaling is proposed that involves a trade-off
+                                                                   for the corresponding exponent when the binary numbers
+between accuracy and delay. The proposed divider, called
+                                                                   are represented, so the quotient value Q is:
+the accuracy scalable approximate divider based on restor-
+ing division (ASAD-RD), uses restoring division to improve                       A               a
+                                                                             Q = = 2ea −eb × = 2ea −eb × a × R(b)              (2)
+the error of the approximate divider significantly and has a                     B               b
+much smaller computational delay.                                  where R(b) is the reciprocal of b, in the multiplicative divi-
+    Researchers present a new method [27] for inverse and          sion, we do not calculate a/b directly. We will first calculate
+iterative approximation of integer data using the Newton-          the reciprocal of b, then R(b) multiply a by the reciprocal re-
+Raphson method, designed to achieve results close to ex-           sult and perform a shift operation to obtain the final division
+act values and enable efficient performance. This paper            result.
+[28] presents the reconfigurable energy-efficient approxi-            For example, Assuming the dividend is 195 and the divisor
+mate divider (READ), which implements several config-              is 12, according to the multiplication division algorithm, we
+urable modes of energy quality using a fixed recovery array        will get:
+divider architecture. The READ achieves energy efficiency
+                                                                                   A = 195 = 28 × 0.76171875
+while meeting the dynamically changing accuracy require-
+ments of the target application. The READ uses reconfig-                           B = 12 = 24 × 0.75
+urable subtractor cells that can operate in either exact or
+approximate modes using subtractor cell controller logic.          Therefore, we will get the the quotient
+This work [29] presents dedicated hardware architectures                                                           1
+based on normalized minimum-mean adaptive filtering al-                         Q = 28−4 × 0.76171875 × (              )
+                                                                                                                  0.75
+gorithms for power line harmonic interference cancellation.                        = 16.25
+These hardware architectures are based on a 2’s comple-
+ment representation, described in VHDL, and synthesized            By computing the reciprocal of 0.75, the division process
+into a 65 nm CMOS dedicated ASIC. This paper [30] pro-             can be converted into shift and multiply calculations. This
+poses a reconfigurable approximate recovery of dividers and        method can significantly improve the speed of division cal-
+square roots based on bit weight to improve energy effi-           culation as multiplication calculation is faster than tradi-
+ciency. Configurable subtractor cells (CSCs) are proposed,         tional iterative division. However, the computational cost
+which work accurately and approximately, along with sim-           of reciprocal calculation is high, and in approximate algo-
+plified and scalable overflow detection hardware as the main       rithms, the computational cost of reciprocal operation can
+design unit. The proposed approximate design can switch            be reduced by approximating the solution.
+between approximate and exact modes of operation, making              So the key to approximate division is quickly finding the
+it suitable for error-tolerant and error-sensitive applications.   corresponding reciprocal value R(b). In approximate com-
+                                                                   putation, we do not need to obtain full computational preci-
+3.   Proposed design and hardware structure                        sion, so we can sacrifice computational accuracy to obtain
+                                                                   the approximate reciprocal quickly. A common means of
+3.1 Quadratic curve fitting                                        approximating the reciprocal operation is to use the Taylor
+Traditional dividers are mostly based on iterative algorithm       series. However, as the number of series terms increases, the
+which computing speed is relative low, while the other de-         computational cost required increases significantly. We use
+sign idea is multiplicative division, which has a great im-        a quadratic curve fitting method in this design to obtain ap-
+provement in computation speed but requires additional cost        proximate reciprocal calculations. The same computational
+consumption. In this section, we present our divider QIAD          performance can be obtained at a smaller computational cost
+(Quadratic Interpolation Approximate Divider) and show             than Taylor series expansion.
+the corresponding hardware implementation.                            We can construct the cost function:
+   The proposed design QIAD, uses a multiplicative divi-                                  ∫ n
+sion algorithm. In multiplicative division, we first obtain                  F(a, b, c) =     (ax 2 + bx + c − f (x))2 dx    (3)
+                                                                                          m
+the reciprocal of the divisor and then multiply the obtained
+reciprocal by the divisor to get the final result.                 Derive for a, b, c respectively to solve the best fitting func-
+   We use A to represent the dividend and B to represent the       tion, we can get the following equation:
+
+                          ∂F
+                                  ∫ n
+                                                      2        1         2
+                             = −2     x 2 f (x) dx + a n5 − m5 + b n4 − m4 + c(n3 − m3 ) = 0
+                          ∂a                          5           2          3
+                                  ∫mn
+                          ∂F                         1  4     2       
+                             = −2     x f (x) dx + a n − m4 + b n3 − m3 + c(n2 − m2 ) = 0                                              (4)
+                          ∂b       m                 2           3
+                          ∂F
+                                  ∫ n
+                                                   2  3             
+                             = −2     f (x) dx + a n − m3 + b n2 − m2 + 2c(n − m) = 0
+                          ∂c       m               3
+                                                                                                                                         2
+                                                                                                 IEICE Electronics Express, Vol.20, No.11, 1–6
+
+
+
+
+         Fig. 1    Approximate reciprocal fitting comparison.
+
+
+
+
+                                                                                     Fig. 3 Top-level structure of QIAD.
+                    Fig. 2 Fitting error comparison.
+
+                                                                            rocal calculation module to obtain the corresponding
+  Substitute the corresponding parameters, where m = 0.5,                   approximate calculation result.
+n = 1, f (x) = x1 . Finally we solve the equations and get the           3. Multiply the reciprocal result with the dividend and
+corresponding fitted quadratic function results as follows:                 shift the corresponding shift count to the right to obtain
+                                                                            the final division result.
+                  R(y) = 2.64x 2 − 5.875x + 4.25                (5)       Figure 3 shows the hardware structure of the proposed
+Various approximate multiplicative division methods have              approximate divider in the paper. In the hardware imple-
+proposed different approaches for approximating the recip-            mentation, we did not normalize the dividend, but instead
+rocal. The following figure compares the fitting performance          kept its original value and only processed the divisor. First,
+of different approximate reciprocal methods, with the pro-            the divisor is input to the leading zero detection module, and
+posed algorithm represented as QIAD. Figure 1 shows the               it is normalized based on the result of the leading zero de-
+fitting results of several similar designs. The reciprocal            tection circuit with the shifter to obtain the corresponding b
+fitting in SEERAD and TruncApp algorithms shows a step-               in the algorithm mentioned earlier. The structure within the
+wise pattern because only the high-weighted bit positions of          red dashed box corresponds to the process of approximate
+the data are utilized. On the other hand, QIAD and SAADI-             reciprocal calculation in the algorithm, where the input is
+EC use polynomial approximation, resulting in smoother                the normalized b and the output is the approximate recipro-
+fitting curves.                                                       cal result. This is also the most computationally expensive
+    Figure 2(a) presents the relative error of the fitting perfor-    part of the QIAD algorithm. It includes a self-multiplier for
+mance of several methods. It can be seen from the figure              calculating the square term, followed by two multiplications
+that the TruncApp algorithm has the largest relative error,           for coefficient multiplication. Finally, the approximate re-
+while the proposed QIAD algorithm has the most evenly                 ciprocal result R(b) is obtained through addition and merge
+distributed error. Figure 2(b) shows the fitting performance          logic. Then, the result is multiplied with the dividend and
+of several algorithms in terms of mean squared error (MSE).           further processed with the shifter to obtain the final division
+The proposed QIAD algorithm clearly has the smallest MSE,             result.
+indicating the best fitting performance among the methods
+compared.                                                             4.   Result and analysis
+
+3.2 Hardware structure                                                4.1 Error analysis
+In this section, we present the hardware architecture design          To confirm the error performance of the proposed QIAD,
+of QIAD. The computational flow of QIAD can be divided                we compared the performance of the QIAD with several
+into the following steps.                                             comparable state-of-the-art approximate dividers. These di-
+  1. The division is checked and regularized using the lead-          visors include SEERAD, SADDI-EC, TruncApp, etc. We
+      ing zero detection detector circuit. A shift operation is       have implemented 8-bit,16bit, and 32-bit versions in Ver-
+      performed so that the 1 in the highest bit of the data be-      ilog language. We used Python language to model and
+      comes the highest bit, and the shift count k is recorded.       tested each design at the algorithm level. For the 8-bit de-
+  2. The regularized data is fed into the approximate recip-          sign, we generate full coverage test sets, and for the 16-bit
+
+                                                                                                                                            3
+                                                                                                  IEICE Electronics Express, Vol.20, No.11, 1–6
+
+
+           Table I   ER comparation with RED restriction.
+ RED (%)       ≤ 1%        ≤ 2%       ≤ 5%        ≤ 10%     ≤ 15%
+ TruncApp      7.45%       25.10%     58.43%      94.51%    100%
+ SEERAD        24.31%      45.10%     90.20%      100%      100%
+ SAADI-EC      24.71%      100%       100%        100%      100%
+ QIAD          81.57%      100%       100%        100%      100%
+
+                      Table II Error statistic.
+               MRED (%)        MED (%)       NMED (%)       PE (%)
+ TruncApp      4.59            13.87         0.87           11.91
+ SEERAD        2.42            12.52         0.79           6.52
+ SAADI-EC      1.23            4.04          0.98           1.61
+ QIAD          0.60            2.48          0.71           1.38
+
+
+and 32-bit data bit widths, we randomly generate 100,000
+sets of test data. In this section, we discuss and analyze the
+error performance. We will evaluate the proposed QIAD
+divider in terms of MRED, MED, NMED, AR, etc., where
+MRED stands for mean relative error distance, MED stands
+for mean error distance and NMED means normalized mean                                  Fig. 4   The RED distribution.
+error distance.
+   Error rate (ER) is a very common metric in approximate                             Table III Hardware comparison.
+arithmetic unit design and is usually combined with different                                         Area           Power          Delay
+                                                                          Method          D
+metrics to form an acceptability metric for the performance                                          (µm2 )          (µW)            (ns)
+of the design. Table I shows the comparison of acceptability                              8          487.2            0.18            2.0
+when using RED as the boundary condition.                                TruncApp         16         1005.2           0.31           3.74
+   We use RED as the boundary condition, and since the rel-                               32         2053.6           0.62           6.03
+                                                                                          8          770.4            0.16          2.46
+ative error of the design is small, we divide the interval more
+                                                                         SEERAD           16         1510.4           0.38           4.20
+carefully in a small range and compare the acceptability of                               32         2970.0          0.745           7.13
+the four designs. From the table, we can see that Trun-                                   8         2674.4            0.51          7.04
+cApp has the worst AR performance with a relative error                  SAADI-EC         16         9989.2           3.85          12.24
+distribution within 10%. The proposed QIAD has the best                                   32        23052.0          16.22          21.62
+AR performance. The relative errors are mainly distributed                                8         1624.8            0.33          4.32
+around 1%.                                                                 QIAD           16         4969.2           1.69           6.93
+   MED is a common error indicator in approximate cal-                                    32        16402.4           7.66          12.01
+culation applications, and it represents the mean error dis-
+tance. MED can be significantly affected by the size of the           range, and the best relative error distribution.
+data. Therefore, normalized mean error distance (NMED)
+and mean relative error distance (MRED) are better error              4.2 Circuit consumption
+metrics. These two metrics are also the main evaluation               We simulated and synthesized the proposed design at TSMC
+indicators in this paper.                                             65 nm process. The area power consumption and latency
+   If we use D to represent the maximum error, then NMED              were evaluated in three cases, 8 bit, 16 bit, and 32 bit, and
+can be expressed as                                                   the results are shown in Table III.
+                              22n                                        Figure 5 shows the performance of several dividers with
+                     MED   1 Õ EDi
+              NMED =     = 2n                                   (6)   the PDP as the horizontal coordinate and the performance
+                      D   2 i=1 D                                     parameters as the vertical coordinates. The dots in the fig-
+                                                                      ure represent the corresponding divider designs for different
+   Table II shows the various error performances of SAADI-
+                                                                      parameters. Our proposed QIAD performs well for all error
+EC, SEERAD, TruncApp, and the proposed QIAD structure.
+                                                                      metrics and is a suitable PDP sacrifice for short-bit width
+It includes NMED, MRED, NMED and PE (peak error).
+                                                                      data.
+The table clearly shows that the proposed QIAD has the
+                                                                         To validate the use of QIAD in practical applications. We
+best performance for each error performance. SAADI-EC
+                                                                      tested the divider design with the color quantization using k-
+has better MRED and MED performance but has the worst
+                                                                      means clustering. Several images commonly used in image
+NMED. Besides, TruncApp has the worst error performance
+                                                                      processing were used as test data for the tests. The results
+in all metrics.
+                                                                      are presented in Table IV.
+   Figure 4 shows the relative error distributions of four di-
+                                                                         Figure 6 shows the color quantization results of the pro-
+viders, SAADI-EC, SEERAD, TruncApp, and QIAD. Ac-
+                                                                      posed QIAD with Lena as an example, and the results show
+cording to the figure, it can be seen that SAADI-EC and
+                                                                      that our proposed design can perform the image quantiza-
+QIAD have similar error distributions. However, QIAD has
+                                                                      tion task excellently and with the highest average PSNR and
+the sparsest error distribution, the smallest error distribution
+
+                                                                                                                                             4
+                                                                                                              IEICE Electronics Express, Vol.20, No.11, 1–6
+
+
+                                                      Table IV   Color quantization comparison.
+                               TruncApp                      SEERAD                       SAADI-EC                          QIAD
+         Figure
+                       MSE       PSNR      SSIM      MSE      PSNR      SSIM      MSE       PSNR SSIM             MSE       PSNR       SSIM
+         peppers       54.51     29.16     0.73      33.71    31.13     0.75      23.06     33.09  0.85           18.12     34.06      0.88
+         baboon        80.02     28.27     0.74      64.67    29.24     0.79      60.01     29.56  0.84           27.62     32.93      0.91
+         couple        58.22     25.47     0.79      45.46    25.57     0.83      29.28     27.05  0.87           17.32     29.61      0.90
+         airplane      44.51     30.35     0.77      47.18    30.18     0.80      35.44     31.34  0.82           14.84     35.12      0.87
+         lena          67.77     28.92     0.68      53.33    29.96     0.73      42.24     30.97  0.79           41.55     31.20      0.82
+         house         90.92     27.25     0.72      57.64    29.35     0.75      46.23     29.87  0.82           21.80     33.10      0.91
+         villa         47.06     30.42     0.82      48.17    30.09     0.82      26.88     32.82  0.89           19.09     34.34      0.93
+         average       63.29     28.55     0.75      50.02    29.36     0.78      37.59     30.67  0.84           22.91     32.91      0.89
+
+
+                                                                              using k-means clustering color quantization, and the results
+                                                                              show that the proposed design has the best test performance.
+
+                                                                              Acknowledgments
+
+                                                                              This work was supported by the project of Shen-
+                                                                              zhen Science and Technology innovation committee
+                                                                              (JCYJ20180307123857045) and Basic Research Dis-
+                                                                              cipline Layout Project of Shenzhen under Grant
+                                                                              2020B1515120004, Grant JCYJ20180507182241622, and
+                                                                              Grant JCYJ20180503182125190.
+
+                                                                              References
+
+                                                                               [1] H. Jiang, et al.: “Approximate arithmetic circuits: A survey, char-
+                                                                                   acterization, and recent applications,” Proc. IEEE 108 (2020) 2108
+                                                                                   (DOI: 10.1109/JPROC.2020.3006451).
+                                                                               [2] K. Chen, et al.: “A survey of approximate arithmetic circuits and
+                                                                                   blocks,” it-Information Technology 64 (2022) 79 (DOI: 10.1515/itit-
+         Fig. 5     Performance and consumption trade-off.                         2021-0055).
+                                                                               [3] H. Jiang, et al.: “Approximate arithmetic circuits: A survey, char-
+                                                                                   acterization, and recent applications,” Proc. IEEE 108 (2020) 2108
+                                                                                   (DOI: 10.1109/JPROC.2020.3006451).
+                                                                               [4] J. Han and M. Orshansky: “Approximate computing: an emerging
+                                                                                   paradigm for energy efficient design,” ETS (2013) 1 (DOI: 10.1109/
+                                                                                   ETS.2013.6569370).
+                                                                               [5] H. Jiang, et al.: “Adaptive approximation in arithmetic circuits: a low-
+                                                                                   power unsigned divider design,” DATE (2018) 1411 (DOI: 10.23919/
+                                                                                   DATE.2018.8342233).
+                                                                               [6] K.M. Reddy, et al.: “Design of approximate dividers for er-
+                                                                                   ror tolerant applications,” MWSCAS (2018) 496 (DOI: 10.1109/
+                                                                                   MWSCAS.2018.8623909).
+                                                                               [7] I. Syafalni, et al.: “A novel approximate divider using binomial expan-
+                                                                                   sion,” TSSA (2020) 1 (DOI: 10.1109/TSSA51342.2020.9310815).
+                                                                               [8] M.H. Takaby and S.M. Sayedi: “Low power approximate unsigned
+                                                                                   divider design using gate diffusion input logic,” ICEE (2019) 66 (DOI:
+                                                                                   10.1109/IranianCEE.2019.8786452).
+                                                                               [9] M. Vaeztourshizi, et al.: “An energy-efficient, yet highly-accurate,
+                                                                                   approximate non-iterative divider,” ISLPED (2018) 1 (DOI: 10.1145/
+          Fig. 6     Color quantization result comparsion.                         3218603.3218650).
+                                                                              [10] L. Chen, et al.: “On the design of approximate restoring dividers
+                                                                                   for error-tolerant applications,” IEEE Trans. Comput. 65 (2015) 2522
+SSIM performance.                                                                  (DOI: 10.1109/TC.2015.2494005).
+                                                                              [11] H. Jiang, et al.: “Low-power unsigned divider and square root cir-
+5.   Conclusion                                                                    cuit designs using adaptive approximation,” IEEE Trans. Comput. 68
+                                                                                   (2019) 1635 (DOI: 10.1109/TC.2019.2916817).
+                                                                              [12] L. Chen, et al.: “Design, evaluation and application of approximate
+This paper proposed an approximate divider based on
+                                                                                   high-radix dividers,” IEEE Trans. Multi-Scale Comput. Syst. 4 (2018)
+quadratic curve fitting method. Compared with dividers                             299 (DOI: 10.1109/TMSCS.2018.2817608).
+of similar design ideas, the proposed design has the best                     [13] K.V. Krishnan, et al.: “Design of energy efficient approximate sub-
+statistical performance. We have performed the synthesis                           tractors and restoring dividers for error tolerant applications,” Mi-
+at TSMC 65 nm process, and the results show that the pro-                          croelectronics J. 131 (2023) 105668 (DOI: 10.1016/j.mejo.2022.
+                                                                                   105668).
+posed design has a moderate area and power consumption.
+                                                                              [14] A. Gorantla and P. Deepa: “Design of approximate subtractors and
+Finally, the application test of the QIAD was carried out                          dividers for error tolerant image processing applications,” J. Electron
+
+
+                                                                                                                                                         5
+                                                                               IEICE Electronics Express, Vol.20, No.11, 1–6
+
+
+     Test. 35 (2019) 901 (DOI: 10.1007/s10836-019-05837-5).
+[15] P. Gowtham, et al.: “Design of approximate restoring dividers for
+     error resilient applications,” ECS Trans. 107 (2022) 13675 (DOI:
+     10.1149/10701.13675ecst).
+[16] E. Adams, et al.: “Approximate restoring dividers using inexact cells
+     and estimation from partial remainders,” IEEE Trans. Comput. 69
+     (2019) 468 (DOI: 10.1109/TC.2019.2953751)
+[17] M. Imani, et al.: “CADE: configurable approximate divider for
+     energy efficiency,” DATE (2019) 586 (DOI: 10.23919/DATE.2019.
+     8715112).
+[18] S. Vahdat, et al.: “TruncApp: a truncation-based approximate divider
+     for energy efficient DSP applications,” DATE (2017) 1635 (DOI:
+     10.23919/DATE.2017.7927254).
+[19] R. Zendegani, et al.: “SEERAD: a high speed yet energy-efficient
+     rounding-based approximate divider,” DATE (2016) 1481 (DOI:
+     10.3850/9783981537079_0521).
+[20] S. Behroozi, et al.: “SAADI: a scalable accuracy approximate divider
+     for dynamic energy-quality scaling,” ASPDAC (2019) 481 (DOI:
+     10.1145/3287624.3287668).
+[21] J. Melchert, et al.: “SAADI-EC: a quality-configurable approximate
+     divider for energy efficiency,” IEEE Trans. Very Large Scale Integr.
+     (VLSI) Syst. 27 (2019) 2680 (DOI: 10.1109/TVLSI.2019.2926083).
+[22] Y. Wu, et al.: “Energy-efficient approximate divider based on log-
+     arithmic conversion and piecewise constant approximation,” IEEE
+     Trans. Circuits Syst. I, Reg. Papers 69 (2022) 2655 (DOI: 10.1109/
+     TCSI.2022.3167894).
+[23] W. Liu, et al.: “Design of unsigned approximate hybrid dividers based
+     on restoring array and logarithmic dividers,” IEEE Trans. Emerg.
+     Topics Comput. 10 (2020) 339 (DOI: 10.1109/TETC.2020.3022290).
+[24] N. Arya, et al.: “Energy efficient logarithmic-based approximate
+     divider for ASIC and FPGA-based implementations,” Microprocess
+     Microsyst. 90 (2022) 104498 (DOI: 10.1016/j.micpro.2022.104498).
+[25] J. Seo and Y. Kim: “High accuracy approximate restoring di-
+     vider,” ICCE-Asia (2021) 1 (DOI: 10.1109/ICCE-Asia53811.2021.
+     9641911).
+[26] J. Jeong and Y. Kim: “ASAD-RD: accuracy scalable approximate
+     divider based on restoring division for energy efficiency,” Electronics
+     10 (2021) 31 (DOI: 10.3390/electronics10010031).
+[27] K.J.N.S. Bhargav, et al.: “A newton raphson method based ap-
+     proximate divider design for color quantization application,” ISOCC
+     (2021) 115 (DOI: 10.1109/ISOCC53507.2021.9613961).
+[28] N. Arya, et al.: “READ: a fixed restoring array based accuracy-
+     configurable approximate divider for energy efficiency,” Integration
+     76 (2021) 1 (DOI: 10.1016/j.vlsi.2020.08.002).
+[29] V. Guidotti, et al.: “Power-efficient approximate Newton–Raphson
+     integer divider applied to NLMS adaptive filter for high-quality in-
+     terference cancelling,” Circuits, Syst. Signal Process. 39 (2020) 5729
+     (DOI: 10.1007/s00034-020-01431-9).
+[30] N. Arya, et al.: “Bit significance based reconfigurable approximate
+     restoring dividers and square rooters,” Microelectronics J. 104 (2020)
+     104861 (DOI: 10.1016/j.mejo.2020.104861).
+
+
+
+
+                                                                                                                          6
+

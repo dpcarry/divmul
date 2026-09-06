@@ -1,0 +1,766 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : input_mul_b9_bias1
+Version: U-2022.12-SP7
+Date   : Fri Sep  4 18:53:41 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: x[14] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  input_mul_b9_bias1 ZeroWireload          tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0 ZeroWireload tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                             Incr       Path
+  ----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                            0.00       0.00
+  clock network delay (ideal)                                                       0.00       0.00
+  input external delay                                                              0.02       0.02 r
+  x[14] (in)                                                                        0.01       0.03 r
+  dut/x[14] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                                  0.00       0.03 r
+  dut/wrapper/x[14] (fp32_normal_finite_wrapper)                                    0.00       0.03 r
+  dut/wrapper/U94/Z (CKBD1)                                                         0.07       0.10 r
+  dut/wrapper/fraction_x[14] (fp32_normal_finite_wrapper)                           0.00       0.10 r
+  dut/mult_22/a[1] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)             0.00       0.10 r
+  dut/mult_22/U246/ZN (INVD1)                                                       0.04       0.13 f
+  dut/mult_22/U384/Z (CKXOR2D0)                                                     0.13       0.27 r
+  dut/mult_22/U245/ZN (ND2D1)                                                       0.08       0.35 f
+  dut/mult_22/U376/ZN (NR2D0)                                                       0.06       0.41 r
+  dut/mult_22/U56/S (HA1D0)                                                         0.07       0.47 f
+  dut/mult_22/U20/CO (FA1D0)                                                        0.05       0.53 f
+  dut/mult_22/U19/CO (FA1D0)                                                        0.06       0.58 f
+  dut/mult_22/U18/CO (FA1D0)                                                        0.06       0.64 f
+  dut/mult_22/U17/CO (FA1D0)                                                        0.06       0.69 f
+  dut/mult_22/U16/CO (FA1D0)                                                        0.06       0.75 f
+  dut/mult_22/U15/CO (FA1D0)                                                        0.06       0.81 f
+  dut/mult_22/U14/CO (FA1D0)                                                        0.06       0.86 f
+  dut/mult_22/U13/CO (FA1D0)                                                        0.06       0.92 f
+  dut/mult_22/U12/CO (FA1D0)                                                        0.06       0.97 f
+  dut/mult_22/U11/CO (FA1D0)                                                        0.06       1.03 f
+  dut/mult_22/U10/CO (FA1D0)                                                        0.06       1.08 f
+  dut/mult_22/U9/CO (FA1D0)                                                         0.06       1.14 f
+  dut/mult_22/U8/CO (FA1D0)                                                         0.06       1.19 f
+  dut/mult_22/U7/CO (FA1D0)                                                         0.06       1.25 f
+  dut/mult_22/U6/CO (FA1D0)                                                         0.06       1.30 f
+  dut/mult_22/U5/CO (FA1D0)                                                         0.06       1.36 f
+  dut/mult_22/U4/CO (FA1D0)                                                         0.06       1.41 f
+  dut/mult_22/U3/CO (FA1D0)                                                         0.06       1.47 f
+  dut/mult_22/U272/ZN (XNR3D0)                                                      0.10       1.57 f
+  dut/mult_22/product[21] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)      0.00       1.57 f
+  dut/U47/ZN (CKND0)                                                                0.14       1.72 r
+  dut/U11/ZN (ND2D1)                                                                0.09       1.81 f
+  dut/U3/ZN (INVD1)                                                                 0.09       1.90 r
+  dut/wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.90 r
+  dut/wrapper/U50/CO (FA1D0)                                                        0.10       2.00 r
+  dut/wrapper/U51/CO (FA1D0)                                                        0.05       2.05 r
+  dut/wrapper/U52/CO (FA1D0)                                                        0.05       2.10 r
+  dut/wrapper/U53/CO (FA1D0)                                                        0.05       2.15 r
+  dut/wrapper/U54/CO (FA1D0)                                                        0.05       2.21 r
+  dut/wrapper/U55/CO (FA1D0)                                                        0.05       2.26 r
+  dut/wrapper/U64/Z (XOR3D1)                                                        0.08       2.34 f
+  dut/wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.34 f
+  dut/result[30] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                             0.00       2.34 f
+  result[30] (out)                                                                  0.00       2.34 f
+  data arrival time                                                                            2.34
+
+  clock vclk (rise edge)                                                           10.00      10.00
+  clock network delay (ideal)                                                       0.00      10.00
+  output external delay                                                            -0.02       9.98
+  data required time                                                                           9.98
+  ----------------------------------------------------------------------------------------------------
+  data required time                                                                           9.98
+  data arrival time                                                                           -2.34
+  ----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                  7.64
+
+
+  Startpoint: x[14] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  input_mul_b9_bias1 ZeroWireload          tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0 ZeroWireload tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                             Incr       Path
+  ----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                            0.00       0.00
+  clock network delay (ideal)                                                       0.00       0.00
+  input external delay                                                              0.02       0.02 r
+  x[14] (in)                                                                        0.01       0.03 r
+  dut/x[14] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                                  0.00       0.03 r
+  dut/wrapper/x[14] (fp32_normal_finite_wrapper)                                    0.00       0.03 r
+  dut/wrapper/U94/Z (CKBD1)                                                         0.07       0.10 r
+  dut/wrapper/fraction_x[14] (fp32_normal_finite_wrapper)                           0.00       0.10 r
+  dut/mult_22/a[1] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)             0.00       0.10 r
+  dut/mult_22/U246/ZN (INVD1)                                                       0.04       0.13 f
+  dut/mult_22/U384/Z (CKXOR2D0)                                                     0.13       0.27 r
+  dut/mult_22/U245/ZN (ND2D1)                                                       0.08       0.35 f
+  dut/mult_22/U376/ZN (NR2D0)                                                       0.06       0.41 r
+  dut/mult_22/U56/S (HA1D0)                                                         0.07       0.47 f
+  dut/mult_22/U20/CO (FA1D0)                                                        0.05       0.53 f
+  dut/mult_22/U19/CO (FA1D0)                                                        0.06       0.58 f
+  dut/mult_22/U18/CO (FA1D0)                                                        0.06       0.64 f
+  dut/mult_22/U17/CO (FA1D0)                                                        0.06       0.69 f
+  dut/mult_22/U16/CO (FA1D0)                                                        0.06       0.75 f
+  dut/mult_22/U15/CO (FA1D0)                                                        0.06       0.81 f
+  dut/mult_22/U14/CO (FA1D0)                                                        0.06       0.86 f
+  dut/mult_22/U13/CO (FA1D0)                                                        0.06       0.92 f
+  dut/mult_22/U12/CO (FA1D0)                                                        0.06       0.97 f
+  dut/mult_22/U11/CO (FA1D0)                                                        0.06       1.03 f
+  dut/mult_22/U10/CO (FA1D0)                                                        0.06       1.08 f
+  dut/mult_22/U9/CO (FA1D0)                                                         0.06       1.14 f
+  dut/mult_22/U8/CO (FA1D0)                                                         0.06       1.19 f
+  dut/mult_22/U7/CO (FA1D0)                                                         0.06       1.25 f
+  dut/mult_22/U6/CO (FA1D0)                                                         0.06       1.30 f
+  dut/mult_22/U5/CO (FA1D0)                                                         0.06       1.36 f
+  dut/mult_22/U4/CO (FA1D0)                                                         0.06       1.41 f
+  dut/mult_22/U3/CO (FA1D0)                                                         0.06       1.47 f
+  dut/mult_22/U272/ZN (XNR3D0)                                                      0.10       1.57 f
+  dut/mult_22/product[21] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)      0.00       1.57 f
+  dut/U47/ZN (CKND0)                                                                0.14       1.72 r
+  dut/U11/ZN (ND2D1)                                                                0.09       1.81 f
+  dut/U3/ZN (INVD1)                                                                 0.09       1.90 r
+  dut/wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.90 r
+  dut/wrapper/U50/CO (FA1D0)                                                        0.10       2.00 r
+  dut/wrapper/U51/CO (FA1D0)                                                        0.05       2.05 r
+  dut/wrapper/U52/CO (FA1D0)                                                        0.05       2.10 r
+  dut/wrapper/U53/CO (FA1D0)                                                        0.05       2.15 r
+  dut/wrapper/U54/CO (FA1D0)                                                        0.05       2.21 r
+  dut/wrapper/U55/CO (FA1D0)                                                        0.05       2.26 r
+  dut/wrapper/U64/Z (XOR3D1)                                                        0.08       2.34 f
+  dut/wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.34 f
+  dut/result[30] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                             0.00       2.34 f
+  result[30] (out)                                                                  0.00       2.34 f
+  data arrival time                                                                            2.34
+
+  clock vclk (rise edge)                                                           10.00      10.00
+  clock network delay (ideal)                                                       0.00      10.00
+  output external delay                                                            -0.02       9.98
+  data required time                                                                           9.98
+  ----------------------------------------------------------------------------------------------------
+  data required time                                                                           9.98
+  data arrival time                                                                           -2.34
+  ----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                  7.64
+
+
+  Startpoint: x[14] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  input_mul_b9_bias1 ZeroWireload          tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0 ZeroWireload tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                             Incr       Path
+  ----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                            0.00       0.00
+  clock network delay (ideal)                                                       0.00       0.00
+  input external delay                                                              0.02       0.02 r
+  x[14] (in)                                                                        0.01       0.03 r
+  dut/x[14] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                                  0.00       0.03 r
+  dut/wrapper/x[14] (fp32_normal_finite_wrapper)                                    0.00       0.03 r
+  dut/wrapper/U94/Z (CKBD1)                                                         0.07       0.10 r
+  dut/wrapper/fraction_x[14] (fp32_normal_finite_wrapper)                           0.00       0.10 r
+  dut/mult_22/a[1] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)             0.00       0.10 r
+  dut/mult_22/U246/ZN (INVD1)                                                       0.04       0.13 f
+  dut/mult_22/U384/Z (CKXOR2D0)                                                     0.13       0.27 r
+  dut/mult_22/U245/ZN (ND2D1)                                                       0.08       0.35 f
+  dut/mult_22/U376/ZN (NR2D0)                                                       0.06       0.41 r
+  dut/mult_22/U56/S (HA1D0)                                                         0.07       0.47 f
+  dut/mult_22/U20/CO (FA1D0)                                                        0.05       0.53 f
+  dut/mult_22/U19/CO (FA1D0)                                                        0.06       0.58 f
+  dut/mult_22/U18/CO (FA1D0)                                                        0.06       0.64 f
+  dut/mult_22/U17/CO (FA1D0)                                                        0.06       0.69 f
+  dut/mult_22/U16/CO (FA1D0)                                                        0.06       0.75 f
+  dut/mult_22/U15/CO (FA1D0)                                                        0.06       0.81 f
+  dut/mult_22/U14/CO (FA1D0)                                                        0.06       0.86 f
+  dut/mult_22/U13/CO (FA1D0)                                                        0.06       0.92 f
+  dut/mult_22/U12/CO (FA1D0)                                                        0.06       0.97 f
+  dut/mult_22/U11/CO (FA1D0)                                                        0.06       1.03 f
+  dut/mult_22/U10/CO (FA1D0)                                                        0.06       1.08 f
+  dut/mult_22/U9/CO (FA1D0)                                                         0.06       1.14 f
+  dut/mult_22/U8/CO (FA1D0)                                                         0.06       1.19 f
+  dut/mult_22/U7/CO (FA1D0)                                                         0.06       1.25 f
+  dut/mult_22/U6/CO (FA1D0)                                                         0.06       1.30 f
+  dut/mult_22/U5/CO (FA1D0)                                                         0.06       1.36 f
+  dut/mult_22/U4/CO (FA1D0)                                                         0.06       1.41 f
+  dut/mult_22/U3/CO (FA1D0)                                                         0.06       1.47 f
+  dut/mult_22/U272/ZN (XNR3D0)                                                      0.10       1.57 f
+  dut/mult_22/product[21] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)      0.00       1.57 f
+  dut/U47/ZN (CKND0)                                                                0.14       1.72 r
+  dut/U11/ZN (ND2D1)                                                                0.09       1.81 f
+  dut/U3/ZN (INVD1)                                                                 0.09       1.90 r
+  dut/wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.90 r
+  dut/wrapper/U50/CO (FA1D0)                                                        0.10       2.00 r
+  dut/wrapper/U51/CO (FA1D0)                                                        0.05       2.05 r
+  dut/wrapper/U52/CO (FA1D0)                                                        0.05       2.10 r
+  dut/wrapper/U53/CO (FA1D0)                                                        0.05       2.15 r
+  dut/wrapper/U54/CO (FA1D0)                                                        0.05       2.21 r
+  dut/wrapper/U55/CO (FA1D0)                                                        0.05       2.26 r
+  dut/wrapper/U64/Z (XOR3D1)                                                        0.08       2.34 f
+  dut/wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.34 f
+  dut/result[30] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                             0.00       2.34 f
+  result[30] (out)                                                                  0.00       2.34 f
+  data arrival time                                                                            2.34
+
+  clock vclk (rise edge)                                                           10.00      10.00
+  clock network delay (ideal)                                                       0.00      10.00
+  output external delay                                                            -0.02       9.98
+  data required time                                                                           9.98
+  ----------------------------------------------------------------------------------------------------
+  data required time                                                                           9.98
+  data arrival time                                                                           -2.34
+  ----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                  7.64
+
+
+  Startpoint: x[14] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  input_mul_b9_bias1 ZeroWireload          tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0 ZeroWireload tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                             Incr       Path
+  ----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                            0.00       0.00
+  clock network delay (ideal)                                                       0.00       0.00
+  input external delay                                                              0.02       0.02 r
+  x[14] (in)                                                                        0.01       0.03 r
+  dut/x[14] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                                  0.00       0.03 r
+  dut/wrapper/x[14] (fp32_normal_finite_wrapper)                                    0.00       0.03 r
+  dut/wrapper/U94/Z (CKBD1)                                                         0.07       0.10 r
+  dut/wrapper/fraction_x[14] (fp32_normal_finite_wrapper)                           0.00       0.10 r
+  dut/mult_22/a[1] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)             0.00       0.10 r
+  dut/mult_22/U246/ZN (INVD1)                                                       0.04       0.13 f
+  dut/mult_22/U384/Z (CKXOR2D0)                                                     0.13       0.27 r
+  dut/mult_22/U245/ZN (ND2D1)                                                       0.08       0.35 f
+  dut/mult_22/U376/ZN (NR2D0)                                                       0.06       0.41 r
+  dut/mult_22/U56/S (HA1D0)                                                         0.07       0.47 f
+  dut/mult_22/U20/CO (FA1D0)                                                        0.05       0.53 f
+  dut/mult_22/U19/CO (FA1D0)                                                        0.06       0.58 f
+  dut/mult_22/U18/CO (FA1D0)                                                        0.06       0.64 f
+  dut/mult_22/U17/CO (FA1D0)                                                        0.06       0.69 f
+  dut/mult_22/U16/CO (FA1D0)                                                        0.06       0.75 f
+  dut/mult_22/U15/CO (FA1D0)                                                        0.06       0.81 f
+  dut/mult_22/U14/CO (FA1D0)                                                        0.06       0.86 f
+  dut/mult_22/U13/CO (FA1D0)                                                        0.06       0.92 f
+  dut/mult_22/U12/CO (FA1D0)                                                        0.06       0.97 f
+  dut/mult_22/U11/CO (FA1D0)                                                        0.06       1.03 f
+  dut/mult_22/U10/CO (FA1D0)                                                        0.06       1.08 f
+  dut/mult_22/U9/CO (FA1D0)                                                         0.06       1.14 f
+  dut/mult_22/U8/CO (FA1D0)                                                         0.06       1.19 f
+  dut/mult_22/U7/CO (FA1D0)                                                         0.06       1.25 f
+  dut/mult_22/U6/CO (FA1D0)                                                         0.06       1.30 f
+  dut/mult_22/U5/CO (FA1D0)                                                         0.06       1.36 f
+  dut/mult_22/U4/CO (FA1D0)                                                         0.06       1.41 f
+  dut/mult_22/U3/CO (FA1D0)                                                         0.06       1.47 f
+  dut/mult_22/U272/ZN (XNR3D0)                                                      0.10       1.57 f
+  dut/mult_22/product[21] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)      0.00       1.57 f
+  dut/U47/ZN (CKND0)                                                                0.14       1.72 r
+  dut/U11/ZN (ND2D1)                                                                0.09       1.81 f
+  dut/U3/ZN (INVD1)                                                                 0.09       1.90 r
+  dut/wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.90 r
+  dut/wrapper/U50/CO (FA1D0)                                                        0.10       2.00 r
+  dut/wrapper/U51/CO (FA1D0)                                                        0.05       2.05 r
+  dut/wrapper/U52/CO (FA1D0)                                                        0.05       2.10 r
+  dut/wrapper/U53/CO (FA1D0)                                                        0.05       2.15 r
+  dut/wrapper/U54/CO (FA1D0)                                                        0.05       2.21 r
+  dut/wrapper/U55/CO (FA1D0)                                                        0.05       2.26 r
+  dut/wrapper/U64/Z (XOR3D1)                                                        0.08       2.34 f
+  dut/wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.34 f
+  dut/result[30] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                             0.00       2.34 f
+  result[30] (out)                                                                  0.00       2.34 f
+  data arrival time                                                                            2.34
+
+  clock vclk (rise edge)                                                           10.00      10.00
+  clock network delay (ideal)                                                       0.00      10.00
+  output external delay                                                            -0.02       9.98
+  data required time                                                                           9.98
+  ----------------------------------------------------------------------------------------------------
+  data required time                                                                           9.98
+  data arrival time                                                                           -2.34
+  ----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                  7.64
+
+
+  Startpoint: x[14] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  input_mul_b9_bias1 ZeroWireload          tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0 ZeroWireload tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                             Incr       Path
+  ----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                            0.00       0.00
+  clock network delay (ideal)                                                       0.00       0.00
+  input external delay                                                              0.02       0.02 r
+  x[14] (in)                                                                        0.01       0.03 r
+  dut/x[14] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                                  0.00       0.03 r
+  dut/wrapper/x[14] (fp32_normal_finite_wrapper)                                    0.00       0.03 r
+  dut/wrapper/U94/Z (CKBD1)                                                         0.07       0.10 r
+  dut/wrapper/fraction_x[14] (fp32_normal_finite_wrapper)                           0.00       0.10 r
+  dut/mult_22/a[1] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)             0.00       0.10 r
+  dut/mult_22/U246/ZN (INVD1)                                                       0.04       0.13 f
+  dut/mult_22/U384/Z (CKXOR2D0)                                                     0.13       0.27 r
+  dut/mult_22/U245/ZN (ND2D1)                                                       0.08       0.35 f
+  dut/mult_22/U376/ZN (NR2D0)                                                       0.06       0.41 r
+  dut/mult_22/U56/S (HA1D0)                                                         0.07       0.47 f
+  dut/mult_22/U20/CO (FA1D0)                                                        0.05       0.53 f
+  dut/mult_22/U19/CO (FA1D0)                                                        0.06       0.58 f
+  dut/mult_22/U18/CO (FA1D0)                                                        0.06       0.64 f
+  dut/mult_22/U17/CO (FA1D0)                                                        0.06       0.69 f
+  dut/mult_22/U16/CO (FA1D0)                                                        0.06       0.75 f
+  dut/mult_22/U15/CO (FA1D0)                                                        0.06       0.81 f
+  dut/mult_22/U14/CO (FA1D0)                                                        0.06       0.86 f
+  dut/mult_22/U13/CO (FA1D0)                                                        0.06       0.92 f
+  dut/mult_22/U12/CO (FA1D0)                                                        0.06       0.97 f
+  dut/mult_22/U11/CO (FA1D0)                                                        0.06       1.03 f
+  dut/mult_22/U10/CO (FA1D0)                                                        0.06       1.08 f
+  dut/mult_22/U9/CO (FA1D0)                                                         0.06       1.14 f
+  dut/mult_22/U8/CO (FA1D0)                                                         0.06       1.19 f
+  dut/mult_22/U7/CO (FA1D0)                                                         0.06       1.25 f
+  dut/mult_22/U6/CO (FA1D0)                                                         0.06       1.30 f
+  dut/mult_22/U5/CO (FA1D0)                                                         0.06       1.36 f
+  dut/mult_22/U4/CO (FA1D0)                                                         0.06       1.41 f
+  dut/mult_22/U3/CO (FA1D0)                                                         0.06       1.47 f
+  dut/mult_22/U272/ZN (XNR3D0)                                                      0.10       1.57 f
+  dut/mult_22/product[21] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)      0.00       1.57 f
+  dut/U47/ZN (CKND0)                                                                0.14       1.72 r
+  dut/U11/ZN (ND2D1)                                                                0.09       1.81 f
+  dut/U3/ZN (INVD1)                                                                 0.09       1.90 r
+  dut/wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.90 r
+  dut/wrapper/U50/CO (FA1D0)                                                        0.10       2.00 r
+  dut/wrapper/U51/CO (FA1D0)                                                        0.05       2.05 r
+  dut/wrapper/U52/CO (FA1D0)                                                        0.05       2.10 r
+  dut/wrapper/U53/CO (FA1D0)                                                        0.05       2.15 r
+  dut/wrapper/U54/CO (FA1D0)                                                        0.05       2.21 r
+  dut/wrapper/U55/CO (FA1D0)                                                        0.05       2.26 r
+  dut/wrapper/U64/Z (XOR3D1)                                                        0.08       2.34 f
+  dut/wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.34 f
+  dut/result[30] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                             0.00       2.34 f
+  result[30] (out)                                                                  0.00       2.34 f
+  data arrival time                                                                            2.34
+
+  clock vclk (rise edge)                                                           10.00      10.00
+  clock network delay (ideal)                                                       0.00      10.00
+  output external delay                                                            -0.02       9.98
+  data required time                                                                           9.98
+  ----------------------------------------------------------------------------------------------------
+  data required time                                                                           9.98
+  data arrival time                                                                           -2.34
+  ----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                  7.64
+
+
+  Startpoint: x[14] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  input_mul_b9_bias1 ZeroWireload          tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0 ZeroWireload tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                             Incr       Path
+  ----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                            0.00       0.00
+  clock network delay (ideal)                                                       0.00       0.00
+  input external delay                                                              0.02       0.02 r
+  x[14] (in)                                                                        0.01       0.03 r
+  dut/x[14] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                                  0.00       0.03 r
+  dut/wrapper/x[14] (fp32_normal_finite_wrapper)                                    0.00       0.03 r
+  dut/wrapper/U94/Z (CKBD1)                                                         0.07       0.10 r
+  dut/wrapper/fraction_x[14] (fp32_normal_finite_wrapper)                           0.00       0.10 r
+  dut/mult_22/a[1] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)             0.00       0.10 r
+  dut/mult_22/U246/ZN (INVD1)                                                       0.04       0.13 f
+  dut/mult_22/U384/Z (CKXOR2D0)                                                     0.13       0.27 r
+  dut/mult_22/U245/ZN (ND2D1)                                                       0.08       0.35 f
+  dut/mult_22/U376/ZN (NR2D0)                                                       0.06       0.41 r
+  dut/mult_22/U56/S (HA1D0)                                                         0.07       0.47 f
+  dut/mult_22/U20/CO (FA1D0)                                                        0.05       0.53 f
+  dut/mult_22/U19/CO (FA1D0)                                                        0.06       0.58 f
+  dut/mult_22/U18/CO (FA1D0)                                                        0.06       0.64 f
+  dut/mult_22/U17/CO (FA1D0)                                                        0.06       0.69 f
+  dut/mult_22/U16/CO (FA1D0)                                                        0.06       0.75 f
+  dut/mult_22/U15/CO (FA1D0)                                                        0.06       0.81 f
+  dut/mult_22/U14/CO (FA1D0)                                                        0.06       0.86 f
+  dut/mult_22/U13/CO (FA1D0)                                                        0.06       0.92 f
+  dut/mult_22/U12/CO (FA1D0)                                                        0.06       0.97 f
+  dut/mult_22/U11/CO (FA1D0)                                                        0.06       1.03 f
+  dut/mult_22/U10/CO (FA1D0)                                                        0.06       1.08 f
+  dut/mult_22/U9/CO (FA1D0)                                                         0.06       1.14 f
+  dut/mult_22/U8/CO (FA1D0)                                                         0.06       1.19 f
+  dut/mult_22/U7/CO (FA1D0)                                                         0.06       1.25 f
+  dut/mult_22/U6/CO (FA1D0)                                                         0.06       1.30 f
+  dut/mult_22/U5/CO (FA1D0)                                                         0.06       1.36 f
+  dut/mult_22/U4/CO (FA1D0)                                                         0.06       1.41 f
+  dut/mult_22/U3/CO (FA1D0)                                                         0.06       1.47 f
+  dut/mult_22/U272/ZN (XNR3D0)                                                      0.10       1.57 f
+  dut/mult_22/product[21] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)      0.00       1.57 f
+  dut/U47/ZN (CKND0)                                                                0.14       1.72 r
+  dut/U11/ZN (ND2D1)                                                                0.09       1.81 f
+  dut/U3/ZN (INVD1)                                                                 0.09       1.90 r
+  dut/wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.90 r
+  dut/wrapper/U50/CO (FA1D0)                                                        0.10       2.00 r
+  dut/wrapper/U51/CO (FA1D0)                                                        0.05       2.05 r
+  dut/wrapper/U52/CO (FA1D0)                                                        0.05       2.10 r
+  dut/wrapper/U53/CO (FA1D0)                                                        0.05       2.15 r
+  dut/wrapper/U54/CO (FA1D0)                                                        0.05       2.21 r
+  dut/wrapper/U55/CO (FA1D0)                                                        0.05       2.26 r
+  dut/wrapper/U64/Z (XOR3D1)                                                        0.08       2.34 f
+  dut/wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.34 f
+  dut/result[30] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                             0.00       2.34 f
+  result[30] (out)                                                                  0.00       2.34 f
+  data arrival time                                                                            2.34
+
+  clock vclk (rise edge)                                                           10.00      10.00
+  clock network delay (ideal)                                                       0.00      10.00
+  output external delay                                                            -0.02       9.98
+  data required time                                                                           9.98
+  ----------------------------------------------------------------------------------------------------
+  data required time                                                                           9.98
+  data arrival time                                                                           -2.34
+  ----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                  7.64
+
+
+  Startpoint: x[14] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  input_mul_b9_bias1 ZeroWireload          tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0 ZeroWireload tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                             Incr       Path
+  ----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                            0.00       0.00
+  clock network delay (ideal)                                                       0.00       0.00
+  input external delay                                                              0.02       0.02 r
+  x[14] (in)                                                                        0.01       0.03 r
+  dut/x[14] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                                  0.00       0.03 r
+  dut/wrapper/x[14] (fp32_normal_finite_wrapper)                                    0.00       0.03 r
+  dut/wrapper/U94/Z (CKBD1)                                                         0.07       0.10 r
+  dut/wrapper/fraction_x[14] (fp32_normal_finite_wrapper)                           0.00       0.10 r
+  dut/mult_22/a[1] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)             0.00       0.10 r
+  dut/mult_22/U246/ZN (INVD1)                                                       0.04       0.13 f
+  dut/mult_22/U384/Z (CKXOR2D0)                                                     0.13       0.27 r
+  dut/mult_22/U245/ZN (ND2D1)                                                       0.08       0.35 f
+  dut/mult_22/U376/ZN (NR2D0)                                                       0.06       0.41 r
+  dut/mult_22/U56/S (HA1D0)                                                         0.07       0.47 f
+  dut/mult_22/U20/CO (FA1D0)                                                        0.05       0.53 f
+  dut/mult_22/U19/CO (FA1D0)                                                        0.06       0.58 f
+  dut/mult_22/U18/CO (FA1D0)                                                        0.06       0.64 f
+  dut/mult_22/U17/CO (FA1D0)                                                        0.06       0.69 f
+  dut/mult_22/U16/CO (FA1D0)                                                        0.06       0.75 f
+  dut/mult_22/U15/CO (FA1D0)                                                        0.06       0.81 f
+  dut/mult_22/U14/CO (FA1D0)                                                        0.06       0.86 f
+  dut/mult_22/U13/CO (FA1D0)                                                        0.06       0.92 f
+  dut/mult_22/U12/CO (FA1D0)                                                        0.06       0.97 f
+  dut/mult_22/U11/CO (FA1D0)                                                        0.06       1.03 f
+  dut/mult_22/U10/CO (FA1D0)                                                        0.06       1.08 f
+  dut/mult_22/U9/CO (FA1D0)                                                         0.06       1.14 f
+  dut/mult_22/U8/CO (FA1D0)                                                         0.06       1.19 f
+  dut/mult_22/U7/CO (FA1D0)                                                         0.06       1.25 f
+  dut/mult_22/U6/CO (FA1D0)                                                         0.06       1.30 f
+  dut/mult_22/U5/CO (FA1D0)                                                         0.06       1.36 f
+  dut/mult_22/U4/CO (FA1D0)                                                         0.06       1.41 f
+  dut/mult_22/U3/CO (FA1D0)                                                         0.06       1.47 f
+  dut/mult_22/U272/ZN (XNR3D0)                                                      0.10       1.57 f
+  dut/mult_22/product[21] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)      0.00       1.57 f
+  dut/U47/ZN (CKND0)                                                                0.14       1.72 r
+  dut/U11/ZN (ND2D1)                                                                0.09       1.81 f
+  dut/U3/ZN (INVD1)                                                                 0.09       1.90 r
+  dut/wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.90 r
+  dut/wrapper/U50/CO (FA1D0)                                                        0.10       2.00 r
+  dut/wrapper/U51/CO (FA1D0)                                                        0.05       2.05 r
+  dut/wrapper/U52/CO (FA1D0)                                                        0.05       2.10 r
+  dut/wrapper/U53/CO (FA1D0)                                                        0.05       2.15 r
+  dut/wrapper/U54/CO (FA1D0)                                                        0.05       2.21 r
+  dut/wrapper/U55/CO (FA1D0)                                                        0.05       2.26 r
+  dut/wrapper/U64/Z (XOR3D1)                                                        0.08       2.34 f
+  dut/wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.34 f
+  dut/result[30] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                             0.00       2.34 f
+  result[30] (out)                                                                  0.00       2.34 f
+  data arrival time                                                                            2.34
+
+  clock vclk (rise edge)                                                           10.00      10.00
+  clock network delay (ideal)                                                       0.00      10.00
+  output external delay                                                            -0.02       9.98
+  data required time                                                                           9.98
+  ----------------------------------------------------------------------------------------------------
+  data required time                                                                           9.98
+  data arrival time                                                                           -2.34
+  ----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                  7.64
+
+
+  Startpoint: x[14] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  input_mul_b9_bias1 ZeroWireload          tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0 ZeroWireload tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                             Incr       Path
+  ----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                            0.00       0.00
+  clock network delay (ideal)                                                       0.00       0.00
+  input external delay                                                              0.02       0.02 r
+  x[14] (in)                                                                        0.01       0.03 r
+  dut/x[14] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                                  0.00       0.03 r
+  dut/wrapper/x[14] (fp32_normal_finite_wrapper)                                    0.00       0.03 r
+  dut/wrapper/U94/Z (CKBD1)                                                         0.07       0.10 r
+  dut/wrapper/fraction_x[14] (fp32_normal_finite_wrapper)                           0.00       0.10 r
+  dut/mult_22/a[1] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)             0.00       0.10 r
+  dut/mult_22/U246/ZN (INVD1)                                                       0.04       0.13 f
+  dut/mult_22/U384/Z (CKXOR2D0)                                                     0.13       0.27 r
+  dut/mult_22/U245/ZN (ND2D1)                                                       0.08       0.35 f
+  dut/mult_22/U376/ZN (NR2D0)                                                       0.06       0.41 r
+  dut/mult_22/U56/S (HA1D0)                                                         0.07       0.47 f
+  dut/mult_22/U20/CO (FA1D0)                                                        0.05       0.53 f
+  dut/mult_22/U19/CO (FA1D0)                                                        0.06       0.58 f
+  dut/mult_22/U18/CO (FA1D0)                                                        0.06       0.64 f
+  dut/mult_22/U17/CO (FA1D0)                                                        0.06       0.69 f
+  dut/mult_22/U16/CO (FA1D0)                                                        0.06       0.75 f
+  dut/mult_22/U15/CO (FA1D0)                                                        0.06       0.81 f
+  dut/mult_22/U14/CO (FA1D0)                                                        0.06       0.86 f
+  dut/mult_22/U13/CO (FA1D0)                                                        0.06       0.92 f
+  dut/mult_22/U12/CO (FA1D0)                                                        0.06       0.97 f
+  dut/mult_22/U11/CO (FA1D0)                                                        0.06       1.03 f
+  dut/mult_22/U10/CO (FA1D0)                                                        0.06       1.08 f
+  dut/mult_22/U9/CO (FA1D0)                                                         0.06       1.14 f
+  dut/mult_22/U8/CO (FA1D0)                                                         0.06       1.19 f
+  dut/mult_22/U7/CO (FA1D0)                                                         0.06       1.25 f
+  dut/mult_22/U6/CO (FA1D0)                                                         0.06       1.30 f
+  dut/mult_22/U5/CO (FA1D0)                                                         0.06       1.36 f
+  dut/mult_22/U4/CO (FA1D0)                                                         0.06       1.41 f
+  dut/mult_22/U3/CO (FA1D0)                                                         0.06       1.47 f
+  dut/mult_22/U272/ZN (XNR3D0)                                                      0.10       1.57 f
+  dut/mult_22/product[21] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)      0.00       1.57 f
+  dut/U47/ZN (CKND0)                                                                0.14       1.72 r
+  dut/U11/ZN (ND2D1)                                                                0.09       1.81 f
+  dut/U3/ZN (INVD1)                                                                 0.09       1.90 r
+  dut/wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.90 r
+  dut/wrapper/U50/CO (FA1D0)                                                        0.10       2.00 r
+  dut/wrapper/U51/CO (FA1D0)                                                        0.05       2.05 r
+  dut/wrapper/U52/CO (FA1D0)                                                        0.05       2.10 r
+  dut/wrapper/U53/CO (FA1D0)                                                        0.05       2.15 r
+  dut/wrapper/U54/CO (FA1D0)                                                        0.05       2.21 r
+  dut/wrapper/U55/CO (FA1D0)                                                        0.05       2.26 r
+  dut/wrapper/U64/Z (XOR3D1)                                                        0.08       2.34 f
+  dut/wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.34 f
+  dut/result[30] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                             0.00       2.34 f
+  result[30] (out)                                                                  0.00       2.34 f
+  data arrival time                                                                            2.34
+
+  clock vclk (rise edge)                                                           10.00      10.00
+  clock network delay (ideal)                                                       0.00      10.00
+  output external delay                                                            -0.02       9.98
+  data required time                                                                           9.98
+  ----------------------------------------------------------------------------------------------------
+  data required time                                                                           9.98
+  data arrival time                                                                           -2.34
+  ----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                  7.64
+
+
+  Startpoint: x[14] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  input_mul_b9_bias1 ZeroWireload          tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0 ZeroWireload tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                             Incr       Path
+  ----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                            0.00       0.00
+  clock network delay (ideal)                                                       0.00       0.00
+  input external delay                                                              0.02       0.02 r
+  x[14] (in)                                                                        0.01       0.03 r
+  dut/x[14] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                                  0.00       0.03 r
+  dut/wrapper/x[14] (fp32_normal_finite_wrapper)                                    0.00       0.03 r
+  dut/wrapper/U94/Z (CKBD1)                                                         0.07       0.10 r
+  dut/wrapper/fraction_x[14] (fp32_normal_finite_wrapper)                           0.00       0.10 r
+  dut/mult_22/a[1] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)             0.00       0.10 r
+  dut/mult_22/U246/ZN (INVD1)                                                       0.04       0.13 f
+  dut/mult_22/U384/Z (CKXOR2D0)                                                     0.13       0.27 r
+  dut/mult_22/U245/ZN (ND2D1)                                                       0.08       0.35 f
+  dut/mult_22/U376/ZN (NR2D0)                                                       0.06       0.41 r
+  dut/mult_22/U56/S (HA1D0)                                                         0.07       0.47 f
+  dut/mult_22/U20/CO (FA1D0)                                                        0.05       0.53 f
+  dut/mult_22/U19/CO (FA1D0)                                                        0.06       0.58 f
+  dut/mult_22/U18/CO (FA1D0)                                                        0.06       0.64 f
+  dut/mult_22/U17/CO (FA1D0)                                                        0.06       0.69 f
+  dut/mult_22/U16/CO (FA1D0)                                                        0.06       0.75 f
+  dut/mult_22/U15/CO (FA1D0)                                                        0.06       0.81 f
+  dut/mult_22/U14/CO (FA1D0)                                                        0.06       0.86 f
+  dut/mult_22/U13/CO (FA1D0)                                                        0.06       0.92 f
+  dut/mult_22/U12/CO (FA1D0)                                                        0.06       0.97 f
+  dut/mult_22/U11/CO (FA1D0)                                                        0.06       1.03 f
+  dut/mult_22/U10/CO (FA1D0)                                                        0.06       1.08 f
+  dut/mult_22/U9/CO (FA1D0)                                                         0.06       1.14 f
+  dut/mult_22/U8/CO (FA1D0)                                                         0.06       1.19 f
+  dut/mult_22/U7/CO (FA1D0)                                                         0.06       1.25 f
+  dut/mult_22/U6/CO (FA1D0)                                                         0.06       1.30 f
+  dut/mult_22/U5/CO (FA1D0)                                                         0.06       1.36 f
+  dut/mult_22/U4/CO (FA1D0)                                                         0.06       1.41 f
+  dut/mult_22/U3/CO (FA1D0)                                                         0.06       1.47 f
+  dut/mult_22/U272/ZN (XNR3D0)                                                      0.10       1.57 f
+  dut/mult_22/product[21] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)      0.00       1.57 f
+  dut/U47/ZN (CKND0)                                                                0.14       1.72 r
+  dut/U11/ZN (ND2D1)                                                                0.09       1.81 f
+  dut/U3/ZN (INVD1)                                                                 0.09       1.90 r
+  dut/wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.90 r
+  dut/wrapper/U50/CO (FA1D0)                                                        0.10       2.00 r
+  dut/wrapper/U51/CO (FA1D0)                                                        0.05       2.05 r
+  dut/wrapper/U52/CO (FA1D0)                                                        0.05       2.10 r
+  dut/wrapper/U53/CO (FA1D0)                                                        0.05       2.15 r
+  dut/wrapper/U54/CO (FA1D0)                                                        0.05       2.21 r
+  dut/wrapper/U55/CO (FA1D0)                                                        0.05       2.26 r
+  dut/wrapper/U64/Z (XOR3D1)                                                        0.08       2.34 f
+  dut/wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.34 f
+  dut/result[30] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                             0.00       2.34 f
+  result[30] (out)                                                                  0.00       2.34 f
+  data arrival time                                                                            2.34
+
+  clock vclk (rise edge)                                                           10.00      10.00
+  clock network delay (ideal)                                                       0.00      10.00
+  output external delay                                                            -0.02       9.98
+  data required time                                                                           9.98
+  ----------------------------------------------------------------------------------------------------
+  data required time                                                                           9.98
+  data arrival time                                                                           -2.34
+  ----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                  7.64
+
+
+  Startpoint: x[14] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  input_mul_b9_bias1 ZeroWireload          tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0 ZeroWireload tcbn65gplustc_ccs
+  input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                             Incr       Path
+  ----------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                            0.00       0.00
+  clock network delay (ideal)                                                       0.00       0.00
+  input external delay                                                              0.02       0.02 r
+  x[14] (in)                                                                        0.01       0.03 r
+  dut/x[14] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                                  0.00       0.03 r
+  dut/wrapper/x[14] (fp32_normal_finite_wrapper)                                    0.00       0.03 r
+  dut/wrapper/U94/Z (CKBD1)                                                         0.07       0.10 r
+  dut/wrapper/fraction_x[14] (fp32_normal_finite_wrapper)                           0.00       0.10 r
+  dut/mult_22/a[1] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)             0.00       0.10 r
+  dut/mult_22/U246/ZN (INVD1)                                                       0.04       0.13 f
+  dut/mult_22/U384/Z (CKXOR2D0)                                                     0.13       0.27 r
+  dut/mult_22/U245/ZN (ND2D1)                                                       0.08       0.35 f
+  dut/mult_22/U376/ZN (NR2D0)                                                       0.06       0.41 r
+  dut/mult_22/U56/S (HA1D0)                                                         0.07       0.47 f
+  dut/mult_22/U20/CO (FA1D0)                                                        0.05       0.53 f
+  dut/mult_22/U19/CO (FA1D0)                                                        0.06       0.58 f
+  dut/mult_22/U18/CO (FA1D0)                                                        0.06       0.64 f
+  dut/mult_22/U17/CO (FA1D0)                                                        0.06       0.69 f
+  dut/mult_22/U16/CO (FA1D0)                                                        0.06       0.75 f
+  dut/mult_22/U15/CO (FA1D0)                                                        0.06       0.81 f
+  dut/mult_22/U14/CO (FA1D0)                                                        0.06       0.86 f
+  dut/mult_22/U13/CO (FA1D0)                                                        0.06       0.92 f
+  dut/mult_22/U12/CO (FA1D0)                                                        0.06       0.97 f
+  dut/mult_22/U11/CO (FA1D0)                                                        0.06       1.03 f
+  dut/mult_22/U10/CO (FA1D0)                                                        0.06       1.08 f
+  dut/mult_22/U9/CO (FA1D0)                                                         0.06       1.14 f
+  dut/mult_22/U8/CO (FA1D0)                                                         0.06       1.19 f
+  dut/mult_22/U7/CO (FA1D0)                                                         0.06       1.25 f
+  dut/mult_22/U6/CO (FA1D0)                                                         0.06       1.30 f
+  dut/mult_22/U5/CO (FA1D0)                                                         0.06       1.36 f
+  dut/mult_22/U4/CO (FA1D0)                                                         0.06       1.41 f
+  dut/mult_22/U3/CO (FA1D0)                                                         0.06       1.47 f
+  dut/mult_22/U272/ZN (XNR3D0)                                                      0.10       1.57 f
+  dut/mult_22/product[21] (input_trunc_core_BITS9_BIAS1_DIVIDE0_DW_mult_uns_0)      0.00       1.57 f
+  dut/U47/ZN (CKND0)                                                                0.14       1.72 r
+  dut/U11/ZN (ND2D1)                                                                0.09       1.81 f
+  dut/U3/ZN (INVD1)                                                                 0.09       1.90 r
+  dut/wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                       0.00       1.90 r
+  dut/wrapper/U50/CO (FA1D0)                                                        0.10       2.00 r
+  dut/wrapper/U51/CO (FA1D0)                                                        0.05       2.05 r
+  dut/wrapper/U52/CO (FA1D0)                                                        0.05       2.10 r
+  dut/wrapper/U53/CO (FA1D0)                                                        0.05       2.15 r
+  dut/wrapper/U54/CO (FA1D0)                                                        0.05       2.21 r
+  dut/wrapper/U55/CO (FA1D0)                                                        0.05       2.26 r
+  dut/wrapper/U64/Z (XOR3D1)                                                        0.08       2.34 f
+  dut/wrapper/result[30] (fp32_normal_finite_wrapper)                               0.00       2.34 f
+  dut/result[30] (input_trunc_core_BITS9_BIAS1_DIVIDE0)                             0.00       2.34 f
+  result[30] (out)                                                                  0.00       2.34 f
+  data arrival time                                                                            2.34
+
+  clock vclk (rise edge)                                                           10.00      10.00
+  clock network delay (ideal)                                                       0.00      10.00
+  output external delay                                                            -0.02       9.98
+  data required time                                                                           9.98
+  ----------------------------------------------------------------------------------------------------
+  data required time                                                                           9.98
+  data arrival time                                                                           -2.34
+  ----------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                  7.64
+
+
+1

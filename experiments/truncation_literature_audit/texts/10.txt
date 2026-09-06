@@ -1,0 +1,461 @@
+     Design of Approximate Unsigned Integer Non-restoring
+                 Divider for Inexact Computing
+           Linbin Chen                                          Jie Han                                Weiqiang Liu                    Fabrizio Lombardi
+      ECE Department                                  ECE Department                                 College of EIE                      ECE Department.
+    Northeastern University                         University of Alberta                      Nanjing University of Aero.            Northeastern University
+       Boston, MA USA                              Edmonton, AB, Canada                              & Astro., China                     Boston, MA USA
+   chen.lin@husky.neu.edu                            jhan8@ualberta.ca                         liuweiqiang@nuaa.edu.cn                lombardi@ece.neu.edu
+
+ABSTRACT                                                                                           Inexact computing is well suited for arithmetic circuits such as
+This paper proposes several approximate divider designs; two                                       adders and multipliers. Recently, five approximate mirror adders
+different levels of approximation (cell and array levels) are                                      (AMAs) have been investigated by logic reduction at transistor
+investigated for non-restoring division. Three approximate                                         level [1]. The three approximate XOR-based adders (AXAs) of
+subtractor cells are proposed and designed for the basic                                           [2] show attractive operational profiles for performance, hardware
+subtraction; these cells mitigate accuracy in subtraction with other                               efficiency and power-delay product (PDP), while retaining a good
+metrics, such as circuit complexity and power dissipation. At                                      accuracy. Approximate multipliers based on approximate adders
+array level, by considering the exact cells, both replacement and                                  have also been proposed, since a multiplier is usually
+truncation schemes are introduced for approximate array divider                                    implemented by cascading multiple adders. Some of the less
+design. A comprehensive evaluation of approximation at both cell                                   significant bits in the partial products can be truncated [3] while
+and divider level is pursued. Different circuit metrics including                                  providing error compensation mechanisms; this type of scheme
+complexity and power dissipation are evaluated by HSPICE                                           removes some of the adders for a faster execution of this
+simulation. Mean error distance (MED), normalized error distance                                   operation. In [4], a simplified 2⨉2 bit multiplier is used as
+(NED) and MED-power product (MPP) are provided to                                                  modular block of a multiplier with larger operand size. An
+substantiate the accuracy and power trade-off of inexact                                           efficient multiplier design using input pre-processing and
+computing. Different applications in image processing are                                          additional error compensation is proposed for reducing the critical
+investigated by utilizing the proposed approximate arithmetic                                      path delay in [5]. To the authors' best knowledge, there have not
+circuits.                                                                                          been any technical literature on an approximate divider (AXD)
+                                                                                                   design. In this paper, the approximate subtractor (AXS) is initially
+Categories and Subject Descriptors                                                                 considered as a first level of approximation for a non-restoring
+B.7.1 [INTEGRATED CIRCUITS]: Types and Design Styles –                                             AXD (AXDnr). New AXDnr cells (AXDCnr) are proposed and
+Algorithms implemented in hardware.                                                                the approximate operation is carried further at divider level by
+                                                                                                   considering different schemes by which exact cells can be
+General Terms                                                                                      replaced by approximate cells or truncated (removed). A
+Design, Performance.                                                                               comprehensive evaluation of approximation at both cell- and
+                                                                                                   divider-levels is pursued using HSPICE simulation at PTM 32nm
+Keywords                                                                                           technology; various circuit metrics (such as complexity, and
+Inexact computing, Division, Error Distance, Power Dissipation                                     power dissipation) are evaluated. MED, NED and MED Power
+                                                                                                   Product are provided to substantiate the accuracy and power
+1. INTRODUCTION                                                                                    trade-off of inexact computing. Different applications in image
+Most computer arithmetic applications are implemented using                                        processing are investigated by utilizing the proposed approximate
+digital logic circuits, thus operating with a high degree of                                       arithmetic circuits. As for image processing, approximate division
+reliability and accuracy. However, many applications such as                                       often results in a very marginal decrease in quality (as measured
+multimedia and image processing can tolerate errors and                                            by metrics such as PSNR).
+imprecision in computation and still produce meaningful and
+useful results. The paradigm of inexact computation relies on                                      2. REVIEW
+relaxing fully precise and completely deterministic building                                       2.1 Exact Subtractor (EXS)
+modules when for example, designing energy efficient systems.                                      The functions of an exact subtractor cell (EXSC) and exact full
+This allows imprecise computation to redirect the existing design                                  adder cell (EXAC) are quite similar (Table 1). D denotes the
+process of digital circuits and systems by taking advantage of a                                   difference between X and Y, B is the borrow bit to the lower
+decrease in complexity and cost with possibly a potential increase
+                                                                                                   position and B     is the borrow bit from the higher position. So,
+in performance and power efficiency.
+                                                                                                   the discussion of EXSC is also applicable to EXAC. An unsigned
+Permission to make digital or hard copies of all or part of this work for personal or              N-bit ripple EXS can be implemented using N cascading EXSCs.
+classroom use is granted without fee provided that copies are not made or distributed
+for profit or commercial advantage and that copies bear this notice and the full citation          There are three basic Boolean operations in EXSC and EXAC:
+on the first page. Copyrights for components of this work owned by others than ACM                 XOR/XNOR, AND and OR. Two XOR/XNOR cascaded gates
+must be honored. Abstracting with credit is permitted. To copy otherwise, or republish,            generate the outputs S or D; two AND and one OR gates generate
+to post on servers or to redistribute to lists, requires prior specific permission and/or a
+fee. Request permissions from permissions@acm.org.                                                  C or B . At circuit-level the XOR can be implemented
+GLSVLSI’15, May 20–22, 2015, Pittsburgh, PA, USA.                                                  using 3 to 4 transistors (Figure 1(b) or (c)). The XNOR can be
+Copyright © 2015 ACM 978-1-4503-3474-7/15/05…$15.00.                                               implemented using 4 transistors (Figure 1(a)). XOR and XNOR
+http://dx.doi.org/10.1145/2742060.2742063
+                                                                                                   can be used interchangeably to implement the sum output S and
+
+
+
+
+                                                                                              51
+thhe subtraction output
+                 o       D. The AND and OR functions can be
+                                                         b                         exact fu
+                                                                                          full adder (X+Y)). This configuraable divider celll is the basic
+immplemented usinng a 2-transistorr MUX (Figure 2).
+                                                2                                  buildinng block for an E
+                                                                                                          EXDnr.
+               Ta
+                able 1 EXAC an
+                             nd EXSC Functiions                                    Exact Non-restoring Divider (EXDn       nr): A 8-by-4 biits unsigned
+                            or                           or                        EXDnrr is shown in F   Figure 4; it commputes the unsiggned integer
+    EXAC                   ⊕     ⊕                     ⊕      ∙                    divisionn for X[7:0], Y[3:0], Q[3:0] andd R[3:0].
+    EXSC                   ⊕     ⊕                     ⊕      ∙
+
+
+
+
+          (a)                (b)                (c)
+FFigure 1 Three implementation
+                 i           ns of XOR and XNOR gates an
+                                                       nd
+rrelated symbolss. (a) 4T XNOR
+                             R from [6] (b) 4T
+                                            4 XOR from [7]
+                                                       [
+aand (c) 3T XOR
+              R from [8]
+                                                                                                    Figuree 4 8-to-4 unsign
+                                                                                                                          ned EXDnr
+                                                                                   3. AP
+                                                                                       PPROXIMATE SUBT     TRACTOR (AXS)
+                                                                                   3.1 A
+                                                                                       Approximatte Subtractoor Cell (AX
+                                                                                                                       XSC)
+
+
+                                                                                                                                  D    X⊕Y B
+                  (aa)                                (b)                                                                    B        X⊕Y ∙B          XY
+FFigure 2 Implem   mentations of an  n EXSC (a) bassed on a 4T
+XXNOR and (b) based b      on a 3T XOR
+                                    X
+SSimilar to the EXACs
+                  E         in [2], th
+                                     he implementatiions of the EXS   SC
+aare shown in Fig   gure 2; when siimulating by HS    SPICE, the sign nal                                            (a)
+inntegrity may be degraded due to    o the pass transiistor logic; thus,, a
+bbuffer is insertedd to preserve an acceptable
+                                     a          signaal integrity.
+                                                                                                                                  D    X⊕Y⊕B
+22.2 Exact Non-Restori
+           N          ng Divider (EXDnr)                                                                                      B        D or B B
+FFor integer division, the operand
+                                 ds are the dividen
+                                                  nd X and the no
+                                                                on-
+zzero divisor Y, and
+                 a the results of the operation are
+                                                  a the quotient Q
+aand the remaindeer R, i.e.                                                                                          (b)
+                             X       YQ
+                                     Y     R
+w               o the remainderr R is the same as the dividend X
+ where the sign of
+aand |R| |Y| . A common diviision algorithm is non-restorin   ng                                                                      D B
+ddivision [9].                                                                                                               B        X⊕Y ∙B          XY
+
+
+
+                                                                                                                     (c)
+                                          R X⨁ Y⨁⨁Q ⨁B                             Figuree 5 (a) AXSC1 (b   b) AXSC2 and (c) AXSC3
+                                 B        X ⊕ Y⨁Q ∙ B  X Y⨁Q                       Three ttypes of AXSC ((AXSC1-AXSC3) are introduced next; their
+                                                                                   diagramms and functionns are shown as Figure 5; two vversions (the
+                                                                                   XOR aand XNOR bassed designs) aree proposed for some cells
+                                                                                   (AXSC C2, AXSC3). Thhere are two X     XOR/XNORs inn an EXSC;
+                                                                                   each oof them consistts of 4 or 3 transistors. Theerefore, the
+FFigure 3 EXDCnr and its logic functions using g EXSC                              eliminaation of one of thhem in an AXS design is an obvvious choice
+EExact Non-Resttoring Divider Cell (EXDCnrr): An EXDCnr is                         for reduucing the numbeer of transistors (AXSC1 and AX XSC3 abide
+mmade of an EXS   SC and a XORR gate (Figure 3).
+                                              3 Q is a contrrol                    by thiss consideration)). In the operaation of a subbtractor, the
+ssignal such that when Q 0, EXDCnr
+                              E        is confiigured as an exaact                 accuraccy of Bout is in general more important than D D; so, in an
+fu                X-Y); when Q 1, EXDCnr iss configured as an
+ full subtractor (X                                             a                  AXSC design, Bout is uunchanged (as inn AXSC1 and A   AXSC3). To
+
+
+
+
+                                                                              52
+reduce the delay, the output signal D and Bout can be combined (as          simulation using AXSCs in AXS. As the replacement depth d
+occurring in AXSC2 and AXSC3).The truth table for each input                increases, the power consumption decreases. The switching
+combination of these approximate cells is shown in Table 2. The             activity of AXS2 is higher (different from AXS1 and AXS3),
+number of transistors and the error distance are shown in Table 3.          hence the power of AXS2 is not as good as the other two schemes.
+         Table 2 Truth Table of 3 Proposed AXS Cells                        MPP is shown in Figure 7 (b). AXS1 has the best MPP when d is
+                                                                            low, but it deteriorates at higher values of d. When d increases,
+               EXSC        AXSC1        AXSC2        AXSC3                  AXS3 is the best scheme. On average, the MPP shows that AXS3
+X Y
+              Bout D      Bout   D    Bout    D     Bout D                  is the best choice for an AXS.
+ 0    0 0      0     0     0     0      0     0       0   0
+ 0    0 1      1     1     1     1      1     1       1   1
+ 0    1 0      1     1     1     1      1     1       1   1
+ 0    1 1      1     0     1     1      0     0       1   1
+ 1    0 0      0     1     0     1      1     1       0   0
+ 1    0 1      0     0     0     1      0     0       0   0
+ 1    1 0      0     0     0     0      0     0       0   0
+ 1    1 1      1     1     1     1      1     1       1   1
+     Table 3 Transistor Count and Error Distance of AXSCs
+  Subtractor Cell       Transistor Count         Error Distance                           (a)                           (b)
+      EXSC                     10                      0                             Figure 7 (a) Power and (b) MPP of 8-bit AXS
+     AXSC1                   8 or 7                    2
+     AXSC2                  8, 7 or 6                  4
+                                                                            4. APPROXIMATE NON-RESTORING
+     AXSC3                   6 or 5                    2                    DIVIDER (AXDnr)
+3.2 Approximate Subtractor (AXS)                                            4.1 AXDCnr
+In this section, an N-bit AXS is evaluated. The three types of              The design of an AXDCnr takes advantage of the corresponding
+AXSC are used to replace some of the LSBs of an EXS. The                    AXSC, because subtraction is the basic operation of division. The
+replacement depth d is used to represent the number of the EXSCs            corresponding AXDCnr1-3 can be derived by substituting the
+replaced by the AXSCs.                                                      EXSC in Figure 3 with AXSC1-3 presented in previous section.
+
+3.2.1 MED and NED                                                           4.2 AXDnr
+In addition to the error distance (ED), the mean error distance             4.2.1 Replacement Scheme
+(MED) and the normalized error distance (NED) have been                     A simple divider-level approximation is to use cell replacement,
+proposed [10] by considering the averaging effect of multiple               i.e. to replace some EXDCnrs in the EXDnr with the AXDCnrs
+inputs and the normalization of multiple-bit adders. The MED is             developed in Section 4.1. The approximate cells have a smaller
+defined as the mean value of the EDs of all possible outputs for            circuit complexity, so making the entire divider less complex and
+each input. The NED is defined as the MED normalized by the                 consuming less power. These advantageous features are
+maximum ED that a design incurs. The MED is effective in                    accomplished at the expenses of introducing errors at the outputs
+evaluating multiple-bit approximate arithmetic circuit, while the           for the quotient Q and/or the remainder R. The errors in Q and R
+NED is nearly invariant with the size of an implementation and              are correlated. So an approximate divider can be designed to have
+therefore, is useful in the assessment of a specific type of design.        either a more accurate Q with a less accurate R (division), or a
+                                                                            more accurate R with a less accurate Q (modulo). Approximation
+                                                                            is therefore the process by which exact cell is replaced by an
+                                                                            approximate cell; the extent by which this replacement process is
+                                                                            performed in a divider is quantified by the depth d, i.e. the number
+                                                                            of rows (and/or columns) in the divider array with approximate
+                                                                            cells. Four types of approximation are used (Figure 8) for the
+                                                                            division operation for the accuracies of Q and R.
+                                                                            Vertical Replacement (VR): The least significant (LSB) EXDCnrs
+               (a)                             (b)                          in each row of the divider are replaced by AXDCnrs. The depth of
+Figure 6 (a) MED of 8-bits AXS with depth d, and (b) NED of                 the vertical replacement can be increased to further decrease the
+N-bit AXS with depth d=N                                                    power while tolerating more errors in the output. Hence, 4×d
+The MEDs for 8-bit AXS with replacement depth d are shown in                EXDCnr cells are replaced with AXDCnr cells in a divider with a
+Figure 6(a) on a logarithmic scale; AXS1 and AXS3 have the                  vertical approximation of depth d. One example of depth d=2 is
+smallest MED, because they nearly preserves the exact                       shown in Figure 8(a).
+computation for subtraction. The NEDs of the proposed AXS with              Horizontal Replacement (HR): The value of the quotient is mostly
+different AXSCs and replacement depth d=N are plotted in Figure             related to the borrow signal of each cell in a single row. For
+6(b); the value of the NED for different AXS reduces to a constant          example, consider the last row corresponding to the LSB of Q; if
+as the width of the subtractor increases; AXS1 and AXS3 have                the value of R is not of significant concern, then all EXDCnrs in
+relative smaller NEDs compared to AXS2.                                     the last row can be replaced with AXDCnrs without losing the
+3.2.2 MED Power Product (MPP)                                               accuracy of Q. If some error can be tolerated at Q, then an
+MPP is used to assess the trade-off between computational                   increase in the depth of the horizontal replacement up to the dth
+accuracy and power consumption for approximate computing                    LSB of Q is possible. An example of a horizontal replacement
+circuits. Figure 7(a) shows the dynamic power by exhaustive                 divider of depth d=2 is shown in Figure 8(b).
+
+
+
+
+                                                                       53
+SSquare Replaceement (SR): By combining the vertical an          nd                  NEDs plotted in Figuure 11; so, S aand S are goodd qualitative
+hhorizontal replaccement; a new configuration
+                                c             is referred to as th
+                                                                 he                  metricss for analyzing ddifferent replacem
+                                                                                                                              ment or truncatioon schemes.
+ssquare replacemment. Hence, in a dth AXDnr, d2 EXDCnrs are     a
+replaced with AXDCnrs.
+                A           An example of a sq  quare replacemeent
+AAXDnr of depth d=2 is shown ass Figure 8(c).
+TTriangle Replaccement (TR): Consider the integer pair (i,j) as
+                                  vider (Figure 9). An EXDCnr (ii,j)
+ccoordinates of eaach cell in a div
+(i<d or j<d) is replaced by a AXDCnr. So,         S in a triang gle
+aapproximation diivider with depth h d (d≥1), d(d+11)/2 EXDCnrs are
+                                                                a
+replaced with AXDCs. An exam      mple of a trianggle approximatio
+                                                                 on
+ddivider with d=2
+                2 is shown in Fig gure 8(d).
+
+
+                                                                                               Figure 9 Errror impact coeffficients     and
+      (a)             (b)             (c)            (d)
+F
+Figure 8 Four reeplacement types of 8-to-4 bit AXDnr: (a) VR
+                                                           R,
+(b) HR, (c) SR, and
+                a (d) TR. The replaced cellss are shaded.
+44.2.2 Trunca
+            ation Scheme
+TTruncation conssists of fully reemoving at leaast a cell (so no n
+replacement witth AXDCnr(s));; this process is shown by th       he
+sshaded cells in Figure
+                  F      8. The in
+                                 nput X of the removed cell is leeft
+uunchanged and moved downwaards along the remainder outp       put                                 (a)                                (b)
+ddirection, while the input Y off the removed cell is discardeed.                    Figuree 10 Error impaact coefficients oof different replacement
+SSimilar to replaccement scheme, a truncation sch
+                                                heme has also fo
+                                                               our                   or trun
+                                                                                           ncation configurations vs depth  h: (a) and (b  b)
+cconfigurations: Vertical
+                  V        Truncattion (VT), Horizontal Truncatioon                  4.3.2 Normalized Error Distannce (NED)
+(HT), Square Tru  uncation (ST) an
+                                 nd Triangle Trun
+                                                ncation (TT).
+44.3 Evaluattion of AXD
+                      Dnrs
+44.3.1 Error Estimation
+             E          off AXDnrs
+EError generation and propagation  n can be qualitattively analyzed by
+                                                                     b
+thhe location of th
+                  he replaced or truuncated cells in the divider. A so-
+                                                                    s
+ccalled error imp  pact coefficient (denoted by S)  S is proposed to
+ssimplify the anaalysis for findin ng the impact of o the inexact or                                (a)                                (b)
+trruncated cells in the array divider.
+                                  d         An app proximate schem  me
+cconsists of replaacing or truncatiing only a portioon of the divideer;
+thhis leads to diffferent approximmate configuratio ons with differeent
+aaccuracy for thee output valuess (Q and R). In      I a divider, th  he
+ddividend X and the divisor Y arre provided as in    nputs at the norrth
+sside, while the quuotient Q and thhe reminder R arre generated at th he
+wwest and the so outh sides respectively (Figure 9). So, each ceell                                 (c)                                (d)
+(located at a uniq que position in the divider) playys a different ro
+                                                                    ole
+inn generating an error; intuitivelly, cell replacem
+                                                   ment or truncatio on
+mmust not preferab bly occur at the MSBs of Q and  d R. Therefore, th he
+ccoefficients S , and S , , aree given by
+
+        S   ,
+                                            i ∈ 1, N , j ∈ 1,2N   1
+            S   ,
+                                                                                                    (e)                                (f)
+
+inn which i, j are the coordinates of the cell in th     he divider ((0,0) is
+thhe origin, as shown
+                    s        in (Figu   ure 9). S ,       is
+                                                          i effectively th he
+ddistance from thee MSB cell of Q to a cell positiion in the divideer;
+S , , is the disttance from the MSB     M     cell of R to
+                                                         o a cell position in
+thhe array. Largerr SQ,(i,j) or SR,(i,j) is,
+                                         i a greater errorr is contributed by
+                                                                           b
+thhe (i,j) cell to th
+                    he final outputs Qerror and Rerror. So,
+                                                          S the impacts of                           (g)                                (h)
+eerrors at the outp puts Q and R are given by                                        Figuree 11 NED of A      AXDnrs for Q  Quotient Q an   nd R (a)(b)
+                             ∑S                 ∑S                                   AXDnrr1, (b)(c) AXDn    nr2, (d)(e) AXDDnr3, (g)(h) Truuncation
+                      S           ,     S            ,
+                                                                                     For a more accurate evaluation of the different aapproximate
+wwhere, S , and   d S , are duee to cell (i,j) when using an       a                 designss, the NED has been simulatedd at different deppths (Figure
+aapproximate imp plementation. Fig
+                                 gure 10 illustratees the coefficien
+                                                                   nts               11). Ammong the replac ement schemes, the error of AX  XDnr2 is the
+S and S of th     he replacement or truncation configurations at                     largest in all cases forr Q, but not for R; this is due tto the worst
+ddifferent depths. The trends for S and S are consistent with th   he                (best) aaccuracy for Boout (D) in AXSC  C2. AXDnr1 annd AXDnr3
+
+
+
+
+                                                                                54
+have on average the smallest NED for both Q and R. Among                 is at the expense of the error; hence, the triangle replacement
+truncation schemes, the NED of Q is larger than any of its               scheme with AXDnr3 has the smallest MPP. AXDnr3 is very
+corresponding replacement schemes, because more error is                 promising for an approximate divider design requiring both high
+introduced by simply removing a cell compared with replacing it          accuracy and low power consumption. AXDnr2 is again shown to
+with the proposed AXDC. For both replacement and truncation              be the worst design regardless of the type of replacement.
+schemes, the NED of Q for the vertical and horizontal                    Compared to a replacement scheme, a truncation scheme is not
+approximations increases rapidly with depth, more than for the           suitable for both high accuracy and low power AXDnr designs.
+square and triangle approximations; the triangle approximation
+shows the smallest NED for Q compared to the other replacement           5. APPLICATIONS
+schemes. The NED of R also increases with replacement depth;             5.1 Pixel Subtraction
+moreover, it is larger than the NED of Q. This occurs because the        Pixel subtraction takes two images as input and produces as
+error in R is strongly dependent on the error in Q; however when         output a third image whose values are the subtraction of the
+using a horizontal replacement, the NED of R is less dependent on        second image from the first image on a pixel basis. 8-bit ripple
+the replacement depth.                                                   borrow EXS and AXS with replacement depth d=4 are used.
+4.3.3 Power consumption                                                  Background Removal: In this case, background variations in
+Figure 12 shows the power consumption of AXDnrs versus                   illumination are subtracted from a scene, such that the foreground
+replacement depth. All AXDnrs consume less power as the                  objects can be better viewed. For example, the image X in Figure
+replacement depth increases; this is significantly lower than the        14 shows some text that has been badly illuminated during capture
+power consumed by EXDnrs. The power dissipation of the                   (i.e. there is a strong illumination gradient across the image). If a
+truncation schemes may be slightly larger than the replacement           blank page Y is subtracted from the poorly illuminated image X,
+schemes when the depth is small, however the power of a                  the output has a relatively constant illumination. Figure 14 shows
+truncation scheme decreases at the highest rate.                         the simulation results. The results of AXS1 and AXS3 are better.
+
+
+
+
+              (a)                              (b)                                 X                      Y                  D (EXS)
+
+
+
+
+             (c)                          (d)
+Figure 12 Power consumption of AXDnrs for Quotient Q (a)                      D (AXS1)            D (AXS2)           D (AXS3)
+AXDnr1 (b) AXDnr2 (c) AXDnr3 and (d) Truncation                                Figure 14 Output images for background removal
+
+
+
+
+                                                                                   X                      Y                  D (EXS)
+               (a)                             (b)
+
+
+
+                                                                               D (AXS1)               D (AXS2)              D (AXS3)
+                                                                                  Figure 15 Output images for change detection
+                                                                         Change Detection: The image difference is also used for change
+            (c)                         (d)                              detection. If the difference between two frames of a sequence of
+Figure 13 MED Power Product of AXDnrs for Quotient Q (a)                 images is calculated and there is no movement in the scene, then
+AXDnr1 (b) AXDnr2 (c) AXDnr3 and (d) Truncation                          the output image mostly consists of zero value pixels. If there is
+4.3.4 MED Power Product (MPP)                                            movement, then the pixels in those regions of the image in which
+To evaluate the tradeoff between computation accuracy and power          the intensity spatially changes, exhibit significant differences
+consumption of the AXDnrs, the MPP of the AXDnrs is                      between the two frames. Figure 15 shows the change detection
+calculated and plotted in Figure 13. Although the power saving of        results of a sequence of frames X and Y. AXS1 and AXS3 are
+a truncation scheme is larger than for a replacement scheme, this        capable of detecting the moving part of the image.
+
+
+
+
+                                                                    55
+The peak signal to noise ratio (PSNR) is commonly used to                  The following conclusions can be drawn. (1) The error in Q for
+measure the quality of lossy compression codecs of images. In              different approximation configurations increases with the
+this case, it is used to assess the quality of the images processed        replacement or truncation depth; the triangle approximation
+by an inexact arithmetic circuit compared to the ones by an exact          increases at a smaller rate. (2) AXDnr1 and AXDnr3 have on
+arithmetic circuit. For the two image subtraction applications             average the smallest NED for Q. However, the error introduced by
+considered in this manuscript, the PSNR results are shown in               a truncation scheme is significantly more than a replacement
+Figure 16. AXS1 and AXS3 based subtractors have the larger                 scheme. (3) The error in R due to replacement is significantly
+PSNR, so generating the best approximation and the least image             larger than the error in Q because R is dependent on Q of previous
+errors when replacing EXSCs with AXSCs.                                    stage. (4) Power consumption is reduced considerably when the
+                                                                           approximation depth increases. Higher the depth, more
+                                                                           pronounced is the power reduction. (5) For all depths, AXDnr1
+                                                                           and AXDnr2 consume more power than AXDnr3; the truncation
+                                                                           schemes require considerably less power than the replacement
+                                                                           schemes. (6) The trade-off between accuracy and power
+                                                                           consumption makes an approximate divider design an application
+                                                                           specific process. For an application requiring both high accuracy
+                                                                           and low power, the MED power product metric shows that
+                                                                           AXDnr3 is a good approximate scheme. For Q-oriented
+                                                                           applications (image processing), AXDnr3 with a triangle
+                                                                           replacement shows the best results.
+                                                                           7. ACKNOWLEDGMENT
+        Figure 16 PSNR of AXSs for pixel subtraction                       This research is supported in part by an NSERC Discovery Grant
+5.2 Pixel Division                                                         and by a grant from NSFC (No. 61401197).
+The change detection and background removal application can be
+also realized by division operation. In image analysis, if only            8. REFERENCES
+integer division is performed, then the results are typically              [1] Gupta, V., Mohapatra, D., Park, S.P., Raghunathan, A. and
+rounded at the output to the next lowest integer. 16-to-8 EXDnr                 Roy, K. 2011. IMPACT: IMPrecise Adders for Low-Power
+and AXDnr are used to compute the same 8-bit grayscale images                   Approximate Computing. In Proceedings of the International
+as in the previous section; the approximations used in these                    Symposium on Low Power Electronics and Design (1-3 Aug.
+applications are with depth 3 for VR and HR, depth 2 for VT and                 2011), 409-414.
+HT, depth 5 for SR, depth 4 for ST, depth 7 for TR and depth 5             [2] Yang, Z., Jain, A., Liang, J., Han, J. and Lombardi, F. 2013.
+for TT. These configurations are selected to ensure that the power              Approximate XOR/XNOR-based Adders for Inexact
+consumptions are nearly equal.                                                  Computing. In Proceedings of the 13th IEEE Conference on
+                                                                                Nanotechnology (5-8 Aug. 2013), 690-693.
+                                                                           [3] Kyaw, K.Y., Goh, W.-L. and Yeo, K.-S. 2010. Low-Power
+                                                                                High-Speed Multiplier for Error-Tolerant Application. In
+                                                                                Proceedings of the International Conference of Electron
+                                                                                Devices and Solid-State Circuits (15-17 Dec. 2010), 1-4.
+                                                                           [4] Kulkarni, P., Gupta, P. and Ercegovac, M. 2011. Trading
+                                                                                Accuracy for Power with an Underdesigned Multiplier
+                                                                                Architecture. In Proceedings of the 24th International
+               (a)                             (b)                              Conference on VLSI Design (2-7 Jan. 2011), 346-351.
+Figure 17 Simulated PSNR of pixel division (a) change                      [5] Momeni, A., Han, J., Montuschi, P. and Lombardi, F. 2014.
+detection (b) background removal                                                Design and Analysis of Approximate Compressors for
+                                                                                Multiplication. IEEE Trans. Comput. (Accepted to appear).
+It can be seen from both change detection and background
+                                                                           [6] Lin, J., Hwang, Y.-T., Sheu, M.-H. and Ho, C.-C. 2007. A
+removal results of Figure 17 that the triangle replacement with
+                                                                                Novel High-Speed and Energy Efficient 10-Transistor Full
+AXDnr3 has the best PSNRs while the vertical replacement has
+                                                                                Adder Design. IEEE Trans. Circuits Syst. I, Reg. Papers 54,
+overall the worst PSNR.
+                                                                                5, 1050-1059.
+6. CONCLUSION                                                              [7] Mahmoud, H.A. and Bayoumi, M.A. 1999. A 10-Transistor
+This paper has presented a detailed analysis, design and                        Low-Power High-Speed Full Adder Cell. In Proceedings of
+evaluation of dividers that utilize approximate criteria in their               the IEEE International Symposium on Circuits and Systems
+operation. As basic operation for division, subtraction has been                (Jul 1999), 43-46.
+initially considered. Subsequently, AXDnr have been proposed by            [8] Chowdhury, S.R., Banerjee, A., Roy, A. and Saha, H. 2008.
+introducing approximate computing at cell as well as at divider                 A High Speed 8 Transistor Full Adder Design Using Novel 3
+levels. Division presents unique challenges for approximate                     Transistor XOR Gates. International Journal of Electronics,
+computing; it generates two output values (the remainder R and                  Circuits and Systems 2, 4, 217-223.
+the quotient Q), so changes in cells as well as the dividers may           [9] Parhami, B. 2000. Computer Arithmetic: Algorithms and
+affect one of the outputs more than the other. Hence, different                 Hardware Designs. Oxford University Press.
+arrangements in the approximate cells have been investigated;              [10] Liang, J., Han, J. and Lombardi, F. 2013. New Metrics for
+these arrangement replaces exact with cells or truncates                        the Reliability of Approximate and Probabilistic Adders.
+(eliminates) them according to the direction of computation flow.               IEEE Trans. Comput. 62, 9, 1760-1771.
+
+
+
+
+                                                                      56
+

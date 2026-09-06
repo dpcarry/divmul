@@ -222,12 +222,12 @@ module oadm_runtime_plane_centered (
     wire [1:0] y_side_x_error;
     wire [1:0] unused_y_error;
     oadm_multilevel_rounding_lut x_rounding_lut (
-        .level(level), .index(y_index),
+        .level(level), .index(y_mantissa[22:20]),
         .value_low(x_mantissa[3:0]),
         .x_error(x_rounding_error), .y_error(unused_y_error)
     );
     oadm_multilevel_rounding_lut y_rounding_lut (
-        .level(level), .index(x_index),
+        .level(level), .index(x_mantissa[22:20]),
         .value_low(y_mantissa[3:0]),
         .x_error(y_side_x_error), .y_error(y_rounding_error)
     );

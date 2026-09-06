@@ -1,0 +1,887 @@
+IEEE TRANSACTIONS ON COMPUTERS, VOL. 68,                 NO. 11,     NOVEMBER 2019                                                                       1635
+
+
+
+
+    Low-Power Unsigned Divider and Square Root
+    Circuit Designs Using Adaptive Approximation
+                           Honglan Jiang , Member, IEEE, Leibo liu , Senior Member, IEEE,
+                         Fabrizio Lombardi , Fellow, IEEE, and Jie Han , Senior Member, IEEE
+
+       Abstract—In this paper, an adaptive approximation approach is proposed for the design of a divider and a square root (SQR) circuit. In this
+       design, the division/SQR is computed by using a reduced-width divider/SQR circuit and a shifter by adaptively pruning some insignificant
+       input bits. Specifically, for a 2n=n division, 2k and k (k < n) consecutive bits are selected starting from the most significant ‘1’ in the
+       dividend and divisor, respectively. At the same time, redundant least significant bits (LSBs) are truncated or if the number of remaining bits
+       after pruning is smaller than the number of bits to be kept, ‘0’s are appended to the LSBs of the inputs. To avoid overflow, a 2ðk þ 1Þ=ðk þ 1Þ
+       divider is used to compute the 2k=k division. Finally, an error correction circuit is proposed to recover the error caused by the shifter using
+       OR gates. For a 2n-bit approximate SQR circuit, similar pruning schemes are used to obtain a 2k-bit radicand. A 2k-bit SQR circuit and a
+       shifter are then utilized to compute the SQR. This adaptive operation leads to very small maximum error distances of the approximate
+       divider and SQR circuits, as shown by a theoretical error analysis. The proposed 16/8 approximate divider using an 8/4 exact array divider
+       is 2:5 as fast but only consumes 34.42 percent of the power of the accurate design. Compared to the accurate 16-bit array SQR circuit,
+       the approximate design with a 6-bit radicand is 3:9 as fast and consumes 20.66 percent of the power. The approximate SQR circuit using
+       a 6-bit lookup table-based SQR circuit consumes 7.15 percent of the power of its corresponding accurate design. The proposed designs
+       outperform other approximate designs in image processing applications including change detection (for the divider), envelope detection
+       (for the SQR circuit) and image reconstruction (for both designs).
+
+       Index Terms—Adaptive approximation, divider, SQR circuit, overflow, low-power, image processing
+
+                                                                                       Ç
+1    INTRODUCTION
+
+C    OMPARED       with multiplication and addition, division
+     and square root (SQR) computation are less frequently
+used arithmetic operations [1]; however, their long latencies
+                                                                                           [6]. A large number of approximate designs have been pro-
+                                                                                           posed for arithmetic circuits for pursuing improvements in
+                                                                                           speed, power dissipation and/or circuit complexity [7].
+determine the speed of an application once they are utilized.                                  However, most designs are either hardware-efficient with
+Several schemes have been proposed to improve the perfor-                                  a low accuracy or very accurate with a limited hardware sav-
+mance of division/SQR, such as those using a high-radix                                    ing, mostly due to the use of a static approximation. In this
+design [2], [3], [4] or a carry/borrow lookahead circuit in an                             paper, an adaptive approximation strategy is proposed for
+array divider/SQR circuit [5]. Nevertheless, the improve-                                  unsigned divider and SQR circuit designs. The adaptive
+ment in performance is usually obtained at the expense of a                                approximation leads to low-power and high-performance
+high power dissipation and a large area due to the complex-                                operations. In these designs, input pruning and error correc-
+ity of its intrinsic structure.                                                            tion work synergistically to ensure a high accuracy with a
+   On the other hand, precise computing is not required for                                very low maximum error distance (ED).
+many applications such as image processing, clustering and                                     Specifically, by adaptively selecting some significant bits
+recognition due to their inherent error tolerance. As a result,                            in the input operands, a reduced-width divider and SQR cir-
+there has been a wide interest in the investigation into the                               cuit are respectively utilized to approximately compute a
+emerging paradigm of approximate or inexact computing                                      division and SQR. The alterable circuit size and accuracy of
+                                                                                           the approximate designs are determined by the number of
+                                                                                           bits to be selected (i.e., 2k bits for the dividend and radicand,
+ H. Jiang and L. Liu are with the Institute of Microelectronics, Tsinghua                 and k bits for the divisor). Compared with the exact 16=8
+  University, Beijing 100091, China.
+  E-mail: honglan@ualberta.ca, liulb@tsinghua.edu.cn.
+                                                                                           array divider, the adaptively approximate divider (denoted
+ F. Lombardi is with the Department of Electrical and Computer Engineering,               as AAXD) achieves a speedup and power reduction by 27-61
+  Northeastern University, Boston, MA 02115.                                               and 34-66 percent, respectively, when k varies from 5 to 3.
+  E-mail: lombardi@ece.neu.edu.                                                            For the 16-bit array SQR circuit, it achieves improvements in
+ J. Han is with the Department of Electrical and Computer Engineering,
+  University of Alberta, Edmonton, AB T6G 1H9, Canada.                                     power-delay product (PDP) and area-delay product (ADP)
+  E-mail: jhan8@ualberta.ca.                                                               by more than 90 percent when k ¼ 3, while the PDP is
+Manuscript received 20 Aug. 2018; revised 8 Apr. 2019; accepted 28 Apr.                    reduced by more than 45 percent when k ¼ 6. A more sig-
+2019. Date of publication 13 May 2019; date of current version 16 Oct. 2019.               nificant power reduction is achieved when the adaptive
+(Corresponding author: Jie Han.)                                                           approximation is applied to the lookup table (LUT)-based
+Recommended for acceptance by A. Tisserand.                                                SQR circuit. It also achieves a high accuracy in an envelope
+For information on obtaining reprints of this article, please send e-mail to:
+reprints@ieee.org, and reference the Digital Object Identifier below.                      detection application. When used in image reconstruction,
+Digital Object Identifier no. 10.1109/TC.2019.2916817                                      the proposed approximate 32=16 divider and 32-bit SQR
+                                   0018-9340 ß 2019 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+                                       See ht_tp://www.ieee.org/publications_standards/publications/rights/index.html for more information.
+           Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+1636                                                                          IEEE TRANSACTIONS ON COMPUTERS,            VOL. 68,   NO. 11,   NOVEMBER 2019
+
+
+                                                                                2     RELATED WORK
+                                                                                An unsigned integer division A=B can be formulated as
+                                                                                A ¼ BQ þ R, where Q is the quotient, and R is the remainder.
+                                                                                In the pencil-and-paper algorithm, the quotient of a 2n=n
+                                                                                binary division is calculated by finding the final remainder,
+                                                                                i.e., iteratively subtracting the product of a bit of the quotient
+                                                                                and the n-bit divisor (B) from the 2n-bit dividend (A). Start-
+                                                                                ing with the most significant bit (MSB), each iteration gener-
+                                                                                ates one bit of the quotient. Thus, i bits of the quotient
+                                                                                (referred to as the partialPquotient) are generated after i itera-
+                                                                                tions, denoted as Qi ¼ ij¼1 qnj 2nj , where n is the width of
+                                                                                the quotient (due to the input range constraint [1]) and qi is
+                                                                                the ith least significant bit (LSB) of Q, i ¼ 1; 2; . . . ; n. The par-
+                                                                                tial remainder of the ith iteration is then given by Ri ¼ A 
+                                                                                BQi . In the ði þ 1Þth iteration, the partial remainder Riþ1 ¼
+                                                                                                                P
+                                                                                A  BQiþ1 , where Qiþ1 ¼ iþ1       j¼1 qnj 2
+                                                                                                                             nj
+                                                                                                                                 ¼ Qi þ qni1 2ni1 .
+                                                                                Therefore, Riþ1 ¼ A  BQi  Bqni1 2ni1 ¼ Ri  Bqni1 2ni1 .
+                                                                                qni1 is the bit of the quotient generated by the ði þ 1Þth iter-
+                                                                                ation. It is 1 (and Riþ1 ¼ Ri  B2ni1 ) if Ri  B2ni1  0;
+                                                                                otherwise qni1 ¼ 0 (and Riþ1 ¼ Ri ). In hardware, qni1 is
+                                                                                obtained by inverting the borrow output of Ri  B2ni1 that
+                                                                                is implemented by a shift subtraction.
+                                                                                                                    pﬃﬃﬃﬃ
+                                                                                    Similarly, an integer SQR A can be formulated as A ¼
+                                                                                Q2 þ R, where Q is the SQR result, and R is the remainder. In
+                                                                                the pencil-and-paper algorithm for binary SQR, the 2n-bit
+                                                                                radicand (A) is first divided into n groups of two, and two
+                                                                                bits of the radicand are processed in each iteration to gener-
+                                                                                ate one bit in the SQR. The SQR is calculated starting with
+                                                                                the MSB.P Assume that the partial SQR after i iterations is
+                                                                                Qi ¼ ij¼1 qnj 2nj , where n is the width of Q and qi is the
+                                                                                ith LSB of Q, i ¼ 1; 2; . . . ; n. The partial remainder of the ith
+Fig. 1. (a) An 8=4 unsigned restoring array divider and (b) 8-bit restoring     iteration is given by Ri ¼ A  Q2i , while it is Riþ1 ¼ A 
+array square root circuit with (c) the constituent subtractor cell [1].         Q2iþ1 ¼ A  ðQi þ qni1 2ni1 Þ2 ¼ Ri  ð2Qi þ qni1 2ni1 Þ
+                                                                                qni1 2ni1 for the ði þ 1Þth iteration. In the binary format,
+                                                                                                         P
+                                                                                2Qi þ qni1 2ni1P ¼ ð ij¼1 qnj 2ijþ2 þ qni1 Þ2ni1 is obtained
+circuit are significantly faster and more power-efficient than
+                                                                                by left shifting ð ij¼1 qnj 2ijþ2 þ qni1 Þ ¼ ðqn1 qn2    qni
+the other approximate designs to obtain a similar quality to
+                                                                                0qni1 Þ2 for ðn  i  1Þ bits. Thus, qni1 is determined by
+an accurate design.                                                                                 P
+                                                                                the sign of Ri  ð ij¼1 qnj 2ijþ2 þ 1Þ22ðni1Þ . That is, qni1 ¼ 1
+   Some preliminary results have been reported in [8]. This                                           P                                           P
+paper presents the following novel contributions: Similar to                    (and Riþ1 ¼ Ri  ð ij¼1 qnj 2ijþ2 þ 1Þ22ðni1Þ ) if Ri  ð ij¼1
+the approximate divider, an approximate SQR circuit is                          qnj 2ijþ2 þ 1Þ22ðni1Þ  0; otherwise qni1 ¼ 0 (and Riþ1 ¼ Ri ).
+designed using pruning and shift operation. The upper                               Following the pencil-and-paper algorithms, the division
+bounds of the ED for the divider and SQR circuit are analyti-                   and SQR can be implemented in sequential and combina-
+cally found. These analyses show that the proposed app-                         tional circuits. Sequential division/SQR is usually imple-
+roximation strategy results in a very small maximum ED.                         mented by using the digit recurrent algorithm [9] or the
+Moreover, the proposed design approach is further applied                       functional iterative algorithm [10]. Its latency is significantly
+for sequential divider and SQR circuits. The quality of the                     longer than a combinational divider/SQR circuit due to the
+approximate SQR circuit is assessed by using it in envelope                     recurrent/iterative nature of the operation. A combinational
+detection. Finally, to evaluate the accuracy and hardware                       division/SQR is implemented by shift and subtraction oper-
+improvements, both the approximate divider and SQR cir-                         ations. An 8=4 unsigned restoring array divider and an 8-bit
+cuit are applied to an image reconstruction application.                        restoring array SQR circuit are shown in Fig. 1. In Fig. 1a, an
+   The rest of the paper is organized as follows. Section 2                     OR gate with an inverted input is used to generate one bit of
+introduces the exact designs of the divider and SQR circuit,                    the quotient that is the inverted borrow output from the left-
+and reviews current approximate divider designs. The                            most subtractor (when the currently most significant subtra-
+approximate unsigned divider and SQR circuit are proposed                       hend bit is 0). In general, n2 subtractor cells are required in a
+in Section 3. The errors of the approximate designs are ana-                    2n=n array divider and n2 þ n subtractor cells are needed for
+lyzed in Section 4. Section 5 shows the error and circuit char-                 a 2n-bit SQR circuit. Due to the borrow ripples in each row,
+acteristics of the approximate divider and SQR circuit. In                      the critical paths for the array divider and SQR circuit are in
+Section 6, the approximate designs are applied to three image                   Oðn2 Þ, while it is in OðnÞ for an n  n array multiplier. Thus,
+processing applications to assess their accuracy. Finally, the                  an array divider/SQR circuit incurs a higher hardware con-
+paper is concluded in Section 7.                                                sumption and a lower speed than an array multiplier.
+          Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+JIANG ET AL.: LOW-POWER UNSIGNED DIVIDER AND SQUARE ROOT CIRCUIT DESIGNS USING ADAPTIVE APPROXIMATION                                                      1637
+
+
+
+
+                                                                               Fig. 3. Pruning scheme for a 2n-bit unsigned number A when lA  2k  1
+                                                                               [13].
+
+                                                                               results in large relative errors, especially for small input
+                                                                               operands. Thus, adaptive approximation is investigated in
+                                                                               this paper by selectively pruning some insignificant bits of
+                                                                               the input operands; then, a reduced-width divider/SQR cir-
+                                                                               cuit is used to process the remaining bits.
+
+                                                                               3.2 Approximate Divider
+                                                                               Different from multiplication and addition, the inputs for
+                                                                               division have a strict range requirement. In a 2n=n divider,
+                                                                               the n MSBs of the dividend A must be smaller than the divi-
+                                                                               sor B to guarantee that no overflow occurs [1].
+
+                                                                               3.2.1 Design
+                                                                               The basic structure of the proposed approximate unsigned
+                                                                               divider is shown in Fig. 2. In this design, 2k (or k) MSBs of
+                                                                               the dividend (or divisor) are adaptively chosen from the 2n
+                                                                               (or n)-bit input using leading one position detectors (LOPDs)
+                                                                               and pruning circuits (here, k < n), according to the pruning
+                                                                               schemes. An exact 2ðk þ 1Þ=ðk þ 1Þ divider is then used to
+Fig. 2. The proposed adaptively approximate divider (AAXD). LOPD:              compute the division of the selected bits. The ðk þ 1Þ-bit quo-
+leading one position detector.                                                 tient is shifted by a shifter for a number of bits calculated by
+                                                                               a subtractor, which results in an ðn þ 1Þ-bit intermediate
+   Denoted as AXDr, the approximate dividers in [11] and                       result. Finally, the n-bit approximate quotient is obtained by
+[12] use inexact subtractors to replace the accurate ones at the               correcting the ðn þ 1Þ-bit intermediate result using an error
+less significant positions in an array divider. AXDr produces                  correction circuit. The detailed structure of each circuit in
+very small errors because only its less significant part is                    Fig. 2 is discussed next.
+approximated. For the same reason, the critical path delay of
+                                                                               3.2.2 Input Pruning
+this design is not significantly reduced. Furthermore, the
+improvements in power dissipation and area are relatively                      Fig. 3 shows a straightforward pruning scheme for a 2n-bit
+                                                                                                                    P          i
+small. On the other hand, a dynamic approximate divider                        unsigned dividend A ¼ 2n1             i¼0 ai 2 ¼ ða2n1 a2n2    a1 a0 Þ2 .
+(DAXD) [13] shows a substantial improvement in speed, area                     To obtain a 2k-bit dividend, ‘0’s at the bit positions higher
+and power consumption compared with AXDr. However, the                         than the most significant ‘1’ are truncated; the redundant
+accuracy of DAXD is much lower due to the overflow prob-                       LSBs are pruned if the number of remaining LSBs is larger
+lem caused by truncation. In addition to array dividers, a                     than 2k. Similarly,      Pa k-biti number is determined from the
+rounding-based approximate division is implemented by a                        n-bit divisor B ¼ n1        i¼0 bi 2 ¼ ðbn1 bn2    b1 b0 Þ2 .
+rounding block, a look-up table, a reduced-width multiplier,                       Let the bit positions of the most significant ‘1’, known as
+adders and a shifter, referred to as SEERAD [14]. Without                      the leading ‘1’ positions, for A and B be lA and lB , respec-
+using a traditional division structure, SEERAD is fast, but it                 tively. The input operands of a division can be determined as
+incurs a substantial power dissipation and a large area due to                 in Fig. 3 when lA and lB are larger than or equal to 2k  1 and
+the use of the look-up table.                                                  k  1, respectively. A different pruning scheme is required
+   Compared to the divider, design effort has been made on                     for the input operands when lA < 2k  1 or lB < k  1, as
+the recurrent addition/subtraction algorithm for an SQR                        shown in Fig. 4. The details of the pruning schemes are dis-
+operation [15]. However, the study of an approximate SQR                       cussed in four scenarios for different values of lA and lB [8],
+circuit has not been found in the literature.                                  as summarized as follows.
+                                                                                   When lA  2k  1 and lB  k  1, the pruning scheme in
+                                                                               Fig. 3 is used. The pruned P              dividend is given by Ap ¼
+3   PROPOSED APPROXIMATE DIVIDER/SQR                                                                                       lA 1
+                                                                               ð1alA 1    alA 2kþ1 Þ2 ¼ 22k1 þ i¼l       A 2kþ1
+                                                                                                                                        ai 2iðlA 2kþ1Þ , and
+    CIRCUIT                                                                    the pruned divisor is Bp ¼ ð1blB 1    blB kþ1 Þ2 ¼ 2k1 þ
+                                                                               PlB 1             iðlB kþ1Þ
+3.1 Motivation                                                                    i¼lB kþ1 bi 2               . To avoid overflow for the largest pos-
+For approximations in an adder or a multiplier, truncation is                  sible quotient of Ap =Bp , a 2ðk þ 1Þ=ðk þ 1Þ divider is used to
+an efficient approach to reducing hardware and energy con-                     compute the division. The 2k-bit pruned dividend is
+sumption [7], [16]. Improvements in power dissipation and                      expanded to ð2k þ 2Þ-bit by adding two ‘0’s at the most
+critical path delay can also be obtained for an approximate                    significant two bit positions; a ‘0’ is added to the kth bit
+divider/SQR circuit design; however, the approximation                         position of the pruned divisor. No overflow occurs because
+using static truncation on the LSBs of the input operands                      ð001alA 1    alA kþ2 Þ2 is always smaller than ð01blB 1    blB kþ1 Þ2 .
+         Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+1638                                                                           IEEE TRANSACTIONS ON COMPUTERS,           VOL. 68,   NO. 11,   NOVEMBER 2019
+
+
+
+
+Fig. 4. Pruning scheme for an n-bit unsigned number B when lB < k  1.
+
+
+   The inputs A and B are approximated as Ap 2lA 2kþ1 and
+Bp 2lB kþ1 after pruning, respectively. Thus, A=B is approxi-
+mately given by
+
+              A 2lA 2kþ1 Ap j Ap k lA lB k
+                 l kþ1    ¼      2          :                          (1)
+              B  2B      Bp    Bp
+
+The result of (1) is the quotient obtained by the 2ðk þ 1Þ=
+ðk þ 1Þ divider multiplied by 2lA lB k . The multiplication is
+                                         A
+implemented by left shifting bBpp c for lA  lB  k bits.
+   When lA  2k  1 and lB < k  1, Ap is obtained using
+the pruning scheme in Fig. 3, and Bp is obtained using the
+scheme in Fig. 4, i.e., Ap ¼ ð1alA 1    alA 2kþ1 Þ2 , and Bp ¼
+ð1blB 1    b0 0    0Þ2 . Then, a 2ðk þ 1Þ=ðk þ 1Þ divider is used         Fig. 5. The proposed adaptively approximate SQR circuit (AASR).
+to compute Ap =Bp . The approximation of A=B is also given
+by (1).                                                                          components (LOPD, pruning circuit, subtractor and shifter)
+   Similarly, the pruning schemes in Figs. 4 and 3 are respec-                   are relatively small. Moreover, the subtractor works in par-
+tively used to prune A and B when lA < 2k  1 and lB                            allel with the 2ðk þ 1Þ=ðk þ 1Þ divider. Thus, the circuit com-
+k  1. The same approximate division is then given by (1).                       plexity and critical path of the approximate divider are close
+When the dividend A is zero, lA is set to zero, which has the                    to Oððk þ 1Þ2 Þ when a 2ðk þ 1Þ=ðk þ 1Þ array divider is used.
+same leading one position as number ð00    01Þ2 . Because                     This is significantly smaller compared with that of the exact
+AP ¼ ða0 0    0Þ2 (i.e., a0 is kept) when lA ¼ 0, the quotient is             array divider (Oðn2 Þ), especially for a small k.
+always correct no matter a0 is ‘0’ or ‘1’. When lA < 2k  1
+and lB < k  1, both the input operands are pruned using                         3.3 Approximate SQR Circuit
+the scheme in Fig. 4, and an accurate 2n=n division is per-                      As shown in Fig. 1, an SQR circuit is implemented by shifts
+formed by using a 2ðk þ 1Þ=ðk þ 1Þ divider.                                      and subtractions. We propose an approximate SQR circuit
+                                                                                 (AXSR) by replacing the exact subtractors in the lower k bit
+3.2.3 Circuit                                                                    positions with the approximate subtractor cells in [11]. The
+As shown in Fig. 2, a leading one position detector (LOPD)                       adaptive approximation strategy is also applicable to the
+is used to detect the bit position of the most significant ‘1’ in                design of SQR circuit (AASR), as shown in Fig. 5.
+each input. It is implemented by a priority encoder.                                Using the same pruning schemes as in Figs. 3 and 4, the
+   The leading one positions (lA and lB ) are then used to                       radicand A of a 2n-bit SQR circuit can be approximated by a
+determine the 2k-bit Ap and the k-bit Bp from the 2n-bit divi-                   scaled 2k-bit number Ap , i.e.,
+dend and the n-bit divisor, respectively. The pruning circuits                                             A  Ap 2lA 2kþ1 ;                           (2)
+are used to implement the pruning schemes in Figs. 3 and 4;
+they select Ap and Bp starting from the most significant ‘1’.                    where k < n, and lA indicates the leading one position of A.
+Ap and Bp are then processed by using an exact 2ðk þ 1Þ=                         Thus, the SQR of A is approximately generated by a 2k-bit
+ðk þ 1Þ divider. Note that the structure of the 2ðk þ 1Þ=ðkþ 1Þ                  SQR circuit due to
+divider can be different according to specific application                                        pﬃﬃﬃﬃ  pﬃﬃﬃﬃﬃﬃ lA 2kþ1
+requirements, e.g., an array divider, a sequential divider or a                                     A  b Ap c2 2 :                       (3)
+high-radix divider. Meanwhile, the shifting direction and                             lA 2kþ1
+                                                                                 As       2      is a fractional number when lA  2k þ 1 is odd,
+number of bits are computed by subtracting the two leading                        lA 2kþ1
+one positions using a ðdlog 2 ð2nÞe þ 1Þ-bit subtractor. Subse-                  2    2  cannot be computed by a shift operation. To use shift-
+quently, a shifter is used to shift the ðk þ 1Þ-bit output of the                ing, lA  2k þ 1 must be an even number. Therefore, lA is lim-
+reduced-width divider for jlA  lB  kj bits (left shifting if                   ited to odd numbers in this design. This is ensured by setting
+lA  lB  k > 0, and right shifting if lA  lB  k < 0), which                   an even lA to lA þ 1. In the circuit design, it is implemented
+results in ðn þ 1Þ-bit intermediate result Qs . Finally, the error               by setting the LSB of lA to ‘1’ (not shown in Fig. 5). Note that
+correction circuit uses n OR gates to perform qi ¼ qsi _ qsn ,                   the 2k-bit SQR circuit can be any existing combinational or
+i ¼ 0, 1, . . ., n  1, where qi and qsi are the ith LSBs of Q and               sequential SQR circuit.
+Qs , respectively. This circuit corrects the erroneous results                       As shown in Fig. 5, no adder/subtractor is required in the
+that are larger than 2n  1 (when qsn ¼ 1) to 2n  1 (qi ¼ 1 for                 approximate SQR circuit. Hence, the hardware overhead of
+i ¼ 0, 1, . . . , n  1), which ensures that an n-bit approximate                the auxiliary circuits is lower than that in the approximate
+quotient is obtained.                                                            divider. Moreover, (n2 þ n  k2  k) subtractor cells are saved
+   The most significant circuit of the proposed approximate                      in the approximate SQR circuit, a larger saving by (n þ k) cells
+divider is the 2ðk þ 1Þ=ðk þ 1Þ divider, whereas other                           compared to the approximate divider with a saving of (n2 
+          Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+JIANG ET AL.: LOW-POWER UNSIGNED DIVIDER AND SQUARE ROOT CIRCUIT DESIGNS USING ADAPTIVE APPROXIMATION                                                         1639
+
+
+ðk þ 1Þ2 ) cells. Therefore, the proposed adaptive approxima-                   correction unit (discussed in Section 3.2). To reach the maxi-
+tion strategy is more efficient for an SQR circuit design.                      mal positive error, Cq 2lA lB k and lB should be their largest
+                                                                                possible values, and Bp should be the smallest. Therefore,
+4    ERROR ANALYSIS                                                             Cq 2lA lB k ¼ 2n  1, lB ¼ n  1 and Bp ¼ ð10    0Þ2 ¼ 2k1 .
+4.1 Approximate Divider                                                         The upper bound of the positive error for the approximate
+The error of the approximate divider is measured by com-                        divider is given by
+paring the approximate results with the accurate quotient in                                                                         
+                                                                                                                   ð2n  1Þð2nk  1Þ
+integer as the divider is designed for unsigned integers. As                                         Epmax                             :                      (9)
+the quotient of the approximate unsigned divider is given                                                           2n1 þ 2nk  1
+by (1), the incurred error is
+                                                                               Also, the smallest negative error is determined to show
+                      Ap lA lB k    A                                         the maximal negative deviation of the approximate result.
+                E¼         2            ;                (4)
+                      Bp              B                                         As per (5), the smallest negative error occurs when BL ¼
+                                                                                ð00    0Þ2 ¼ 0 and AL ¼ ð11    1Þ2 ¼ 2lA 2kþ1  1. Then, (4)
+where the dividend A ¼ Ap 2lA 2kþ1 þ AL , and the divisor
+                             PlA 2k                 PlB k i                   becomes
+B ¼ Bp 2lB kþ1 þ BL . AL ¼ i¼0      ai 2i and BL ¼ i¼0     bi 2                                                                           
+denote the truncated LSBs in A and B, respectively. AL ¼ 0                                      Ap lA lB k     Ap 2lA 2kþ1 þ 2lA 2kþ1  1
+                                                                                  Enmin ¼           2                                          : (10)
+when lA < 2k, and BL ¼ 0 when lB < k. The truncated LSBs                                        Bp                        Bp 2lB kþ1
+represented by AL and BL determine the error E to be posi-
+                                                                                The absolute value of Enmin is given by
+tive or negative. To evaluate the proposed design, the upper
+bound of the ED (i.e., the absolute value for the difference                                                                                        
+                                                                                                 Ap lA lB k 2lA lB k 2klB 1                   Ap lA lB k
+between the approximate and accurate results) is analyzed                       jEnmin j ¼          2        þ                                        2        :
+                                                                                                 Bp              Bp        Bp                       Bp
+for the worst case scenario. To this end, the positive and neg-
+ative errors are respectively discussed in the following.                                                                                                     (11)
+                                                                                             A
+   Expanding (4) and neglecting the floor operation, the                        Assume      bBpp c
+                                                                                              ¼ Cq (Cq is a positive integer), then Ap must be
+error can be simplified to                                                      in the range of ½Bp Cq ; Bp Cq þ Bp  1 . Thus, the largest dif-
+                                                                                                  A         A
+                                                                                ference between Bpp and bBpp c occurs when Ap ¼ Bp Cq þ Bp 
+                         Ap BL 2lA lB k  AL Bp
+                 Enr ¼                            :                      (5)    1. Then, (11) becomes
+                          ðBp 2lB kþ1 þ BL ÞBp
+                                                                                                                             
+                                                                                                                     2klB 1
+As Ap , Bp , AL and BL are positive, (5) indicates that one con-                             jEnmin j ¼ 2lA lB k             :           (12)
+                                                                                                                       Bp
+dition for generating the largest positive error is AL ¼
+ð00    0Þ2 ¼ 0. Then, (5) becomes
+                                                                                To reach the maximal value for jEnmin j, lA  lB must be n
+                                     lA lB k                                                                  kl 1
+                               Ap 2                                             (because lA  lB  n), and 2 BBp must be the smallest (i.e.,
+                 Enr ¼                           :                       (6)
+                         ðBp =BL 2lB kþ1 þ 1ÞBp                                Bp ¼ 2k  1 and lB ¼ n  1 because Bp  2k  1 and lB 
+                                                                                               kl 1
+                                                                                n  1). Thus, 2 BBp ¼ 2n 21 nk < 1 (for n > k), and we obtain
+Thus, the largest positive error is produced when BL takes
+the largest possible value (i.e., BL ¼ ð11    1Þ2 ¼ 2lB kþ1  1).
+                                                                                                         jEnmin j ¼ 2nk  1:                                 (13)
+The largest positive error is then given by
+                                                          
+              Ap lA lB k               Ap 2lA 2kþ1                               As the right hand side of (9) is always larger than 2nk  1,
+   Epmax ¼        2        
+              Bp                 Bp 2lB kþ1 þ 2lB kþ1  1                     the ED of the proposed approximate unsigned divider is
+                                                                                                               n 1Þð2nk 1Þ           n 1Þð2nk 1Þ
+                             Ap 2lA lB k                    (7)           smaller   than or equal to dð22n1            e. As dð22n1            e¼
+              Ap lA lB k        Bp                                             ð2nk 1þ2n 2k Þ               þ2nk 1                 þ2nk 1
+          ¼       2                     kl 1   :                             d 21 þ2k 2n e  2nkþ1  2, a looser upper bound of the
+              Bp                 1 þ 12 Bp B
+                                                                                ED for the approximate divider is given by
+     A      A      A      A
+As bBpp c  Bpp , bBpp c ¼ Bpp ensures the positive error to be the
+                                                                                                        EDLUB ¼ 2nkþ1  2;                                   (14)
+              A       A
+largest. Let bBpp c ¼ Bpp ¼ Cq (Cq   is a positive integer), substitute
+Ap       Ap                                                                     where the larger n and k are, the closer (14) to (9).
+Bp and bBp c by Cq , (7) becomes
+                                                                 
+                                                 Cq 2lA lB k                  4.2 Approximate SQR Circuit
+                Epmax ¼ Cq 2lA lB k                                          As the approximate SQR of the radicand A is computed by
+                                                     12klB 1
+                                             1þ         Bp
+                                                                              (3), the error of the approximate 2n-bit SQR circuit using a
+                                             Cq 2lA lB k                      2k-bit exact SQR circuit is given by
+                        Cq 2lA lB k              kl 1              (8)
+                                            1 þ 12 Bp B                                  jpﬃﬃﬃﬃﬃﬃk lA 2kþ1 jpﬃﬃﬃﬃk
+                                                                                    E¼      Ap 2 2          A
+                            Cq 2lA lB k                                                 jpﬃﬃﬃﬃﬃﬃk lA 2kþ1 jqﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃk (15)
+                       ¼            B
+                                              :
+                           1 þ 12klp B 1                                             ¼     Ap 2 2           Ap 2lA 2kþ1 þ AL ;
+
+                                                                                                                                   lA 2k             P
+As per (1), Cq 2lA lB k is the output of the approximate divider;             where Ap is the 2k-bit pruned radicand, and AL ¼ i¼0      ai 2i
+thus, Cq 2lA lB k  2n  1 that is restricted by the error                    denotes the truncated LSBs. (15) shows that the error of the
+          Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+1640                                                                                                   IEEE TRANSACTIONS ON COMPUTERS,   VOL. 68,   NO. 11,   NOVEMBER 2019
+
+
+                                                                                                         5.1 Error Characteristics
+                                                                                                         The error rate (ER), normalized mean error distance (NMED),
+                                                                                                         mean relative error distance (MRED) and the maximum error
+                                                                                                         distance (EDmax ) are considered to evaluate the accuracy of
+                                                                                                         16=8 approximate dividers and 16-bit approximate SQR cir-
+                                                                                                         cuits. The NMED is defined as the mean value of the error dis-
+                                                                                                         tances normalized by the maximum possible accurate output.
+                                                                                                         The MRED is the mean value of the relative error distance that
+                                                                                                         is the ratio between the ED and the accurate output.
+
+                                                                                                         5.1.1 Approximate Divider
+                                                                                                         All valid combinations in the range of [0, 65535] and (0, 255]
+                                                                                                         are considered as the input dividends and divisors. They are
+                                                                                                         carefully selected to meet the no overflow condition of an
+                                                                                                         accurate 16/8 divider. The simulation results are shown in
+                                                                                                         Fig. 6, in which AXDr1, AXDr2, and AXDr3 are the approxi-
+                                                                                                         mate restoring array dividers with triangle replacement
+                                                                                                         using approximate subtractor 1, 2, and 3, respectively [12].
+                                                                                                            Fig. 6 shows that the proposed AAXD has a similar ER as
+                                                                                                         DAXD. The NMED and MRED of AAXD are in the medium
+Fig. 6. Error characteristics of approximate 16/8 dividers. Note: The                                    domain among the considered designs. AAXD has the small-
+parameter value indicates the replacement depth and the accuracy level                                   est EDmax that is very close to the upper bound analyzed in
+for AXDrs and SEERAD, respectively. It is the bit width of the pruned div-                               Section 4.1. The looser upper bound of ED for AAXD is closer
+idend in DAXD and AAXD.
+                                                                                                         to the EDmax for a larger parameter. For the SEERAD, only
+                                                                                                         SEERAD-3 (for accuracy level 3) and SEERAD-4 (for accuracy
+SQR circuit is always smaller than or equal to zero because                                              level 4) have an accuracy that is comparable with the pro-
+AL  0. The smallest negative error occurs when AL ¼p  ð11
+                                                         ﬃﬃﬃﬃﬃﬃ  
+                                                                                                         posed design. AXDr1 and AXDr3 show very small values of
+1Þ2 ¼ 2lA 2kþ1  1. Assuming a positive integer Rp ¼ b Ap c,                                            ER, NMED and MRED; however, their circuit measurements
+then R2p  Ap  ðRp þ 1Þ2  1. Thus, the 2k-bit SQR circuit                                              are relatively high, as shown next. The accuracy of DAXD is
+generates the largest ED when Ap ¼ ðRp þ 1Þ2  1. Then, the                                              lower than other designs due to the possible overflow.
+largest ED of the proposed SQR circuit is given by
+             qﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+                                                                                                         5.1.2 Approximate SQR Circuit
+    EDUB   ¼   ½ðRp þ 1Þ2  1 2lA 2kþ1 þ 2lA 2kþ1  1                                                  Among the approximate dividers using approximate subtrac-
+                                                                                                         tors, AXDr3 is the most accurate with the smallest ER, NMED
+                          lA 2kþ1                                                                       and MRED (Fig. 6). Also, the circuit of AXDr3 is the smallest
+              Rp 2 2
+             qﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ                                             among AXDrs (shown later). This indicates that the approxi-
+                                                             lA 2kþ1
+           ¼    ðRp þ 1Þ2 2lA 2kþ1  1  Rp 2 2                                                (16)     mate subtractor cell 3 in [12] is very efficient in the divider
+                                                                                                         design. Thus, the approximate subtractor cell 3 is used in the
+                                 lA 2kþ1                      lA 2kþ1                                  approximate SQR circuit design, which is denoted as AXSR3.
+           ¼ ðRp þ 1Þ2               2       1  Rp 2             2
+                                                                                                            Similarly, all unsigned numbers in [0, 65535] are consid-
+                 lA 2kþ1
+           ¼2        2        1:                                                                        ered as inputs to measure the accuracy of the adaptively
+                                                                                                         approximate 16-bit SQR circuit and AXSR3. The simulation
+   As the largest possible value of lA is 2n  1, the EDUB is                                            results in Table 1 show that AXSR3 has a smaller ER than
+given by                                                                                                 AASR, whereas its EDmax is much larger. The EDmax of
+                                                                                                         AASR approximately decreases by half with a 2-bit increase
+                            EDUB ¼ 2nk  1:                                                    (17)
+                                                                                                         in the bit width of the pruned radicand, which is consistent
+This result implies that the maximum ED occurs when the                                                  with the error analysis result in (17). For using a 12-bit SQR
+n  k LSBs in the accurate SQR are all ‘1’s but they are                                                 circuit, the small EDmax indicates that the computed results
+ignored due to the use of a 2k-bit SQR circuit and resulting                                             are very close to the accurate ones. AXSR3-11 has a similar
+k-bit approximate result.                                                                                NMED as AASR-12, but its MRED and EDmax are much
+                                                                                                         larger. Compared to the proposed approximate divider,
+                                                                                                         AASR has smaller values of EDmax but larger ERs and
+5      SIMULATION RESULTS                                                                                NMEDs, for the same value of k.
+To assess the error and circuit characteristics, the proposed
+approximate divider and SQR circuits are implemented in                                                  5.2 Circuit Characteristics
+MATLAB and VHDL. The other approximate dividers,                                                         5.2.1 Approximate Divider
+AXDr, DAXD and SEERAD, are also considered for compari-                                                  To obtain the circuit measurements, the approximate 16/8
+son. Note that the error and circuit characteristics of the con-                                         dividers and the exact unsigned restoring array divider
+sidered dividers and SQR circuits are measured for a                                                     (EXDr) are implemented in VHDL and synthesized in ST’s
+commonly used width (2n ¼ 16) in the simulation. However,                                                28 nm CMOS process using the Synopsys Design Compiler
+n can take a larger value as required by the application.                                                with the same voltage, temperature and frequency. The
+          Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+JIANG ET AL.: LOW-POWER UNSIGNED DIVIDER AND SQUARE ROOT CIRCUIT DESIGNS USING ADAPTIVE APPROXIMATION                                                      1641
+
+
+                             TABLE 1
+  Error Characteristics of the Approximate 16-bit SQR Circuits
+
+SQR      Parameter     ER      NMED       MRED         EDmax         EDUB
+                       (%)      (%)        (%)      (simulation)   (analysis)
+AXSR3        14       74.52     3.17       5.78          47            –
+AXSR3        13       71.77     1.49       2.89          24            –
+AXSR3        12       66.54     1.03       2.29          24            –
+AXSR3        11       57.34     0.49       1.13          12            –
+AASR          6       95.71     5.33       7.98          31           31
+AASR          8       91.14     2.53       3.80          15           15
+AASR         10       82.30     1.16       1.72          7             7
+AASR         12       65.82     0.48       0.69          3             3
+
+Note: The parameter value for AXSR3 indicates the replacement depth. It is
+the bit-width of the pruned radicand in AASR.
+
+
+supply voltage is 1 V, the simulation temperature is 25 C,
+and the frequency used for power estimation is 200 MHz.
+The critical path delay and area are reported by the Synopsys
+Design Compiler. The power dissipation is estimated by
+using the PrimeTime-PX tool for 5 million random input
+combinations. For ease of comparison, the same array struc-                     Fig. 7. Circuit measurements of the 16=8 dividers. Note: EXDr refers to
+ture and subtractor cells are used in the accurate part of                      the exact array divider, and the X-axis is not applicable for it.
+AXDrs, DAXD and AAXD. To be consistent with the other
+designs, AXDr1, AXDr2 and AXDr3 are implemented at the                          comparison. Using the same synthesis tool and technology
+gate level rather than at the transistor level in [12]. As addi-                library as for the dividers, the 16-bit exact restoring array and
+tional figures of merit, the power-delay product (PDP) and                      LUT-based SQR circuits (referred to as ESRr_A and ESRr_T,
+area-delay product (ADP) are calculated from the measured                       respectively), AXSR3, AASR_A (for which the 2k-bit SQR cir-
+values. The results are shown in Fig. 7.                                        cuit is implemented by an array structure) and AASR_T (for
+   With a 6-bit pruned dividend, the proposed 16/8 AAXD                         which the 2k-bit SQR circuit is based on LUT without using
+achieves reductions in delay, area and power dissipation by                     interpolation) are synthesized at a frequency of 200 MHz.
+60.51 percent, 38.63 percent and 65.88 percent respectively,                       Table 2 reports the circuit measurements of the considered
+compared to EXDr. For the AAXD using a 12/6 exact divider                       designs. Among the array-based designs, AASR_A has a
+(with a 10-bit pruned dividend), it is 26.54 percent faster and                 higher performance and consumes significantly smaller area
+consumes 34.13 percent less power than EXDr, albeit with a                      and power than the accurate design. Specifically, AASR_A
+slightly larger area. As a result, the PDP and ADP of the pro-                  with a 6-bit pruned radicand is 74.54 percent faster and saves
+posed design are decreased by 51.61 percent-86.53 percent,                      65.60 percent in area and 79.34 percent in power compared
+and 24.18 percent-75.76 percent, respectively.                                  with the accurate design. Accordingly, its improvements in
+   Among the approximate designs, SEERAD is the fastest;                        PDP and ADP are 94.74 and 91.24 percent, respectively. For
+however, the power dissipation and area are relatively large                    the design using a 12-bit exact array SQR circuit, it achieves
+for SEERAD-3 and SEERAD-4. With the lowest accuracy,                            46.46 percent reduction in PDP and 30.34 percent reduction
+DAXD have slightly higher values of all circuit measure-                        in ADP. Compared to the approximate divider, the approxi-
+ments than AAXD, using a same sized accurate divider.                           mate SQR circuit achieves more significant improvements in
+Compared with AXDrs, AAXD outperforms AXDr1 and                                 power dissipation and area because no additional subtractor
+AXDr2 in delay, area and power dissipation. Also, it shows a                    is used. AXSR3 is slightly faster than ESRr_A. AXSR3-14
+shorter delay and a similar power dissipation and therefore,                    saves up to 24 percent in area and 47 percent in power
+smaller values of PDP and ADP (except for AAXD-10) com-
+pared with AXDr3.                                                                                             TABLE 2
+                                                                                                Circuit Measurements of the Exact and
+                                                                                                   Approximate 16-bit SQR Circuits
+5.2.2 Approximate SQR Circuit
+Other than the array structure shown in Fig. 1b, a small SQR                    SQR           Parameter     Delay      Area     Power       PDP         ADP
+circuit can be efficiently implemented by LUTs. In a LUT-                                                    (ns)     (mm2 )    (mW)        (fJ)      (ns  mm2 )
+
+based circuit, the SQR of an input is obtained by reading a                     ESRr_A            –          4.32     222.4      93.82     405.30      961.0
+                                                                                AXSR3            14          4.04     168.3      53.31     215.37      679.8
+LUT that stores the precomputed SQR results. Thus, the criti-                   AXSR3            13          4.07     175.4      58.57     238.38      714.0
+cal path delay is very small. For a 2n-bit integer SQR circuit,                 AXSR3            12          4.09     182.8      62.58     255.95      747.6
+the size of the required LUT is 22n , where each input corre-                   AXSR3            11          4.13     189.5      67.34     278.11      782.5
+                                                                                AASR_A            6          1.10     76.5       19.38     21.32        84.2
+sponds to a LUT cell. The size of the LUT will be very large                    AASR_A            8          1.70     114.7      31.72     53.92       195.0
+for a large n; thus, interpolation is usually used for a large                  AASR_A           10          2.43     154.4      46.55     113.12      375.2
+                                                                                AASR_A           12          3.34     200.4      64.97     217.00      669.4
+SQR circuit to reduce the size of the LUT. As the proposed
+                                                                                ESRr_T            –          0.58     613.6      189.0     109.62      355.9
+approximation scheme uses a reduced-width exact SQR cir-                        AASR_T            6          0.67     60.38      13.52      9.06       40.46
+cuit (2k-bit) for a 2n-bit SQR, the hardware of the LUT-based                   AASR_T            8          0.81     87.31      20.79     16.84       70.72
+                                                                                AASR_T           10          1.01     123.2      32.01     32.33       124.4
+design is significantly reduced. In our simulation, both the
+                                                                                AASR_T           12          1.31     217.4      69.59     91.16       284.8
+array and LUT-based SQR circuits are considered for
+          Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+1642                                                                         IEEE TRANSACTIONS ON COMPUTERS,               VOL. 68,    NO. 11,      NOVEMBER 2019
+
+
+                                                                                                              TABLE 3
+                                                                                              Circuit Measurements of 16=8 Sequential
+                                                                                             Dividers and 16-bit Sequential SQR Circuits
+
+                                                                                Circuit    Design    2k   Delay    Area    Power      N      EPO           TPA
+                                                                                                           (ns)   (mm2 )   (mW)            (pJ /op)   (ops =ðs  mm2 )
+                                                                                          EXDr_S      –    1.57   543.8      94.1     10     4.71        11,713
+                                                                                Divider   AAXD_S      6    1.57   521.4     95.66      6     2.87        33,932
+                                                                                          AAXD_S      8    1.57   574.5     104.5      7     3.66        22,628
+                                                                                          AAXD_S     10    1.57   625.9     114.2      8     4.57        15,901
+
+                                                                                          ESRr_S      –    1.57   577.4     101.7     10     5.09        11,031
+                                                                                          AASR_S      6    1.57   424.5     63.79      5     1.59        60,021
+                                                                                SQR       AASR_S      8    1.57   476.9     72.66      6     2.18        37,102
+                                                                                          AASR_S     10    1.57   529.6     80.55      7     2.82        24,545
+                                                                                          AASR_S     12    1.57   579.5     87.85      8     3.51        17,173
+
+
+
+                                                                                The MRED and PDP are moderate for SEERAD, and they
+                                                                                vary with the accuracy level. Overall, the proposed AAXD
+                                                                                shows the best tradeoff among the considered approximate
+                                                                                dividers.
+                                                                                   As for the approximate SQR circuits (Fig. 8b), AASR_T is
+                                                                                the most efficient design in terms of MRED and PDP. It
+                                                                                requires a significantly lower PDP than AASR_A and AXSR3
+                                                                                for achieving a similar MRED. For the array-based designs,
+                                                                                AASR_A is more efficient than AASR3.
+                                                                                5.3.2 Sequential Designs
+                                                                                As shown in Figs. 2 and 5, the main module of the proposed
+                                                                                approximate divider/SQR circuit is the reduced-width
+                                                                                divider/SQR circuit that can be implemented by an existing
+Fig. 8. A comparison of (a) approximate dividers and (b) SQR circuits in        structure. Thus, an approximate design is built by adding
+PDP and MRED. The replacement depths of AXDr1, AXDr2 and AXDr3                  the auxiliary circuits to a traditional divider/SQR circuit. In
+are from 8 to 11 from right to left. The accuracy levels of SEERAD are
+from 1 to 4 from left to right. The pruned dividend width is from 8 to 12       this section, the sequential divider and SQR circuits are fur-
+for DAXD, and it is from 6 to 10 for AAXD from left to right. The replace-      ther assessed; they are implemented by using a multibit
+ment depth for AXSR3 is from 11 to 14 from right to left. The pruned radi-      subtractor, a shifter and a control unit based on the pencil-
+cand widths for AASR_A and AASR_T are from 6 to 12 from left to right.
+                                                                                and-paper algorithms introduced in Section 2. The synthesis
+                                                                                results are shown in Table 3, in which the same tools, tech-
+dissipation compared to ESRr_A. AASR_A outperforms                              nology and clock frequency (200 MHz) are used as for the
+AXSR3 in all the circuit measurements except for 2k ¼ 12.                       dividers in Section 5.2.
+   Compared with ESRr_A, ESRr_T is significantly faster,                           For an exact 2n=n divider (or a 2n-bit SQR circuit), the
+but it consumes 2:8 area and 2 power. Although AASR_T                         number of clock cycles required to complete one division (or
+has a larger delay than ESRr_T due to the auxiliary circuits,                   SQR) operation is given by N ¼ n þ 2, i.e., one cycle for prep-
+AASR_T achieves 63 to 92 percent reductions in area and                         aration, n cycles for shifted subtraction, and one cycle for
+power dissipation when 2k varies from 12 to 6. Therefore,                       outputting the result. As an exact 2ðk þ 1Þ=ðk þ 1Þ divider
+the savings in PDP and ADP are 17-92 and 20-89 percent,                         (or a 2k-bit SQR circuit) is used in an approximate design,
+respectively. For the same k, AASR_T shows smaller values                       the values of N for the approximate designs are reduced line-
+of critical path delay, area and power dissipation than                         arly with k. This indicates that, in the sequential design, the
+AASR_A when 2k is less than 12. As a result, the AASR_T is                      main benefit for the approximate designs is that fewer itera-
+more efficient than AASR_A at small values of k.                                tions are required to complete a division (or SQR) than the
+                                                                                exact designs.
+5.3 Discussion                                                                     Instead of PDP and ADP, the energy per operation (EPO)
+5.3.1 Combinational Designs                                                     and throughput per area (TPA) are considered to evaluate
+For a further comparison of approximate dividers and SQR                        the sequential designs. The EPO is defined as the energy con-
+circuits, the error and circuit measures are jointly considered.                sumed to complete one operation, and the TPA is the number
+The metrics MRED and PDP are selected as representatives to                     of operations that are completed per unit time per unit area.
+show the error and circuit characteristics. As shown in Fig. 8a,                They are respectively given by
+the proposed AAXD has a much smaller value of MRED than
+the other approximate designs when a similar PDP is consid-                                               EPO ¼ N  T  P;                                        (18)
+ered. AXDr3 also shows a good tradeoff in MRED and PDP
+with a higher accuracy, however its delay is very long.                         and
+Although some configurations of AXDr1 and AXDr2 show
+small MREDs, their PDPs are generally high. On the contrary,                                          TPA ¼ 1=ðN  D  SÞ;                                        (19)
+DAXD has a very low PDP but a significantly large MRED.
+          Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+JIANG ET AL.: LOW-POWER UNSIGNED DIVIDER AND SQUARE ROOT CIRCUIT DESIGNS USING ADAPTIVE APPROXIMATION                                                     1643
+
+
+                             TABLE 4                                                DAXD-12 and AAXD-10 (see Fig. 8). For the other designs,
+                PSNRs of Change Detection Results (dB)                              configurations with PDPs close to 300 fJ are selected, includ-
+                AXDr1      AXDr2       AXDr3      SEERAD       DAXD       AAXD      ing AXDr1-10, AXDr2-10 and SEERAD-4. Table 4 shows the
+Image
+                 -10        -10          -9          -4         -12       -10       peak signal-to-noise ratios (PSNRs) of five output images
+tools            32.14      18.39       39.27       36.61       23.56     40.16     and the average PSNRs. It shows that AAXD-10 achieves the
+canoe            31.66      24.07       36.23       39.20       23.42     45.03
+                                                                                    highest PSNRs, followed by SEERAD-4 and AXDr3. The
+fountain         33.32      26.95       39.49       41.60       24.59     45.79
+pedestrians      35.59      25.73       40.12       43.50       24.76     47.07     PSNRs for AXDr2-10 and DAXD-12 are significantly lower.
+office           31.19      23.13       33.29       39.29       19.60     45.54     AXDr1 has a moderate PSNR.
+average          32.78      23.65       37.68       40.00       23.18     44.71
+
+                                                                                    6.2 Envelope Detection in Ultrasound Imaging
+where T and N are the clock period and the required number                          As a medical tool, ultrasound imaging has widely been used
+of clock cycles to complete one operation, P is the total power                     in diagnostics and therapeutics; it uses high-frequency
+dissipation including the dynamic and leakage powers, D is                          waves to produce visual images of the internal body tissue
+the critical path delay, and S is the area of the circuit.                          [17]. In an ultrasound imaging system, a transducer consist-
+    In Table 3, EXDr_S and ESRr_S denote the exact sequen-                          ing of an array of small piezoelectric elements generates and
+tial 16/8 divider and 16-bit SQR circuit, respectively.                             transmits a pulse along a scan line. The echoes that are gener-
+AAXD_S and AASR_S are the proposed approximate 16/8                                 ated by the reflection or scattering of the pulses from tissues
+divider and 16-bit SQR circuit, in which the reduced-width                          are received by the same transducer. As each echo carries the
+divider and SQR circuit are sequentially implemented. This                          information about the relative position of a point at the tissue
+table shows that the approximation does not change the criti-                       boundaries, a visual image of echo-producing features is
+cal path delay of the sequential 16/8 divider or 16-bit SQR                         obtained for a field of view when a large number of pulses
+circuit. This occurs because the approximation strategy only                        are used. The B-mode (or brightness mode) is the most well-
+decreases the sizes of the subtractor and shifter in the                            known imaging method to generate visual images, in which
+sequential divider and SQR circuit; they are relatively small                       the amplitude of the echo envelope is mapped to the bright-
+compared to the control unit and the auxiliary circuits used                        ness of the image pixel.
+for the approximation. For the same reason, AAXD_S incurs                               Fig. 9 shows a block diagram of a B-mode ultrasound
+a larger area and power dissipation than EXDr_S; the                                imaging system [18]. Specifically, the received echo signals
+improvements in area and power dissipation for AASR_S                               are amplified, digitized and combined by a beamformer,
+are not as significant as the combinational designs. As the                         resulting in radiofrequency (RF) signals. As echoes from
+values of N of AAXD_S and AASR_S are reduced linearly                               deeper targets attenuated more than those from the similar
+with k, AAXD_S-6 achieves a reduction in EPO by 39.07 per-                          targets close to the transducer, time-gain compensation
+cent with 1:9 increase in TPA compared with EXDr_S. The                            (TGC) is performed to compensate the attenuation of farther
+improvements in EPO and TPA for AASR_S-6 are 68.76 per-                             echoes. This ensures that the brightness of a B-mode image
+cent and 4:4 compared to ESRr_S.                                                   relates only to the reflection effect of each target regardless of
+                                                                                    its depth. The envelopes of the compensated RF signals are
+                                                                                    then detected by the demodulation and SQR operations. The
+6     IMAGE PROCESSING APPLICATION
+                                                                                    amplitude obtained by the envelope detection shows the
+As a common application of dividers, change detection is                            strength of the reflection at each target. Finally, the scan con-
+considered to further assess the accuracy of approximate                            version is performed to map the compressed amplitude (by
+dividers. Likewise, an envelope detector is implemented by                          the logarithmic compression) to its corresponding 2-D posi-
+the proposed approximate SQR circuits. Finally, image                               tion, which results in a gray-scale image.
+reconstruction using both dividers and SQR circuits are used                            In this work, the approximate SQR circuits are used to
+to evaluate the efficiency of these approximate designs.                            implement the SQR operation in the envelope detection of
+                                                                                    ultrasound imaging, while the other arithmetic operations
+6.1 Change Detection                                                                remain accurate. In the simulation, the Field II simulation
+Change detection in image processing can be implemented                             toolbox [19], [20] is utilized to mimic an ultrasound imaging
+by computing the ratio of two pixel values using a divider.                         system (i.e., generating the phantom data, RF signals and
+The designs with similar values of PDP (about 300 fJ) are                           demodulated signals for fetus, kidney and liver). The sum of
+selected to implement change detection, including AXDr3-9,                          squared values I 2 ðtÞ þ Q2 ðtÞ are then quantized as 16-bit
+
+
+
+
+Fig. 9. The block diagram of a B-mode ultrasound imaging system. ADC: Analog-to-digital converter; TGC: Time-gain compensation; LPF: Low-pass filter.
+              Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+1644                                                                           IEEE TRANSACTIONS ON COMPUTERS,            VOL. 68,   NO. 11,   NOVEMBER 2019
+
+
+                                                                                                              TABLE 5
+                                                                                            PSNRs of the Ultrasound Imaging Results (dB)
+
+                                                                                 Image        AXSR3       AXSR3       AXSR3       AASR         AASR    AASR
+                                                                                                -16         -14         -12        -2           -6       -4
+                                                                                 fetus         34.27       34.26       34.26      27.91        37.36   39.60
+                                                                                 kidney        32.69       32.69       32.71      28.04        35.49   37.88
+                                                                                 liver         34.06       36.61       36.67      25.22        31.53   37.00
+                                                                                 average       33.89       35.19       35.23      27.14        34.95   38.37
+
+
+
+                                                                                 Algorithm 1. Modified Gram-Schmidt Algorithm [21]
+                                                                                 Input: ci - the column vector in C.
+                                                                                 Output: qi - the column vector in Q.
+                                                                                           rji - the element in row j and column i in R.
+Fig. 10. Ultrasound imaging results by different SQR circuits.                    1: for i ¼ 1 to n do
+                                                                                  2: ei ¼ ci
+integers that are square rooted by approximate SQR circuits                       3: for j ¼ 1 to i  1 do
+to calculate the envelope of the demodulated signals. 8-bit                       4:      rji ¼ hqj ; ei i
+gray-scale images are finally obtained after the logarithmic                      5:      ei ¼ ei  rji qj
+compression and scan conversion. Figs. 10b, 10c, 10d, 10e,                        6: end for
+and 10f show the imaging results for the artificial fetus                         7: qi ¼ keeik
+                                                                                                i 2
+
+imaged in Fig. 10a using the accurate and approximate 16-bit                      8: rii ¼ kei k2
+SQR circuits. The PSNRs of the output images and the aver-                        9: end for
+age PSNRs over the three outputs are listed in Table 5. It
+shows that AASR-4 performs similarly as AXSR-14 in enve-                            Hence, approximate dividers and SQR circuits are
+lope detection; however, the PDP of AXSR-14 is more than                         applied in the QRD to lower the hardware consumption for
+10 higher than that of AASR-4 (estimated from Table 2).                         image reconstruction. Specifically, images are compressed in
+The PSNRs for the images obtained by AASR-6 are generally                        the frequency domain using compressive sensing techni-
+higher than those processed by other approximate SQR cir-                        ques; the Orthogonal Matching Pursuit (OMP) algorithm is
+cuits. Moreover, the PSNR increases more significantly for                       then used to reconstruct the images [27]. To speed up the
+the image processed by the AASR than that by the AXSR3                           reconstruction, QRD is utilized for solving the least square
+when increasing the accuracy of the circuit.                                     problem in OMP [28]. Due to the wide range of the division
+                                                                                 input in Algorithm 1, 32=16 unsigned dividers and 32-bit
+6.3 QR Decomposition in Image Reconstruction                                     SQR circuits are used for computing qi and rii . For signed
+Matrix inversion is a useful operation in many applications,                     division, the absolute quotient is calculated by an unsigned
+such as the multi-input multi-output receiver [21], computer                     divider, and an XOR gate is used to obtain the sign.
+graphics [22] and solving the linear least square problems                          To compare the accuracy, the approximate dividers and
+[23]. To lower the computational complexity and latency, the                     SQR circuits with different configurations are tested. For the
+inverse of a matrix is usually obtained by using matrix decom-                   AXDrs, the two more efficient designs, AXDr1 and AXDr3,
+position, e.g., QR decomposition (QRD) [24], LU decomposi-                       are considered (see Fig. 8). Three images (lena, foreman and
+tion [25] and Cholesky decomposition [26]. Due to the ease of                    boats), each with 256  256 pixels, are simulated for the
+implementation and parallelization, QRD is considered here                       image compression and reconstruction. The average PSNRs
+as an application to assess the accuracy of both the proposed                    of the reconstructed images are shown in Table 6 for the
+approximate divider and SQR circuits. In QRD, a matrix C is                      combined use of approximate divider and SQR circuits.
+decomposed into matrices Q and R (i.e., C ¼ QR), where Q is                         The accuracy of approximate dividers and SQR circuits
+an orthogonal matrix and R is an upper triangular matrix.                        varies with the parameter used in the approximation
+Then, the inverse of C is given by C1 ¼ R1 QT , where R1                      schemes. In AXDr1, AXDr3 and AXSR3, the parameter is the
+can be easily obtained since it is an upper triangular matrix.                   replacement depth of the approximate subtractors. The
+     A popular algorithm to obtain a stable and accurate QRD                     parameter for DAXD and AAXD is the width of the pruned
+result is the modified Gram-Schmidt algorithm [21]. Let the                      dividend, whereas it is the width of the pruned radicand in
+original n  n matrix C, decomposed matrices Q and R be                          AASR. For SEERAD, the parameter indicates the accuracy
+C ¼ ½c1 ; . . . ; cn , Q ¼ ½q1 ; . . . ; qn and R ¼ ½r1 ; . . . ; rn , where     level. Therefore, a threshold parameter kt is defined to indi-
+ci , qi and ri (i ¼ 1; . . . ; n) are the column vectors in C, Q and             cate that the reconstructed images using the divider or SQR
+R, respectively. Then, Q and R are computed by using Algo-                       circuit with kt have a similar quality as the accurate results
+rithm 1 [21], where rji is the element in row j and column i                     and that the quality of the reconstructed image does not sig-
+in R, hqq j ; eﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+                i i is the inner product of vectors qj and ei , and              nificantly change when the accuracy of the divider or SQR
+               Pn 2
+kei k2 ¼            j¼1 eji is the norm of the vector ei (eji is the jth         circuit is improved by increasing (or decreasing for AXDr1,
+element in ei ). As division and SQR are more complex and                        AXDr3 and AXSR3) the parameter value. The simulation
+time consuming than addition and multiplication, they are                        results show that these threshold values are 10, 10, 20, 14
+the performance bottlenecks for the algorithm.                                   and 6 for AXDr1, AXDr3, AAXD, AXSR3 and AASR,
+           Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+JIANG ET AL.: LOW-POWER UNSIGNED DIVIDER AND SQUARE ROOT CIRCUIT DESIGNS USING ADAPTIVE APPROXIMATION                                                            1645
+
+
+                            TABLE 6                                                                              TABLE 8
+      Average PSNRs of Three Reconstructed Images Using                                        Circuit Measurements of the Sequential 32=16
+      Different Approximate Dividers and SQR Circuits (dB)                                            Dividers and 32-bit SQR Circuits
+
+Design         Accurate     AXSR3-16           AXSR3-14    AASR-4     AASR-6        Circuit    Design     Delay     Area     Power   N      EPO           TPA
+                                                                                                           (ns)    (mm2 )    (mW)         (pJ=op)   ðops =ðs  mm2 ÞÞ
+Accurate         27.29         27.29             27.29      27.29     27.29
+AXDr1-12         23.35         11.50             21.83      25.02     27.29         Divider    EXDr_S      2.36     844.1    38.06   18    13.71         1,549
+AXDr1-10         27.29         11.30             27.29      25.05     27.29                   AAXD_S-20    1.76    1,088.2   35.65   13     9.27         3,089
+AXDr3-12         25.36         11.29             24.15      25.73     26.96                    ESRr_S      1.98    919.0     40.15   18    14.45         1,696
+AXDr3-10         27.29         11.20             27.29      25.39     27.29         SQR
+                                                                                              AASR_S-6     0.56    479.6     16.19   5      1.62        148,920
+SEERAD-3         15.26         15.26             15.26      15.26     15.26
+SEERAD-4         12.49         12.49             12.49      12.49     12.49
+DAXD-26          10.27         10.21             10.21      10.24     10.25
+DAXD-28          10.21         10.26             10.19      10.26     10.25         percent decrease in PDP and ADP, respectively. AASR_A-6 is
+AAXD-18          25.92         9.47              25.16      25.61     24.73         approximately 12 faster and consumes 7.29 percent of the
+AAXD-20          27.29         9.53              27.29      25.66     27.29         power of the accurate 32-bit SQR circuit. AASR_T-6 is more effi-
+                                                                                    cient than AASR_A-6 in all measurements due to the small k.
+                                                                                    The hardware savings for AXDr1, AXDr3 and AXSR3 are rela-
+respectively. For SEERAD and DAXD, such a threshold                                 tively small because only a small number of subtractors are
+value is not found due to their low accuracy.                                       approximated in these designs. Table 8 shows that the
+   Table 6 shows that by using the approximate dividers and                         AAXD_S-20 achieves 32.39 percent reduction in EPO and 2
+SQR circuits with their respective threshold parameter val-                         TPA compared with EXDr_S. AASR_S-6 consumes 88.79 per-
+ues the reconstructed images are as good as the accurate                            cent less power than ESRr_S with 88 TPA. Moreover, Tables 7
+result, whereas the quality of the images reconstructed by                          and 8 show that the proposed approximation strategy is more
+using SEERAD and DAXD is very low. It is worth noting                               efficient for larger sizes of divider and SQR circuits, especially
+that the threshold parameter value of the proposed SQR cir-                         for sequential designs.
+cuit AASR is much lower than that of the proposed divider
+AAXD. It indicates that the SQR circuit in this application
+can tolerate more errors than the divider. However, the                             7     CONCLUSION
+threshold parameter value of AXSR3 is not much higher                               This paper proposes a design strategy using adaptive approx-
+than those of AXDr1 and AXDr3. It occurs because the rela-                          imation for unsigned dividers and SQR circuits. A novel
+tive error of AXSR3 is very large when the inputs are very                          pruning scheme and error correction circuits are utilized for
+small due to its approximation structure (i.e., k LSBs are                          the divider to attain a high accuracy. The use of a reduced-
+approximated for AXSR3-k).                                                          width divider/SQR circuit and a shifter leads to a high-per-
+   To compare the hardware overhead, the accurate and                               formance and low-power operation. As per the synthesis
+approximate 32=16 dividers and 32-bit SQR circuits with the                         results in ST’s 28 nm CMOS process, the proposed approxi-
+identified threshold parameters are implemented in VHDL.                            mate divider achieves improvements by more than 60 percent
+Their circuit measurements are then obtained by using the                           in speed and power dissipation compared with an accurate
+same tools and technique as those used for evaluating the 16=8                      design. The proposed divider is more accurate than the other
+dividers. As the critical path delay of the accurate array-based                    approximate dividers when a similar PDP is considered. The
+32=16 divider is close to 20 ns, the clock frequency for power                      change detection results further illustrate the accuracy and
+estimation is 50 MHz. The synthesis results for the combina-                        hardware efficiency of the proposed design.
+tional and sequential implementations are shown in Tables 7                             Using a similar approximation strategy, the 16-bit approx-
+and 8, respectively. Compared to the accurate implementa-                           imate array-based SQR circuit is from 22.69 to 74.54 percent
+tions, the proposed approximate divider and SQR circuit                             faster, and saves from 30.75 to 79.34 percent in power com-
+achieve significantly larger improvements in delay and power                        pared with the accurate design, depending on the size of the
+consumption than the other approximate designs. Specifically,                       exact SQR circuit used. By using the LUT-based SQR circuit,
+AAXD-20 achieves a 45.05 percent speed up and 50.34 percent                         the proposed approximate design obtains 60-90 percent
+reduction in power consumption, as well as 72.71 and 56.41                          improvements in area and power consumption compared to
+                                                                                    its corresponding accurate design. In the application of enve-
+                              TABLE 7                                               lope detection, the proposed SQR circuit generates results of
+          Circuit Measurements of the Combinational 32=16                           a similar quality as the accurate design.
+                   Dividers and 32-bit SQR Circuits                                     To assess the accuracy of the approximate divider and
+                                                                                    SQR circuit in a single application, they are both used to
+Circuit       Design      Delay         Area      Power     PDP         ADP
+                           (ns)        (mm2 )     (mW)      (fJ)      (ns  mm2 )   implement the QRD in an image reconstruction algorithm.
+            EXDr          18.49        1,218.0    136.80   2,529.43   22,520.1
+                                                                                    The simulation results show that the proposed approximate
+Divider     AXDr1-10      18.03        1,212.1    132.80   2,394.38   21,853.9      divider achieves 45.05 percent and 50.34 percent reductions
+            AXDr3-10      17.88        1,142.9    118.30   2,115.20   20,434.9      in delay and power, while reductions of more than 90 percent
+            AAXD-20       10.16        966.1      67.94    690.27     9,816.0
+                                                                                    are achieved for the proposed approximate SQR circuit com-
+            ESRr_A        16.96        968.9      99.00    1,679.04   16,432.9      pared to the accurate array-based designs for obtaining a sim-
+SQR         AXSR3-14      16.75        907.6      84.59    1,416.88   15,201.5      ilar image reconstruction accuracy. Finally, the proposed
+            AASR_A-6      1.30         137.7      6.17     8.02       179.1
+            AASR_T-6      0.89         122.2      4.99     4.44       108.8         design approach is applicable to sequential divider and SQR
+                                                                                    circuits. Its efficacy is supported by the simulation results.
+            Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+1646                                                                              IEEE TRANSACTIONS ON COMPUTERS,           VOL. 68,   NO. 11,   NOVEMBER 2019
+
+
+ACKNOWLEDGMENT                                                                      [23] F. Ding,“Decomposition based fast least squares algorithm for out-
+                                                                                         put error systems,” Signal Process., vol. 93, no. 5, pp. 1235–1242, 2013.
+This work was partly supported by the Natural Sciences                              [24] M. Karkooti, J. R. Cavallaro, and C. Dick, “FPGA implementation
+                                                                                         of matrix inversion using QRD-RLS algorithm,” in Proc. Asilomar
+and Engineering Research Council of Canada (NSERC)                                       Conf. Signals Syst. Comput., 2005, pp. 1625–1629.
+under project RES0025211. We thank CMC Microsystems                                 [25] M. K. Jaiswal and N. Chandrachoodan, “FPGA-based high-perfor-
+for providing the simulation tools.                                                      mance and scalable block LU decomposition architecture,” IEEE
+                                                                                         Trans. Comput., vol. 61, no. 1, pp. 60–72, Jan. 2012.
+                                                                                    [26] A. Krishnamoorthy and D. Menon, “Matrix inversion using Cho-
+REFERENCES                                                                               lesky decomposition,” in Proc. Signal Process.: Algorithms Architec-
+[1]    B. Parhami, Computer Arithmetic: Algorithms and Hardware Designs.                 tures Arrangements Appl., 2013, pp. 70–72.
+       London, U.K.: Oxford Univ. Press, 2000.                                      [27] X. Yuan and R. Haimi-Cohen, “Image compression based on compres-
+[2]    J. Fandrianto, “Algorithm for high speed shared radix 4 division                  sive sensing: End-to-end comparison with JPEG,” arXiv:1706.01000,
+       and radix 4 square-root,” in Proc. IEEE Symp. Comput. Arithmetic,                 2017, pp. 1–17.
+       1987, pp. 73–79.                                                             [28] J. L. Stanislaus and T. Mohsenin, “High performance compressive
+[3]    L. Chen, F. Lombardi, P. Montuschi, J. Han, and W. Liu, “Design                   sensing reconstruction hardware with QRD process,” in Proc. IEEE
+       of approximate high-radix dividers by inexact binary signed-digit                 Int. Symp. Circuits Syst., 2012, pp. 29–32.
+       addition,” in Proc. Great Lakes Symp. VLSI, 2017, pp. 293–298.
+[4]    L. Chen, W. Liu, J. Han, P. A. Montuschi, and F. Lombardi,                                           Honglan Jiang (S’14-M’18) received the BSc and
+       “Design, evaluation and application of approximate high-radix                                        master’s degrees in instrument science and tech-
+       dividers,” IEEE Trans. Multi-Scale Comput. Syst., vol. 4, no. 3,                                     nology from the Harbin Institute of Technology,
+       pp. 299–312, Jul-Sep. 2018.                                                                          Harbin, Heilongjiang, China, in 2011 and 2013,
+[5]    M. Cappa and V. C. Hamacher, “An augmented iterative array for                                       respectively, and the PhD degree in integrated cir-
+       high-speed binary division,” IEEE Trans. Comput., vol. 100, no. 2,                                   cuits and systems from the University of Alberta,
+       pp. 172–175, Feb. 1973.                                                                              Edmonton, AB, Canada, in 2018. She is currently a
+[6]    J. Han and M. Orshansky, “Approximate computing: An emerg-                                           postdoctoral fellow with the Institute of Microelec-
+       ing paradigm for energy-efficient design,” in Proc. IEEE Eur. Test                                   tronics, Tsinghua University, Beijing, China. Her
+       Symp., 2013, pp. 1–6.                                                                                research interests include approximate computing,
+[7]    H. Jiang, C. Liu, L. Liu, F. Lombardi, and J. Han, “A review, classifi-                              reconfigurable computing and stochastic comput-
+       cation, and comparative evaluation of approximate arithmetic                                         ing. She is a member of the IEEE.
+       circuits,” ACM J. Emerging Technol. Comput. Syst., vol. 13, no. 4, 2017,
+       Art. no. 60.                                                                                         Leibo Liu (M’10-SM’17) received the BS degree in
+[8]    H. Jiang, L. Liu, F. Lombardi, and J. Han, “Adaptive approxima-                                      electronic engineering from Tsinghua University,
+       tion in arithmetic circuits: A low-power unsigned divider design,”                                   Beijing, China, in 1999, and the PhD degree from
+       in Des., Autom. & Test Eur. Conf., 2018, pp. 1411–1414.                                              the Institute of Microelectronics, Tsinghua Univer-
+[9]    W. Liu and A. Nannarelli, “Power efficient division and square root                                  sity, Beijing, China, in 2004. He is currently a full
+       unit,” IEEE Trans. Comput., vol. 61, no. 8, pp. 1059–1070, Aug. 2012.                                professor with the Institute of Microelectronics,
+[10]   M. J. Flynn, “On division by functional iteration,” IEEE Trans.                                      Tsinghua University. His current research interests
+       Comput., vol. 19, no. 8, pp. 702–706, Aug. 1970.                                                     include reconfigurable computing, mobile comput-
+[11]   L. Chen, J. Han, W. Liu, and F. Lombardi, “Design of approximate                                     ing, and very large-scale integration digital signal
+       unsigned integer non-restoring divider for inexact computing,” in                                    processing. He is a senior member of the IEEE
+       Proc. Great Lakes Symp. VLSI, 2015, pp. 51–56.                                                       since 2017.
+[12]   L. Chen, J. Han, W. Liu, and F. Lombardi, “On the design of
+       approximate restoring dividers for error-tolerant applications,”                                     Fabrizio Lombardi (M’81-SM’02-F’09) received
+       IEEE Trans. Comput., vol. 65, no. 8, pp. 2522–2533, Aug. 2016.                                       the BSc (Hons.) degree in electronic engineering
+[13]   S. Hashemi, R. Bahar, and S. Reda, “A low-power dynamic divider                                      from the University of Essex, United Kingdom, in
+       for approximate applications,” in Proc. 53rd Annu. Des. Autom. Conf.,                                1977, the master’s degree in microwaves and mod-
+       2016, pp. 1–6.                                                                                       ern optics from the Microwave Research Unit, Uni-
+[14]   R. Zendegani, M. Kamal, A. Fayyazi, A. Afzali-Kusha, S. Safari,                                      versity College London, 1978, the diploma degree
+       and M. Pedram, “SEERAD: A high speed yet energy-efficient                                            in microwave engineering Microwave Research
+       rounding-based approximate divider,” in Proc. Des. Autom. Test                                       Unit, University College London, 1978, and the
+       Eur. Conf. Exhibit., 2016, pp. 1481–1484.                                                            PhD degree from the University of London, in 1982.
+[15]   M. D. Ercegovac, T. Lang, J.-M. Muller, and A. Tisserand,                                            In 1977 he joined the Microwave Research Unit at
+       “Reciprocation, square root, inverse square root, and some ele-                                      University College London. He is currently the
+       mentary functions using small multipliers,” IEEE Trans. Comput.,             holder of the International Test Conference (ITC) Endowed Chair Profes-
+       vol. 49, no. 7, pp. 628–637, Jul. 2000.                                      sorship at Northeastern University, Boston. He is a fellow of the IEEE.
+[16]   B. Barrois, O. Sentieys, and D. Menard, “The hidden cost of func-
+       tional approximation against careful data sizing–A case study,” in
+       Proc. Conf. Des., Autom. Test Eur., 2017, pp. 181–186.                                             Jie Han (S’02-M’05-SM’16) received the BSc
+[17]   P. R. Hoskins, K. Martin, and A. Thrush, Diagnostic Ultrasound: Phys-                              degree in electronic engineering from Tsinghua
+       ics and Equipment. Cambridge, U.K.: Cambridge Univ. Press, 2010.                                   University, Beijing, China, in 1999, and the PhD
+[18]   D. Dance, S. Christofides, A. Maidment, I. McLean, and K. Ng,                                      degree from the Delft University of Technology,
+       Diagnostic Radiology Physics: A Handbook for Teachers and Students.                                The Netherlands, in 2004. He is currently an
+       Vienna, Austria: International Atomic Energy Agency, 2014.                                         associate professor with the Department of Elec-
+[19]   J. A. Jensen, “Field: A program for simulating ultrasound systems,”                                trical and Computer Engineering, University of
+       in Proc. 10th Nordic-Baltic Conf. Biomed. Imag., 1996, pp. 351–353.                                Alberta, Edmonton, AB, Canada. His research
+[20]   J. A. Jensen and N. B. Svendsen, “Calculation of pressure fields                                   interests include approximate computing, sto-
+       from arbitrarily shaped, apodized, and excited ultrasound trans-                                   chastic computation, reliability and fault toler-
+       ducers,” IEEE Trans. Ultrasonics Ferroelectrics Frequency Control,                                 ance, nanoelectronic circuits and systems, novel
+       vol. 39, no. 2, pp. 262–267, Mar. 1992.                                      computational models for nanoscale and biological applications. He is a
+[21]   C. K. Singh, S. H. Prasad, and P. T. Balsara, “VLSI architecture for         senior member of the IEEE.
+       matrix inversion using modified Gram-Schmidt based QR decom-
+       position,” in Proc. 20th Int. Conf. VLSI Design Held Jointly 6th Int.        " For more information on this or any other computing topic,
+       Conf. Embedded Syst., 2007, pp. 836–841.
+                                                                                    please visit our Digital Library at www.computer.org/publications/dlib.
+[22]   X. Lei, X. Liao, T. Huang, H. Li, and C. Hu, “Outsourcing large
+       matrix inversion computation to a public cloud,” IEEE Trans.
+       Cloud Comput., vol. 1, no. 1, pp. 78–87, Jan.-Jun. 2013.
+            Authorized licensed use limited to: Zhejiang University. Downloaded on June 15,2023 at 12:14:46 UTC from IEEE Xplore. Restrictions apply.
+

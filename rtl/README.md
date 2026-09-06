@@ -8,10 +8,10 @@ retained for reproduction and ablation studies.
 
 | Purpose | Current RTL | Tops in active results | Status |
 |---|---|---|---|
-| Precision-pruned DIV-only L0-L3 | `root_opt/oadm_root_opt.v` | `oadm_fixed_l0_div_root_opt` through `oadm_fixed_l3_div_root_opt` | Latest fixed-level DIV implementation and source of `ppa_results/root_opt_hier_compile_10ns.csv` |
-| Precision-pruned runtime DIV+MUL | `root_opt/oadm_root_opt.v` | `oadm_runtime_root_opt` | Latest runtime root-pruning experiment; not interchangeable with fixed-level PPA |
-| Precision-pruned fixed DIV+MUL L0-L3 | `root_opt/oadm_fixed_divmul_root_opt.v` | `oadm_fixed_l*_divmul_root_opt` | Current integrated OADM hardware; shares the plane multipliers and matches the selected DIV and balanced MUL views bit for bit |
-| Precision-pruned MUL-only L0-L3 | `mul_root_opt/oadm_mul_root_opt.v` | `oadm_fixed_l*_mul_root_opt_accuracy`, `oadm_fixed_l*_mul_root_opt`, `oadm_fixed_l*_mul_root_opt_aggressive` | Latest fixed-level MUL experiment and source of `ppa_results/mul_root_opt_hier_compile_10ns.csv` |
+| LSB-truncated DIV-only L0-L3 | `root_opt/oadm_root_opt.v` | `oadm_fixed_l0_div_root_opt` through `oadm_fixed_l3_div_root_opt` | Latest fixed-level DIV implementation and source of `ppa_results/root_opt_hier_compile_10ns.csv` |
+| LSB-truncated runtime DIV+MUL | `root_opt/oadm_root_opt.v` | `oadm_runtime_root_opt` | Latest runtime root-optimization experiment; not interchangeable with fixed-level PPA |
+| LSB-truncated fixed DIV+MUL L0-L3 | `root_opt/oadm_fixed_divmul_root_opt.v` | `oadm_fixed_l*_divmul_root_opt` | Current integrated OADM hardware; shares the plane multipliers and matches the selected DIV and balanced MUL views bit for bit |
+| LSB-truncated MUL-only L0-L3 | `mul_root_opt/oadm_mul_root_opt.v` | `oadm_fixed_l*_mul_root_opt_accuracy`, `oadm_fixed_l*_mul_root_opt`, `oadm_fixed_l*_mul_root_opt_aggressive` | Latest fixed-level MUL experiment and source of `ppa_results/mul_root_opt_hier_compile_10ns.csv` |
 | Normal-finite FP32 shell | `../PACE/common/FP_DIV_WRAPPER_32.v` | `fp32_normal_finite_wrapper` | Shared wrapper used by current OADM DIV, OADM MUL, PACE, and normalized prior-work comparisons |
 
 The fixed DIV root-opt settings currently used in the CSV are:
@@ -25,15 +25,15 @@ The fixed DIV root-opt settings currently used in the CSV are:
 
 For MUL root-opt, the suffix identifies the retained design point:
 
-| Top suffix | L0-L3 residual drops | Intended use |
+| Top suffix | Residual LSBs truncated at L0-L3 | Intended use |
 |---|---|---|
 | `_accuracy` | `12,10,8,6` | Accuracy-preserving comparison |
-| no suffix | `16,14,12,10` | Balanced root-pruning point |
+| no suffix | `16,14,12,10` | Balanced LSB-truncation point |
 | `_aggressive` | `18,16,14,12` | Area-oriented point |
 
 ## Historical Baseline Dependencies
 
-The superseded pre-pruning DIV/MUL baseline is not a single standalone file.
+The superseded pre-truncation DIV/MUL baseline is not a single standalone file.
 Its historical source list is defined by `dc/canonical_refresh/run_all.sh` and
 uses:
 
@@ -52,7 +52,7 @@ rtl/canonical_refresh/oadm_mul_wrappers.v
 PACE/common/FP_DIV_WRAPPER_32.v
 ```
 
-The obsolete pre-pruning sharing reports and CSV were removed. This source
+The obsolete pre-truncation sharing reports and CSV were removed. This source
 list remains only for non-sharing historical reproduction; it is not a current
 paper-facing OADM implementation.
 
@@ -82,11 +82,15 @@ These files are active reference implementations, not the newest OADM design:
 
 | Directory or file | Use |
 |---|---|
+| `baseline/oadm_fixed_divmul_correction_chain.v` | Diagnostic model of the local legacy arithmetic recurrence; not an AM-Lib OAM implementation or canonical PPA baseline |
+| `amlib_oam/amlib_oam_fp32_common_wrapper.v` | Shared normal-finite FP32 wrapper around the unmodified AM-Lib OAM mantissa cores |
 | `exact/exact_fp32_nopipe.v` | Current exact FP32 no-pipeline MUL, DIV, and DIV+MUL baseline |
 | `pace_original/pace_fp32_l1.v` through `pace_fp32_l4.v` | Local tops around the author-provided PACE mantissa RTL |
+| `paper_repro/plsad_prior_fp32_paceio.v` | Paper-derived PLSAD Eq. (14) and LOA reconstruction under the shared FP32 wrapper; m=8 is accuracy-matched, while m=4/6 remain non-exact reproductions |
 | `simdive_original/simdive_original_fp32_wrapper.v` | Current local FP32 wrapper around original SIMDive integer RTL |
 | `simdive_original_compat/shifter_out_mul_div_compat.v` | Compatibility module required by the original SIMDive flow |
-| `canonical_refresh/oadm_mul_wrappers.v` | Fixed-level MUL-only tops for the pre-pruning OADM baseline |
+| `simdive_original_compat/simdive_sisd32_specialized.v` | Current mode=01 source specialization used for the valid hierarchy-preserving SIMDive PPA point |
+| `canonical_refresh/oadm_mul_wrappers.v` | Fixed-level MUL-only tops for the pre-truncation OADM baseline |
 
 PACE and SIMDive also depend on author RTL outside this directory. Their full
 source lists are recorded in `dc/canonical_refresh/run_all.sh` and the

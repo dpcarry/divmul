@@ -1,0 +1,876 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : input_l2_mask_b5
+Version: U-2022.12-SP7
+Date   : Sat Sep  5 15:04:46 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  input_l2_mask_b5   ZeroWireload          tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16 ZeroWireload tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                               Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                              0.00       0.00
+  clock network delay (ideal)                                                                                         0.00       0.00
+  input external delay                                                                                                0.02       0.02 r
+  y[22] (in)                                                                                                          0.01       0.03 r
+  dut/y[22] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                              0.00       0.03 r
+  dut/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                                   0.00       0.03 r
+  dut/fp_wrapper/U53/Z (CKBD1)                                                                                        0.09       0.12 r
+  dut/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                                          0.00       0.12 r
+  dut/mask_only_plane/y_mantissa[22] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                        0.00       0.12 r
+  dut/mask_only_plane/mult_42/b[3] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)             0.00       0.12 r
+  dut/mask_only_plane/mult_42/U101/ZN (CKND0)                                                                         0.06       0.18 f
+  dut/mask_only_plane/mult_42/U111/ZN (CKND2D0)                                                                       0.08       0.26 r
+  dut/mask_only_plane/mult_42/U114/ZN (OAI22D0)                                                                       0.05       0.32 f
+  dut/mask_only_plane/mult_42/U25/S (HA1D0)                                                                           0.07       0.38 f
+  dut/mask_only_plane/mult_42/U108/Z (OR2D0)                                                                          0.05       0.43 f
+  dut/mask_only_plane/mult_42/U9/CO (FA1D0)                                                                           0.05       0.49 f
+  dut/mask_only_plane/mult_42/U8/CO (FA1D0)                                                                           0.06       0.54 f
+  dut/mask_only_plane/mult_42/U7/CO (FA1D0)                                                                           0.06       0.60 f
+  dut/mask_only_plane/mult_42/U6/CO (FA1D0)                                                                           0.06       0.65 f
+  dut/mask_only_plane/mult_42/U5/CO (FA1D0)                                                                           0.06       0.71 f
+  dut/mask_only_plane/mult_42/U4/CO (FA1D0)                                                                           0.06       0.76 f
+  dut/mask_only_plane/mult_42/U3/CO (FA1D0)                                                                           0.06       0.82 f
+  dut/mask_only_plane/mult_42/U2/S (FA1D0)                                                                            0.08       0.89 r
+  dut/mask_only_plane/mult_42/product[11] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)      0.00       0.89 r
+  dut/mask_only_plane/U14/S (FA1D0)                                                                                   0.10       0.99 f
+  dut/mask_only_plane/U15/CO (FA1D0)                                                                                  0.10       1.09 f
+  dut/mask_only_plane/U6/Z (XOR3D0)                                                                                   0.11       1.20 r
+  dut/mask_only_plane/U5/ZN (XNR3D0)                                                                                  0.07       1.27 r
+  dut/mask_only_plane/plane_exact[24] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                       0.00       1.27 r
+  dut/mult_69/a[8] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                           0.00       1.27 r
+  dut/mult_69/U112/ZN (INVD1)                                                                                         0.02       1.29 f
+  dut/mult_69/U166/ZN (NR2D0)                                                                                         0.04       1.33 r
+  dut/mult_69/U28/S (CMPE42D1)                                                                                        0.19       1.52 f
+  dut/mult_69/U9/CO (FA1D0)                                                                                           0.10       1.62 f
+  dut/mult_69/U8/CO (FA1D0)                                                                                           0.06       1.68 f
+  dut/mult_69/U7/CO (FA1D0)                                                                                           0.06       1.73 f
+  dut/mult_69/U6/CO (FA1D0)                                                                                           0.06       1.79 f
+  dut/mult_69/U5/CO (FA1D0)                                                                                           0.06       1.84 f
+  dut/mult_69/U4/CO (FA1D0)                                                                                           0.06       1.90 f
+  dut/mult_69/U3/CO (FA1D0)                                                                                           0.05       1.95 f
+  dut/mult_69/U125/Z (XOR3D0)                                                                                         0.10       2.05 f
+  dut/mult_69/product[15] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                    0.00       2.05 f
+  dut/U37/ZN (INVD1)                                                                                                  0.06       2.11 r
+  dut/U17/ZN (ND2D1)                                                                                                  0.08       2.19 f
+  dut/U3/ZN (ND2D1)                                                                                                   0.09       2.28 r
+  dut/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                                      0.00       2.28 r
+  dut/fp_wrapper/U41/CO (FA1D0)                                                                                       0.10       2.38 r
+  dut/fp_wrapper/U42/CO (FA1D0)                                                                                       0.05       2.43 r
+  dut/fp_wrapper/U43/CO (FA1D0)                                                                                       0.05       2.49 r
+  dut/fp_wrapper/U44/CO (FA1D0)                                                                                       0.05       2.54 r
+  dut/fp_wrapper/U45/CO (FA1D0)                                                                                       0.05       2.59 r
+  dut/fp_wrapper/U46/CO (FA1D0)                                                                                       0.05       2.64 r
+  dut/fp_wrapper/U56/Z (XOR3D1)                                                                                       0.08       2.72 f
+  dut/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                              0.00       2.72 f
+  dut/result[30] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                         0.00       2.72 f
+  result[30] (out)                                                                                                    0.00       2.72 f
+  data arrival time                                                                                                              2.72
+
+  clock vclk (rise edge)                                                                                             10.00      10.00
+  clock network delay (ideal)                                                                                         0.00      10.00
+  output external delay                                                                                              -0.02       9.98
+  data required time                                                                                                             9.98
+  --------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                             9.98
+  data arrival time                                                                                                             -2.72
+  --------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                    7.26
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  input_l2_mask_b5   ZeroWireload          tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16 ZeroWireload tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                               Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                              0.00       0.00
+  clock network delay (ideal)                                                                                         0.00       0.00
+  input external delay                                                                                                0.02       0.02 r
+  y[22] (in)                                                                                                          0.01       0.03 r
+  dut/y[22] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                              0.00       0.03 r
+  dut/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                                   0.00       0.03 r
+  dut/fp_wrapper/U53/Z (CKBD1)                                                                                        0.09       0.12 r
+  dut/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                                          0.00       0.12 r
+  dut/mask_only_plane/y_mantissa[22] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                        0.00       0.12 r
+  dut/mask_only_plane/mult_42/b[3] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)             0.00       0.12 r
+  dut/mask_only_plane/mult_42/U101/ZN (CKND0)                                                                         0.06       0.18 f
+  dut/mask_only_plane/mult_42/U111/ZN (CKND2D0)                                                                       0.08       0.26 r
+  dut/mask_only_plane/mult_42/U114/ZN (OAI22D0)                                                                       0.05       0.32 f
+  dut/mask_only_plane/mult_42/U25/S (HA1D0)                                                                           0.07       0.38 f
+  dut/mask_only_plane/mult_42/U108/Z (OR2D0)                                                                          0.05       0.43 f
+  dut/mask_only_plane/mult_42/U9/CO (FA1D0)                                                                           0.05       0.49 f
+  dut/mask_only_plane/mult_42/U8/CO (FA1D0)                                                                           0.06       0.54 f
+  dut/mask_only_plane/mult_42/U7/CO (FA1D0)                                                                           0.06       0.60 f
+  dut/mask_only_plane/mult_42/U6/CO (FA1D0)                                                                           0.06       0.65 f
+  dut/mask_only_plane/mult_42/U5/CO (FA1D0)                                                                           0.06       0.71 f
+  dut/mask_only_plane/mult_42/U4/CO (FA1D0)                                                                           0.06       0.76 f
+  dut/mask_only_plane/mult_42/U3/CO (FA1D0)                                                                           0.06       0.82 f
+  dut/mask_only_plane/mult_42/U2/S (FA1D0)                                                                            0.08       0.89 r
+  dut/mask_only_plane/mult_42/product[11] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)      0.00       0.89 r
+  dut/mask_only_plane/U14/S (FA1D0)                                                                                   0.10       0.99 f
+  dut/mask_only_plane/U15/CO (FA1D0)                                                                                  0.10       1.09 f
+  dut/mask_only_plane/U6/Z (XOR3D0)                                                                                   0.11       1.20 r
+  dut/mask_only_plane/U5/ZN (XNR3D0)                                                                                  0.07       1.27 r
+  dut/mask_only_plane/plane_exact[24] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                       0.00       1.27 r
+  dut/mult_69/a[8] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                           0.00       1.27 r
+  dut/mult_69/U112/ZN (INVD1)                                                                                         0.02       1.29 f
+  dut/mult_69/U166/ZN (NR2D0)                                                                                         0.04       1.33 r
+  dut/mult_69/U28/S (CMPE42D1)                                                                                        0.19       1.52 f
+  dut/mult_69/U9/CO (FA1D0)                                                                                           0.10       1.62 f
+  dut/mult_69/U8/CO (FA1D0)                                                                                           0.06       1.68 f
+  dut/mult_69/U7/CO (FA1D0)                                                                                           0.06       1.73 f
+  dut/mult_69/U6/CO (FA1D0)                                                                                           0.06       1.79 f
+  dut/mult_69/U5/CO (FA1D0)                                                                                           0.06       1.84 f
+  dut/mult_69/U4/CO (FA1D0)                                                                                           0.06       1.90 f
+  dut/mult_69/U3/CO (FA1D0)                                                                                           0.05       1.95 f
+  dut/mult_69/U125/Z (XOR3D0)                                                                                         0.10       2.05 f
+  dut/mult_69/product[15] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                    0.00       2.05 f
+  dut/U37/ZN (INVD1)                                                                                                  0.06       2.11 r
+  dut/U17/ZN (ND2D1)                                                                                                  0.08       2.19 f
+  dut/U3/ZN (ND2D1)                                                                                                   0.09       2.28 r
+  dut/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                                      0.00       2.28 r
+  dut/fp_wrapper/U41/CO (FA1D0)                                                                                       0.10       2.38 r
+  dut/fp_wrapper/U42/CO (FA1D0)                                                                                       0.05       2.43 r
+  dut/fp_wrapper/U43/CO (FA1D0)                                                                                       0.05       2.49 r
+  dut/fp_wrapper/U44/CO (FA1D0)                                                                                       0.05       2.54 r
+  dut/fp_wrapper/U45/CO (FA1D0)                                                                                       0.05       2.59 r
+  dut/fp_wrapper/U46/CO (FA1D0)                                                                                       0.05       2.64 r
+  dut/fp_wrapper/U56/Z (XOR3D1)                                                                                       0.08       2.72 f
+  dut/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                              0.00       2.72 f
+  dut/result[30] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                         0.00       2.72 f
+  result[30] (out)                                                                                                    0.00       2.72 f
+  data arrival time                                                                                                              2.72
+
+  clock vclk (rise edge)                                                                                             10.00      10.00
+  clock network delay (ideal)                                                                                         0.00      10.00
+  output external delay                                                                                              -0.02       9.98
+  data required time                                                                                                             9.98
+  --------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                             9.98
+  data arrival time                                                                                                             -2.72
+  --------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                    7.26
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  input_l2_mask_b5   ZeroWireload          tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16 ZeroWireload tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                               Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                              0.00       0.00
+  clock network delay (ideal)                                                                                         0.00       0.00
+  input external delay                                                                                                0.02       0.02 r
+  y[22] (in)                                                                                                          0.01       0.03 r
+  dut/y[22] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                              0.00       0.03 r
+  dut/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                                   0.00       0.03 r
+  dut/fp_wrapper/U53/Z (CKBD1)                                                                                        0.09       0.12 r
+  dut/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                                          0.00       0.12 r
+  dut/mask_only_plane/y_mantissa[22] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                        0.00       0.12 r
+  dut/mask_only_plane/mult_42/b[3] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)             0.00       0.12 r
+  dut/mask_only_plane/mult_42/U101/ZN (CKND0)                                                                         0.06       0.18 f
+  dut/mask_only_plane/mult_42/U111/ZN (CKND2D0)                                                                       0.08       0.26 r
+  dut/mask_only_plane/mult_42/U114/ZN (OAI22D0)                                                                       0.05       0.32 f
+  dut/mask_only_plane/mult_42/U25/S (HA1D0)                                                                           0.07       0.38 f
+  dut/mask_only_plane/mult_42/U108/Z (OR2D0)                                                                          0.05       0.43 f
+  dut/mask_only_plane/mult_42/U9/CO (FA1D0)                                                                           0.05       0.49 f
+  dut/mask_only_plane/mult_42/U8/CO (FA1D0)                                                                           0.06       0.54 f
+  dut/mask_only_plane/mult_42/U7/CO (FA1D0)                                                                           0.06       0.60 f
+  dut/mask_only_plane/mult_42/U6/CO (FA1D0)                                                                           0.06       0.65 f
+  dut/mask_only_plane/mult_42/U5/CO (FA1D0)                                                                           0.06       0.71 f
+  dut/mask_only_plane/mult_42/U4/CO (FA1D0)                                                                           0.06       0.76 f
+  dut/mask_only_plane/mult_42/U3/CO (FA1D0)                                                                           0.06       0.82 f
+  dut/mask_only_plane/mult_42/U2/S (FA1D0)                                                                            0.08       0.89 r
+  dut/mask_only_plane/mult_42/product[11] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)      0.00       0.89 r
+  dut/mask_only_plane/U14/S (FA1D0)                                                                                   0.10       0.99 f
+  dut/mask_only_plane/U15/CO (FA1D0)                                                                                  0.10       1.09 f
+  dut/mask_only_plane/U6/Z (XOR3D0)                                                                                   0.11       1.20 r
+  dut/mask_only_plane/U5/ZN (XNR3D0)                                                                                  0.07       1.27 r
+  dut/mask_only_plane/plane_exact[24] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                       0.00       1.27 r
+  dut/mult_69/a[8] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                           0.00       1.27 r
+  dut/mult_69/U112/ZN (INVD1)                                                                                         0.02       1.29 f
+  dut/mult_69/U166/ZN (NR2D0)                                                                                         0.04       1.33 r
+  dut/mult_69/U28/S (CMPE42D1)                                                                                        0.19       1.52 f
+  dut/mult_69/U9/CO (FA1D0)                                                                                           0.10       1.62 f
+  dut/mult_69/U8/CO (FA1D0)                                                                                           0.06       1.68 f
+  dut/mult_69/U7/CO (FA1D0)                                                                                           0.06       1.73 f
+  dut/mult_69/U6/CO (FA1D0)                                                                                           0.06       1.79 f
+  dut/mult_69/U5/CO (FA1D0)                                                                                           0.06       1.84 f
+  dut/mult_69/U4/CO (FA1D0)                                                                                           0.06       1.90 f
+  dut/mult_69/U3/CO (FA1D0)                                                                                           0.05       1.95 f
+  dut/mult_69/U125/Z (XOR3D0)                                                                                         0.10       2.05 f
+  dut/mult_69/product[15] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                    0.00       2.05 f
+  dut/U37/ZN (INVD1)                                                                                                  0.06       2.11 r
+  dut/U17/ZN (ND2D1)                                                                                                  0.08       2.19 f
+  dut/U3/ZN (ND2D1)                                                                                                   0.09       2.28 r
+  dut/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                                      0.00       2.28 r
+  dut/fp_wrapper/U41/CO (FA1D0)                                                                                       0.10       2.38 r
+  dut/fp_wrapper/U42/CO (FA1D0)                                                                                       0.05       2.43 r
+  dut/fp_wrapper/U43/CO (FA1D0)                                                                                       0.05       2.49 r
+  dut/fp_wrapper/U44/CO (FA1D0)                                                                                       0.05       2.54 r
+  dut/fp_wrapper/U45/CO (FA1D0)                                                                                       0.05       2.59 r
+  dut/fp_wrapper/U46/CO (FA1D0)                                                                                       0.05       2.64 r
+  dut/fp_wrapper/U56/Z (XOR3D1)                                                                                       0.08       2.72 f
+  dut/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                              0.00       2.72 f
+  dut/result[30] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                         0.00       2.72 f
+  result[30] (out)                                                                                                    0.00       2.72 f
+  data arrival time                                                                                                              2.72
+
+  clock vclk (rise edge)                                                                                             10.00      10.00
+  clock network delay (ideal)                                                                                         0.00      10.00
+  output external delay                                                                                              -0.02       9.98
+  data required time                                                                                                             9.98
+  --------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                             9.98
+  data arrival time                                                                                                             -2.72
+  --------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                    7.26
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  input_l2_mask_b5   ZeroWireload          tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16 ZeroWireload tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                               Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                              0.00       0.00
+  clock network delay (ideal)                                                                                         0.00       0.00
+  input external delay                                                                                                0.02       0.02 r
+  y[22] (in)                                                                                                          0.01       0.03 r
+  dut/y[22] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                              0.00       0.03 r
+  dut/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                                   0.00       0.03 r
+  dut/fp_wrapper/U53/Z (CKBD1)                                                                                        0.09       0.12 r
+  dut/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                                          0.00       0.12 r
+  dut/mask_only_plane/y_mantissa[22] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                        0.00       0.12 r
+  dut/mask_only_plane/mult_42/b[3] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)             0.00       0.12 r
+  dut/mask_only_plane/mult_42/U101/ZN (CKND0)                                                                         0.06       0.18 f
+  dut/mask_only_plane/mult_42/U111/ZN (CKND2D0)                                                                       0.08       0.26 r
+  dut/mask_only_plane/mult_42/U114/ZN (OAI22D0)                                                                       0.05       0.32 f
+  dut/mask_only_plane/mult_42/U25/S (HA1D0)                                                                           0.07       0.38 f
+  dut/mask_only_plane/mult_42/U108/Z (OR2D0)                                                                          0.05       0.43 f
+  dut/mask_only_plane/mult_42/U9/CO (FA1D0)                                                                           0.05       0.49 f
+  dut/mask_only_plane/mult_42/U8/CO (FA1D0)                                                                           0.06       0.54 f
+  dut/mask_only_plane/mult_42/U7/CO (FA1D0)                                                                           0.06       0.60 f
+  dut/mask_only_plane/mult_42/U6/CO (FA1D0)                                                                           0.06       0.65 f
+  dut/mask_only_plane/mult_42/U5/CO (FA1D0)                                                                           0.06       0.71 f
+  dut/mask_only_plane/mult_42/U4/CO (FA1D0)                                                                           0.06       0.76 f
+  dut/mask_only_plane/mult_42/U3/CO (FA1D0)                                                                           0.06       0.82 f
+  dut/mask_only_plane/mult_42/U2/S (FA1D0)                                                                            0.08       0.89 r
+  dut/mask_only_plane/mult_42/product[11] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)      0.00       0.89 r
+  dut/mask_only_plane/U14/S (FA1D0)                                                                                   0.10       0.99 f
+  dut/mask_only_plane/U15/CO (FA1D0)                                                                                  0.10       1.09 f
+  dut/mask_only_plane/U6/Z (XOR3D0)                                                                                   0.11       1.20 r
+  dut/mask_only_plane/U5/ZN (XNR3D0)                                                                                  0.07       1.27 r
+  dut/mask_only_plane/plane_exact[24] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                       0.00       1.27 r
+  dut/mult_69/a[8] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                           0.00       1.27 r
+  dut/mult_69/U112/ZN (INVD1)                                                                                         0.02       1.29 f
+  dut/mult_69/U166/ZN (NR2D0)                                                                                         0.04       1.33 r
+  dut/mult_69/U28/S (CMPE42D1)                                                                                        0.19       1.52 f
+  dut/mult_69/U9/CO (FA1D0)                                                                                           0.10       1.62 f
+  dut/mult_69/U8/CO (FA1D0)                                                                                           0.06       1.68 f
+  dut/mult_69/U7/CO (FA1D0)                                                                                           0.06       1.73 f
+  dut/mult_69/U6/CO (FA1D0)                                                                                           0.06       1.79 f
+  dut/mult_69/U5/CO (FA1D0)                                                                                           0.06       1.84 f
+  dut/mult_69/U4/CO (FA1D0)                                                                                           0.06       1.90 f
+  dut/mult_69/U3/CO (FA1D0)                                                                                           0.05       1.95 f
+  dut/mult_69/U125/Z (XOR3D0)                                                                                         0.10       2.05 f
+  dut/mult_69/product[15] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                    0.00       2.05 f
+  dut/U37/ZN (INVD1)                                                                                                  0.06       2.11 r
+  dut/U17/ZN (ND2D1)                                                                                                  0.08       2.19 f
+  dut/U3/ZN (ND2D1)                                                                                                   0.09       2.28 r
+  dut/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                                      0.00       2.28 r
+  dut/fp_wrapper/U41/CO (FA1D0)                                                                                       0.10       2.38 r
+  dut/fp_wrapper/U42/CO (FA1D0)                                                                                       0.05       2.43 r
+  dut/fp_wrapper/U43/CO (FA1D0)                                                                                       0.05       2.49 r
+  dut/fp_wrapper/U44/CO (FA1D0)                                                                                       0.05       2.54 r
+  dut/fp_wrapper/U45/CO (FA1D0)                                                                                       0.05       2.59 r
+  dut/fp_wrapper/U46/CO (FA1D0)                                                                                       0.05       2.64 r
+  dut/fp_wrapper/U56/Z (XOR3D1)                                                                                       0.08       2.72 f
+  dut/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                              0.00       2.72 f
+  dut/result[30] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                         0.00       2.72 f
+  result[30] (out)                                                                                                    0.00       2.72 f
+  data arrival time                                                                                                              2.72
+
+  clock vclk (rise edge)                                                                                             10.00      10.00
+  clock network delay (ideal)                                                                                         0.00      10.00
+  output external delay                                                                                              -0.02       9.98
+  data required time                                                                                                             9.98
+  --------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                             9.98
+  data arrival time                                                                                                             -2.72
+  --------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                    7.26
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  input_l2_mask_b5   ZeroWireload          tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16 ZeroWireload tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                               Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                              0.00       0.00
+  clock network delay (ideal)                                                                                         0.00       0.00
+  input external delay                                                                                                0.02       0.02 r
+  y[22] (in)                                                                                                          0.01       0.03 r
+  dut/y[22] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                              0.00       0.03 r
+  dut/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                                   0.00       0.03 r
+  dut/fp_wrapper/U53/Z (CKBD1)                                                                                        0.09       0.12 r
+  dut/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                                          0.00       0.12 r
+  dut/mask_only_plane/y_mantissa[22] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                        0.00       0.12 r
+  dut/mask_only_plane/mult_42/b[3] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)             0.00       0.12 r
+  dut/mask_only_plane/mult_42/U101/ZN (CKND0)                                                                         0.06       0.18 f
+  dut/mask_only_plane/mult_42/U111/ZN (CKND2D0)                                                                       0.08       0.26 r
+  dut/mask_only_plane/mult_42/U114/ZN (OAI22D0)                                                                       0.05       0.32 f
+  dut/mask_only_plane/mult_42/U25/S (HA1D0)                                                                           0.07       0.38 f
+  dut/mask_only_plane/mult_42/U108/Z (OR2D0)                                                                          0.05       0.43 f
+  dut/mask_only_plane/mult_42/U9/CO (FA1D0)                                                                           0.05       0.49 f
+  dut/mask_only_plane/mult_42/U8/CO (FA1D0)                                                                           0.06       0.54 f
+  dut/mask_only_plane/mult_42/U7/CO (FA1D0)                                                                           0.06       0.60 f
+  dut/mask_only_plane/mult_42/U6/CO (FA1D0)                                                                           0.06       0.65 f
+  dut/mask_only_plane/mult_42/U5/CO (FA1D0)                                                                           0.06       0.71 f
+  dut/mask_only_plane/mult_42/U4/CO (FA1D0)                                                                           0.06       0.76 f
+  dut/mask_only_plane/mult_42/U3/CO (FA1D0)                                                                           0.06       0.82 f
+  dut/mask_only_plane/mult_42/U2/S (FA1D0)                                                                            0.08       0.89 r
+  dut/mask_only_plane/mult_42/product[11] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)      0.00       0.89 r
+  dut/mask_only_plane/U14/S (FA1D0)                                                                                   0.10       0.99 f
+  dut/mask_only_plane/U15/CO (FA1D0)                                                                                  0.10       1.09 f
+  dut/mask_only_plane/U6/Z (XOR3D0)                                                                                   0.11       1.20 r
+  dut/mask_only_plane/U5/ZN (XNR3D0)                                                                                  0.07       1.27 r
+  dut/mask_only_plane/plane_exact[24] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                       0.00       1.27 r
+  dut/mult_69/a[8] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                           0.00       1.27 r
+  dut/mult_69/U112/ZN (INVD1)                                                                                         0.02       1.29 f
+  dut/mult_69/U166/ZN (NR2D0)                                                                                         0.04       1.33 r
+  dut/mult_69/U28/S (CMPE42D1)                                                                                        0.19       1.52 f
+  dut/mult_69/U9/CO (FA1D0)                                                                                           0.10       1.62 f
+  dut/mult_69/U8/CO (FA1D0)                                                                                           0.06       1.68 f
+  dut/mult_69/U7/CO (FA1D0)                                                                                           0.06       1.73 f
+  dut/mult_69/U6/CO (FA1D0)                                                                                           0.06       1.79 f
+  dut/mult_69/U5/CO (FA1D0)                                                                                           0.06       1.84 f
+  dut/mult_69/U4/CO (FA1D0)                                                                                           0.06       1.90 f
+  dut/mult_69/U3/CO (FA1D0)                                                                                           0.05       1.95 f
+  dut/mult_69/U125/Z (XOR3D0)                                                                                         0.10       2.05 f
+  dut/mult_69/product[15] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                    0.00       2.05 f
+  dut/U37/ZN (INVD1)                                                                                                  0.06       2.11 r
+  dut/U17/ZN (ND2D1)                                                                                                  0.08       2.19 f
+  dut/U3/ZN (ND2D1)                                                                                                   0.09       2.28 r
+  dut/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                                      0.00       2.28 r
+  dut/fp_wrapper/U41/CO (FA1D0)                                                                                       0.10       2.38 r
+  dut/fp_wrapper/U42/CO (FA1D0)                                                                                       0.05       2.43 r
+  dut/fp_wrapper/U43/CO (FA1D0)                                                                                       0.05       2.49 r
+  dut/fp_wrapper/U44/CO (FA1D0)                                                                                       0.05       2.54 r
+  dut/fp_wrapper/U45/CO (FA1D0)                                                                                       0.05       2.59 r
+  dut/fp_wrapper/U46/CO (FA1D0)                                                                                       0.05       2.64 r
+  dut/fp_wrapper/U56/Z (XOR3D1)                                                                                       0.08       2.72 f
+  dut/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                              0.00       2.72 f
+  dut/result[30] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                         0.00       2.72 f
+  result[30] (out)                                                                                                    0.00       2.72 f
+  data arrival time                                                                                                              2.72
+
+  clock vclk (rise edge)                                                                                             10.00      10.00
+  clock network delay (ideal)                                                                                         0.00      10.00
+  output external delay                                                                                              -0.02       9.98
+  data required time                                                                                                             9.98
+  --------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                             9.98
+  data arrival time                                                                                                             -2.72
+  --------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                    7.26
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  input_l2_mask_b5   ZeroWireload          tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16 ZeroWireload tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                               Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                              0.00       0.00
+  clock network delay (ideal)                                                                                         0.00       0.00
+  input external delay                                                                                                0.02       0.02 r
+  y[22] (in)                                                                                                          0.01       0.03 r
+  dut/y[22] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                              0.00       0.03 r
+  dut/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                                   0.00       0.03 r
+  dut/fp_wrapper/U53/Z (CKBD1)                                                                                        0.09       0.12 r
+  dut/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                                          0.00       0.12 r
+  dut/mask_only_plane/y_mantissa[22] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                        0.00       0.12 r
+  dut/mask_only_plane/mult_42/b[3] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)             0.00       0.12 r
+  dut/mask_only_plane/mult_42/U101/ZN (CKND0)                                                                         0.06       0.18 f
+  dut/mask_only_plane/mult_42/U111/ZN (CKND2D0)                                                                       0.08       0.26 r
+  dut/mask_only_plane/mult_42/U114/ZN (OAI22D0)                                                                       0.05       0.32 f
+  dut/mask_only_plane/mult_42/U25/S (HA1D0)                                                                           0.07       0.38 f
+  dut/mask_only_plane/mult_42/U108/Z (OR2D0)                                                                          0.05       0.43 f
+  dut/mask_only_plane/mult_42/U9/CO (FA1D0)                                                                           0.05       0.49 f
+  dut/mask_only_plane/mult_42/U8/CO (FA1D0)                                                                           0.06       0.54 f
+  dut/mask_only_plane/mult_42/U7/CO (FA1D0)                                                                           0.06       0.60 f
+  dut/mask_only_plane/mult_42/U6/CO (FA1D0)                                                                           0.06       0.65 f
+  dut/mask_only_plane/mult_42/U5/CO (FA1D0)                                                                           0.06       0.71 f
+  dut/mask_only_plane/mult_42/U4/CO (FA1D0)                                                                           0.06       0.76 f
+  dut/mask_only_plane/mult_42/U3/CO (FA1D0)                                                                           0.06       0.82 f
+  dut/mask_only_plane/mult_42/U2/S (FA1D0)                                                                            0.08       0.89 r
+  dut/mask_only_plane/mult_42/product[11] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)      0.00       0.89 r
+  dut/mask_only_plane/U14/S (FA1D0)                                                                                   0.10       0.99 f
+  dut/mask_only_plane/U15/CO (FA1D0)                                                                                  0.10       1.09 f
+  dut/mask_only_plane/U6/Z (XOR3D0)                                                                                   0.11       1.20 r
+  dut/mask_only_plane/U5/ZN (XNR3D0)                                                                                  0.07       1.27 r
+  dut/mask_only_plane/plane_exact[24] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                       0.00       1.27 r
+  dut/mult_69/a[8] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                           0.00       1.27 r
+  dut/mult_69/U112/ZN (INVD1)                                                                                         0.02       1.29 f
+  dut/mult_69/U166/ZN (NR2D0)                                                                                         0.04       1.33 r
+  dut/mult_69/U28/S (CMPE42D1)                                                                                        0.19       1.52 f
+  dut/mult_69/U9/CO (FA1D0)                                                                                           0.10       1.62 f
+  dut/mult_69/U8/CO (FA1D0)                                                                                           0.06       1.68 f
+  dut/mult_69/U7/CO (FA1D0)                                                                                           0.06       1.73 f
+  dut/mult_69/U6/CO (FA1D0)                                                                                           0.06       1.79 f
+  dut/mult_69/U5/CO (FA1D0)                                                                                           0.06       1.84 f
+  dut/mult_69/U4/CO (FA1D0)                                                                                           0.06       1.90 f
+  dut/mult_69/U3/CO (FA1D0)                                                                                           0.05       1.95 f
+  dut/mult_69/U125/Z (XOR3D0)                                                                                         0.10       2.05 f
+  dut/mult_69/product[15] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                    0.00       2.05 f
+  dut/U37/ZN (INVD1)                                                                                                  0.06       2.11 r
+  dut/U17/ZN (ND2D1)                                                                                                  0.08       2.19 f
+  dut/U3/ZN (ND2D1)                                                                                                   0.09       2.28 r
+  dut/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                                      0.00       2.28 r
+  dut/fp_wrapper/U41/CO (FA1D0)                                                                                       0.10       2.38 r
+  dut/fp_wrapper/U42/CO (FA1D0)                                                                                       0.05       2.43 r
+  dut/fp_wrapper/U43/CO (FA1D0)                                                                                       0.05       2.49 r
+  dut/fp_wrapper/U44/CO (FA1D0)                                                                                       0.05       2.54 r
+  dut/fp_wrapper/U45/CO (FA1D0)                                                                                       0.05       2.59 r
+  dut/fp_wrapper/U46/CO (FA1D0)                                                                                       0.05       2.64 r
+  dut/fp_wrapper/U56/Z (XOR3D1)                                                                                       0.08       2.72 f
+  dut/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                              0.00       2.72 f
+  dut/result[30] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                         0.00       2.72 f
+  result[30] (out)                                                                                                    0.00       2.72 f
+  data arrival time                                                                                                              2.72
+
+  clock vclk (rise edge)                                                                                             10.00      10.00
+  clock network delay (ideal)                                                                                         0.00      10.00
+  output external delay                                                                                              -0.02       9.98
+  data required time                                                                                                             9.98
+  --------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                             9.98
+  data arrival time                                                                                                             -2.72
+  --------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                    7.26
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  input_l2_mask_b5   ZeroWireload          tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16 ZeroWireload tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                               Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                              0.00       0.00
+  clock network delay (ideal)                                                                                         0.00       0.00
+  input external delay                                                                                                0.02       0.02 r
+  y[22] (in)                                                                                                          0.01       0.03 r
+  dut/y[22] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                              0.00       0.03 r
+  dut/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                                   0.00       0.03 r
+  dut/fp_wrapper/U53/Z (CKBD1)                                                                                        0.09       0.12 r
+  dut/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                                          0.00       0.12 r
+  dut/mask_only_plane/y_mantissa[22] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                        0.00       0.12 r
+  dut/mask_only_plane/mult_42/b[3] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)             0.00       0.12 r
+  dut/mask_only_plane/mult_42/U101/ZN (CKND0)                                                                         0.06       0.18 f
+  dut/mask_only_plane/mult_42/U111/ZN (CKND2D0)                                                                       0.08       0.26 r
+  dut/mask_only_plane/mult_42/U114/ZN (OAI22D0)                                                                       0.05       0.32 f
+  dut/mask_only_plane/mult_42/U25/S (HA1D0)                                                                           0.07       0.38 f
+  dut/mask_only_plane/mult_42/U108/Z (OR2D0)                                                                          0.05       0.43 f
+  dut/mask_only_plane/mult_42/U9/CO (FA1D0)                                                                           0.05       0.49 f
+  dut/mask_only_plane/mult_42/U8/CO (FA1D0)                                                                           0.06       0.54 f
+  dut/mask_only_plane/mult_42/U7/CO (FA1D0)                                                                           0.06       0.60 f
+  dut/mask_only_plane/mult_42/U6/CO (FA1D0)                                                                           0.06       0.65 f
+  dut/mask_only_plane/mult_42/U5/CO (FA1D0)                                                                           0.06       0.71 f
+  dut/mask_only_plane/mult_42/U4/CO (FA1D0)                                                                           0.06       0.76 f
+  dut/mask_only_plane/mult_42/U3/CO (FA1D0)                                                                           0.06       0.82 f
+  dut/mask_only_plane/mult_42/U2/S (FA1D0)                                                                            0.08       0.89 r
+  dut/mask_only_plane/mult_42/product[11] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)      0.00       0.89 r
+  dut/mask_only_plane/U14/S (FA1D0)                                                                                   0.10       0.99 f
+  dut/mask_only_plane/U15/CO (FA1D0)                                                                                  0.10       1.09 f
+  dut/mask_only_plane/U6/Z (XOR3D0)                                                                                   0.11       1.20 r
+  dut/mask_only_plane/U5/ZN (XNR3D0)                                                                                  0.07       1.27 r
+  dut/mask_only_plane/plane_exact[24] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                       0.00       1.27 r
+  dut/mult_69/a[8] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                           0.00       1.27 r
+  dut/mult_69/U112/ZN (INVD1)                                                                                         0.02       1.29 f
+  dut/mult_69/U166/ZN (NR2D0)                                                                                         0.04       1.33 r
+  dut/mult_69/U28/S (CMPE42D1)                                                                                        0.19       1.52 f
+  dut/mult_69/U9/CO (FA1D0)                                                                                           0.10       1.62 f
+  dut/mult_69/U8/CO (FA1D0)                                                                                           0.06       1.68 f
+  dut/mult_69/U7/CO (FA1D0)                                                                                           0.06       1.73 f
+  dut/mult_69/U6/CO (FA1D0)                                                                                           0.06       1.79 f
+  dut/mult_69/U5/CO (FA1D0)                                                                                           0.06       1.84 f
+  dut/mult_69/U4/CO (FA1D0)                                                                                           0.06       1.90 f
+  dut/mult_69/U3/CO (FA1D0)                                                                                           0.05       1.95 f
+  dut/mult_69/U125/Z (XOR3D0)                                                                                         0.10       2.05 f
+  dut/mult_69/product[15] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                    0.00       2.05 f
+  dut/U37/ZN (INVD1)                                                                                                  0.06       2.11 r
+  dut/U17/ZN (ND2D1)                                                                                                  0.08       2.19 f
+  dut/U3/ZN (ND2D1)                                                                                                   0.09       2.28 r
+  dut/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                                      0.00       2.28 r
+  dut/fp_wrapper/U41/CO (FA1D0)                                                                                       0.10       2.38 r
+  dut/fp_wrapper/U42/CO (FA1D0)                                                                                       0.05       2.43 r
+  dut/fp_wrapper/U43/CO (FA1D0)                                                                                       0.05       2.49 r
+  dut/fp_wrapper/U44/CO (FA1D0)                                                                                       0.05       2.54 r
+  dut/fp_wrapper/U45/CO (FA1D0)                                                                                       0.05       2.59 r
+  dut/fp_wrapper/U46/CO (FA1D0)                                                                                       0.05       2.64 r
+  dut/fp_wrapper/U56/Z (XOR3D1)                                                                                       0.08       2.72 f
+  dut/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                              0.00       2.72 f
+  dut/result[30] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                         0.00       2.72 f
+  result[30] (out)                                                                                                    0.00       2.72 f
+  data arrival time                                                                                                              2.72
+
+  clock vclk (rise edge)                                                                                             10.00      10.00
+  clock network delay (ideal)                                                                                         0.00      10.00
+  output external delay                                                                                              -0.02       9.98
+  data required time                                                                                                             9.98
+  --------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                             9.98
+  data arrival time                                                                                                             -2.72
+  --------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                    7.26
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  input_l2_mask_b5   ZeroWireload          tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16 ZeroWireload tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                               Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                              0.00       0.00
+  clock network delay (ideal)                                                                                         0.00       0.00
+  input external delay                                                                                                0.02       0.02 r
+  y[22] (in)                                                                                                          0.01       0.03 r
+  dut/y[22] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                              0.00       0.03 r
+  dut/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                                   0.00       0.03 r
+  dut/fp_wrapper/U53/Z (CKBD1)                                                                                        0.09       0.12 r
+  dut/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                                          0.00       0.12 r
+  dut/mask_only_plane/y_mantissa[22] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                        0.00       0.12 r
+  dut/mask_only_plane/mult_42/b[3] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)             0.00       0.12 r
+  dut/mask_only_plane/mult_42/U101/ZN (CKND0)                                                                         0.06       0.18 f
+  dut/mask_only_plane/mult_42/U111/ZN (CKND2D0)                                                                       0.08       0.26 r
+  dut/mask_only_plane/mult_42/U114/ZN (OAI22D0)                                                                       0.05       0.32 f
+  dut/mask_only_plane/mult_42/U25/S (HA1D0)                                                                           0.07       0.38 f
+  dut/mask_only_plane/mult_42/U108/Z (OR2D0)                                                                          0.05       0.43 f
+  dut/mask_only_plane/mult_42/U9/CO (FA1D0)                                                                           0.05       0.49 f
+  dut/mask_only_plane/mult_42/U8/CO (FA1D0)                                                                           0.06       0.54 f
+  dut/mask_only_plane/mult_42/U7/CO (FA1D0)                                                                           0.06       0.60 f
+  dut/mask_only_plane/mult_42/U6/CO (FA1D0)                                                                           0.06       0.65 f
+  dut/mask_only_plane/mult_42/U5/CO (FA1D0)                                                                           0.06       0.71 f
+  dut/mask_only_plane/mult_42/U4/CO (FA1D0)                                                                           0.06       0.76 f
+  dut/mask_only_plane/mult_42/U3/CO (FA1D0)                                                                           0.06       0.82 f
+  dut/mask_only_plane/mult_42/U2/S (FA1D0)                                                                            0.08       0.89 r
+  dut/mask_only_plane/mult_42/product[11] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)      0.00       0.89 r
+  dut/mask_only_plane/U14/S (FA1D0)                                                                                   0.10       0.99 f
+  dut/mask_only_plane/U15/CO (FA1D0)                                                                                  0.10       1.09 f
+  dut/mask_only_plane/U6/Z (XOR3D0)                                                                                   0.11       1.20 r
+  dut/mask_only_plane/U5/ZN (XNR3D0)                                                                                  0.07       1.27 r
+  dut/mask_only_plane/plane_exact[24] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                       0.00       1.27 r
+  dut/mult_69/a[8] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                           0.00       1.27 r
+  dut/mult_69/U112/ZN (INVD1)                                                                                         0.02       1.29 f
+  dut/mult_69/U166/ZN (NR2D0)                                                                                         0.04       1.33 r
+  dut/mult_69/U28/S (CMPE42D1)                                                                                        0.19       1.52 f
+  dut/mult_69/U9/CO (FA1D0)                                                                                           0.10       1.62 f
+  dut/mult_69/U8/CO (FA1D0)                                                                                           0.06       1.68 f
+  dut/mult_69/U7/CO (FA1D0)                                                                                           0.06       1.73 f
+  dut/mult_69/U6/CO (FA1D0)                                                                                           0.06       1.79 f
+  dut/mult_69/U5/CO (FA1D0)                                                                                           0.06       1.84 f
+  dut/mult_69/U4/CO (FA1D0)                                                                                           0.06       1.90 f
+  dut/mult_69/U3/CO (FA1D0)                                                                                           0.05       1.95 f
+  dut/mult_69/U125/Z (XOR3D0)                                                                                         0.10       2.05 f
+  dut/mult_69/product[15] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                    0.00       2.05 f
+  dut/U37/ZN (INVD1)                                                                                                  0.06       2.11 r
+  dut/U17/ZN (ND2D1)                                                                                                  0.08       2.19 f
+  dut/U3/ZN (ND2D1)                                                                                                   0.09       2.28 r
+  dut/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                                      0.00       2.28 r
+  dut/fp_wrapper/U41/CO (FA1D0)                                                                                       0.10       2.38 r
+  dut/fp_wrapper/U42/CO (FA1D0)                                                                                       0.05       2.43 r
+  dut/fp_wrapper/U43/CO (FA1D0)                                                                                       0.05       2.49 r
+  dut/fp_wrapper/U44/CO (FA1D0)                                                                                       0.05       2.54 r
+  dut/fp_wrapper/U45/CO (FA1D0)                                                                                       0.05       2.59 r
+  dut/fp_wrapper/U46/CO (FA1D0)                                                                                       0.05       2.64 r
+  dut/fp_wrapper/U56/Z (XOR3D1)                                                                                       0.08       2.72 f
+  dut/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                              0.00       2.72 f
+  dut/result[30] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                         0.00       2.72 f
+  result[30] (out)                                                                                                    0.00       2.72 f
+  data arrival time                                                                                                              2.72
+
+  clock vclk (rise edge)                                                                                             10.00      10.00
+  clock network delay (ideal)                                                                                         0.00      10.00
+  output external delay                                                                                              -0.02       9.98
+  data required time                                                                                                             9.98
+  --------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                             9.98
+  data arrival time                                                                                                             -2.72
+  --------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                    7.26
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  input_l2_mask_b5   ZeroWireload          tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16 ZeroWireload tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                               Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                              0.00       0.00
+  clock network delay (ideal)                                                                                         0.00       0.00
+  input external delay                                                                                                0.02       0.02 r
+  y[22] (in)                                                                                                          0.01       0.03 r
+  dut/y[22] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                              0.00       0.03 r
+  dut/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                                   0.00       0.03 r
+  dut/fp_wrapper/U53/Z (CKBD1)                                                                                        0.09       0.12 r
+  dut/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                                          0.00       0.12 r
+  dut/mask_only_plane/y_mantissa[22] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                        0.00       0.12 r
+  dut/mask_only_plane/mult_42/b[3] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)             0.00       0.12 r
+  dut/mask_only_plane/mult_42/U101/ZN (CKND0)                                                                         0.06       0.18 f
+  dut/mask_only_plane/mult_42/U111/ZN (CKND2D0)                                                                       0.08       0.26 r
+  dut/mask_only_plane/mult_42/U114/ZN (OAI22D0)                                                                       0.05       0.32 f
+  dut/mask_only_plane/mult_42/U25/S (HA1D0)                                                                           0.07       0.38 f
+  dut/mask_only_plane/mult_42/U108/Z (OR2D0)                                                                          0.05       0.43 f
+  dut/mask_only_plane/mult_42/U9/CO (FA1D0)                                                                           0.05       0.49 f
+  dut/mask_only_plane/mult_42/U8/CO (FA1D0)                                                                           0.06       0.54 f
+  dut/mask_only_plane/mult_42/U7/CO (FA1D0)                                                                           0.06       0.60 f
+  dut/mask_only_plane/mult_42/U6/CO (FA1D0)                                                                           0.06       0.65 f
+  dut/mask_only_plane/mult_42/U5/CO (FA1D0)                                                                           0.06       0.71 f
+  dut/mask_only_plane/mult_42/U4/CO (FA1D0)                                                                           0.06       0.76 f
+  dut/mask_only_plane/mult_42/U3/CO (FA1D0)                                                                           0.06       0.82 f
+  dut/mask_only_plane/mult_42/U2/S (FA1D0)                                                                            0.08       0.89 r
+  dut/mask_only_plane/mult_42/product[11] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)      0.00       0.89 r
+  dut/mask_only_plane/U14/S (FA1D0)                                                                                   0.10       0.99 f
+  dut/mask_only_plane/U15/CO (FA1D0)                                                                                  0.10       1.09 f
+  dut/mask_only_plane/U6/Z (XOR3D0)                                                                                   0.11       1.20 r
+  dut/mask_only_plane/U5/ZN (XNR3D0)                                                                                  0.07       1.27 r
+  dut/mask_only_plane/plane_exact[24] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                       0.00       1.27 r
+  dut/mult_69/a[8] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                           0.00       1.27 r
+  dut/mult_69/U112/ZN (INVD1)                                                                                         0.02       1.29 f
+  dut/mult_69/U166/ZN (NR2D0)                                                                                         0.04       1.33 r
+  dut/mult_69/U28/S (CMPE42D1)                                                                                        0.19       1.52 f
+  dut/mult_69/U9/CO (FA1D0)                                                                                           0.10       1.62 f
+  dut/mult_69/U8/CO (FA1D0)                                                                                           0.06       1.68 f
+  dut/mult_69/U7/CO (FA1D0)                                                                                           0.06       1.73 f
+  dut/mult_69/U6/CO (FA1D0)                                                                                           0.06       1.79 f
+  dut/mult_69/U5/CO (FA1D0)                                                                                           0.06       1.84 f
+  dut/mult_69/U4/CO (FA1D0)                                                                                           0.06       1.90 f
+  dut/mult_69/U3/CO (FA1D0)                                                                                           0.05       1.95 f
+  dut/mult_69/U125/Z (XOR3D0)                                                                                         0.10       2.05 f
+  dut/mult_69/product[15] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                    0.00       2.05 f
+  dut/U37/ZN (INVD1)                                                                                                  0.06       2.11 r
+  dut/U17/ZN (ND2D1)                                                                                                  0.08       2.19 f
+  dut/U3/ZN (ND2D1)                                                                                                   0.09       2.28 r
+  dut/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                                      0.00       2.28 r
+  dut/fp_wrapper/U41/CO (FA1D0)                                                                                       0.10       2.38 r
+  dut/fp_wrapper/U42/CO (FA1D0)                                                                                       0.05       2.43 r
+  dut/fp_wrapper/U43/CO (FA1D0)                                                                                       0.05       2.49 r
+  dut/fp_wrapper/U44/CO (FA1D0)                                                                                       0.05       2.54 r
+  dut/fp_wrapper/U45/CO (FA1D0)                                                                                       0.05       2.59 r
+  dut/fp_wrapper/U46/CO (FA1D0)                                                                                       0.05       2.64 r
+  dut/fp_wrapper/U56/Z (XOR3D1)                                                                                       0.08       2.72 f
+  dut/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                              0.00       2.72 f
+  dut/result[30] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                         0.00       2.72 f
+  result[30] (out)                                                                                                    0.00       2.72 f
+  data arrival time                                                                                                              2.72
+
+  clock vclk (rise edge)                                                                                             10.00      10.00
+  clock network delay (ideal)                                                                                         0.00      10.00
+  output external delay                                                                                              -0.02       9.98
+  data required time                                                                                                             9.98
+  --------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                             9.98
+  data arrival time                                                                                                             -2.72
+  --------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                    7.26
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  input_l2_mask_b5   ZeroWireload          tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_uns_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16 ZeroWireload tcbn65gplustc_ccs
+  oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                                               Incr       Path
+  --------------------------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                                              0.00       0.00
+  clock network delay (ideal)                                                                                         0.00       0.00
+  input external delay                                                                                                0.02       0.02 r
+  y[22] (in)                                                                                                          0.01       0.03 r
+  dut/y[22] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                              0.00       0.03 r
+  dut/fp_wrapper/y[22] (fp32_normal_finite_wrapper)                                                                   0.00       0.03 r
+  dut/fp_wrapper/U53/Z (CKBD1)                                                                                        0.09       0.12 r
+  dut/fp_wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                                          0.00       0.12 r
+  dut/mask_only_plane/y_mantissa[22] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                        0.00       0.12 r
+  dut/mask_only_plane/mult_42/b[3] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)             0.00       0.12 r
+  dut/mask_only_plane/mult_42/U101/ZN (CKND0)                                                                         0.06       0.18 f
+  dut/mask_only_plane/mult_42/U111/ZN (CKND2D0)                                                                       0.08       0.26 r
+  dut/mask_only_plane/mult_42/U114/ZN (OAI22D0)                                                                       0.05       0.32 f
+  dut/mask_only_plane/mult_42/U25/S (HA1D0)                                                                           0.07       0.38 f
+  dut/mask_only_plane/mult_42/U108/Z (OR2D0)                                                                          0.05       0.43 f
+  dut/mask_only_plane/mult_42/U9/CO (FA1D0)                                                                           0.05       0.49 f
+  dut/mask_only_plane/mult_42/U8/CO (FA1D0)                                                                           0.06       0.54 f
+  dut/mask_only_plane/mult_42/U7/CO (FA1D0)                                                                           0.06       0.60 f
+  dut/mask_only_plane/mult_42/U6/CO (FA1D0)                                                                           0.06       0.65 f
+  dut/mask_only_plane/mult_42/U5/CO (FA1D0)                                                                           0.06       0.71 f
+  dut/mask_only_plane/mult_42/U4/CO (FA1D0)                                                                           0.06       0.76 f
+  dut/mask_only_plane/mult_42/U3/CO (FA1D0)                                                                           0.06       0.82 f
+  dut/mask_only_plane/mult_42/U2/S (FA1D0)                                                                            0.08       0.89 r
+  dut/mask_only_plane/mult_42/product[11] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16_DW_mult_tc_0)      0.00       0.89 r
+  dut/mask_only_plane/U14/S (FA1D0)                                                                                   0.10       0.99 f
+  dut/mask_only_plane/U15/CO (FA1D0)                                                                                  0.10       1.09 f
+  dut/mask_only_plane/U6/Z (XOR3D0)                                                                                   0.11       1.20 r
+  dut/mask_only_plane/U5/ZN (XNR3D0)                                                                                  0.07       1.27 r
+  dut/mask_only_plane/plane_exact[24] (oadm_fixed_div_specialized_plane_LEVEL2_RESIDUAL_DROP16)                       0.00       1.27 r
+  dut/mult_69/a[8] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                           0.00       1.27 r
+  dut/mult_69/U112/ZN (INVD1)                                                                                         0.02       1.29 f
+  dut/mult_69/U166/ZN (NR2D0)                                                                                         0.04       1.33 r
+  dut/mult_69/U28/S (CMPE42D1)                                                                                        0.19       1.52 f
+  dut/mult_69/U9/CO (FA1D0)                                                                                           0.10       1.62 f
+  dut/mult_69/U8/CO (FA1D0)                                                                                           0.06       1.68 f
+  dut/mult_69/U7/CO (FA1D0)                                                                                           0.06       1.73 f
+  dut/mult_69/U6/CO (FA1D0)                                                                                           0.06       1.79 f
+  dut/mult_69/U5/CO (FA1D0)                                                                                           0.06       1.84 f
+  dut/mult_69/U4/CO (FA1D0)                                                                                           0.06       1.90 f
+  dut/mult_69/U3/CO (FA1D0)                                                                                           0.05       1.95 f
+  dut/mult_69/U125/Z (XOR3D0)                                                                                         0.10       2.05 f
+  dut/mult_69/product[15] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49_DW_mult_uns_0_DW_mult_uns_1)                    0.00       2.05 f
+  dut/U37/ZN (INVD1)                                                                                                  0.06       2.11 r
+  dut/U17/ZN (ND2D1)                                                                                                  0.08       2.19 f
+  dut/U3/ZN (ND2D1)                                                                                                   0.09       2.28 r
+  dut/fp_wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                                      0.00       2.28 r
+  dut/fp_wrapper/U41/CO (FA1D0)                                                                                       0.10       2.38 r
+  dut/fp_wrapper/U42/CO (FA1D0)                                                                                       0.05       2.43 r
+  dut/fp_wrapper/U43/CO (FA1D0)                                                                                       0.05       2.49 r
+  dut/fp_wrapper/U44/CO (FA1D0)                                                                                       0.05       2.54 r
+  dut/fp_wrapper/U45/CO (FA1D0)                                                                                       0.05       2.59 r
+  dut/fp_wrapper/U46/CO (FA1D0)                                                                                       0.05       2.64 r
+  dut/fp_wrapper/U56/Z (XOR3D1)                                                                                       0.08       2.72 f
+  dut/fp_wrapper/result[30] (fp32_normal_finite_wrapper)                                                              0.00       2.72 f
+  dut/result[30] (oadm_input_trial_5_0_2_16_16_8_cb_88_61_49)                                                         0.00       2.72 f
+  result[30] (out)                                                                                                    0.00       2.72 f
+  data arrival time                                                                                                              2.72
+
+  clock vclk (rise edge)                                                                                             10.00      10.00
+  clock network delay (ideal)                                                                                         0.00      10.00
+  output external delay                                                                                              -0.02       9.98
+  data required time                                                                                                             9.98
+  --------------------------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                                             9.98
+  data arrival time                                                                                                             -2.72
+  --------------------------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                                    7.26
+
+
+1
