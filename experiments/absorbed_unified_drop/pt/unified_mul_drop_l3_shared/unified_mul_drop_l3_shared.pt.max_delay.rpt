@@ -1,0 +1,746 @@
+****************************************
+Report : timing
+	-path_type full
+	-delay_type max
+	-nworst 10
+	-slack_lesser_than 1000.00000
+	-max_paths 10
+	-sort_by slack
+Design : unified_mul_drop_l3_shared
+Version: U-2022.12-SP5
+Date   : Wed Sep 16 00:54:44 2026
+****************************************
+
+
+  Startpoint: divide_mode
+               (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock vclk (rise edge)                               0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  input external delay                                 0.02000    0.02000 f
+  divide_mode (in)                                     0.00470    0.02470 f
+  U140/Z (CKBD1)                                       0.07641    0.10112 f
+  shared_core/U5/ZN (CKND0)                            0.14705    0.24817 r
+  shared_core/U422/ZN (NR2D1)                          0.04651    0.29467 f
+  shared_core/U282/Z (AN2XD1)                          0.05473    0.34940 f
+  shared_core/U423/ZN (ND2D1)                          0.02584    0.37524 r
+  shared_core/U108/ZN (INVD1)                          0.02067    0.39592 f
+  shared_core/U29/ZN (NR2D1)                           0.02511    0.42103 r
+  shared_core/U28/ZN (INR4D0)                          0.09557    0.51660 r
+  shared_core/U102/ZN (ND4D1)                          0.05958    0.57618 f
+  shared_core/U105/ZN (NR4D0)                          0.06467    0.64085 r
+  shared_core/U103/ZN (ND4D1)                          0.04675    0.68760 f
+  shared_core/U106/ZN (IND4D1)                         0.06360    0.75120 f
+  shared_core/U88/ZN (NR3D0)                           0.04427    0.79546 r
+  shared_core/U87/ZN (IIND4D1)                         0.16612    0.96159 f
+  shared_core/mult_140/U189/ZN (CKND2D0)               0.05852    1.02011 r
+  shared_core/mult_140/U119/ZN (OAI211D0)              0.12619    1.14629 f
+  shared_core/mult_140/U158/ZN (OAI22D0)               0.08417    1.23047 r
+  shared_core/mult_140/U28/S (HA1D0)                   0.07330    1.30377 f
+  shared_core/mult_140/U13/CO (FA1D0)                  0.10100    1.40478 f
+  shared_core/mult_140/U12/CO (FA1D0)                  0.05524    1.46002 f
+  shared_core/mult_140/U11/CO (FA1D0)                  0.05524    1.51526 f
+  shared_core/mult_140/U10/CO (FA1D0)                  0.05524    1.57051 f
+  shared_core/mult_140/U9/CO (FA1D0)                   0.05524    1.62575 f
+  shared_core/mult_140/U8/CO (FA1D0)                   0.05524    1.68100 f
+  shared_core/mult_140/U7/CO (FA1D0)                   0.05524    1.73624 f
+  shared_core/mult_140/U6/CO (FA1D0)                   0.05524    1.79149 f
+  shared_core/mult_140/U5/CO (FA1D0)                   0.05524    1.84673 f
+  shared_core/mult_140/U4/CO (FA1D0)                   0.05524    1.90197 f
+  shared_core/mult_140/U3/CO (FA1D0)                   0.05524    1.95722 f
+  shared_core/mult_140/U2/CO (FA1D0)                   0.05155    2.00877 f
+  shared_core/mult_140/U136/ZN (CKND0)                 0.06870    2.07746 r
+  shared_core/add_1_root_add_143_2/U1_15/CO (FA1D0)    0.09796    2.17543 r
+  shared_core/add_1_root_add_143_2/U1_16/CO (FA1D0)    0.05081    2.22623 r
+  shared_core/add_1_root_add_143_2/U1_17/S (FA1D0)     0.07720    2.30343 r
+  shared_core/add_0_root_add_143_2/U1_17/CO (FA1D0)    0.08424    2.38767 r
+  shared_core/add_0_root_add_143_2/U1_18/Z (XOR3D1)    0.07705    2.46472 f
+  U84/ZN (NR3D0)                                       0.20675    2.67147 r
+  U78/ZN (IND2D1)                                      0.15319    2.82466 r
+  wrapper/U50/CO (FA1D0)                               0.11173    2.93639 r
+  wrapper/U51/CO (FA1D0)                               0.05152    2.98790 r
+  wrapper/U52/CO (FA1D0)                               0.05152    3.03942 r
+  wrapper/U53/CO (FA1D0)                               0.05152    3.09093 r
+  wrapper/U54/CO (FA1D0)                               0.05152    3.14245 r
+  wrapper/U55/CO (FA1D0)                               0.05240    3.19485 r
+  wrapper/U65/Z (XOR3D1)                               0.06688    3.26173 f
+  wrapper/U63/Z (AO22D0)                               0.07701    3.33875 f
+  result[30] (out)                                     0.00000    3.33875 f
+  data arrival time                                               3.33875
+
+  clock vclk (rise edge)                              10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  clock reconvergence pessimism                        0.00000   10.00000
+  output external delay                               -0.02000    9.98000
+  data required time                                              9.98000
+  ------------------------------------------------------------------------------
+  data required time                                              9.98000
+  data arrival time                                              -3.33875
+  ------------------------------------------------------------------------------
+  slack (MET)                                                     6.64125
+
+
+  Startpoint: divide_mode
+               (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock vclk (rise edge)                               0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  input external delay                                 0.02000    0.02000 f
+  divide_mode (in)                                     0.00470    0.02470 f
+  U140/Z (CKBD1)                                       0.07641    0.10112 f
+  shared_core/U5/ZN (CKND0)                            0.14705    0.24817 r
+  shared_core/U422/ZN (NR2D1)                          0.04651    0.29467 f
+  shared_core/U282/Z (AN2XD1)                          0.05473    0.34940 f
+  shared_core/U423/ZN (ND2D1)                          0.02584    0.37524 r
+  shared_core/U108/ZN (INVD1)                          0.02067    0.39592 f
+  shared_core/U29/ZN (NR2D1)                           0.02511    0.42103 r
+  shared_core/U28/ZN (INR4D0)                          0.09557    0.51660 r
+  shared_core/U102/ZN (ND4D1)                          0.05958    0.57618 f
+  shared_core/U105/ZN (NR4D0)                          0.06467    0.64085 r
+  shared_core/U103/ZN (ND4D1)                          0.04675    0.68760 f
+  shared_core/U106/ZN (IND4D1)                         0.06360    0.75120 f
+  shared_core/U88/ZN (NR3D0)                           0.04427    0.79546 r
+  shared_core/U87/ZN (IIND4D1)                         0.16612    0.96159 f
+  shared_core/mult_140/U189/ZN (CKND2D0)               0.05852    1.02011 r
+  shared_core/mult_140/U119/ZN (OAI211D0)              0.12619    1.14629 f
+  shared_core/mult_140/U158/ZN (OAI22D0)               0.08417    1.23047 r
+  shared_core/mult_140/U28/S (HA1D0)                   0.07330    1.30377 f
+  shared_core/mult_140/U13/CO (FA1D0)                  0.10100    1.40478 f
+  shared_core/mult_140/U12/CO (FA1D0)                  0.05524    1.46002 f
+  shared_core/mult_140/U11/CO (FA1D0)                  0.05524    1.51526 f
+  shared_core/mult_140/U10/CO (FA1D0)                  0.05524    1.57051 f
+  shared_core/mult_140/U9/CO (FA1D0)                   0.05524    1.62575 f
+  shared_core/mult_140/U8/CO (FA1D0)                   0.05524    1.68100 f
+  shared_core/mult_140/U7/CO (FA1D0)                   0.05524    1.73624 f
+  shared_core/mult_140/U6/CO (FA1D0)                   0.05524    1.79149 f
+  shared_core/mult_140/U5/CO (FA1D0)                   0.05524    1.84673 f
+  shared_core/mult_140/U4/CO (FA1D0)                   0.05524    1.90197 f
+  shared_core/mult_140/U3/CO (FA1D0)                   0.05524    1.95722 f
+  shared_core/mult_140/U2/CO (FA1D0)                   0.05155    2.00877 f
+  shared_core/mult_140/U136/ZN (CKND0)                 0.06870    2.07746 r
+  shared_core/add_1_root_add_143_2/U1_15/CO (FA1D0)    0.09796    2.17543 r
+  shared_core/add_1_root_add_143_2/U1_16/S (FA1D0)     0.07720    2.25262 r
+  shared_core/add_0_root_add_143_2/U1_16/CO (FA1D0)    0.08338    2.33600 r
+  shared_core/add_0_root_add_143_2/U1_17/CO (FA1D0)    0.05157    2.38757 r
+  shared_core/add_0_root_add_143_2/U1_18/Z (XOR3D1)    0.07705    2.46462 f
+  U84/ZN (NR3D0)                                       0.20675    2.67136 r
+  U78/ZN (IND2D1)                                      0.15319    2.82456 r
+  wrapper/U50/CO (FA1D0)                               0.11173    2.93628 r
+  wrapper/U51/CO (FA1D0)                               0.05152    2.98780 r
+  wrapper/U52/CO (FA1D0)                               0.05152    3.03931 r
+  wrapper/U53/CO (FA1D0)                               0.05152    3.09083 r
+  wrapper/U54/CO (FA1D0)                               0.05152    3.14234 r
+  wrapper/U55/CO (FA1D0)                               0.05240    3.19474 r
+  wrapper/U65/Z (XOR3D1)                               0.06688    3.26163 f
+  wrapper/U63/Z (AO22D0)                               0.07701    3.33864 f
+  result[30] (out)                                     0.00000    3.33864 f
+  data arrival time                                               3.33864
+
+  clock vclk (rise edge)                              10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  clock reconvergence pessimism                        0.00000   10.00000
+  output external delay                               -0.02000    9.98000
+  data required time                                              9.98000
+  ------------------------------------------------------------------------------
+  data required time                                              9.98000
+  data arrival time                                              -3.33864
+  ------------------------------------------------------------------------------
+  slack (MET)                                                     6.64136
+
+
+  Startpoint: divide_mode
+               (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock vclk (rise edge)                               0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  input external delay                                 0.02000    0.02000 f
+  divide_mode (in)                                     0.00470    0.02470 f
+  U140/Z (CKBD1)                                       0.07641    0.10112 f
+  shared_core/U5/ZN (CKND0)                            0.14705    0.24817 r
+  shared_core/U422/ZN (NR2D1)                          0.04651    0.29467 f
+  shared_core/U282/Z (AN2XD1)                          0.05473    0.34940 f
+  shared_core/U427/ZN (ND2D1)                          0.02586    0.37526 r
+  shared_core/U114/ZN (INVD1)                          0.02048    0.39574 f
+  shared_core/U29/ZN (NR2D1)                           0.02303    0.41877 r
+  shared_core/U28/ZN (INR4D0)                          0.09557    0.51434 r
+  shared_core/U102/ZN (ND4D1)                          0.05958    0.57393 f
+  shared_core/U105/ZN (NR4D0)                          0.06467    0.63860 r
+  shared_core/U103/ZN (ND4D1)                          0.04675    0.68534 f
+  shared_core/U106/ZN (IND4D1)                         0.06360    0.74894 f
+  shared_core/U88/ZN (NR3D0)                           0.04427    0.79321 r
+  shared_core/U87/ZN (IIND4D1)                         0.16612    0.95933 f
+  shared_core/mult_140/U189/ZN (CKND2D0)               0.05852    1.01785 r
+  shared_core/mult_140/U119/ZN (OAI211D0)              0.12619    1.14404 f
+  shared_core/mult_140/U158/ZN (OAI22D0)               0.08417    1.22821 r
+  shared_core/mult_140/U28/S (HA1D0)                   0.07330    1.30152 f
+  shared_core/mult_140/U13/CO (FA1D0)                  0.10100    1.40252 f
+  shared_core/mult_140/U12/CO (FA1D0)                  0.05524    1.45776 f
+  shared_core/mult_140/U11/CO (FA1D0)                  0.05524    1.51301 f
+  shared_core/mult_140/U10/CO (FA1D0)                  0.05524    1.56825 f
+  shared_core/mult_140/U9/CO (FA1D0)                   0.05524    1.62350 f
+  shared_core/mult_140/U8/CO (FA1D0)                   0.05524    1.67874 f
+  shared_core/mult_140/U7/CO (FA1D0)                   0.05524    1.73399 f
+  shared_core/mult_140/U6/CO (FA1D0)                   0.05524    1.78923 f
+  shared_core/mult_140/U5/CO (FA1D0)                   0.05524    1.84448 f
+  shared_core/mult_140/U4/CO (FA1D0)                   0.05524    1.89972 f
+  shared_core/mult_140/U3/CO (FA1D0)                   0.05524    1.95496 f
+  shared_core/mult_140/U2/CO (FA1D0)                   0.05155    2.00651 f
+  shared_core/mult_140/U136/ZN (CKND0)                 0.06870    2.07521 r
+  shared_core/add_1_root_add_143_2/U1_15/CO (FA1D0)    0.09796    2.17317 r
+  shared_core/add_1_root_add_143_2/U1_16/CO (FA1D0)    0.05081    2.22398 r
+  shared_core/add_1_root_add_143_2/U1_17/S (FA1D0)     0.07720    2.30118 r
+  shared_core/add_0_root_add_143_2/U1_17/CO (FA1D0)    0.08424    2.38542 r
+  shared_core/add_0_root_add_143_2/U1_18/Z (XOR3D1)    0.07705    2.46247 f
+  U84/ZN (NR3D0)                                       0.20675    2.66922 r
+  U78/ZN (IND2D1)                                      0.15319    2.82241 r
+  wrapper/U50/CO (FA1D0)                               0.11173    2.93413 r
+  wrapper/U51/CO (FA1D0)                               0.05152    2.98565 r
+  wrapper/U52/CO (FA1D0)                               0.05152    3.03716 r
+  wrapper/U53/CO (FA1D0)                               0.05152    3.08868 r
+  wrapper/U54/CO (FA1D0)                               0.05152    3.14020 r
+  wrapper/U55/CO (FA1D0)                               0.05240    3.19260 r
+  wrapper/U65/Z (XOR3D1)                               0.06688    3.25948 f
+  wrapper/U63/Z (AO22D0)                               0.07701    3.33649 f
+  result[30] (out)                                     0.00000    3.33649 f
+  data arrival time                                               3.33649
+
+  clock vclk (rise edge)                              10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  clock reconvergence pessimism                        0.00000   10.00000
+  output external delay                               -0.02000    9.98000
+  data required time                                              9.98000
+  ------------------------------------------------------------------------------
+  data required time                                              9.98000
+  data arrival time                                              -3.33649
+  ------------------------------------------------------------------------------
+  slack (MET)                                                     6.64351
+
+
+  Startpoint: divide_mode
+               (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock vclk (rise edge)                               0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  input external delay                                 0.02000    0.02000 f
+  divide_mode (in)                                     0.00470    0.02470 f
+  U140/Z (CKBD1)                                       0.07641    0.10112 f
+  shared_core/U5/ZN (CKND0)                            0.14705    0.24817 r
+  shared_core/U422/ZN (NR2D1)                          0.04651    0.29467 f
+  shared_core/U282/Z (AN2XD1)                          0.05473    0.34940 f
+  shared_core/U427/ZN (ND2D1)                          0.02586    0.37526 r
+  shared_core/U114/ZN (INVD1)                          0.02048    0.39574 f
+  shared_core/U29/ZN (NR2D1)                           0.02303    0.41877 r
+  shared_core/U28/ZN (INR4D0)                          0.09557    0.51434 r
+  shared_core/U102/ZN (ND4D1)                          0.05958    0.57393 f
+  shared_core/U105/ZN (NR4D0)                          0.06467    0.63860 r
+  shared_core/U103/ZN (ND4D1)                          0.04675    0.68534 f
+  shared_core/U106/ZN (IND4D1)                         0.06360    0.74894 f
+  shared_core/U88/ZN (NR3D0)                           0.04427    0.79321 r
+  shared_core/U87/ZN (IIND4D1)                         0.16612    0.95933 f
+  shared_core/mult_140/U189/ZN (CKND2D0)               0.05852    1.01785 r
+  shared_core/mult_140/U119/ZN (OAI211D0)              0.12619    1.14404 f
+  shared_core/mult_140/U158/ZN (OAI22D0)               0.08417    1.22821 r
+  shared_core/mult_140/U28/S (HA1D0)                   0.07330    1.30152 f
+  shared_core/mult_140/U13/CO (FA1D0)                  0.10100    1.40252 f
+  shared_core/mult_140/U12/CO (FA1D0)                  0.05524    1.45776 f
+  shared_core/mult_140/U11/CO (FA1D0)                  0.05524    1.51301 f
+  shared_core/mult_140/U10/CO (FA1D0)                  0.05524    1.56825 f
+  shared_core/mult_140/U9/CO (FA1D0)                   0.05524    1.62350 f
+  shared_core/mult_140/U8/CO (FA1D0)                   0.05524    1.67874 f
+  shared_core/mult_140/U7/CO (FA1D0)                   0.05524    1.73399 f
+  shared_core/mult_140/U6/CO (FA1D0)                   0.05524    1.78923 f
+  shared_core/mult_140/U5/CO (FA1D0)                   0.05524    1.84448 f
+  shared_core/mult_140/U4/CO (FA1D0)                   0.05524    1.89972 f
+  shared_core/mult_140/U3/CO (FA1D0)                   0.05524    1.95496 f
+  shared_core/mult_140/U2/CO (FA1D0)                   0.05155    2.00651 f
+  shared_core/mult_140/U136/ZN (CKND0)                 0.06870    2.07521 r
+  shared_core/add_1_root_add_143_2/U1_15/CO (FA1D0)    0.09796    2.17317 r
+  shared_core/add_1_root_add_143_2/U1_16/S (FA1D0)     0.07720    2.25037 r
+  shared_core/add_0_root_add_143_2/U1_16/CO (FA1D0)    0.08338    2.33375 r
+  shared_core/add_0_root_add_143_2/U1_17/CO (FA1D0)    0.05157    2.38531 r
+  shared_core/add_0_root_add_143_2/U1_18/Z (XOR3D1)    0.07705    2.46236 f
+  U84/ZN (NR3D0)                                       0.20675    2.66911 r
+  U78/ZN (IND2D1)                                      0.15319    2.82230 r
+  wrapper/U50/CO (FA1D0)                               0.11173    2.93403 r
+  wrapper/U51/CO (FA1D0)                               0.05152    2.98554 r
+  wrapper/U52/CO (FA1D0)                               0.05152    3.03706 r
+  wrapper/U53/CO (FA1D0)                               0.05152    3.08857 r
+  wrapper/U54/CO (FA1D0)                               0.05152    3.14009 r
+  wrapper/U55/CO (FA1D0)                               0.05240    3.19249 r
+  wrapper/U65/Z (XOR3D1)                               0.06688    3.25937 f
+  wrapper/U63/Z (AO22D0)                               0.07701    3.33639 f
+  result[30] (out)                                     0.00000    3.33639 f
+  data arrival time                                               3.33639
+
+  clock vclk (rise edge)                              10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  clock reconvergence pessimism                        0.00000   10.00000
+  output external delay                               -0.02000    9.98000
+  data required time                                              9.98000
+  ------------------------------------------------------------------------------
+  data required time                                              9.98000
+  data arrival time                                              -3.33639
+  ------------------------------------------------------------------------------
+  slack (MET)                                                     6.64361
+
+
+  Startpoint: divide_mode
+               (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock vclk (rise edge)                               0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  input external delay                                 0.02000    0.02000 f
+  divide_mode (in)                                     0.00470    0.02470 f
+  U140/Z (CKBD1)                                       0.07641    0.10112 f
+  shared_core/U5/ZN (CKND0)                            0.14705    0.24817 r
+  shared_core/U422/ZN (NR2D1)                          0.04651    0.29467 f
+  shared_core/U282/Z (AN2XD1)                          0.05473    0.34940 f
+  shared_core/U423/ZN (ND2D1)                          0.02584    0.37524 r
+  shared_core/U108/ZN (INVD1)                          0.02067    0.39592 f
+  shared_core/U29/ZN (NR2D1)                           0.02511    0.42103 r
+  shared_core/U28/ZN (INR4D0)                          0.09557    0.51660 r
+  shared_core/U102/ZN (ND4D1)                          0.05958    0.57618 f
+  shared_core/U105/ZN (NR4D0)                          0.06467    0.64085 r
+  shared_core/U103/ZN (ND4D1)                          0.04675    0.68760 f
+  shared_core/U106/ZN (IND4D1)                         0.06360    0.75120 f
+  shared_core/U88/ZN (NR3D0)                           0.04427    0.79546 r
+  shared_core/U87/ZN (IIND4D1)                         0.16612    0.96159 f
+  shared_core/mult_140/U189/ZN (CKND2D0)               0.05852    1.02011 r
+  shared_core/mult_140/U119/ZN (OAI211D0)              0.12619    1.14629 f
+  shared_core/mult_140/U158/ZN (OAI22D0)               0.08417    1.23047 r
+  shared_core/mult_140/U28/S (HA1D0)                   0.07330    1.30377 f
+  shared_core/mult_140/U13/CO (FA1D0)                  0.10100    1.40478 f
+  shared_core/mult_140/U12/CO (FA1D0)                  0.05524    1.46002 f
+  shared_core/mult_140/U11/CO (FA1D0)                  0.05524    1.51526 f
+  shared_core/mult_140/U10/CO (FA1D0)                  0.05524    1.57051 f
+  shared_core/mult_140/U9/CO (FA1D0)                   0.05524    1.62575 f
+  shared_core/mult_140/U8/CO (FA1D0)                   0.05524    1.68100 f
+  shared_core/mult_140/U7/CO (FA1D0)                   0.05524    1.73624 f
+  shared_core/mult_140/U6/CO (FA1D0)                   0.05524    1.79149 f
+  shared_core/mult_140/U5/CO (FA1D0)                   0.05524    1.84673 f
+  shared_core/mult_140/U4/CO (FA1D0)                   0.05524    1.90197 f
+  shared_core/mult_140/U3/CO (FA1D0)                   0.05524    1.95722 f
+  shared_core/mult_140/U2/S (FA1D0)                    0.07667    2.03389 r
+  shared_core/add_1_root_add_143_2/U1_14/CO (FA1D0)    0.08338    2.11726 r
+  shared_core/add_1_root_add_143_2/U1_15/CO (FA1D0)    0.05068    2.16795 r
+  shared_core/add_1_root_add_143_2/U1_16/CO (FA1D0)    0.05081    2.21876 r
+  shared_core/add_1_root_add_143_2/U1_17/S (FA1D0)     0.07720    2.29595 r
+  shared_core/add_0_root_add_143_2/U1_17/CO (FA1D0)    0.08424    2.38020 r
+  shared_core/add_0_root_add_143_2/U1_18/Z (XOR3D1)    0.07705    2.45725 f
+  U84/ZN (NR3D0)                                       0.20675    2.66399 r
+  U78/ZN (IND2D1)                                      0.15319    2.81718 r
+  wrapper/U50/CO (FA1D0)                               0.11173    2.92891 r
+  wrapper/U51/CO (FA1D0)                               0.05152    2.98043 r
+  wrapper/U52/CO (FA1D0)                               0.05152    3.03194 r
+  wrapper/U53/CO (FA1D0)                               0.05152    3.08346 r
+  wrapper/U54/CO (FA1D0)                               0.05152    3.13497 r
+  wrapper/U55/CO (FA1D0)                               0.05240    3.18737 r
+  wrapper/U65/Z (XOR3D1)                               0.06688    3.25426 f
+  wrapper/U63/Z (AO22D0)                               0.07701    3.33127 f
+  result[30] (out)                                     0.00000    3.33127 f
+  data arrival time                                               3.33127
+
+  clock vclk (rise edge)                              10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  clock reconvergence pessimism                        0.00000   10.00000
+  output external delay                               -0.02000    9.98000
+  data required time                                              9.98000
+  ------------------------------------------------------------------------------
+  data required time                                              9.98000
+  data arrival time                                              -3.33127
+  ------------------------------------------------------------------------------
+  slack (MET)                                                     6.64873
+
+
+  Startpoint: divide_mode
+               (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock vclk (rise edge)                               0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  input external delay                                 0.02000    0.02000 f
+  divide_mode (in)                                     0.00470    0.02470 f
+  U140/Z (CKBD1)                                       0.07641    0.10112 f
+  shared_core/U5/ZN (CKND0)                            0.14705    0.24817 r
+  shared_core/U422/ZN (NR2D1)                          0.04651    0.29467 f
+  shared_core/U282/Z (AN2XD1)                          0.05473    0.34940 f
+  shared_core/U423/ZN (ND2D1)                          0.02584    0.37524 r
+  shared_core/U108/ZN (INVD1)                          0.02067    0.39592 f
+  shared_core/U29/ZN (NR2D1)                           0.02511    0.42103 r
+  shared_core/U28/ZN (INR4D0)                          0.09557    0.51660 r
+  shared_core/U102/ZN (ND4D1)                          0.05958    0.57618 f
+  shared_core/U105/ZN (NR4D0)                          0.06467    0.64085 r
+  shared_core/U103/ZN (ND4D1)                          0.04675    0.68760 f
+  shared_core/U106/ZN (IND4D1)                         0.06360    0.75120 f
+  shared_core/U88/ZN (NR3D0)                           0.04427    0.79546 r
+  shared_core/U87/ZN (IIND4D1)                         0.16612    0.96159 f
+  shared_core/mult_140/U189/ZN (CKND2D0)               0.05852    1.02011 r
+  shared_core/mult_140/U119/ZN (OAI211D0)              0.12619    1.14629 f
+  shared_core/mult_140/U158/ZN (OAI22D0)               0.08417    1.23047 r
+  shared_core/mult_140/U28/S (HA1D0)                   0.07330    1.30377 f
+  shared_core/mult_140/U13/CO (FA1D0)                  0.10100    1.40478 f
+  shared_core/mult_140/U12/CO (FA1D0)                  0.05524    1.46002 f
+  shared_core/mult_140/U11/CO (FA1D0)                  0.05524    1.51526 f
+  shared_core/mult_140/U10/CO (FA1D0)                  0.05524    1.57051 f
+  shared_core/mult_140/U9/CO (FA1D0)                   0.05524    1.62575 f
+  shared_core/mult_140/U8/CO (FA1D0)                   0.05524    1.68100 f
+  shared_core/mult_140/U7/CO (FA1D0)                   0.05524    1.73624 f
+  shared_core/mult_140/U6/CO (FA1D0)                   0.05524    1.79149 f
+  shared_core/mult_140/U5/CO (FA1D0)                   0.05524    1.84673 f
+  shared_core/mult_140/U4/CO (FA1D0)                   0.05524    1.90197 f
+  shared_core/mult_140/U3/CO (FA1D0)                   0.05524    1.95722 f
+  shared_core/mult_140/U2/S (FA1D0)                    0.07667    2.03389 r
+  shared_core/add_1_root_add_143_2/U1_14/CO (FA1D0)    0.08338    2.11726 r
+  shared_core/add_1_root_add_143_2/U1_15/CO (FA1D0)    0.05068    2.16795 r
+  shared_core/add_1_root_add_143_2/U1_16/S (FA1D0)     0.07720    2.24515 r
+  shared_core/add_0_root_add_143_2/U1_16/CO (FA1D0)    0.08338    2.32852 r
+  shared_core/add_0_root_add_143_2/U1_17/CO (FA1D0)    0.05157    2.38009 r
+  shared_core/add_0_root_add_143_2/U1_18/Z (XOR3D1)    0.07705    2.45714 f
+  U84/ZN (NR3D0)                                       0.20675    2.66389 r
+  U78/ZN (IND2D1)                                      0.15319    2.81708 r
+  wrapper/U50/CO (FA1D0)                               0.11173    2.92880 r
+  wrapper/U51/CO (FA1D0)                               0.05152    2.98032 r
+  wrapper/U52/CO (FA1D0)                               0.05152    3.03184 r
+  wrapper/U53/CO (FA1D0)                               0.05152    3.08335 r
+  wrapper/U54/CO (FA1D0)                               0.05152    3.13487 r
+  wrapper/U55/CO (FA1D0)                               0.05240    3.18727 r
+  wrapper/U65/Z (XOR3D1)                               0.06688    3.25415 f
+  wrapper/U63/Z (AO22D0)                               0.07701    3.33117 f
+  result[30] (out)                                     0.00000    3.33117 f
+  data arrival time                                               3.33117
+
+  clock vclk (rise edge)                              10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  clock reconvergence pessimism                        0.00000   10.00000
+  output external delay                               -0.02000    9.98000
+  data required time                                              9.98000
+  ------------------------------------------------------------------------------
+  data required time                                              9.98000
+  data arrival time                                              -3.33117
+  ------------------------------------------------------------------------------
+  slack (MET)                                                     6.64883
+
+
+  Startpoint: divide_mode
+               (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock vclk (rise edge)                               0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  input external delay                                 0.02000    0.02000 f
+  divide_mode (in)                                     0.00470    0.02470 f
+  U140/Z (CKBD1)                                       0.07641    0.10112 f
+  shared_core/U5/ZN (CKND0)                            0.14705    0.24817 r
+  shared_core/U422/ZN (NR2D1)                          0.04651    0.29467 f
+  shared_core/U282/Z (AN2XD1)                          0.05473    0.34940 f
+  shared_core/U423/ZN (ND2D1)                          0.02584    0.37524 r
+  shared_core/U108/ZN (INVD1)                          0.02067    0.39592 f
+  shared_core/U29/ZN (NR2D1)                           0.02511    0.42103 r
+  shared_core/U28/ZN (INR4D0)                          0.09557    0.51660 r
+  shared_core/U102/ZN (ND4D1)                          0.05958    0.57618 f
+  shared_core/U105/ZN (NR4D0)                          0.06467    0.64085 r
+  shared_core/U103/ZN (ND4D1)                          0.04675    0.68760 f
+  shared_core/U106/ZN (IND4D1)                         0.06360    0.75120 f
+  shared_core/U88/ZN (NR3D0)                           0.04427    0.79546 r
+  shared_core/U87/ZN (IIND4D1)                         0.16612    0.96159 f
+  shared_core/mult_140/U189/ZN (CKND2D0)               0.05852    1.02011 r
+  shared_core/mult_140/U119/ZN (OAI211D0)              0.12619    1.14629 f
+  shared_core/mult_140/U158/ZN (OAI22D0)               0.08417    1.23047 r
+  shared_core/mult_140/U28/S (HA1D0)                   0.07330    1.30377 f
+  shared_core/mult_140/U13/CO (FA1D0)                  0.10100    1.40478 f
+  shared_core/mult_140/U12/CO (FA1D0)                  0.05524    1.46002 f
+  shared_core/mult_140/U11/CO (FA1D0)                  0.05524    1.51526 f
+  shared_core/mult_140/U10/CO (FA1D0)                  0.05524    1.57051 f
+  shared_core/mult_140/U9/CO (FA1D0)                   0.05524    1.62575 f
+  shared_core/mult_140/U8/CO (FA1D0)                   0.05524    1.68100 f
+  shared_core/mult_140/U7/CO (FA1D0)                   0.05524    1.73624 f
+  shared_core/mult_140/U6/CO (FA1D0)                   0.05524    1.79149 f
+  shared_core/mult_140/U5/CO (FA1D0)                   0.05524    1.84673 f
+  shared_core/mult_140/U4/CO (FA1D0)                   0.05524    1.90197 f
+  shared_core/mult_140/U3/CO (FA1D0)                   0.05524    1.95722 f
+  shared_core/mult_140/U2/S (FA1D0)                    0.07667    2.03389 r
+  shared_core/add_1_root_add_143_2/U1_14/CO (FA1D0)    0.08338    2.11726 r
+  shared_core/add_1_root_add_143_2/U1_15/S (FA1D0)     0.07706    2.19432 r
+  shared_core/add_0_root_add_143_2/U1_15/CO (FA1D0)    0.08338    2.27770 r
+  shared_core/add_0_root_add_143_2/U1_16/CO (FA1D0)    0.05068    2.32838 r
+  shared_core/add_0_root_add_143_2/U1_17/CO (FA1D0)    0.05157    2.37995 r
+  shared_core/add_0_root_add_143_2/U1_18/Z (XOR3D1)    0.07705    2.45700 f
+  U84/ZN (NR3D0)                                       0.20675    2.66375 r
+  U78/ZN (IND2D1)                                      0.15319    2.81694 r
+  wrapper/U50/CO (FA1D0)                               0.11173    2.92866 r
+  wrapper/U51/CO (FA1D0)                               0.05152    2.98018 r
+  wrapper/U52/CO (FA1D0)                               0.05152    3.03169 r
+  wrapper/U53/CO (FA1D0)                               0.05152    3.08321 r
+  wrapper/U54/CO (FA1D0)                               0.05152    3.13473 r
+  wrapper/U55/CO (FA1D0)                               0.05240    3.18713 r
+  wrapper/U65/Z (XOR3D1)                               0.06688    3.25401 f
+  wrapper/U63/Z (AO22D0)                               0.07701    3.33103 f
+  result[30] (out)                                     0.00000    3.33103 f
+  data arrival time                                               3.33103
+
+  clock vclk (rise edge)                              10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  clock reconvergence pessimism                        0.00000   10.00000
+  output external delay                               -0.02000    9.98000
+  data required time                                              9.98000
+  ------------------------------------------------------------------------------
+  data required time                                              9.98000
+  data arrival time                                              -3.33103
+  ------------------------------------------------------------------------------
+  slack (MET)                                                     6.64897
+
+
+  Startpoint: divide_mode
+               (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock vclk (rise edge)                               0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  input external delay                                 0.02000    0.02000 f
+  divide_mode (in)                                     0.00470    0.02470 f
+  U140/Z (CKBD1)                                       0.07641    0.10112 f
+  shared_core/U5/ZN (CKND0)                            0.14705    0.24817 r
+  shared_core/U422/ZN (NR2D1)                          0.04651    0.29467 f
+  shared_core/U282/Z (AN2XD1)                          0.05473    0.34940 f
+  shared_core/U423/ZN (ND2D1)                          0.02584    0.37524 r
+  shared_core/U108/ZN (INVD1)                          0.02067    0.39592 f
+  shared_core/U29/ZN (NR2D1)                           0.02511    0.42103 r
+  shared_core/U28/ZN (INR4D0)                          0.09557    0.51660 r
+  shared_core/U102/ZN (ND4D1)                          0.05958    0.57618 f
+  shared_core/U105/ZN (NR4D0)                          0.06467    0.64085 r
+  shared_core/U103/ZN (ND4D1)                          0.04675    0.68760 f
+  shared_core/U106/ZN (IND4D1)                         0.06360    0.75120 f
+  shared_core/U88/ZN (NR3D0)                           0.04427    0.79546 r
+  shared_core/U87/ZN (IIND4D1)                         0.16612    0.96159 f
+  shared_core/mult_140/U189/ZN (CKND2D0)               0.05852    1.02011 r
+  shared_core/mult_140/U119/ZN (OAI211D0)              0.12619    1.14629 f
+  shared_core/mult_140/U158/ZN (OAI22D0)               0.08417    1.23047 r
+  shared_core/mult_140/U28/S (HA1D0)                   0.07330    1.30377 f
+  shared_core/mult_140/U13/CO (FA1D0)                  0.10100    1.40478 f
+  shared_core/mult_140/U12/CO (FA1D0)                  0.05524    1.46002 f
+  shared_core/mult_140/U11/CO (FA1D0)                  0.05524    1.51526 f
+  shared_core/mult_140/U10/CO (FA1D0)                  0.05524    1.57051 f
+  shared_core/mult_140/U9/CO (FA1D0)                   0.05524    1.62575 f
+  shared_core/mult_140/U8/CO (FA1D0)                   0.05524    1.68100 f
+  shared_core/mult_140/U7/CO (FA1D0)                   0.05524    1.73624 f
+  shared_core/mult_140/U6/CO (FA1D0)                   0.05524    1.79149 f
+  shared_core/mult_140/U5/CO (FA1D0)                   0.05524    1.84673 f
+  shared_core/mult_140/U4/CO (FA1D0)                   0.05524    1.90197 f
+  shared_core/mult_140/U3/CO (FA1D0)                   0.05524    1.95722 f
+  shared_core/mult_140/U2/CO (FA1D0)                   0.05155    2.00877 f
+  shared_core/mult_140/U136/ZN (CKND0)                 0.06870    2.07746 r
+  shared_core/add_1_root_add_143_2/U1_15/S (FA1D0)     0.11499    2.19245 r
+  shared_core/add_0_root_add_143_2/U1_15/CO (FA1D0)    0.08338    2.27582 r
+  shared_core/add_0_root_add_143_2/U1_16/CO (FA1D0)    0.05068    2.32651 r
+  shared_core/add_0_root_add_143_2/U1_17/CO (FA1D0)    0.05157    2.37808 r
+  shared_core/add_0_root_add_143_2/U1_18/Z (XOR3D1)    0.07705    2.45513 f
+  U84/ZN (NR3D0)                                       0.20675    2.66187 r
+  U78/ZN (IND2D1)                                      0.15319    2.81507 r
+  wrapper/U50/CO (FA1D0)                               0.11173    2.92679 r
+  wrapper/U51/CO (FA1D0)                               0.05152    2.97831 r
+  wrapper/U52/CO (FA1D0)                               0.05152    3.02982 r
+  wrapper/U53/CO (FA1D0)                               0.05152    3.08134 r
+  wrapper/U54/CO (FA1D0)                               0.05152    3.13285 r
+  wrapper/U55/CO (FA1D0)                               0.05240    3.18525 r
+  wrapper/U65/Z (XOR3D1)                               0.06688    3.25214 f
+  wrapper/U63/Z (AO22D0)                               0.07701    3.32915 f
+  result[30] (out)                                     0.00000    3.32915 f
+  data arrival time                                               3.32915
+
+  clock vclk (rise edge)                              10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  clock reconvergence pessimism                        0.00000   10.00000
+  output external delay                               -0.02000    9.98000
+  data required time                                              9.98000
+  ------------------------------------------------------------------------------
+  data required time                                              9.98000
+  data arrival time                                              -3.32915
+  ------------------------------------------------------------------------------
+  slack (MET)                                                     6.65085
+
+
+  Startpoint: divide_mode
+               (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock vclk (rise edge)                               0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  input external delay                                 0.02000    0.02000 f
+  divide_mode (in)                                     0.00470    0.02470 f
+  U140/Z (CKBD1)                                       0.07641    0.10112 f
+  shared_core/U5/ZN (CKND0)                            0.14705    0.24817 r
+  shared_core/U422/ZN (NR2D1)                          0.04651    0.29467 f
+  shared_core/U282/Z (AN2XD1)                          0.05473    0.34940 f
+  shared_core/U427/ZN (ND2D1)                          0.02586    0.37526 r
+  shared_core/U114/ZN (INVD1)                          0.02048    0.39574 f
+  shared_core/U29/ZN (NR2D1)                           0.02303    0.41877 r
+  shared_core/U28/ZN (INR4D0)                          0.09557    0.51434 r
+  shared_core/U102/ZN (ND4D1)                          0.05958    0.57393 f
+  shared_core/U105/ZN (NR4D0)                          0.06467    0.63860 r
+  shared_core/U103/ZN (ND4D1)                          0.04675    0.68534 f
+  shared_core/U106/ZN (IND4D1)                         0.06360    0.74894 f
+  shared_core/U88/ZN (NR3D0)                           0.04427    0.79321 r
+  shared_core/U87/ZN (IIND4D1)                         0.16612    0.95933 f
+  shared_core/mult_140/U189/ZN (CKND2D0)               0.05852    1.01785 r
+  shared_core/mult_140/U119/ZN (OAI211D0)              0.12619    1.14404 f
+  shared_core/mult_140/U158/ZN (OAI22D0)               0.08417    1.22821 r
+  shared_core/mult_140/U28/S (HA1D0)                   0.07330    1.30152 f
+  shared_core/mult_140/U13/CO (FA1D0)                  0.10100    1.40252 f
+  shared_core/mult_140/U12/CO (FA1D0)                  0.05524    1.45776 f
+  shared_core/mult_140/U11/CO (FA1D0)                  0.05524    1.51301 f
+  shared_core/mult_140/U10/CO (FA1D0)                  0.05524    1.56825 f
+  shared_core/mult_140/U9/CO (FA1D0)                   0.05524    1.62350 f
+  shared_core/mult_140/U8/CO (FA1D0)                   0.05524    1.67874 f
+  shared_core/mult_140/U7/CO (FA1D0)                   0.05524    1.73399 f
+  shared_core/mult_140/U6/CO (FA1D0)                   0.05524    1.78923 f
+  shared_core/mult_140/U5/CO (FA1D0)                   0.05524    1.84448 f
+  shared_core/mult_140/U4/CO (FA1D0)                   0.05524    1.89972 f
+  shared_core/mult_140/U3/CO (FA1D0)                   0.05524    1.95496 f
+  shared_core/mult_140/U2/S (FA1D0)                    0.07667    2.03163 r
+  shared_core/add_1_root_add_143_2/U1_14/CO (FA1D0)    0.08338    2.11501 r
+  shared_core/add_1_root_add_143_2/U1_15/CO (FA1D0)    0.05068    2.16569 r
+  shared_core/add_1_root_add_143_2/U1_16/CO (FA1D0)    0.05081    2.21650 r
+  shared_core/add_1_root_add_143_2/U1_17/S (FA1D0)     0.07720    2.29370 r
+  shared_core/add_0_root_add_143_2/U1_17/CO (FA1D0)    0.08424    2.37794 r
+  shared_core/add_0_root_add_143_2/U1_18/Z (XOR3D1)    0.07705    2.45499 f
+  U84/ZN (NR3D0)                                       0.20675    2.66174 r
+  U78/ZN (IND2D1)                                      0.15319    2.81493 r
+  wrapper/U50/CO (FA1D0)                               0.11173    2.92666 r
+  wrapper/U51/CO (FA1D0)                               0.05152    2.97817 r
+  wrapper/U52/CO (FA1D0)                               0.05152    3.02969 r
+  wrapper/U53/CO (FA1D0)                               0.05152    3.08120 r
+  wrapper/U54/CO (FA1D0)                               0.05152    3.13272 r
+  wrapper/U55/CO (FA1D0)                               0.05240    3.18512 r
+  wrapper/U65/Z (XOR3D1)                               0.06688    3.25200 f
+  wrapper/U63/Z (AO22D0)                               0.07701    3.32902 f
+  result[30] (out)                                     0.00000    3.32902 f
+  data arrival time                                               3.32902
+
+  clock vclk (rise edge)                              10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  clock reconvergence pessimism                        0.00000   10.00000
+  output external delay                               -0.02000    9.98000
+  data required time                                              9.98000
+  ------------------------------------------------------------------------------
+  data required time                                              9.98000
+  data arrival time                                              -3.32902
+  ------------------------------------------------------------------------------
+  slack (MET)                                                     6.65098
+
+
+  Startpoint: divide_mode
+               (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  ------------------------------------------------------------------------------
+  clock vclk (rise edge)                               0.00000    0.00000
+  clock network delay (ideal)                          0.00000    0.00000
+  input external delay                                 0.02000    0.02000 f
+  divide_mode (in)                                     0.00470    0.02470 f
+  U140/Z (CKBD1)                                       0.07641    0.10112 f
+  shared_core/U5/ZN (CKND0)                            0.14705    0.24817 r
+  shared_core/U422/ZN (NR2D1)                          0.04651    0.29467 f
+  shared_core/U282/Z (AN2XD1)                          0.05473    0.34940 f
+  shared_core/U427/ZN (ND2D1)                          0.02586    0.37526 r
+  shared_core/U114/ZN (INVD1)                          0.02048    0.39574 f
+  shared_core/U29/ZN (NR2D1)                           0.02303    0.41877 r
+  shared_core/U28/ZN (INR4D0)                          0.09557    0.51434 r
+  shared_core/U102/ZN (ND4D1)                          0.05958    0.57393 f
+  shared_core/U105/ZN (NR4D0)                          0.06467    0.63860 r
+  shared_core/U103/ZN (ND4D1)                          0.04675    0.68534 f
+  shared_core/U106/ZN (IND4D1)                         0.06360    0.74894 f
+  shared_core/U88/ZN (NR3D0)                           0.04427    0.79321 r
+  shared_core/U87/ZN (IIND4D1)                         0.16612    0.95933 f
+  shared_core/mult_140/U189/ZN (CKND2D0)               0.05852    1.01785 r
+  shared_core/mult_140/U119/ZN (OAI211D0)              0.12619    1.14404 f
+  shared_core/mult_140/U158/ZN (OAI22D0)               0.08417    1.22821 r
+  shared_core/mult_140/U28/S (HA1D0)                   0.07330    1.30152 f
+  shared_core/mult_140/U13/CO (FA1D0)                  0.10100    1.40252 f
+  shared_core/mult_140/U12/CO (FA1D0)                  0.05524    1.45776 f
+  shared_core/mult_140/U11/CO (FA1D0)                  0.05524    1.51301 f
+  shared_core/mult_140/U10/CO (FA1D0)                  0.05524    1.56825 f
+  shared_core/mult_140/U9/CO (FA1D0)                   0.05524    1.62350 f
+  shared_core/mult_140/U8/CO (FA1D0)                   0.05524    1.67874 f
+  shared_core/mult_140/U7/CO (FA1D0)                   0.05524    1.73399 f
+  shared_core/mult_140/U6/CO (FA1D0)                   0.05524    1.78923 f
+  shared_core/mult_140/U5/CO (FA1D0)                   0.05524    1.84448 f
+  shared_core/mult_140/U4/CO (FA1D0)                   0.05524    1.89972 f
+  shared_core/mult_140/U3/CO (FA1D0)                   0.05524    1.95496 f
+  shared_core/mult_140/U2/S (FA1D0)                    0.07667    2.03163 r
+  shared_core/add_1_root_add_143_2/U1_14/CO (FA1D0)    0.08338    2.11501 r
+  shared_core/add_1_root_add_143_2/U1_15/CO (FA1D0)    0.05068    2.16569 r
+  shared_core/add_1_root_add_143_2/U1_16/S (FA1D0)     0.07720    2.24289 r
+  shared_core/add_0_root_add_143_2/U1_16/CO (FA1D0)    0.08338    2.32627 r
+  shared_core/add_0_root_add_143_2/U1_17/CO (FA1D0)    0.05157    2.37784 r
+  shared_core/add_0_root_add_143_2/U1_18/Z (XOR3D1)    0.07705    2.45489 f
+  U84/ZN (NR3D0)                                       0.20675    2.66163 r
+  U78/ZN (IND2D1)                                      0.15319    2.81483 r
+  wrapper/U50/CO (FA1D0)                               0.11173    2.92655 r
+  wrapper/U51/CO (FA1D0)                               0.05152    2.97807 r
+  wrapper/U52/CO (FA1D0)                               0.05152    3.02958 r
+  wrapper/U53/CO (FA1D0)                               0.05152    3.08110 r
+  wrapper/U54/CO (FA1D0)                               0.05152    3.13261 r
+  wrapper/U55/CO (FA1D0)                               0.05240    3.18501 r
+  wrapper/U65/Z (XOR3D1)                               0.06688    3.25190 f
+  wrapper/U63/Z (AO22D0)                               0.07701    3.32891 f
+  result[30] (out)                                     0.00000    3.32891 f
+  data arrival time                                               3.32891
+
+  clock vclk (rise edge)                              10.00000   10.00000
+  clock network delay (ideal)                          0.00000   10.00000
+  clock reconvergence pessimism                        0.00000   10.00000
+  output external delay                               -0.02000    9.98000
+  data required time                                              9.98000
+  ------------------------------------------------------------------------------
+  data required time                                              9.98000
+  data arrival time                                              -3.32891
+  ------------------------------------------------------------------------------
+  slack (MET)                                                     6.65109
+
+Warning: report_timing has satisfied the max_paths criteria. There are 26 further endpoints which have paths of interest with slack less than 1000.00000 that were not considered when generating this report. (UITE-502)
+
+1
