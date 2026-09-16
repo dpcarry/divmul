@@ -1,0 +1,806 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : absdm_l1_separate_native_mul
+Version: U-2022.12-SP7
+Date   : Tue Sep 15 23:00:11 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l1_separate_native_mul ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                             Incr       Path
+  --------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                            0.00       0.00
+  clock network delay (ideal)                                                                       0.00       0.00
+  input external delay                                                                              0.02       0.02 r
+  y[22] (in)                                                                                        0.01       0.03 r
+  wrapper/y[22] (fp32_normal_finite_wrapper)                                                        0.00       0.03 r
+  wrapper/U63/Z (CKBD1)                                                                             0.11       0.14 r
+  wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                               0.00       0.14 r
+  div_core/fy[22] (absdm_l1_separate_native_mul_div)                                                0.00       0.14 r
+  div_core/U39/ZN (INVD1)                                                                           0.03       0.17 f
+  div_core/U40/ZN (ND2D1)                                                                           0.03       0.20 r
+  div_core/U20/ZN (INVD1)                                                                           0.04       0.24 f
+  div_core/U19/ZN (NR2D1)                                                                           0.11       0.34 r
+  div_core/U15/ZN (INVD1)                                                                           0.05       0.39 f
+  div_core/mult_15_S2/b[3] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)             0.00       0.39 f
+  div_core/mult_15_S2/U128/ZN (MUX2ND0)                                                             0.05       0.45 r
+  div_core/mult_15_S2/U76/ZN (MUX2ND0)                                                              0.06       0.51 f
+  div_core/mult_15_S2/U29/S (HA1D0)                                                                 0.06       0.57 r
+  div_core/mult_15_S2/U28/S (FA1D0)                                                                 0.06       0.63 f
+  div_core/mult_15_S2/U10/CO (FA1D0)                                                                0.10       0.73 f
+  div_core/mult_15_S2/U9/CO (FA1D0)                                                                 0.06       0.79 f
+  div_core/mult_15_S2/U8/CO (FA1D0)                                                                 0.06       0.84 f
+  div_core/mult_15_S2/U7/CO (FA1D0)                                                                 0.06       0.90 f
+  div_core/mult_15_S2/U6/CO (FA1D0)                                                                 0.06       0.96 f
+  div_core/mult_15_S2/U5/CO (FA1D0)                                                                 0.06       1.01 f
+  div_core/mult_15_S2/U4/CO (FA1D0)                                                                 0.06       1.07 f
+  div_core/mult_15_S2/U3/CO (FA1D0)                                                                 0.06       1.12 f
+  div_core/mult_15_S2/U2/S (FA1D0)                                                                  0.06       1.18 f
+  div_core/mult_15_S2/product[12] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)      0.00       1.18 f
+  div_core/sub_0_root_sub_17/B[12] (absdm_l1_separate_native_mul_div_DW01_sub_0)                    0.00       1.18 f
+  div_core/sub_0_root_sub_17/U3/ZN (INVD1)                                                          0.02       1.20 r
+  div_core/sub_0_root_sub_17/U2_12/CO (FA1D0)                                                       0.08       1.28 r
+  div_core/sub_0_root_sub_17/U2_13/CO (FA1D0)                                                       0.05       1.33 r
+  div_core/sub_0_root_sub_17/U2_14/Z (XOR3D1)                                                       0.07       1.40 f
+  div_core/sub_0_root_sub_17/DIFF[14] (absdm_l1_separate_native_mul_div_DW01_sub_0)                 0.00       1.40 f
+  div_core/value[24] (absdm_l1_separate_native_mul_div)                                             0.00       1.40 f
+  U106/ZN (AOI22D1)                                                                                 0.15       1.54 r
+  U80/ZN (IND3D1)                                                                                   0.14       1.69 f
+  U78/ZN (ND2D1)                                                                                    0.17       1.86 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                           0.00       1.86 r
+  wrapper/U46/CO (FA1D0)                                                                            0.11       1.97 r
+  wrapper/U47/CO (FA1D0)                                                                            0.05       2.02 r
+  wrapper/U48/CO (FA1D0)                                                                            0.05       2.08 r
+  wrapper/U49/CO (FA1D0)                                                                            0.05       2.13 r
+  wrapper/U50/CO (FA1D0)                                                                            0.05       2.18 r
+  wrapper/U51/CO (FA1D0)                                                                            0.05       2.23 r
+  wrapper/U62/Z (XOR3D1)                                                                            0.07       2.30 f
+  wrapper/U60/Z (AO22D0)                                                                            0.08       2.38 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                                   0.00       2.38 f
+  result[30] (out)                                                                                  0.00       2.38 f
+  data arrival time                                                                                            2.38
+
+  clock vclk (rise edge)                                                                           10.00      10.00
+  clock network delay (ideal)                                                                       0.00      10.00
+  output external delay                                                                            -0.02       9.98
+  data required time                                                                                           9.98
+  --------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                           9.98
+  data arrival time                                                                                           -2.38
+  --------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                  7.60
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l1_separate_native_mul ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                             Incr       Path
+  --------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                            0.00       0.00
+  clock network delay (ideal)                                                                       0.00       0.00
+  input external delay                                                                              0.02       0.02 r
+  y[22] (in)                                                                                        0.01       0.03 r
+  wrapper/y[22] (fp32_normal_finite_wrapper)                                                        0.00       0.03 r
+  wrapper/U63/Z (CKBD1)                                                                             0.11       0.14 r
+  wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                               0.00       0.14 r
+  div_core/fy[22] (absdm_l1_separate_native_mul_div)                                                0.00       0.14 r
+  div_core/U39/ZN (INVD1)                                                                           0.03       0.17 f
+  div_core/U40/ZN (ND2D1)                                                                           0.03       0.20 r
+  div_core/U20/ZN (INVD1)                                                                           0.04       0.24 f
+  div_core/U19/ZN (NR2D1)                                                                           0.11       0.34 r
+  div_core/U15/ZN (INVD1)                                                                           0.05       0.39 f
+  div_core/mult_15_S2/b[3] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)             0.00       0.39 f
+  div_core/mult_15_S2/U128/ZN (MUX2ND0)                                                             0.05       0.45 r
+  div_core/mult_15_S2/U76/ZN (MUX2ND0)                                                              0.06       0.51 f
+  div_core/mult_15_S2/U29/S (HA1D0)                                                                 0.06       0.57 r
+  div_core/mult_15_S2/U28/S (FA1D0)                                                                 0.06       0.63 f
+  div_core/mult_15_S2/U10/CO (FA1D0)                                                                0.10       0.73 f
+  div_core/mult_15_S2/U9/CO (FA1D0)                                                                 0.06       0.79 f
+  div_core/mult_15_S2/U8/CO (FA1D0)                                                                 0.06       0.84 f
+  div_core/mult_15_S2/U7/CO (FA1D0)                                                                 0.06       0.90 f
+  div_core/mult_15_S2/U6/CO (FA1D0)                                                                 0.06       0.96 f
+  div_core/mult_15_S2/U5/CO (FA1D0)                                                                 0.06       1.01 f
+  div_core/mult_15_S2/U4/CO (FA1D0)                                                                 0.06       1.07 f
+  div_core/mult_15_S2/U3/CO (FA1D0)                                                                 0.06       1.12 f
+  div_core/mult_15_S2/U2/S (FA1D0)                                                                  0.06       1.18 f
+  div_core/mult_15_S2/product[12] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)      0.00       1.18 f
+  div_core/sub_0_root_sub_17/B[12] (absdm_l1_separate_native_mul_div_DW01_sub_0)                    0.00       1.18 f
+  div_core/sub_0_root_sub_17/U3/ZN (INVD1)                                                          0.02       1.20 r
+  div_core/sub_0_root_sub_17/U2_12/CO (FA1D0)                                                       0.08       1.28 r
+  div_core/sub_0_root_sub_17/U2_13/CO (FA1D0)                                                       0.05       1.33 r
+  div_core/sub_0_root_sub_17/U2_14/Z (XOR3D1)                                                       0.07       1.40 f
+  div_core/sub_0_root_sub_17/DIFF[14] (absdm_l1_separate_native_mul_div_DW01_sub_0)                 0.00       1.40 f
+  div_core/value[24] (absdm_l1_separate_native_mul_div)                                             0.00       1.40 f
+  U106/ZN (AOI22D1)                                                                                 0.15       1.54 r
+  U80/ZN (IND3D1)                                                                                   0.14       1.69 f
+  U78/ZN (ND2D1)                                                                                    0.17       1.86 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                           0.00       1.86 r
+  wrapper/U46/CO (FA1D0)                                                                            0.11       1.97 r
+  wrapper/U47/CO (FA1D0)                                                                            0.05       2.02 r
+  wrapper/U48/CO (FA1D0)                                                                            0.05       2.08 r
+  wrapper/U49/CO (FA1D0)                                                                            0.05       2.13 r
+  wrapper/U50/CO (FA1D0)                                                                            0.05       2.18 r
+  wrapper/U51/CO (FA1D0)                                                                            0.05       2.23 r
+  wrapper/U62/Z (XOR3D1)                                                                            0.07       2.30 f
+  wrapper/U60/Z (AO22D0)                                                                            0.08       2.38 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                                   0.00       2.38 f
+  result[30] (out)                                                                                  0.00       2.38 f
+  data arrival time                                                                                            2.38
+
+  clock vclk (rise edge)                                                                           10.00      10.00
+  clock network delay (ideal)                                                                       0.00      10.00
+  output external delay                                                                            -0.02       9.98
+  data required time                                                                                           9.98
+  --------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                           9.98
+  data arrival time                                                                                           -2.38
+  --------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                  7.60
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l1_separate_native_mul ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                             Incr       Path
+  --------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                            0.00       0.00
+  clock network delay (ideal)                                                                       0.00       0.00
+  input external delay                                                                              0.02       0.02 r
+  y[22] (in)                                                                                        0.01       0.03 r
+  wrapper/y[22] (fp32_normal_finite_wrapper)                                                        0.00       0.03 r
+  wrapper/U63/Z (CKBD1)                                                                             0.11       0.14 r
+  wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                               0.00       0.14 r
+  div_core/fy[22] (absdm_l1_separate_native_mul_div)                                                0.00       0.14 r
+  div_core/U39/ZN (INVD1)                                                                           0.03       0.17 f
+  div_core/U40/ZN (ND2D1)                                                                           0.03       0.20 r
+  div_core/U20/ZN (INVD1)                                                                           0.04       0.24 f
+  div_core/U19/ZN (NR2D1)                                                                           0.11       0.34 r
+  div_core/U15/ZN (INVD1)                                                                           0.05       0.39 f
+  div_core/mult_15_S2/b[3] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)             0.00       0.39 f
+  div_core/mult_15_S2/U128/ZN (MUX2ND0)                                                             0.05       0.45 r
+  div_core/mult_15_S2/U76/ZN (MUX2ND0)                                                              0.06       0.51 f
+  div_core/mult_15_S2/U29/S (HA1D0)                                                                 0.06       0.57 r
+  div_core/mult_15_S2/U28/S (FA1D0)                                                                 0.06       0.63 f
+  div_core/mult_15_S2/U10/CO (FA1D0)                                                                0.10       0.73 f
+  div_core/mult_15_S2/U9/CO (FA1D0)                                                                 0.06       0.79 f
+  div_core/mult_15_S2/U8/CO (FA1D0)                                                                 0.06       0.84 f
+  div_core/mult_15_S2/U7/CO (FA1D0)                                                                 0.06       0.90 f
+  div_core/mult_15_S2/U6/CO (FA1D0)                                                                 0.06       0.96 f
+  div_core/mult_15_S2/U5/CO (FA1D0)                                                                 0.06       1.01 f
+  div_core/mult_15_S2/U4/CO (FA1D0)                                                                 0.06       1.07 f
+  div_core/mult_15_S2/U3/CO (FA1D0)                                                                 0.06       1.12 f
+  div_core/mult_15_S2/U2/S (FA1D0)                                                                  0.06       1.18 f
+  div_core/mult_15_S2/product[12] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)      0.00       1.18 f
+  div_core/sub_0_root_sub_17/B[12] (absdm_l1_separate_native_mul_div_DW01_sub_0)                    0.00       1.18 f
+  div_core/sub_0_root_sub_17/U3/ZN (INVD1)                                                          0.02       1.20 r
+  div_core/sub_0_root_sub_17/U2_12/CO (FA1D0)                                                       0.08       1.28 r
+  div_core/sub_0_root_sub_17/U2_13/CO (FA1D0)                                                       0.05       1.33 r
+  div_core/sub_0_root_sub_17/U2_14/Z (XOR3D1)                                                       0.07       1.40 f
+  div_core/sub_0_root_sub_17/DIFF[14] (absdm_l1_separate_native_mul_div_DW01_sub_0)                 0.00       1.40 f
+  div_core/value[24] (absdm_l1_separate_native_mul_div)                                             0.00       1.40 f
+  U106/ZN (AOI22D1)                                                                                 0.15       1.54 r
+  U80/ZN (IND3D1)                                                                                   0.14       1.69 f
+  U78/ZN (ND2D1)                                                                                    0.17       1.86 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                           0.00       1.86 r
+  wrapper/U46/CO (FA1D0)                                                                            0.11       1.97 r
+  wrapper/U47/CO (FA1D0)                                                                            0.05       2.02 r
+  wrapper/U48/CO (FA1D0)                                                                            0.05       2.08 r
+  wrapper/U49/CO (FA1D0)                                                                            0.05       2.13 r
+  wrapper/U50/CO (FA1D0)                                                                            0.05       2.18 r
+  wrapper/U51/CO (FA1D0)                                                                            0.05       2.23 r
+  wrapper/U62/Z (XOR3D1)                                                                            0.07       2.30 f
+  wrapper/U60/Z (AO22D0)                                                                            0.08       2.38 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                                   0.00       2.38 f
+  result[30] (out)                                                                                  0.00       2.38 f
+  data arrival time                                                                                            2.38
+
+  clock vclk (rise edge)                                                                           10.00      10.00
+  clock network delay (ideal)                                                                       0.00      10.00
+  output external delay                                                                            -0.02       9.98
+  data required time                                                                                           9.98
+  --------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                           9.98
+  data arrival time                                                                                           -2.38
+  --------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                  7.60
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l1_separate_native_mul ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                             Incr       Path
+  --------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                            0.00       0.00
+  clock network delay (ideal)                                                                       0.00       0.00
+  input external delay                                                                              0.02       0.02 r
+  y[22] (in)                                                                                        0.01       0.03 r
+  wrapper/y[22] (fp32_normal_finite_wrapper)                                                        0.00       0.03 r
+  wrapper/U63/Z (CKBD1)                                                                             0.11       0.14 r
+  wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                               0.00       0.14 r
+  div_core/fy[22] (absdm_l1_separate_native_mul_div)                                                0.00       0.14 r
+  div_core/U39/ZN (INVD1)                                                                           0.03       0.17 f
+  div_core/U40/ZN (ND2D1)                                                                           0.03       0.20 r
+  div_core/U20/ZN (INVD1)                                                                           0.04       0.24 f
+  div_core/U19/ZN (NR2D1)                                                                           0.11       0.34 r
+  div_core/U15/ZN (INVD1)                                                                           0.05       0.39 f
+  div_core/mult_15_S2/b[3] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)             0.00       0.39 f
+  div_core/mult_15_S2/U128/ZN (MUX2ND0)                                                             0.05       0.45 r
+  div_core/mult_15_S2/U76/ZN (MUX2ND0)                                                              0.06       0.51 f
+  div_core/mult_15_S2/U29/S (HA1D0)                                                                 0.06       0.57 r
+  div_core/mult_15_S2/U28/S (FA1D0)                                                                 0.06       0.63 f
+  div_core/mult_15_S2/U10/CO (FA1D0)                                                                0.10       0.73 f
+  div_core/mult_15_S2/U9/CO (FA1D0)                                                                 0.06       0.79 f
+  div_core/mult_15_S2/U8/CO (FA1D0)                                                                 0.06       0.84 f
+  div_core/mult_15_S2/U7/CO (FA1D0)                                                                 0.06       0.90 f
+  div_core/mult_15_S2/U6/CO (FA1D0)                                                                 0.06       0.96 f
+  div_core/mult_15_S2/U5/CO (FA1D0)                                                                 0.06       1.01 f
+  div_core/mult_15_S2/U4/CO (FA1D0)                                                                 0.06       1.07 f
+  div_core/mult_15_S2/U3/CO (FA1D0)                                                                 0.06       1.12 f
+  div_core/mult_15_S2/U2/S (FA1D0)                                                                  0.06       1.18 f
+  div_core/mult_15_S2/product[12] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)      0.00       1.18 f
+  div_core/sub_0_root_sub_17/B[12] (absdm_l1_separate_native_mul_div_DW01_sub_0)                    0.00       1.18 f
+  div_core/sub_0_root_sub_17/U3/ZN (INVD1)                                                          0.02       1.20 r
+  div_core/sub_0_root_sub_17/U2_12/CO (FA1D0)                                                       0.08       1.28 r
+  div_core/sub_0_root_sub_17/U2_13/CO (FA1D0)                                                       0.05       1.33 r
+  div_core/sub_0_root_sub_17/U2_14/Z (XOR3D1)                                                       0.07       1.40 f
+  div_core/sub_0_root_sub_17/DIFF[14] (absdm_l1_separate_native_mul_div_DW01_sub_0)                 0.00       1.40 f
+  div_core/value[24] (absdm_l1_separate_native_mul_div)                                             0.00       1.40 f
+  U106/ZN (AOI22D1)                                                                                 0.15       1.54 r
+  U80/ZN (IND3D1)                                                                                   0.14       1.69 f
+  U78/ZN (ND2D1)                                                                                    0.17       1.86 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                           0.00       1.86 r
+  wrapper/U46/CO (FA1D0)                                                                            0.11       1.97 r
+  wrapper/U47/CO (FA1D0)                                                                            0.05       2.02 r
+  wrapper/U48/CO (FA1D0)                                                                            0.05       2.08 r
+  wrapper/U49/CO (FA1D0)                                                                            0.05       2.13 r
+  wrapper/U50/CO (FA1D0)                                                                            0.05       2.18 r
+  wrapper/U51/CO (FA1D0)                                                                            0.05       2.23 r
+  wrapper/U62/Z (XOR3D1)                                                                            0.07       2.30 f
+  wrapper/U60/Z (AO22D0)                                                                            0.08       2.38 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                                   0.00       2.38 f
+  result[30] (out)                                                                                  0.00       2.38 f
+  data arrival time                                                                                            2.38
+
+  clock vclk (rise edge)                                                                           10.00      10.00
+  clock network delay (ideal)                                                                       0.00      10.00
+  output external delay                                                                            -0.02       9.98
+  data required time                                                                                           9.98
+  --------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                           9.98
+  data arrival time                                                                                           -2.38
+  --------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                  7.60
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l1_separate_native_mul ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                             Incr       Path
+  --------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                            0.00       0.00
+  clock network delay (ideal)                                                                       0.00       0.00
+  input external delay                                                                              0.02       0.02 r
+  y[22] (in)                                                                                        0.01       0.03 r
+  wrapper/y[22] (fp32_normal_finite_wrapper)                                                        0.00       0.03 r
+  wrapper/U63/Z (CKBD1)                                                                             0.11       0.14 r
+  wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                               0.00       0.14 r
+  div_core/fy[22] (absdm_l1_separate_native_mul_div)                                                0.00       0.14 r
+  div_core/U39/ZN (INVD1)                                                                           0.03       0.17 f
+  div_core/U40/ZN (ND2D1)                                                                           0.03       0.20 r
+  div_core/U20/ZN (INVD1)                                                                           0.04       0.24 f
+  div_core/U19/ZN (NR2D1)                                                                           0.11       0.34 r
+  div_core/U15/ZN (INVD1)                                                                           0.05       0.39 f
+  div_core/mult_15_S2/b[3] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)             0.00       0.39 f
+  div_core/mult_15_S2/U128/ZN (MUX2ND0)                                                             0.05       0.45 r
+  div_core/mult_15_S2/U76/ZN (MUX2ND0)                                                              0.06       0.51 f
+  div_core/mult_15_S2/U29/S (HA1D0)                                                                 0.06       0.57 r
+  div_core/mult_15_S2/U28/S (FA1D0)                                                                 0.06       0.63 f
+  div_core/mult_15_S2/U10/CO (FA1D0)                                                                0.10       0.73 f
+  div_core/mult_15_S2/U9/CO (FA1D0)                                                                 0.06       0.79 f
+  div_core/mult_15_S2/U8/CO (FA1D0)                                                                 0.06       0.84 f
+  div_core/mult_15_S2/U7/CO (FA1D0)                                                                 0.06       0.90 f
+  div_core/mult_15_S2/U6/CO (FA1D0)                                                                 0.06       0.96 f
+  div_core/mult_15_S2/U5/CO (FA1D0)                                                                 0.06       1.01 f
+  div_core/mult_15_S2/U4/CO (FA1D0)                                                                 0.06       1.07 f
+  div_core/mult_15_S2/U3/CO (FA1D0)                                                                 0.06       1.12 f
+  div_core/mult_15_S2/U2/S (FA1D0)                                                                  0.06       1.18 f
+  div_core/mult_15_S2/product[12] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)      0.00       1.18 f
+  div_core/sub_0_root_sub_17/B[12] (absdm_l1_separate_native_mul_div_DW01_sub_0)                    0.00       1.18 f
+  div_core/sub_0_root_sub_17/U3/ZN (INVD1)                                                          0.02       1.20 r
+  div_core/sub_0_root_sub_17/U2_12/CO (FA1D0)                                                       0.08       1.28 r
+  div_core/sub_0_root_sub_17/U2_13/CO (FA1D0)                                                       0.05       1.33 r
+  div_core/sub_0_root_sub_17/U2_14/Z (XOR3D1)                                                       0.07       1.40 f
+  div_core/sub_0_root_sub_17/DIFF[14] (absdm_l1_separate_native_mul_div_DW01_sub_0)                 0.00       1.40 f
+  div_core/value[24] (absdm_l1_separate_native_mul_div)                                             0.00       1.40 f
+  U106/ZN (AOI22D1)                                                                                 0.15       1.54 r
+  U80/ZN (IND3D1)                                                                                   0.14       1.69 f
+  U78/ZN (ND2D1)                                                                                    0.17       1.86 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                           0.00       1.86 r
+  wrapper/U46/CO (FA1D0)                                                                            0.11       1.97 r
+  wrapper/U47/CO (FA1D0)                                                                            0.05       2.02 r
+  wrapper/U48/CO (FA1D0)                                                                            0.05       2.08 r
+  wrapper/U49/CO (FA1D0)                                                                            0.05       2.13 r
+  wrapper/U50/CO (FA1D0)                                                                            0.05       2.18 r
+  wrapper/U51/CO (FA1D0)                                                                            0.05       2.23 r
+  wrapper/U62/Z (XOR3D1)                                                                            0.07       2.30 f
+  wrapper/U60/Z (AO22D0)                                                                            0.08       2.38 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                                   0.00       2.38 f
+  result[30] (out)                                                                                  0.00       2.38 f
+  data arrival time                                                                                            2.38
+
+  clock vclk (rise edge)                                                                           10.00      10.00
+  clock network delay (ideal)                                                                       0.00      10.00
+  output external delay                                                                            -0.02       9.98
+  data required time                                                                                           9.98
+  --------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                           9.98
+  data arrival time                                                                                           -2.38
+  --------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                  7.60
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l1_separate_native_mul ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                             Incr       Path
+  --------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                            0.00       0.00
+  clock network delay (ideal)                                                                       0.00       0.00
+  input external delay                                                                              0.02       0.02 r
+  y[22] (in)                                                                                        0.01       0.03 r
+  wrapper/y[22] (fp32_normal_finite_wrapper)                                                        0.00       0.03 r
+  wrapper/U63/Z (CKBD1)                                                                             0.11       0.14 r
+  wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                               0.00       0.14 r
+  div_core/fy[22] (absdm_l1_separate_native_mul_div)                                                0.00       0.14 r
+  div_core/U39/ZN (INVD1)                                                                           0.03       0.17 f
+  div_core/U40/ZN (ND2D1)                                                                           0.03       0.20 r
+  div_core/U20/ZN (INVD1)                                                                           0.04       0.24 f
+  div_core/U19/ZN (NR2D1)                                                                           0.11       0.34 r
+  div_core/U15/ZN (INVD1)                                                                           0.05       0.39 f
+  div_core/mult_15_S2/b[3] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)             0.00       0.39 f
+  div_core/mult_15_S2/U128/ZN (MUX2ND0)                                                             0.05       0.45 r
+  div_core/mult_15_S2/U76/ZN (MUX2ND0)                                                              0.06       0.51 f
+  div_core/mult_15_S2/U29/S (HA1D0)                                                                 0.06       0.57 r
+  div_core/mult_15_S2/U28/S (FA1D0)                                                                 0.06       0.63 f
+  div_core/mult_15_S2/U10/CO (FA1D0)                                                                0.10       0.73 f
+  div_core/mult_15_S2/U9/CO (FA1D0)                                                                 0.06       0.79 f
+  div_core/mult_15_S2/U8/CO (FA1D0)                                                                 0.06       0.84 f
+  div_core/mult_15_S2/U7/CO (FA1D0)                                                                 0.06       0.90 f
+  div_core/mult_15_S2/U6/CO (FA1D0)                                                                 0.06       0.96 f
+  div_core/mult_15_S2/U5/CO (FA1D0)                                                                 0.06       1.01 f
+  div_core/mult_15_S2/U4/CO (FA1D0)                                                                 0.06       1.07 f
+  div_core/mult_15_S2/U3/CO (FA1D0)                                                                 0.06       1.12 f
+  div_core/mult_15_S2/U2/S (FA1D0)                                                                  0.06       1.18 f
+  div_core/mult_15_S2/product[12] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)      0.00       1.18 f
+  div_core/sub_0_root_sub_17/B[12] (absdm_l1_separate_native_mul_div_DW01_sub_0)                    0.00       1.18 f
+  div_core/sub_0_root_sub_17/U3/ZN (INVD1)                                                          0.02       1.20 r
+  div_core/sub_0_root_sub_17/U2_12/CO (FA1D0)                                                       0.08       1.28 r
+  div_core/sub_0_root_sub_17/U2_13/CO (FA1D0)                                                       0.05       1.33 r
+  div_core/sub_0_root_sub_17/U2_14/Z (XOR3D1)                                                       0.07       1.40 f
+  div_core/sub_0_root_sub_17/DIFF[14] (absdm_l1_separate_native_mul_div_DW01_sub_0)                 0.00       1.40 f
+  div_core/value[24] (absdm_l1_separate_native_mul_div)                                             0.00       1.40 f
+  U106/ZN (AOI22D1)                                                                                 0.15       1.54 r
+  U80/ZN (IND3D1)                                                                                   0.14       1.69 f
+  U78/ZN (ND2D1)                                                                                    0.17       1.86 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                           0.00       1.86 r
+  wrapper/U46/CO (FA1D0)                                                                            0.11       1.97 r
+  wrapper/U47/CO (FA1D0)                                                                            0.05       2.02 r
+  wrapper/U48/CO (FA1D0)                                                                            0.05       2.08 r
+  wrapper/U49/CO (FA1D0)                                                                            0.05       2.13 r
+  wrapper/U50/CO (FA1D0)                                                                            0.05       2.18 r
+  wrapper/U51/CO (FA1D0)                                                                            0.05       2.23 r
+  wrapper/U62/Z (XOR3D1)                                                                            0.07       2.30 f
+  wrapper/U60/Z (AO22D0)                                                                            0.08       2.38 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                                   0.00       2.38 f
+  result[30] (out)                                                                                  0.00       2.38 f
+  data arrival time                                                                                            2.38
+
+  clock vclk (rise edge)                                                                           10.00      10.00
+  clock network delay (ideal)                                                                       0.00      10.00
+  output external delay                                                                            -0.02       9.98
+  data required time                                                                                           9.98
+  --------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                           9.98
+  data arrival time                                                                                           -2.38
+  --------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                  7.60
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l1_separate_native_mul ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                             Incr       Path
+  --------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                            0.00       0.00
+  clock network delay (ideal)                                                                       0.00       0.00
+  input external delay                                                                              0.02       0.02 r
+  y[22] (in)                                                                                        0.01       0.03 r
+  wrapper/y[22] (fp32_normal_finite_wrapper)                                                        0.00       0.03 r
+  wrapper/U63/Z (CKBD1)                                                                             0.11       0.14 r
+  wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                               0.00       0.14 r
+  div_core/fy[22] (absdm_l1_separate_native_mul_div)                                                0.00       0.14 r
+  div_core/U39/ZN (INVD1)                                                                           0.03       0.17 f
+  div_core/U40/ZN (ND2D1)                                                                           0.03       0.20 r
+  div_core/U20/ZN (INVD1)                                                                           0.04       0.24 f
+  div_core/U19/ZN (NR2D1)                                                                           0.11       0.34 r
+  div_core/U15/ZN (INVD1)                                                                           0.05       0.39 f
+  div_core/mult_15_S2/b[3] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)             0.00       0.39 f
+  div_core/mult_15_S2/U128/ZN (MUX2ND0)                                                             0.05       0.45 r
+  div_core/mult_15_S2/U76/ZN (MUX2ND0)                                                              0.06       0.51 f
+  div_core/mult_15_S2/U29/S (HA1D0)                                                                 0.06       0.57 r
+  div_core/mult_15_S2/U28/S (FA1D0)                                                                 0.06       0.63 f
+  div_core/mult_15_S2/U10/CO (FA1D0)                                                                0.10       0.73 f
+  div_core/mult_15_S2/U9/CO (FA1D0)                                                                 0.06       0.79 f
+  div_core/mult_15_S2/U8/CO (FA1D0)                                                                 0.06       0.84 f
+  div_core/mult_15_S2/U7/CO (FA1D0)                                                                 0.06       0.90 f
+  div_core/mult_15_S2/U6/CO (FA1D0)                                                                 0.06       0.96 f
+  div_core/mult_15_S2/U5/CO (FA1D0)                                                                 0.06       1.01 f
+  div_core/mult_15_S2/U4/CO (FA1D0)                                                                 0.06       1.07 f
+  div_core/mult_15_S2/U3/CO (FA1D0)                                                                 0.06       1.12 f
+  div_core/mult_15_S2/U2/S (FA1D0)                                                                  0.06       1.18 f
+  div_core/mult_15_S2/product[12] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)      0.00       1.18 f
+  div_core/sub_0_root_sub_17/B[12] (absdm_l1_separate_native_mul_div_DW01_sub_0)                    0.00       1.18 f
+  div_core/sub_0_root_sub_17/U3/ZN (INVD1)                                                          0.02       1.20 r
+  div_core/sub_0_root_sub_17/U2_12/CO (FA1D0)                                                       0.08       1.28 r
+  div_core/sub_0_root_sub_17/U2_13/CO (FA1D0)                                                       0.05       1.33 r
+  div_core/sub_0_root_sub_17/U2_14/Z (XOR3D1)                                                       0.07       1.40 f
+  div_core/sub_0_root_sub_17/DIFF[14] (absdm_l1_separate_native_mul_div_DW01_sub_0)                 0.00       1.40 f
+  div_core/value[24] (absdm_l1_separate_native_mul_div)                                             0.00       1.40 f
+  U106/ZN (AOI22D1)                                                                                 0.15       1.54 r
+  U80/ZN (IND3D1)                                                                                   0.14       1.69 f
+  U78/ZN (ND2D1)                                                                                    0.17       1.86 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                           0.00       1.86 r
+  wrapper/U46/CO (FA1D0)                                                                            0.11       1.97 r
+  wrapper/U47/CO (FA1D0)                                                                            0.05       2.02 r
+  wrapper/U48/CO (FA1D0)                                                                            0.05       2.08 r
+  wrapper/U49/CO (FA1D0)                                                                            0.05       2.13 r
+  wrapper/U50/CO (FA1D0)                                                                            0.05       2.18 r
+  wrapper/U51/CO (FA1D0)                                                                            0.05       2.23 r
+  wrapper/U62/Z (XOR3D1)                                                                            0.07       2.30 f
+  wrapper/U60/Z (AO22D0)                                                                            0.08       2.38 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                                   0.00       2.38 f
+  result[30] (out)                                                                                  0.00       2.38 f
+  data arrival time                                                                                            2.38
+
+  clock vclk (rise edge)                                                                           10.00      10.00
+  clock network delay (ideal)                                                                       0.00      10.00
+  output external delay                                                                            -0.02       9.98
+  data required time                                                                                           9.98
+  --------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                           9.98
+  data arrival time                                                                                           -2.38
+  --------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                  7.60
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l1_separate_native_mul ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                             Incr       Path
+  --------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                            0.00       0.00
+  clock network delay (ideal)                                                                       0.00       0.00
+  input external delay                                                                              0.02       0.02 r
+  y[22] (in)                                                                                        0.01       0.03 r
+  wrapper/y[22] (fp32_normal_finite_wrapper)                                                        0.00       0.03 r
+  wrapper/U63/Z (CKBD1)                                                                             0.11       0.14 r
+  wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                               0.00       0.14 r
+  div_core/fy[22] (absdm_l1_separate_native_mul_div)                                                0.00       0.14 r
+  div_core/U39/ZN (INVD1)                                                                           0.03       0.17 f
+  div_core/U40/ZN (ND2D1)                                                                           0.03       0.20 r
+  div_core/U20/ZN (INVD1)                                                                           0.04       0.24 f
+  div_core/U19/ZN (NR2D1)                                                                           0.11       0.34 r
+  div_core/U15/ZN (INVD1)                                                                           0.05       0.39 f
+  div_core/mult_15_S2/b[3] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)             0.00       0.39 f
+  div_core/mult_15_S2/U128/ZN (MUX2ND0)                                                             0.05       0.45 r
+  div_core/mult_15_S2/U76/ZN (MUX2ND0)                                                              0.06       0.51 f
+  div_core/mult_15_S2/U29/S (HA1D0)                                                                 0.06       0.57 r
+  div_core/mult_15_S2/U28/S (FA1D0)                                                                 0.06       0.63 f
+  div_core/mult_15_S2/U10/CO (FA1D0)                                                                0.10       0.73 f
+  div_core/mult_15_S2/U9/CO (FA1D0)                                                                 0.06       0.79 f
+  div_core/mult_15_S2/U8/CO (FA1D0)                                                                 0.06       0.84 f
+  div_core/mult_15_S2/U7/CO (FA1D0)                                                                 0.06       0.90 f
+  div_core/mult_15_S2/U6/CO (FA1D0)                                                                 0.06       0.96 f
+  div_core/mult_15_S2/U5/CO (FA1D0)                                                                 0.06       1.01 f
+  div_core/mult_15_S2/U4/CO (FA1D0)                                                                 0.06       1.07 f
+  div_core/mult_15_S2/U3/CO (FA1D0)                                                                 0.06       1.12 f
+  div_core/mult_15_S2/U2/S (FA1D0)                                                                  0.06       1.18 f
+  div_core/mult_15_S2/product[12] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)      0.00       1.18 f
+  div_core/sub_0_root_sub_17/B[12] (absdm_l1_separate_native_mul_div_DW01_sub_0)                    0.00       1.18 f
+  div_core/sub_0_root_sub_17/U3/ZN (INVD1)                                                          0.02       1.20 r
+  div_core/sub_0_root_sub_17/U2_12/CO (FA1D0)                                                       0.08       1.28 r
+  div_core/sub_0_root_sub_17/U2_13/CO (FA1D0)                                                       0.05       1.33 r
+  div_core/sub_0_root_sub_17/U2_14/Z (XOR3D1)                                                       0.07       1.40 f
+  div_core/sub_0_root_sub_17/DIFF[14] (absdm_l1_separate_native_mul_div_DW01_sub_0)                 0.00       1.40 f
+  div_core/value[24] (absdm_l1_separate_native_mul_div)                                             0.00       1.40 f
+  U106/ZN (AOI22D1)                                                                                 0.15       1.54 r
+  U80/ZN (IND3D1)                                                                                   0.14       1.69 f
+  U78/ZN (ND2D1)                                                                                    0.17       1.86 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                           0.00       1.86 r
+  wrapper/U46/CO (FA1D0)                                                                            0.11       1.97 r
+  wrapper/U47/CO (FA1D0)                                                                            0.05       2.02 r
+  wrapper/U48/CO (FA1D0)                                                                            0.05       2.08 r
+  wrapper/U49/CO (FA1D0)                                                                            0.05       2.13 r
+  wrapper/U50/CO (FA1D0)                                                                            0.05       2.18 r
+  wrapper/U51/CO (FA1D0)                                                                            0.05       2.23 r
+  wrapper/U62/Z (XOR3D1)                                                                            0.07       2.30 f
+  wrapper/U60/Z (AO22D0)                                                                            0.08       2.38 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                                   0.00       2.38 f
+  result[30] (out)                                                                                  0.00       2.38 f
+  data arrival time                                                                                            2.38
+
+  clock vclk (rise edge)                                                                           10.00      10.00
+  clock network delay (ideal)                                                                       0.00      10.00
+  output external delay                                                                            -0.02       9.98
+  data required time                                                                                           9.98
+  --------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                           9.98
+  data arrival time                                                                                           -2.38
+  --------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                  7.60
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l1_separate_native_mul ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                             Incr       Path
+  --------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                            0.00       0.00
+  clock network delay (ideal)                                                                       0.00       0.00
+  input external delay                                                                              0.02       0.02 r
+  y[22] (in)                                                                                        0.01       0.03 r
+  wrapper/y[22] (fp32_normal_finite_wrapper)                                                        0.00       0.03 r
+  wrapper/U63/Z (CKBD1)                                                                             0.11       0.14 r
+  wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                               0.00       0.14 r
+  div_core/fy[22] (absdm_l1_separate_native_mul_div)                                                0.00       0.14 r
+  div_core/U39/ZN (INVD1)                                                                           0.03       0.17 f
+  div_core/U40/ZN (ND2D1)                                                                           0.03       0.20 r
+  div_core/U20/ZN (INVD1)                                                                           0.04       0.24 f
+  div_core/U19/ZN (NR2D1)                                                                           0.11       0.34 r
+  div_core/U15/ZN (INVD1)                                                                           0.05       0.39 f
+  div_core/mult_15_S2/b[3] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)             0.00       0.39 f
+  div_core/mult_15_S2/U128/ZN (MUX2ND0)                                                             0.05       0.45 r
+  div_core/mult_15_S2/U76/ZN (MUX2ND0)                                                              0.06       0.51 f
+  div_core/mult_15_S2/U29/S (HA1D0)                                                                 0.06       0.57 r
+  div_core/mult_15_S2/U28/S (FA1D0)                                                                 0.06       0.63 f
+  div_core/mult_15_S2/U10/CO (FA1D0)                                                                0.10       0.73 f
+  div_core/mult_15_S2/U9/CO (FA1D0)                                                                 0.06       0.79 f
+  div_core/mult_15_S2/U8/CO (FA1D0)                                                                 0.06       0.84 f
+  div_core/mult_15_S2/U7/CO (FA1D0)                                                                 0.06       0.90 f
+  div_core/mult_15_S2/U6/CO (FA1D0)                                                                 0.06       0.96 f
+  div_core/mult_15_S2/U5/CO (FA1D0)                                                                 0.06       1.01 f
+  div_core/mult_15_S2/U4/CO (FA1D0)                                                                 0.06       1.07 f
+  div_core/mult_15_S2/U3/CO (FA1D0)                                                                 0.06       1.12 f
+  div_core/mult_15_S2/U2/S (FA1D0)                                                                  0.06       1.18 f
+  div_core/mult_15_S2/product[12] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)      0.00       1.18 f
+  div_core/sub_0_root_sub_17/B[12] (absdm_l1_separate_native_mul_div_DW01_sub_0)                    0.00       1.18 f
+  div_core/sub_0_root_sub_17/U3/ZN (INVD1)                                                          0.02       1.20 r
+  div_core/sub_0_root_sub_17/U2_12/CO (FA1D0)                                                       0.08       1.28 r
+  div_core/sub_0_root_sub_17/U2_13/CO (FA1D0)                                                       0.05       1.33 r
+  div_core/sub_0_root_sub_17/U2_14/Z (XOR3D1)                                                       0.07       1.40 f
+  div_core/sub_0_root_sub_17/DIFF[14] (absdm_l1_separate_native_mul_div_DW01_sub_0)                 0.00       1.40 f
+  div_core/value[24] (absdm_l1_separate_native_mul_div)                                             0.00       1.40 f
+  U106/ZN (AOI22D1)                                                                                 0.15       1.54 r
+  U80/ZN (IND3D1)                                                                                   0.14       1.69 f
+  U78/ZN (ND2D1)                                                                                    0.17       1.86 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                           0.00       1.86 r
+  wrapper/U46/CO (FA1D0)                                                                            0.11       1.97 r
+  wrapper/U47/CO (FA1D0)                                                                            0.05       2.02 r
+  wrapper/U48/CO (FA1D0)                                                                            0.05       2.08 r
+  wrapper/U49/CO (FA1D0)                                                                            0.05       2.13 r
+  wrapper/U50/CO (FA1D0)                                                                            0.05       2.18 r
+  wrapper/U51/CO (FA1D0)                                                                            0.05       2.23 r
+  wrapper/U62/Z (XOR3D1)                                                                            0.07       2.30 f
+  wrapper/U60/Z (AO22D0)                                                                            0.08       2.38 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                                   0.00       2.38 f
+  result[30] (out)                                                                                  0.00       2.38 f
+  data arrival time                                                                                            2.38
+
+  clock vclk (rise edge)                                                                           10.00      10.00
+  clock network delay (ideal)                                                                       0.00      10.00
+  output external delay                                                                            -0.02       9.98
+  data required time                                                                                           9.98
+  --------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                           9.98
+  data arrival time                                                                                           -2.38
+  --------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                  7.60
+
+
+  Startpoint: y[22] (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l1_separate_native_mul ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div ZeroWireload tcbn65gplustc_ccs
+  oadm_fixed_mul_plane_root_opt_LEVEL1_RESIDUAL_DROP14 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3 ZeroWireload tcbn65gplustc_ccs
+  absdm_l1_separate_native_mul_div_DW01_sub_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                                             Incr       Path
+  --------------------------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                                            0.00       0.00
+  clock network delay (ideal)                                                                       0.00       0.00
+  input external delay                                                                              0.02       0.02 r
+  y[22] (in)                                                                                        0.01       0.03 r
+  wrapper/y[22] (fp32_normal_finite_wrapper)                                                        0.00       0.03 r
+  wrapper/U63/Z (CKBD1)                                                                             0.11       0.14 r
+  wrapper/fraction_y[22] (fp32_normal_finite_wrapper)                                               0.00       0.14 r
+  div_core/fy[22] (absdm_l1_separate_native_mul_div)                                                0.00       0.14 r
+  div_core/U39/ZN (INVD1)                                                                           0.03       0.17 f
+  div_core/U40/ZN (ND2D1)                                                                           0.03       0.20 r
+  div_core/U20/ZN (INVD1)                                                                           0.04       0.24 f
+  div_core/U19/ZN (NR2D1)                                                                           0.11       0.34 r
+  div_core/U15/ZN (INVD1)                                                                           0.05       0.39 f
+  div_core/mult_15_S2/b[3] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)             0.00       0.39 f
+  div_core/mult_15_S2/U128/ZN (MUX2ND0)                                                             0.05       0.45 r
+  div_core/mult_15_S2/U76/ZN (MUX2ND0)                                                              0.06       0.51 f
+  div_core/mult_15_S2/U29/S (HA1D0)                                                                 0.06       0.57 r
+  div_core/mult_15_S2/U28/S (FA1D0)                                                                 0.06       0.63 f
+  div_core/mult_15_S2/U10/CO (FA1D0)                                                                0.10       0.73 f
+  div_core/mult_15_S2/U9/CO (FA1D0)                                                                 0.06       0.79 f
+  div_core/mult_15_S2/U8/CO (FA1D0)                                                                 0.06       0.84 f
+  div_core/mult_15_S2/U7/CO (FA1D0)                                                                 0.06       0.90 f
+  div_core/mult_15_S2/U6/CO (FA1D0)                                                                 0.06       0.96 f
+  div_core/mult_15_S2/U5/CO (FA1D0)                                                                 0.06       1.01 f
+  div_core/mult_15_S2/U4/CO (FA1D0)                                                                 0.06       1.07 f
+  div_core/mult_15_S2/U3/CO (FA1D0)                                                                 0.06       1.12 f
+  div_core/mult_15_S2/U2/S (FA1D0)                                                                  0.06       1.18 f
+  div_core/mult_15_S2/product[12] (absdm_l1_separate_native_mul_div_DW_mult_tc_1_DW_mult_tc_3)      0.00       1.18 f
+  div_core/sub_0_root_sub_17/B[12] (absdm_l1_separate_native_mul_div_DW01_sub_0)                    0.00       1.18 f
+  div_core/sub_0_root_sub_17/U3/ZN (INVD1)                                                          0.02       1.20 r
+  div_core/sub_0_root_sub_17/U2_12/CO (FA1D0)                                                       0.08       1.28 r
+  div_core/sub_0_root_sub_17/U2_13/CO (FA1D0)                                                       0.05       1.33 r
+  div_core/sub_0_root_sub_17/U2_14/Z (XOR3D1)                                                       0.07       1.40 f
+  div_core/sub_0_root_sub_17/DIFF[14] (absdm_l1_separate_native_mul_div_DW01_sub_0)                 0.00       1.40 f
+  div_core/value[24] (absdm_l1_separate_native_mul_div)                                             0.00       1.40 f
+  U106/ZN (AOI22D1)                                                                                 0.15       1.54 r
+  U80/ZN (IND3D1)                                                                                   0.14       1.69 f
+  U78/ZN (ND2D1)                                                                                    0.17       1.86 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                                           0.00       1.86 r
+  wrapper/U46/CO (FA1D0)                                                                            0.11       1.97 r
+  wrapper/U47/CO (FA1D0)                                                                            0.05       2.02 r
+  wrapper/U48/CO (FA1D0)                                                                            0.05       2.08 r
+  wrapper/U49/CO (FA1D0)                                                                            0.05       2.13 r
+  wrapper/U50/CO (FA1D0)                                                                            0.05       2.18 r
+  wrapper/U51/CO (FA1D0)                                                                            0.05       2.23 r
+  wrapper/U62/Z (XOR3D1)                                                                            0.07       2.30 f
+  wrapper/U60/Z (AO22D0)                                                                            0.08       2.38 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                                   0.00       2.38 f
+  result[30] (out)                                                                                  0.00       2.38 f
+  data arrival time                                                                                            2.38
+
+  clock vclk (rise edge)                                                                           10.00      10.00
+  clock network delay (ideal)                                                                       0.00      10.00
+  output external delay                                                                            -0.02       9.98
+  data required time                                                                                           9.98
+  --------------------------------------------------------------------------------------------------------------------
+  data required time                                                                                           9.98
+  data arrival time                                                                                           -2.38
+  --------------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                                  7.60
+
+
+1

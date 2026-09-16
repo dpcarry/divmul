@@ -1,0 +1,786 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nworst 10
+        -max_paths 10
+Design : absdm_l0_shared
+Version: U-2022.12-SP7
+Date   : Tue Sep 15 22:58:35 2026
+****************************************
+
+Operating Conditions: NCCOM   Library: tcbn65gplustc_ccs
+Wire Load Model Mode: segmented
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l0_shared    ZeroWireload          tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  absdm_l0_shared_core ZeroWireload        tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                          Incr       Path
+  -------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                         0.00       0.00
+  clock network delay (ideal)                                                    0.00       0.00
+  input external delay                                                           0.02       0.02 f
+  divide_mode (in)                                                               0.00       0.02 f
+  U128/Z (CKBD1)                                                                 0.12       0.14 f
+  shared_core/divide_mode (absdm_l0_shared_core)                                 0.00       0.14 f
+  shared_core/U9/ZN (INVD1)                                                      0.20       0.35 r
+  shared_core/U25/Z (AN2XD1)                                                     0.06       0.40 r
+  shared_core/mult_18_S2/a[0] (absdm_l0_shared_core_DW_mult_tc_1)                0.00       0.40 r
+  shared_core/mult_18_S2/U81/ZN (INVD1)                                          0.02       0.42 f
+  shared_core/mult_18_S2/U89/ZN (NR2D0)                                          0.14       0.56 r
+  shared_core/mult_18_S2/product[0] (absdm_l0_shared_core_DW_mult_tc_1)          0.00       0.56 r
+  shared_core/U11/ZN (CKND0)                                                     0.04       0.60 f
+  shared_core/U83/Z (CKXOR2D1)                                                   0.05       0.64 f
+  shared_core/U78/Z (AO22D0)                                                     0.06       0.71 f
+  shared_core/add_0_root_add_21_2/A[1] (absdm_l0_shared_core_DW01_add_0)         0.00       0.71 f
+  shared_core/add_0_root_add_21_2/U1_1/CO (FA1D0)                                0.10       0.81 f
+  shared_core/add_0_root_add_21_2/U1_2/CO (FA1D0)                                0.06       0.87 f
+  shared_core/add_0_root_add_21_2/U1_3/CO (FA1D0)                                0.06       0.92 f
+  shared_core/add_0_root_add_21_2/U1_4/CO (FA1D0)                                0.06       0.98 f
+  shared_core/add_0_root_add_21_2/U1_5/CO (FA1D0)                                0.06       1.03 f
+  shared_core/add_0_root_add_21_2/U1_6/CO (FA1D0)                                0.06       1.09 f
+  shared_core/add_0_root_add_21_2/U1_7/CO (FA1D0)                                0.06       1.14 f
+  shared_core/add_0_root_add_21_2/U1_8/CO (FA1D0)                                0.06       1.20 f
+  shared_core/add_0_root_add_21_2/U1_9/CO (FA1D0)                                0.06       1.25 f
+  shared_core/add_0_root_add_21_2/U1_10/CO (FA1D0)                               0.06       1.31 f
+  shared_core/add_0_root_add_21_2/U1_11/CO (FA1D0)                               0.06       1.36 f
+  shared_core/add_0_root_add_21_2/U1_12/CO (FA1D0)                               0.06       1.42 f
+  shared_core/add_0_root_add_21_2/U1_13/CO (FA1D0)                               0.06       1.47 f
+  shared_core/add_0_root_add_21_2/U1_14/CO (FA1D0)                               0.06       1.53 f
+  shared_core/add_0_root_add_21_2/U1_15/Z (XOR3D1)                               0.05       1.58 f
+  shared_core/add_0_root_add_21_2/SUM[15] (absdm_l0_shared_core_DW01_add_0)      0.00       1.58 f
+  shared_core/value[24] (absdm_l0_shared_core)                                   0.00       1.58 f
+  U83/ZN (NR3D0)                                                                 0.18       1.76 r
+  U79/ZN (INVD1)                                                                 0.03       1.79 f
+  U78/ZN (IND2D1)                                                                0.13       1.92 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                        0.00       1.92 r
+  wrapper/U50/CO (FA1D0)                                                         0.11       2.03 r
+  wrapper/U51/CO (FA1D0)                                                         0.05       2.09 r
+  wrapper/U52/CO (FA1D0)                                                         0.05       2.14 r
+  wrapper/U53/CO (FA1D0)                                                         0.05       2.19 r
+  wrapper/U54/CO (FA1D0)                                                         0.05       2.24 r
+  wrapper/U55/CO (FA1D0)                                                         0.05       2.29 r
+  wrapper/U65/Z (XOR3D1)                                                         0.07       2.36 f
+  wrapper/U63/Z (AO22D0)                                                         0.08       2.44 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                0.00       2.44 f
+  result[30] (out)                                                               0.00       2.44 f
+  data arrival time                                                                         2.44
+
+  clock vclk (rise edge)                                                        10.00      10.00
+  clock network delay (ideal)                                                    0.00      10.00
+  output external delay                                                         -0.02       9.98
+  data required time                                                                        9.98
+  -------------------------------------------------------------------------------------------------
+  data required time                                                                        9.98
+  data arrival time                                                                        -2.44
+  -------------------------------------------------------------------------------------------------
+  slack (MET)                                                                               7.54
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l0_shared    ZeroWireload          tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  absdm_l0_shared_core ZeroWireload        tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                          Incr       Path
+  -------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                         0.00       0.00
+  clock network delay (ideal)                                                    0.00       0.00
+  input external delay                                                           0.02       0.02 f
+  divide_mode (in)                                                               0.00       0.02 f
+  U128/Z (CKBD1)                                                                 0.12       0.14 f
+  shared_core/divide_mode (absdm_l0_shared_core)                                 0.00       0.14 f
+  shared_core/U9/ZN (INVD1)                                                      0.20       0.35 r
+  shared_core/U25/Z (AN2XD1)                                                     0.06       0.40 r
+  shared_core/mult_18_S2/a[0] (absdm_l0_shared_core_DW_mult_tc_1)                0.00       0.40 r
+  shared_core/mult_18_S2/U81/ZN (INVD1)                                          0.02       0.42 f
+  shared_core/mult_18_S2/U89/ZN (NR2D0)                                          0.14       0.56 r
+  shared_core/mult_18_S2/product[0] (absdm_l0_shared_core_DW_mult_tc_1)          0.00       0.56 r
+  shared_core/U11/ZN (CKND0)                                                     0.04       0.60 f
+  shared_core/U83/Z (CKXOR2D1)                                                   0.05       0.64 f
+  shared_core/U78/Z (AO22D0)                                                     0.06       0.71 f
+  shared_core/add_0_root_add_21_2/A[1] (absdm_l0_shared_core_DW01_add_0)         0.00       0.71 f
+  shared_core/add_0_root_add_21_2/U1_1/CO (FA1D0)                                0.10       0.81 f
+  shared_core/add_0_root_add_21_2/U1_2/CO (FA1D0)                                0.06       0.87 f
+  shared_core/add_0_root_add_21_2/U1_3/CO (FA1D0)                                0.06       0.92 f
+  shared_core/add_0_root_add_21_2/U1_4/CO (FA1D0)                                0.06       0.98 f
+  shared_core/add_0_root_add_21_2/U1_5/CO (FA1D0)                                0.06       1.03 f
+  shared_core/add_0_root_add_21_2/U1_6/CO (FA1D0)                                0.06       1.09 f
+  shared_core/add_0_root_add_21_2/U1_7/CO (FA1D0)                                0.06       1.14 f
+  shared_core/add_0_root_add_21_2/U1_8/CO (FA1D0)                                0.06       1.20 f
+  shared_core/add_0_root_add_21_2/U1_9/CO (FA1D0)                                0.06       1.25 f
+  shared_core/add_0_root_add_21_2/U1_10/CO (FA1D0)                               0.06       1.31 f
+  shared_core/add_0_root_add_21_2/U1_11/CO (FA1D0)                               0.06       1.36 f
+  shared_core/add_0_root_add_21_2/U1_12/CO (FA1D0)                               0.06       1.42 f
+  shared_core/add_0_root_add_21_2/U1_13/CO (FA1D0)                               0.06       1.47 f
+  shared_core/add_0_root_add_21_2/U1_14/CO (FA1D0)                               0.06       1.53 f
+  shared_core/add_0_root_add_21_2/U1_15/Z (XOR3D1)                               0.05       1.58 f
+  shared_core/add_0_root_add_21_2/SUM[15] (absdm_l0_shared_core_DW01_add_0)      0.00       1.58 f
+  shared_core/value[24] (absdm_l0_shared_core)                                   0.00       1.58 f
+  U83/ZN (NR3D0)                                                                 0.18       1.76 r
+  U79/ZN (INVD1)                                                                 0.03       1.79 f
+  U78/ZN (IND2D1)                                                                0.13       1.92 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                        0.00       1.92 r
+  wrapper/U50/CO (FA1D0)                                                         0.11       2.03 r
+  wrapper/U51/CO (FA1D0)                                                         0.05       2.09 r
+  wrapper/U52/CO (FA1D0)                                                         0.05       2.14 r
+  wrapper/U53/CO (FA1D0)                                                         0.05       2.19 r
+  wrapper/U54/CO (FA1D0)                                                         0.05       2.24 r
+  wrapper/U55/CO (FA1D0)                                                         0.05       2.29 r
+  wrapper/U65/Z (XOR3D1)                                                         0.07       2.36 f
+  wrapper/U63/Z (AO22D0)                                                         0.08       2.44 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                0.00       2.44 f
+  result[30] (out)                                                               0.00       2.44 f
+  data arrival time                                                                         2.44
+
+  clock vclk (rise edge)                                                        10.00      10.00
+  clock network delay (ideal)                                                    0.00      10.00
+  output external delay                                                         -0.02       9.98
+  data required time                                                                        9.98
+  -------------------------------------------------------------------------------------------------
+  data required time                                                                        9.98
+  data arrival time                                                                        -2.44
+  -------------------------------------------------------------------------------------------------
+  slack (MET)                                                                               7.54
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l0_shared    ZeroWireload          tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  absdm_l0_shared_core ZeroWireload        tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                          Incr       Path
+  -------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                         0.00       0.00
+  clock network delay (ideal)                                                    0.00       0.00
+  input external delay                                                           0.02       0.02 f
+  divide_mode (in)                                                               0.00       0.02 f
+  U128/Z (CKBD1)                                                                 0.12       0.14 f
+  shared_core/divide_mode (absdm_l0_shared_core)                                 0.00       0.14 f
+  shared_core/U9/ZN (INVD1)                                                      0.20       0.35 r
+  shared_core/U25/Z (AN2XD1)                                                     0.06       0.40 r
+  shared_core/mult_18_S2/a[0] (absdm_l0_shared_core_DW_mult_tc_1)                0.00       0.40 r
+  shared_core/mult_18_S2/U81/ZN (INVD1)                                          0.02       0.42 f
+  shared_core/mult_18_S2/U89/ZN (NR2D0)                                          0.14       0.56 r
+  shared_core/mult_18_S2/product[0] (absdm_l0_shared_core_DW_mult_tc_1)          0.00       0.56 r
+  shared_core/U11/ZN (CKND0)                                                     0.04       0.60 f
+  shared_core/U83/Z (CKXOR2D1)                                                   0.05       0.64 f
+  shared_core/U78/Z (AO22D0)                                                     0.06       0.71 f
+  shared_core/add_0_root_add_21_2/A[1] (absdm_l0_shared_core_DW01_add_0)         0.00       0.71 f
+  shared_core/add_0_root_add_21_2/U1_1/CO (FA1D0)                                0.10       0.81 f
+  shared_core/add_0_root_add_21_2/U1_2/CO (FA1D0)                                0.06       0.87 f
+  shared_core/add_0_root_add_21_2/U1_3/CO (FA1D0)                                0.06       0.92 f
+  shared_core/add_0_root_add_21_2/U1_4/CO (FA1D0)                                0.06       0.98 f
+  shared_core/add_0_root_add_21_2/U1_5/CO (FA1D0)                                0.06       1.03 f
+  shared_core/add_0_root_add_21_2/U1_6/CO (FA1D0)                                0.06       1.09 f
+  shared_core/add_0_root_add_21_2/U1_7/CO (FA1D0)                                0.06       1.14 f
+  shared_core/add_0_root_add_21_2/U1_8/CO (FA1D0)                                0.06       1.20 f
+  shared_core/add_0_root_add_21_2/U1_9/CO (FA1D0)                                0.06       1.25 f
+  shared_core/add_0_root_add_21_2/U1_10/CO (FA1D0)                               0.06       1.31 f
+  shared_core/add_0_root_add_21_2/U1_11/CO (FA1D0)                               0.06       1.36 f
+  shared_core/add_0_root_add_21_2/U1_12/CO (FA1D0)                               0.06       1.42 f
+  shared_core/add_0_root_add_21_2/U1_13/CO (FA1D0)                               0.06       1.47 f
+  shared_core/add_0_root_add_21_2/U1_14/CO (FA1D0)                               0.06       1.53 f
+  shared_core/add_0_root_add_21_2/U1_15/Z (XOR3D1)                               0.05       1.58 f
+  shared_core/add_0_root_add_21_2/SUM[15] (absdm_l0_shared_core_DW01_add_0)      0.00       1.58 f
+  shared_core/value[24] (absdm_l0_shared_core)                                   0.00       1.58 f
+  U83/ZN (NR3D0)                                                                 0.18       1.76 r
+  U79/ZN (INVD1)                                                                 0.03       1.79 f
+  U78/ZN (IND2D1)                                                                0.13       1.92 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                        0.00       1.92 r
+  wrapper/U50/CO (FA1D0)                                                         0.11       2.03 r
+  wrapper/U51/CO (FA1D0)                                                         0.05       2.09 r
+  wrapper/U52/CO (FA1D0)                                                         0.05       2.14 r
+  wrapper/U53/CO (FA1D0)                                                         0.05       2.19 r
+  wrapper/U54/CO (FA1D0)                                                         0.05       2.24 r
+  wrapper/U55/CO (FA1D0)                                                         0.05       2.29 r
+  wrapper/U65/Z (XOR3D1)                                                         0.07       2.36 f
+  wrapper/U63/Z (AO22D0)                                                         0.08       2.44 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                0.00       2.44 f
+  result[30] (out)                                                               0.00       2.44 f
+  data arrival time                                                                         2.44
+
+  clock vclk (rise edge)                                                        10.00      10.00
+  clock network delay (ideal)                                                    0.00      10.00
+  output external delay                                                         -0.02       9.98
+  data required time                                                                        9.98
+  -------------------------------------------------------------------------------------------------
+  data required time                                                                        9.98
+  data arrival time                                                                        -2.44
+  -------------------------------------------------------------------------------------------------
+  slack (MET)                                                                               7.54
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l0_shared    ZeroWireload          tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  absdm_l0_shared_core ZeroWireload        tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                          Incr       Path
+  -------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                         0.00       0.00
+  clock network delay (ideal)                                                    0.00       0.00
+  input external delay                                                           0.02       0.02 f
+  divide_mode (in)                                                               0.00       0.02 f
+  U128/Z (CKBD1)                                                                 0.12       0.14 f
+  shared_core/divide_mode (absdm_l0_shared_core)                                 0.00       0.14 f
+  shared_core/U9/ZN (INVD1)                                                      0.20       0.35 r
+  shared_core/U25/Z (AN2XD1)                                                     0.06       0.40 r
+  shared_core/mult_18_S2/a[0] (absdm_l0_shared_core_DW_mult_tc_1)                0.00       0.40 r
+  shared_core/mult_18_S2/U81/ZN (INVD1)                                          0.02       0.42 f
+  shared_core/mult_18_S2/U89/ZN (NR2D0)                                          0.14       0.56 r
+  shared_core/mult_18_S2/product[0] (absdm_l0_shared_core_DW_mult_tc_1)          0.00       0.56 r
+  shared_core/U11/ZN (CKND0)                                                     0.04       0.60 f
+  shared_core/U83/Z (CKXOR2D1)                                                   0.05       0.64 f
+  shared_core/U78/Z (AO22D0)                                                     0.06       0.71 f
+  shared_core/add_0_root_add_21_2/A[1] (absdm_l0_shared_core_DW01_add_0)         0.00       0.71 f
+  shared_core/add_0_root_add_21_2/U1_1/CO (FA1D0)                                0.10       0.81 f
+  shared_core/add_0_root_add_21_2/U1_2/CO (FA1D0)                                0.06       0.87 f
+  shared_core/add_0_root_add_21_2/U1_3/CO (FA1D0)                                0.06       0.92 f
+  shared_core/add_0_root_add_21_2/U1_4/CO (FA1D0)                                0.06       0.98 f
+  shared_core/add_0_root_add_21_2/U1_5/CO (FA1D0)                                0.06       1.03 f
+  shared_core/add_0_root_add_21_2/U1_6/CO (FA1D0)                                0.06       1.09 f
+  shared_core/add_0_root_add_21_2/U1_7/CO (FA1D0)                                0.06       1.14 f
+  shared_core/add_0_root_add_21_2/U1_8/CO (FA1D0)                                0.06       1.20 f
+  shared_core/add_0_root_add_21_2/U1_9/CO (FA1D0)                                0.06       1.25 f
+  shared_core/add_0_root_add_21_2/U1_10/CO (FA1D0)                               0.06       1.31 f
+  shared_core/add_0_root_add_21_2/U1_11/CO (FA1D0)                               0.06       1.36 f
+  shared_core/add_0_root_add_21_2/U1_12/CO (FA1D0)                               0.06       1.42 f
+  shared_core/add_0_root_add_21_2/U1_13/CO (FA1D0)                               0.06       1.47 f
+  shared_core/add_0_root_add_21_2/U1_14/CO (FA1D0)                               0.06       1.53 f
+  shared_core/add_0_root_add_21_2/U1_15/Z (XOR3D1)                               0.05       1.58 f
+  shared_core/add_0_root_add_21_2/SUM[15] (absdm_l0_shared_core_DW01_add_0)      0.00       1.58 f
+  shared_core/value[24] (absdm_l0_shared_core)                                   0.00       1.58 f
+  U83/ZN (NR3D0)                                                                 0.18       1.76 r
+  U79/ZN (INVD1)                                                                 0.03       1.79 f
+  U78/ZN (IND2D1)                                                                0.13       1.92 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                        0.00       1.92 r
+  wrapper/U50/CO (FA1D0)                                                         0.11       2.03 r
+  wrapper/U51/CO (FA1D0)                                                         0.05       2.09 r
+  wrapper/U52/CO (FA1D0)                                                         0.05       2.14 r
+  wrapper/U53/CO (FA1D0)                                                         0.05       2.19 r
+  wrapper/U54/CO (FA1D0)                                                         0.05       2.24 r
+  wrapper/U55/CO (FA1D0)                                                         0.05       2.29 r
+  wrapper/U65/Z (XOR3D1)                                                         0.07       2.36 f
+  wrapper/U63/Z (AO22D0)                                                         0.08       2.44 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                0.00       2.44 f
+  result[30] (out)                                                               0.00       2.44 f
+  data arrival time                                                                         2.44
+
+  clock vclk (rise edge)                                                        10.00      10.00
+  clock network delay (ideal)                                                    0.00      10.00
+  output external delay                                                         -0.02       9.98
+  data required time                                                                        9.98
+  -------------------------------------------------------------------------------------------------
+  data required time                                                                        9.98
+  data arrival time                                                                        -2.44
+  -------------------------------------------------------------------------------------------------
+  slack (MET)                                                                               7.54
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l0_shared    ZeroWireload          tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  absdm_l0_shared_core ZeroWireload        tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                          Incr       Path
+  -------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                         0.00       0.00
+  clock network delay (ideal)                                                    0.00       0.00
+  input external delay                                                           0.02       0.02 f
+  divide_mode (in)                                                               0.00       0.02 f
+  U128/Z (CKBD1)                                                                 0.12       0.14 f
+  shared_core/divide_mode (absdm_l0_shared_core)                                 0.00       0.14 f
+  shared_core/U9/ZN (INVD1)                                                      0.20       0.35 r
+  shared_core/U25/Z (AN2XD1)                                                     0.06       0.40 r
+  shared_core/mult_18_S2/a[0] (absdm_l0_shared_core_DW_mult_tc_1)                0.00       0.40 r
+  shared_core/mult_18_S2/U81/ZN (INVD1)                                          0.02       0.42 f
+  shared_core/mult_18_S2/U89/ZN (NR2D0)                                          0.14       0.56 r
+  shared_core/mult_18_S2/product[0] (absdm_l0_shared_core_DW_mult_tc_1)          0.00       0.56 r
+  shared_core/U11/ZN (CKND0)                                                     0.04       0.60 f
+  shared_core/U83/Z (CKXOR2D1)                                                   0.05       0.64 f
+  shared_core/U78/Z (AO22D0)                                                     0.06       0.71 f
+  shared_core/add_0_root_add_21_2/A[1] (absdm_l0_shared_core_DW01_add_0)         0.00       0.71 f
+  shared_core/add_0_root_add_21_2/U1_1/CO (FA1D0)                                0.10       0.81 f
+  shared_core/add_0_root_add_21_2/U1_2/CO (FA1D0)                                0.06       0.87 f
+  shared_core/add_0_root_add_21_2/U1_3/CO (FA1D0)                                0.06       0.92 f
+  shared_core/add_0_root_add_21_2/U1_4/CO (FA1D0)                                0.06       0.98 f
+  shared_core/add_0_root_add_21_2/U1_5/CO (FA1D0)                                0.06       1.03 f
+  shared_core/add_0_root_add_21_2/U1_6/CO (FA1D0)                                0.06       1.09 f
+  shared_core/add_0_root_add_21_2/U1_7/CO (FA1D0)                                0.06       1.14 f
+  shared_core/add_0_root_add_21_2/U1_8/CO (FA1D0)                                0.06       1.20 f
+  shared_core/add_0_root_add_21_2/U1_9/CO (FA1D0)                                0.06       1.25 f
+  shared_core/add_0_root_add_21_2/U1_10/CO (FA1D0)                               0.06       1.31 f
+  shared_core/add_0_root_add_21_2/U1_11/CO (FA1D0)                               0.06       1.36 f
+  shared_core/add_0_root_add_21_2/U1_12/CO (FA1D0)                               0.06       1.42 f
+  shared_core/add_0_root_add_21_2/U1_13/CO (FA1D0)                               0.06       1.47 f
+  shared_core/add_0_root_add_21_2/U1_14/CO (FA1D0)                               0.06       1.53 f
+  shared_core/add_0_root_add_21_2/U1_15/Z (XOR3D1)                               0.05       1.58 f
+  shared_core/add_0_root_add_21_2/SUM[15] (absdm_l0_shared_core_DW01_add_0)      0.00       1.58 f
+  shared_core/value[24] (absdm_l0_shared_core)                                   0.00       1.58 f
+  U83/ZN (NR3D0)                                                                 0.18       1.76 r
+  U79/ZN (INVD1)                                                                 0.03       1.79 f
+  U78/ZN (IND2D1)                                                                0.13       1.92 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                        0.00       1.92 r
+  wrapper/U50/CO (FA1D0)                                                         0.11       2.03 r
+  wrapper/U51/CO (FA1D0)                                                         0.05       2.09 r
+  wrapper/U52/CO (FA1D0)                                                         0.05       2.14 r
+  wrapper/U53/CO (FA1D0)                                                         0.05       2.19 r
+  wrapper/U54/CO (FA1D0)                                                         0.05       2.24 r
+  wrapper/U55/CO (FA1D0)                                                         0.05       2.29 r
+  wrapper/U65/Z (XOR3D1)                                                         0.07       2.36 f
+  wrapper/U63/Z (AO22D0)                                                         0.08       2.44 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                0.00       2.44 f
+  result[30] (out)                                                               0.00       2.44 f
+  data arrival time                                                                         2.44
+
+  clock vclk (rise edge)                                                        10.00      10.00
+  clock network delay (ideal)                                                    0.00      10.00
+  output external delay                                                         -0.02       9.98
+  data required time                                                                        9.98
+  -------------------------------------------------------------------------------------------------
+  data required time                                                                        9.98
+  data arrival time                                                                        -2.44
+  -------------------------------------------------------------------------------------------------
+  slack (MET)                                                                               7.54
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l0_shared    ZeroWireload          tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  absdm_l0_shared_core ZeroWireload        tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                          Incr       Path
+  -------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                         0.00       0.00
+  clock network delay (ideal)                                                    0.00       0.00
+  input external delay                                                           0.02       0.02 f
+  divide_mode (in)                                                               0.00       0.02 f
+  U128/Z (CKBD1)                                                                 0.12       0.14 f
+  shared_core/divide_mode (absdm_l0_shared_core)                                 0.00       0.14 f
+  shared_core/U9/ZN (INVD1)                                                      0.20       0.35 r
+  shared_core/U25/Z (AN2XD1)                                                     0.06       0.40 r
+  shared_core/mult_18_S2/a[0] (absdm_l0_shared_core_DW_mult_tc_1)                0.00       0.40 r
+  shared_core/mult_18_S2/U81/ZN (INVD1)                                          0.02       0.42 f
+  shared_core/mult_18_S2/U89/ZN (NR2D0)                                          0.14       0.56 r
+  shared_core/mult_18_S2/product[0] (absdm_l0_shared_core_DW_mult_tc_1)          0.00       0.56 r
+  shared_core/U11/ZN (CKND0)                                                     0.04       0.60 f
+  shared_core/U83/Z (CKXOR2D1)                                                   0.05       0.64 f
+  shared_core/U78/Z (AO22D0)                                                     0.06       0.71 f
+  shared_core/add_0_root_add_21_2/A[1] (absdm_l0_shared_core_DW01_add_0)         0.00       0.71 f
+  shared_core/add_0_root_add_21_2/U1_1/CO (FA1D0)                                0.10       0.81 f
+  shared_core/add_0_root_add_21_2/U1_2/CO (FA1D0)                                0.06       0.87 f
+  shared_core/add_0_root_add_21_2/U1_3/CO (FA1D0)                                0.06       0.92 f
+  shared_core/add_0_root_add_21_2/U1_4/CO (FA1D0)                                0.06       0.98 f
+  shared_core/add_0_root_add_21_2/U1_5/CO (FA1D0)                                0.06       1.03 f
+  shared_core/add_0_root_add_21_2/U1_6/CO (FA1D0)                                0.06       1.09 f
+  shared_core/add_0_root_add_21_2/U1_7/CO (FA1D0)                                0.06       1.14 f
+  shared_core/add_0_root_add_21_2/U1_8/CO (FA1D0)                                0.06       1.20 f
+  shared_core/add_0_root_add_21_2/U1_9/CO (FA1D0)                                0.06       1.25 f
+  shared_core/add_0_root_add_21_2/U1_10/CO (FA1D0)                               0.06       1.31 f
+  shared_core/add_0_root_add_21_2/U1_11/CO (FA1D0)                               0.06       1.36 f
+  shared_core/add_0_root_add_21_2/U1_12/CO (FA1D0)                               0.06       1.42 f
+  shared_core/add_0_root_add_21_2/U1_13/CO (FA1D0)                               0.06       1.47 f
+  shared_core/add_0_root_add_21_2/U1_14/CO (FA1D0)                               0.06       1.53 f
+  shared_core/add_0_root_add_21_2/U1_15/Z (XOR3D1)                               0.05       1.58 f
+  shared_core/add_0_root_add_21_2/SUM[15] (absdm_l0_shared_core_DW01_add_0)      0.00       1.58 f
+  shared_core/value[24] (absdm_l0_shared_core)                                   0.00       1.58 f
+  U83/ZN (NR3D0)                                                                 0.18       1.76 r
+  U79/ZN (INVD1)                                                                 0.03       1.79 f
+  U78/ZN (IND2D1)                                                                0.13       1.92 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                        0.00       1.92 r
+  wrapper/U50/CO (FA1D0)                                                         0.11       2.03 r
+  wrapper/U51/CO (FA1D0)                                                         0.05       2.09 r
+  wrapper/U52/CO (FA1D0)                                                         0.05       2.14 r
+  wrapper/U53/CO (FA1D0)                                                         0.05       2.19 r
+  wrapper/U54/CO (FA1D0)                                                         0.05       2.24 r
+  wrapper/U55/CO (FA1D0)                                                         0.05       2.29 r
+  wrapper/U65/Z (XOR3D1)                                                         0.07       2.36 f
+  wrapper/U63/Z (AO22D0)                                                         0.08       2.44 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                0.00       2.44 f
+  result[30] (out)                                                               0.00       2.44 f
+  data arrival time                                                                         2.44
+
+  clock vclk (rise edge)                                                        10.00      10.00
+  clock network delay (ideal)                                                    0.00      10.00
+  output external delay                                                         -0.02       9.98
+  data required time                                                                        9.98
+  -------------------------------------------------------------------------------------------------
+  data required time                                                                        9.98
+  data arrival time                                                                        -2.44
+  -------------------------------------------------------------------------------------------------
+  slack (MET)                                                                               7.54
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l0_shared    ZeroWireload          tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  absdm_l0_shared_core ZeroWireload        tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                          Incr       Path
+  -------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                         0.00       0.00
+  clock network delay (ideal)                                                    0.00       0.00
+  input external delay                                                           0.02       0.02 f
+  divide_mode (in)                                                               0.00       0.02 f
+  U128/Z (CKBD1)                                                                 0.12       0.14 f
+  shared_core/divide_mode (absdm_l0_shared_core)                                 0.00       0.14 f
+  shared_core/U9/ZN (INVD1)                                                      0.20       0.35 r
+  shared_core/U25/Z (AN2XD1)                                                     0.06       0.40 r
+  shared_core/mult_18_S2/a[0] (absdm_l0_shared_core_DW_mult_tc_1)                0.00       0.40 r
+  shared_core/mult_18_S2/U81/ZN (INVD1)                                          0.02       0.42 f
+  shared_core/mult_18_S2/U89/ZN (NR2D0)                                          0.14       0.56 r
+  shared_core/mult_18_S2/product[0] (absdm_l0_shared_core_DW_mult_tc_1)          0.00       0.56 r
+  shared_core/U11/ZN (CKND0)                                                     0.04       0.60 f
+  shared_core/U83/Z (CKXOR2D1)                                                   0.05       0.64 f
+  shared_core/U78/Z (AO22D0)                                                     0.06       0.71 f
+  shared_core/add_0_root_add_21_2/A[1] (absdm_l0_shared_core_DW01_add_0)         0.00       0.71 f
+  shared_core/add_0_root_add_21_2/U1_1/CO (FA1D0)                                0.10       0.81 f
+  shared_core/add_0_root_add_21_2/U1_2/CO (FA1D0)                                0.06       0.87 f
+  shared_core/add_0_root_add_21_2/U1_3/CO (FA1D0)                                0.06       0.92 f
+  shared_core/add_0_root_add_21_2/U1_4/CO (FA1D0)                                0.06       0.98 f
+  shared_core/add_0_root_add_21_2/U1_5/CO (FA1D0)                                0.06       1.03 f
+  shared_core/add_0_root_add_21_2/U1_6/CO (FA1D0)                                0.06       1.09 f
+  shared_core/add_0_root_add_21_2/U1_7/CO (FA1D0)                                0.06       1.14 f
+  shared_core/add_0_root_add_21_2/U1_8/CO (FA1D0)                                0.06       1.20 f
+  shared_core/add_0_root_add_21_2/U1_9/CO (FA1D0)                                0.06       1.25 f
+  shared_core/add_0_root_add_21_2/U1_10/CO (FA1D0)                               0.06       1.31 f
+  shared_core/add_0_root_add_21_2/U1_11/CO (FA1D0)                               0.06       1.36 f
+  shared_core/add_0_root_add_21_2/U1_12/CO (FA1D0)                               0.06       1.42 f
+  shared_core/add_0_root_add_21_2/U1_13/CO (FA1D0)                               0.06       1.47 f
+  shared_core/add_0_root_add_21_2/U1_14/CO (FA1D0)                               0.06       1.53 f
+  shared_core/add_0_root_add_21_2/U1_15/Z (XOR3D1)                               0.05       1.58 f
+  shared_core/add_0_root_add_21_2/SUM[15] (absdm_l0_shared_core_DW01_add_0)      0.00       1.58 f
+  shared_core/value[24] (absdm_l0_shared_core)                                   0.00       1.58 f
+  U83/ZN (NR3D0)                                                                 0.18       1.76 r
+  U79/ZN (INVD1)                                                                 0.03       1.79 f
+  U78/ZN (IND2D1)                                                                0.13       1.92 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                        0.00       1.92 r
+  wrapper/U50/CO (FA1D0)                                                         0.11       2.03 r
+  wrapper/U51/CO (FA1D0)                                                         0.05       2.09 r
+  wrapper/U52/CO (FA1D0)                                                         0.05       2.14 r
+  wrapper/U53/CO (FA1D0)                                                         0.05       2.19 r
+  wrapper/U54/CO (FA1D0)                                                         0.05       2.24 r
+  wrapper/U55/CO (FA1D0)                                                         0.05       2.29 r
+  wrapper/U65/Z (XOR3D1)                                                         0.07       2.36 f
+  wrapper/U63/Z (AO22D0)                                                         0.08       2.44 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                0.00       2.44 f
+  result[30] (out)                                                               0.00       2.44 f
+  data arrival time                                                                         2.44
+
+  clock vclk (rise edge)                                                        10.00      10.00
+  clock network delay (ideal)                                                    0.00      10.00
+  output external delay                                                         -0.02       9.98
+  data required time                                                                        9.98
+  -------------------------------------------------------------------------------------------------
+  data required time                                                                        9.98
+  data arrival time                                                                        -2.44
+  -------------------------------------------------------------------------------------------------
+  slack (MET)                                                                               7.54
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l0_shared    ZeroWireload          tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  absdm_l0_shared_core ZeroWireload        tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                          Incr       Path
+  -------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                         0.00       0.00
+  clock network delay (ideal)                                                    0.00       0.00
+  input external delay                                                           0.02       0.02 f
+  divide_mode (in)                                                               0.00       0.02 f
+  U128/Z (CKBD1)                                                                 0.12       0.14 f
+  shared_core/divide_mode (absdm_l0_shared_core)                                 0.00       0.14 f
+  shared_core/U9/ZN (INVD1)                                                      0.20       0.35 r
+  shared_core/U25/Z (AN2XD1)                                                     0.06       0.40 r
+  shared_core/mult_18_S2/a[0] (absdm_l0_shared_core_DW_mult_tc_1)                0.00       0.40 r
+  shared_core/mult_18_S2/U81/ZN (INVD1)                                          0.02       0.42 f
+  shared_core/mult_18_S2/U89/ZN (NR2D0)                                          0.14       0.56 r
+  shared_core/mult_18_S2/product[0] (absdm_l0_shared_core_DW_mult_tc_1)          0.00       0.56 r
+  shared_core/U11/ZN (CKND0)                                                     0.04       0.60 f
+  shared_core/U83/Z (CKXOR2D1)                                                   0.05       0.64 f
+  shared_core/U78/Z (AO22D0)                                                     0.06       0.71 f
+  shared_core/add_0_root_add_21_2/A[1] (absdm_l0_shared_core_DW01_add_0)         0.00       0.71 f
+  shared_core/add_0_root_add_21_2/U1_1/CO (FA1D0)                                0.10       0.81 f
+  shared_core/add_0_root_add_21_2/U1_2/CO (FA1D0)                                0.06       0.87 f
+  shared_core/add_0_root_add_21_2/U1_3/CO (FA1D0)                                0.06       0.92 f
+  shared_core/add_0_root_add_21_2/U1_4/CO (FA1D0)                                0.06       0.98 f
+  shared_core/add_0_root_add_21_2/U1_5/CO (FA1D0)                                0.06       1.03 f
+  shared_core/add_0_root_add_21_2/U1_6/CO (FA1D0)                                0.06       1.09 f
+  shared_core/add_0_root_add_21_2/U1_7/CO (FA1D0)                                0.06       1.14 f
+  shared_core/add_0_root_add_21_2/U1_8/CO (FA1D0)                                0.06       1.20 f
+  shared_core/add_0_root_add_21_2/U1_9/CO (FA1D0)                                0.06       1.25 f
+  shared_core/add_0_root_add_21_2/U1_10/CO (FA1D0)                               0.06       1.31 f
+  shared_core/add_0_root_add_21_2/U1_11/CO (FA1D0)                               0.06       1.36 f
+  shared_core/add_0_root_add_21_2/U1_12/CO (FA1D0)                               0.06       1.42 f
+  shared_core/add_0_root_add_21_2/U1_13/CO (FA1D0)                               0.06       1.47 f
+  shared_core/add_0_root_add_21_2/U1_14/CO (FA1D0)                               0.06       1.53 f
+  shared_core/add_0_root_add_21_2/U1_15/Z (XOR3D1)                               0.05       1.58 f
+  shared_core/add_0_root_add_21_2/SUM[15] (absdm_l0_shared_core_DW01_add_0)      0.00       1.58 f
+  shared_core/value[24] (absdm_l0_shared_core)                                   0.00       1.58 f
+  U83/ZN (NR3D0)                                                                 0.18       1.76 r
+  U79/ZN (INVD1)                                                                 0.03       1.79 f
+  U78/ZN (IND2D1)                                                                0.13       1.92 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                        0.00       1.92 r
+  wrapper/U50/CO (FA1D0)                                                         0.11       2.03 r
+  wrapper/U51/CO (FA1D0)                                                         0.05       2.09 r
+  wrapper/U52/CO (FA1D0)                                                         0.05       2.14 r
+  wrapper/U53/CO (FA1D0)                                                         0.05       2.19 r
+  wrapper/U54/CO (FA1D0)                                                         0.05       2.24 r
+  wrapper/U55/CO (FA1D0)                                                         0.05       2.29 r
+  wrapper/U65/Z (XOR3D1)                                                         0.07       2.36 f
+  wrapper/U63/Z (AO22D0)                                                         0.08       2.44 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                0.00       2.44 f
+  result[30] (out)                                                               0.00       2.44 f
+  data arrival time                                                                         2.44
+
+  clock vclk (rise edge)                                                        10.00      10.00
+  clock network delay (ideal)                                                    0.00      10.00
+  output external delay                                                         -0.02       9.98
+  data required time                                                                        9.98
+  -------------------------------------------------------------------------------------------------
+  data required time                                                                        9.98
+  data arrival time                                                                        -2.44
+  -------------------------------------------------------------------------------------------------
+  slack (MET)                                                                               7.54
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l0_shared    ZeroWireload          tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  absdm_l0_shared_core ZeroWireload        tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                          Incr       Path
+  -------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                         0.00       0.00
+  clock network delay (ideal)                                                    0.00       0.00
+  input external delay                                                           0.02       0.02 f
+  divide_mode (in)                                                               0.00       0.02 f
+  U128/Z (CKBD1)                                                                 0.12       0.14 f
+  shared_core/divide_mode (absdm_l0_shared_core)                                 0.00       0.14 f
+  shared_core/U9/ZN (INVD1)                                                      0.20       0.35 r
+  shared_core/U25/Z (AN2XD1)                                                     0.06       0.40 r
+  shared_core/mult_18_S2/a[0] (absdm_l0_shared_core_DW_mult_tc_1)                0.00       0.40 r
+  shared_core/mult_18_S2/U81/ZN (INVD1)                                          0.02       0.42 f
+  shared_core/mult_18_S2/U89/ZN (NR2D0)                                          0.14       0.56 r
+  shared_core/mult_18_S2/product[0] (absdm_l0_shared_core_DW_mult_tc_1)          0.00       0.56 r
+  shared_core/U11/ZN (CKND0)                                                     0.04       0.60 f
+  shared_core/U83/Z (CKXOR2D1)                                                   0.05       0.64 f
+  shared_core/U78/Z (AO22D0)                                                     0.06       0.71 f
+  shared_core/add_0_root_add_21_2/A[1] (absdm_l0_shared_core_DW01_add_0)         0.00       0.71 f
+  shared_core/add_0_root_add_21_2/U1_1/CO (FA1D0)                                0.10       0.81 f
+  shared_core/add_0_root_add_21_2/U1_2/CO (FA1D0)                                0.06       0.87 f
+  shared_core/add_0_root_add_21_2/U1_3/CO (FA1D0)                                0.06       0.92 f
+  shared_core/add_0_root_add_21_2/U1_4/CO (FA1D0)                                0.06       0.98 f
+  shared_core/add_0_root_add_21_2/U1_5/CO (FA1D0)                                0.06       1.03 f
+  shared_core/add_0_root_add_21_2/U1_6/CO (FA1D0)                                0.06       1.09 f
+  shared_core/add_0_root_add_21_2/U1_7/CO (FA1D0)                                0.06       1.14 f
+  shared_core/add_0_root_add_21_2/U1_8/CO (FA1D0)                                0.06       1.20 f
+  shared_core/add_0_root_add_21_2/U1_9/CO (FA1D0)                                0.06       1.25 f
+  shared_core/add_0_root_add_21_2/U1_10/CO (FA1D0)                               0.06       1.31 f
+  shared_core/add_0_root_add_21_2/U1_11/CO (FA1D0)                               0.06       1.36 f
+  shared_core/add_0_root_add_21_2/U1_12/CO (FA1D0)                               0.06       1.42 f
+  shared_core/add_0_root_add_21_2/U1_13/CO (FA1D0)                               0.06       1.47 f
+  shared_core/add_0_root_add_21_2/U1_14/CO (FA1D0)                               0.06       1.53 f
+  shared_core/add_0_root_add_21_2/U1_15/Z (XOR3D1)                               0.05       1.58 f
+  shared_core/add_0_root_add_21_2/SUM[15] (absdm_l0_shared_core_DW01_add_0)      0.00       1.58 f
+  shared_core/value[24] (absdm_l0_shared_core)                                   0.00       1.58 f
+  U83/ZN (NR3D0)                                                                 0.18       1.76 r
+  U79/ZN (INVD1)                                                                 0.03       1.79 f
+  U78/ZN (IND2D1)                                                                0.13       1.92 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                        0.00       1.92 r
+  wrapper/U50/CO (FA1D0)                                                         0.11       2.03 r
+  wrapper/U51/CO (FA1D0)                                                         0.05       2.09 r
+  wrapper/U52/CO (FA1D0)                                                         0.05       2.14 r
+  wrapper/U53/CO (FA1D0)                                                         0.05       2.19 r
+  wrapper/U54/CO (FA1D0)                                                         0.05       2.24 r
+  wrapper/U55/CO (FA1D0)                                                         0.05       2.29 r
+  wrapper/U65/Z (XOR3D1)                                                         0.07       2.36 f
+  wrapper/U63/Z (AO22D0)                                                         0.08       2.44 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                0.00       2.44 f
+  result[30] (out)                                                               0.00       2.44 f
+  data arrival time                                                                         2.44
+
+  clock vclk (rise edge)                                                        10.00      10.00
+  clock network delay (ideal)                                                    0.00      10.00
+  output external delay                                                         -0.02       9.98
+  data required time                                                                        9.98
+  -------------------------------------------------------------------------------------------------
+  data required time                                                                        9.98
+  data arrival time                                                                        -2.44
+  -------------------------------------------------------------------------------------------------
+  slack (MET)                                                                               7.54
+
+
+  Startpoint: divide_mode
+              (input port clocked by vclk)
+  Endpoint: result[30] (output port clocked by vclk)
+  Path Group: vclk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  absdm_l0_shared    ZeroWireload          tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_1 ZeroWireload tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW_mult_tc_0 ZeroWireload tcbn65gplustc_ccs
+  fp32_normal_finite_wrapper ZeroWireload  tcbn65gplustc_ccs
+  absdm_l0_shared_core ZeroWireload        tcbn65gplustc_ccs
+  absdm_l0_shared_core_DW01_add_0 ZeroWireload tcbn65gplustc_ccs
+
+  Point                                                                          Incr       Path
+  -------------------------------------------------------------------------------------------------
+  clock vclk (rise edge)                                                         0.00       0.00
+  clock network delay (ideal)                                                    0.00       0.00
+  input external delay                                                           0.02       0.02 f
+  divide_mode (in)                                                               0.00       0.02 f
+  U128/Z (CKBD1)                                                                 0.12       0.14 f
+  shared_core/divide_mode (absdm_l0_shared_core)                                 0.00       0.14 f
+  shared_core/U9/ZN (INVD1)                                                      0.20       0.35 r
+  shared_core/U25/Z (AN2XD1)                                                     0.06       0.40 r
+  shared_core/mult_18_S2/a[0] (absdm_l0_shared_core_DW_mult_tc_1)                0.00       0.40 r
+  shared_core/mult_18_S2/U81/ZN (INVD1)                                          0.02       0.42 f
+  shared_core/mult_18_S2/U89/ZN (NR2D0)                                          0.14       0.56 r
+  shared_core/mult_18_S2/product[0] (absdm_l0_shared_core_DW_mult_tc_1)          0.00       0.56 r
+  shared_core/U11/ZN (CKND0)                                                     0.04       0.60 f
+  shared_core/U83/Z (CKXOR2D1)                                                   0.05       0.64 f
+  shared_core/U78/Z (AO22D0)                                                     0.06       0.71 f
+  shared_core/add_0_root_add_21_2/A[1] (absdm_l0_shared_core_DW01_add_0)         0.00       0.71 f
+  shared_core/add_0_root_add_21_2/U1_1/CO (FA1D0)                                0.10       0.81 f
+  shared_core/add_0_root_add_21_2/U1_2/CO (FA1D0)                                0.06       0.87 f
+  shared_core/add_0_root_add_21_2/U1_3/CO (FA1D0)                                0.06       0.92 f
+  shared_core/add_0_root_add_21_2/U1_4/CO (FA1D0)                                0.06       0.98 f
+  shared_core/add_0_root_add_21_2/U1_5/CO (FA1D0)                                0.06       1.03 f
+  shared_core/add_0_root_add_21_2/U1_6/CO (FA1D0)                                0.06       1.09 f
+  shared_core/add_0_root_add_21_2/U1_7/CO (FA1D0)                                0.06       1.14 f
+  shared_core/add_0_root_add_21_2/U1_8/CO (FA1D0)                                0.06       1.20 f
+  shared_core/add_0_root_add_21_2/U1_9/CO (FA1D0)                                0.06       1.25 f
+  shared_core/add_0_root_add_21_2/U1_10/CO (FA1D0)                               0.06       1.31 f
+  shared_core/add_0_root_add_21_2/U1_11/CO (FA1D0)                               0.06       1.36 f
+  shared_core/add_0_root_add_21_2/U1_12/CO (FA1D0)                               0.06       1.42 f
+  shared_core/add_0_root_add_21_2/U1_13/CO (FA1D0)                               0.06       1.47 f
+  shared_core/add_0_root_add_21_2/U1_14/CO (FA1D0)                               0.06       1.53 f
+  shared_core/add_0_root_add_21_2/U1_15/Z (XOR3D1)                               0.05       1.58 f
+  shared_core/add_0_root_add_21_2/SUM[15] (absdm_l0_shared_core_DW01_add_0)      0.00       1.58 f
+  shared_core/value[24] (absdm_l0_shared_core)                                   0.00       1.58 f
+  U83/ZN (NR3D0)                                                                 0.18       1.76 r
+  U79/ZN (INVD1)                                                                 0.03       1.79 f
+  U78/ZN (IND2D1)                                                                0.13       1.92 r
+  wrapper/exponent_adjust[1] (fp32_normal_finite_wrapper)                        0.00       1.92 r
+  wrapper/U50/CO (FA1D0)                                                         0.11       2.03 r
+  wrapper/U51/CO (FA1D0)                                                         0.05       2.09 r
+  wrapper/U52/CO (FA1D0)                                                         0.05       2.14 r
+  wrapper/U53/CO (FA1D0)                                                         0.05       2.19 r
+  wrapper/U54/CO (FA1D0)                                                         0.05       2.24 r
+  wrapper/U55/CO (FA1D0)                                                         0.05       2.29 r
+  wrapper/U65/Z (XOR3D1)                                                         0.07       2.36 f
+  wrapper/U63/Z (AO22D0)                                                         0.08       2.44 f
+  wrapper/result[30] (fp32_normal_finite_wrapper)                                0.00       2.44 f
+  result[30] (out)                                                               0.00       2.44 f
+  data arrival time                                                                         2.44
+
+  clock vclk (rise edge)                                                        10.00      10.00
+  clock network delay (ideal)                                                    0.00      10.00
+  output external delay                                                         -0.02       9.98
+  data required time                                                                        9.98
+  -------------------------------------------------------------------------------------------------
+  data required time                                                                        9.98
+  data arrival time                                                                        -2.44
+  -------------------------------------------------------------------------------------------------
+  slack (MET)                                                                               7.54
+
+
+1

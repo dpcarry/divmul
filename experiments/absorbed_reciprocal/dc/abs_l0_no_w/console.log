@@ -1,0 +1,686 @@
+
+                           Design Compiler Graphical 
+                                 DC Ultra (TM)
+                                  DFTMAX (TM)
+                              Power Compiler (TM)
+                                 DesignWare (R)
+                                 DC Expert (TM)
+                               Design Vision (TM)
+                               HDL Compiler (TM)
+                               VHDL Compiler (TM)
+                                  DFT Compiler
+                               Design Compiler(R)
+
+               Version U-2022.12-SP7 for linux64 - Oct 10, 2023 
+
+                    Copyright (c) 1988 - 2023 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+Initializing...
+Current time:       Tue Sep 15 21:47:16 2026
+Hostname:           micro03
+CPU Model:          12th Gen Intel(R) Core(TM) i7-12700
+CPU Details:        Cores = 20 : Sockets = 1 : Cache Size = 25600 KB : Freq = 3.79 GHz
+OS:                 Linux 4.18.0-553.159.1.el8_10.x86_64
+RAM:                 30 GB (Free  17 GB)
+Swap:                31 GB (Free  31 GB)
+Work Filesystem:    /homes mounted to auto.homes
+Tmp Filesystem:     /tmp mounted to tmpfs
+Work Disk:          16773 GB (Free 5715 GB)
+Tmp Disk:            15 GB (Free  15 GB)
+
+CPU Load: 66%, Ram Free: 17 GB, Swap Free: 31 GB, Work Disk Free: 5715 GB, Tmp Disk Free: 15 GB
+if {![info exists ::env(TOP_LEVEL)] || ![info exists ::env(RTL_FILES)] \
+        || ![info exists ::env(OUTPUT_DIR)]} {
+    echo "ERROR: TOP_LEVEL, RTL_FILES, and OUTPUT_DIR are required"
+    exit 2
+}
+set top_level $::env(TOP_LEVEL)
+abs_l0_no_w
+set rtl_files [split $::env(RTL_FILES) "|"]
+/homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/PACE/common/FP_DIV_WRAPPER_32.v /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v
+set output_dir $::env(OUTPUT_DIR)
+/homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/dc/abs_l0_no_w
+file mkdir $output_dir
+file mkdir "${output_dir}/work"
+source -verbose "../common_scripts/common.tcl"
+. /courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a /tools/synopsys/syn/U-2022.12-SP7/libraries/syn
+dw_foundation.sldb
+tcbn65gplustc_ccs.db
+* tcbn65gplustc_ccs.db dw_foundation.sldb
+tcbn65gplustc_ccs.db
+tcbn65gplustc_ccs.db
+if {[info exists ::env(RTL_INCLUDE_DIRS)] && $::env(RTL_INCLUDE_DIRS) ne ""} {
+    foreach include_dir [split $::env(RTL_INCLUDE_DIRS) "|"] {
+        lappend search_path $include_dir
+    }
+}
+define_design_lib WORK -path "${output_dir}/work"
+1
+analyze -format verilog $rtl_files
+Running PRESTO HDLC
+Compiling source file /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/PACE/common/FP_DIV_WRAPPER_32.v
+Compiling source file /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v
+Presto compilation completed successfully.
+Loading db file '/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gplustc_ccs.db'
+Information: Using CCS timing libraries. (TIM-024)
+Loading db file '/tools/synopsys/syn/U-2022.12-SP7/libraries/syn/dw_foundation.sldb'
+1
+if {[check_error -v] == 1} { exit 1 }
+elaborate $top_level
+Loading db file '/tools/synopsys/syn/current/libraries/syn/gtech.db'
+Loading db file '/tools/synopsys/syn/current/libraries/syn/standard.sldb'
+  Loading link library 'tcbn65gplustc_ccs'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Presto compilation completed successfully. (abs_l0_no_w)
+Elaborated 1 design.
+Current design is now 'abs_l0_no_w'.
+Information: Building the design 'oadm_fixed_l0_div_specialized'. (HDL-193)
+Presto compilation completed successfully. (oadm_fixed_l0_div_specialized)
+Information: Building the design 'oadm_fixed_div_specialized' instantiated from design 'oadm_fixed_l0_div_specialized' with
+	the parameters "LEVEL=0,RESIDUAL_DROP=18,WN_DROP=18,COEFFICIENT_BITS=7,C0=8'h3b". (HDL-193)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:121: signed to unsigned conversion occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:122: unsigned to signed assignment occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:127: signed to unsigned part selection occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:130: signed to unsigned part selection occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:132: signed to unsigned part selection occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:135: signed to unsigned part selection occurs. (VER-318)
+Presto compilation completed successfully. (oadm_fixed_div_specialized_0_18_18_7_3b)
+Information: Building the design 'oadm_fixed_div_specialized_plane' instantiated from design 'oadm_fixed_div_specialized_0_18_18_7_3b' with
+	the parameters "LEVEL=0,RESIDUAL_DROP=18". (HDL-193)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:18: unsigned to signed assignment occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:19: unsigned to signed assignment occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:23: unsigned to signed assignment occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:24: unsigned to signed assignment occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:28: unsigned to signed assignment occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:29: unsigned to signed assignment occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:33: unsigned to signed assignment occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:34: unsigned to signed assignment occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:38: signed to unsigned part selection occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:40: signed to unsigned part selection occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:46: unsigned to signed assignment occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/abs_l0_no_w.v:48: unsigned to signed assignment occurs. (VER-318)
+Presto compilation completed successfully. (oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18)
+Information: Building the design 'fp32_normal_finite_wrapper'. (HDL-193)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/PACE/common/FP_DIV_WRAPPER_32.v:17: unsigned to signed assignment occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/PACE/common/FP_DIV_WRAPPER_32.v:22: signed to unsigned conversion occurs. (VER-318)
+Warning:  /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/PACE/common/FP_DIV_WRAPPER_32.v:25: signed to unsigned conversion occurs. (VER-318)
+Presto compilation completed successfully. (fp32_normal_finite_wrapper)
+1
+if {[check_error -v] == 1} { exit 1 }
+link
+
+  Linking design 'abs_l0_no_w'
+  Using the following designs and libraries:
+  --------------------------------------------------------------------------
+  * (5 designs)               /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/dc/hier_compile_10ns/abs_l0_no_w.db, etc
+  tcbn65gplustc_ccs (library) /courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gplustc_ccs.db
+  dw_foundation.sldb (library) /tools/synopsys/syn/U-2022.12-SP7/libraries/syn/dw_foundation.sldb
+
+1
+current_design $top_level
+Current design is 'abs_l0_no_w'.
+{abs_l0_no_w}
+check_design
+ 
+****************************************
+check_design summary:
+Version:     U-2022.12-SP7
+Date:        Tue Sep 15 21:47:25 2026
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Inputs/Outputs                                                    108
+    Unconnected ports (LINT-28)                                    38
+    Feedthrough (LINT-29)                                          69
+    Shorted outputs (LINT-31)                                       1
+
+Cells                                                               6
+    Cells do not drive (LINT-1)                                     2
+    Connected to power or ground (LINT-32)                          3
+    Nets connected to multiple pins on same cell (LINT-33)          1
+--------------------------------------------------------------------------------
+
+Warning: In design 'fp32_normal_finite_wrapper', cell 'B_2' does not drive any nets. (LINT-1)
+Warning: In design 'fp32_normal_finite_wrapper', cell 'B_3' does not drive any nets. (LINT-1)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[23]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[17]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[16]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[15]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[14]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[13]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[12]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[11]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[10]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[9]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[8]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[7]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[6]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[5]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[4]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[3]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[2]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[1]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'x_mantissa[0]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[23]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[17]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[16]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[15]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[14]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[13]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[12]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[11]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[10]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[9]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[8]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[7]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[6]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[5]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[4]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[3]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[2]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[1]' is not connected to any nets. (LINT-28)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', port 'y_mantissa[0]' is not connected to any nets. (LINT-28)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[22]' is connected directly to output port 'fraction_x[22]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[21]' is connected directly to output port 'fraction_x[21]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[20]' is connected directly to output port 'fraction_x[20]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[19]' is connected directly to output port 'fraction_x[19]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[18]' is connected directly to output port 'fraction_x[18]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[17]' is connected directly to output port 'fraction_x[17]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[16]' is connected directly to output port 'fraction_x[16]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[15]' is connected directly to output port 'fraction_x[15]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[14]' is connected directly to output port 'fraction_x[14]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[13]' is connected directly to output port 'fraction_x[13]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[12]' is connected directly to output port 'fraction_x[12]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[11]' is connected directly to output port 'fraction_x[11]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[10]' is connected directly to output port 'fraction_x[10]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[9]' is connected directly to output port 'fraction_x[9]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[8]' is connected directly to output port 'fraction_x[8]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[7]' is connected directly to output port 'fraction_x[7]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[6]' is connected directly to output port 'fraction_x[6]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[5]' is connected directly to output port 'fraction_x[5]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[4]' is connected directly to output port 'fraction_x[4]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[3]' is connected directly to output port 'fraction_x[3]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[2]' is connected directly to output port 'fraction_x[2]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[1]' is connected directly to output port 'fraction_x[1]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'x[0]' is connected directly to output port 'fraction_x[0]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[22]' is connected directly to output port 'fraction_y[22]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[21]' is connected directly to output port 'fraction_y[21]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[20]' is connected directly to output port 'fraction_y[20]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[19]' is connected directly to output port 'fraction_y[19]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[18]' is connected directly to output port 'fraction_y[18]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[17]' is connected directly to output port 'fraction_y[17]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[16]' is connected directly to output port 'fraction_y[16]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[15]' is connected directly to output port 'fraction_y[15]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[14]' is connected directly to output port 'fraction_y[14]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[13]' is connected directly to output port 'fraction_y[13]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[12]' is connected directly to output port 'fraction_y[12]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[11]' is connected directly to output port 'fraction_y[11]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[10]' is connected directly to output port 'fraction_y[10]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[9]' is connected directly to output port 'fraction_y[9]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[8]' is connected directly to output port 'fraction_y[8]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[7]' is connected directly to output port 'fraction_y[7]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[6]' is connected directly to output port 'fraction_y[6]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[5]' is connected directly to output port 'fraction_y[5]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[4]' is connected directly to output port 'fraction_y[4]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[3]' is connected directly to output port 'fraction_y[3]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[2]' is connected directly to output port 'fraction_y[2]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[1]' is connected directly to output port 'fraction_y[1]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'y[0]' is connected directly to output port 'fraction_y[0]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[22]' is connected directly to output port 'result[22]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[21]' is connected directly to output port 'result[21]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[20]' is connected directly to output port 'result[20]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[19]' is connected directly to output port 'result[19]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[18]' is connected directly to output port 'result[18]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[17]' is connected directly to output port 'result[17]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[16]' is connected directly to output port 'result[16]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[15]' is connected directly to output port 'result[15]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[14]' is connected directly to output port 'result[14]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[13]' is connected directly to output port 'result[13]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[12]' is connected directly to output port 'result[12]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[11]' is connected directly to output port 'result[11]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[10]' is connected directly to output port 'result[10]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[9]' is connected directly to output port 'result[9]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[8]' is connected directly to output port 'result[8]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[7]' is connected directly to output port 'result[7]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[6]' is connected directly to output port 'result[6]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[5]' is connected directly to output port 'result[5]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[4]' is connected directly to output port 'result[4]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[3]' is connected directly to output port 'result[3]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[2]' is connected directly to output port 'result[2]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[1]' is connected directly to output port 'result[1]'. (LINT-29)
+Warning: In design 'fp32_normal_finite_wrapper', input port 'result_fraction[0]' is connected directly to output port 'result[0]'. (LINT-29)
+Warning: In design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18', output port 'plane_exact[28]' is connected directly to output port 'plane_exact[27]'. (LINT-31)
+Warning: In design 'oadm_fixed_div_specialized_0_18_18_7_3b', a pin on submodule 'plane' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'x_mantissa[23]' is connected to logic 1. 
+Warning: In design 'oadm_fixed_div_specialized_0_18_18_7_3b', a pin on submodule 'plane' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'y_mantissa[23]' is connected to logic 1. 
+Warning: In design 'oadm_fixed_div_specialized_0_18_18_7_3b', a pin on submodule 'fp_wrapper' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'divide_mode' is connected to logic 1. 
+Warning: In design 'oadm_fixed_div_specialized_0_18_18_7_3b', the same net is connected to more than one pin on submodule 'plane'. (LINT-33)
+   Net '*Logic1*' is connected to pins 'x_mantissa[23]', 'y_mantissa[23]''.
+1
+# Match the canonical 10 ns boundary. The only mapping-policy changes are that
+# hierarchy is preserved and ordinary compile replaces compile_ultra.
+set_max_capacitance 0.005 [all_inputs]
+1
+set_max_fanout 4 [all_inputs]
+1
+set_fix_multiple_port_nets -all -buffer_constants
+1
+set period_ns 10.0
+10.0
+if {[info exists ::env(PERIOD_NS)]} {
+    set period_ns $::env(PERIOD_NS)
+}
+10.0
+create_clock -name vclk -period $period_ns
+Warning: Creating virtual clock named 'vclk' with no sources. (UID-348)
+1
+set_clock_uncertainty 0.0 [get_clocks vclk]
+1
+set data_inputs [all_inputs]
+{x[31] x[30] x[29] x[28] x[27] x[26] x[25] x[24] x[23] x[22] x[21] x[20] x[19] x[18] x[17] x[16] x[15] x[14] x[13] x[12] x[11] x[10] x[9] x[8] x[7] x[6] x[5] x[4] x[3] x[2] x[1] x[0] y[31] y[30] y[29] y[28] y[27] y[26] y[25] y[24] y[23] y[22] y[21] y[20] y[19] y[18] y[17] y[16] y[15] y[14] y[13] y[12] y[11] y[10] y[9] y[8] y[7] y[6] y[5] y[4] y[3] y[2] y[1] y[0]}
+set_driving_cell -lib_cell INVD0 $data_inputs
+Warning: Design rule attributes from the driving cell will be set on the port 'x[31]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[30]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[29]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[28]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[27]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[26]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[25]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[24]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[23]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[22]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[21]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[20]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[19]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[18]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[17]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[16]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[15]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[14]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[13]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[12]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[11]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[10]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[9]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[8]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[7]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[6]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[5]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[4]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[3]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[2]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[1]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'x[0]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[31]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[30]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[29]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[28]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[27]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[26]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[25]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[24]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[23]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[22]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[21]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[20]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[19]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[18]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[17]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[16]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[15]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[14]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[13]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[12]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[11]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[10]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[9]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[8]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[7]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[6]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[5]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[4]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[3]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[2]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[1]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'y[0]'. (UID-401)
+1
+set_input_delay 0.02 $data_inputs -clock vclk
+1
+set_output_delay 0.02 [all_outputs] -clock vclk
+1
+set_load 0.004 [all_outputs]
+1
+set_max_area 0
+1
+compile
+CPU Load: 66%, Ram Free: 16 GB, Swap Free: 31 GB, Work Disk Free: 5715 GB, Tmp Disk Free: 15 GB
+Information: Checking out the license 'DesignWare'. (SEC-104)
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | U-2022.12-DWBB_202212.5 |     *     |
+| Licensed DW Building Blocks        | U-2022.12-DWBB_202212.5 |     *     |
+============================================================================
+
+====================================================================================================
+| Flow Information                                                                                 |
+----------------------------------------------------------------------------------------------------
+| Flow         | Design Compiler                                                                   |
+====================================================================================================
+| Design Information                                      | Value                                  |
+====================================================================================================
+| Number of Scenarios                                     | 0                                      |
+| Leaf Cell Count                                         | 27                                     |
+| Number of User Hierarchies                              | 4                                      |
+| Sequential Cell Count                                   | 0                                      |
+| Macro Count                                             | 0                                      |
+| Number of Power Domains                                 | 0                                      |
+| Number of Path Groups                                   | 2                                      |
+| Number of VT Class                                      | 0                                      |
+| Number of Clocks                                        | 1                                      |
+| Number of Dont Touch Cells                              | 9                                      |
+| Number of Dont Touch Nets                               | 0                                      |
+| Number of Size Only Cells                               | 0                                      |
+| Design with UPF Data                                    | false                                  |
+----------------------------------------------------------------------------------------------------
+| Variables                                               | Value                                  |
+----------------------------------------------------------------------------------------------------
+| set_fix_multiple_port_nets                              | -all -buffer_constants                 |
+====================================================================================================
+
+Information: There are 114 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'fp32_normal_finite_wrapper'
+  Processing 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18'
+  Processing 'oadm_fixed_div_specialized_0_18_18_7_3b'
+  Processing 'oadm_fixed_l0_div_specialized'
+  Processing 'abs_l0_no_w'
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+
+  Beginning Implementation Selection
+  ----------------------------------
+  Building model 'DW01_NAND2'
+  Processing 'DW01_NAND2'
+  Building model 'DW01_add_width27' (rpl)
+  Processing 'DW01_add_width27'
+  Building model 'DW01_sub_width28' (rpl)
+  Processing 'DW01_sub_width28'
+  Building model 'DW01_add_width8' (rpl)
+  Processing 'DW01_add_width8'
+  Building model 'DW01_sub_width8' (rpl)
+  Processing 'DW01_sub_width8'
+  Mapping 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18_DW_mult_tc_0'
+  Mapping 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18_DW_mult_tc_1'
+  Processing 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18_DW01_sub_0'
+  Processing 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18_DW01_add_0'
+  Mapping 'oadm_fixed_div_specialized_0_18_18_7_3b_DW_mult_uns_0'
+  Processing 'fp32_normal_finite_wrapper_DW01_add_0_DW01_add_1'
+  Processing 'fp32_normal_finite_wrapper_DW01_add_1_DW01_add_2'
+  Processing 'fp32_normal_finite_wrapper_DW01_sub_0_DW01_sub_1'
+  Processing 'fp32_normal_finite_wrapper_DW01_add_2_DW01_add_3'
+  Processing 'fp32_normal_finite_wrapper_DW01_add_3_DW01_add_4'
+  Processing 'fp32_normal_finite_wrapper_DW01_sub_1_DW01_sub_2'
+Information: Command 'do_operand_isolation' is obsolete and is being ignored.  Please refer to the replacement command 'set power_enable_datapath_gating true' instead. (INFO-118)
+
+  Beginning Mapping Optimizations  (Medium effort)
+  -------------------------------
+Information: Added key list 'DesignWare' to design 'oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18'. (DDB-72)
+Information: Command 'do_operand_isolation' is obsolete and is being ignored.  Please refer to the replacement command 'set power_enable_datapath_gating true' instead. (INFO-118)
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:04    1530.4      0.00       0.0      72.3                          
+    0:00:04    1530.4      0.00       0.0      72.3                          
+    0:00:04    1530.4      0.00       0.0      72.3                          
+    0:00:04    1530.4      0.00       0.0      72.3                          
+    0:00:04    1530.4      0.00       0.0      72.3                          
+    0:00:04    1263.2      0.00       0.0      48.7                          
+    0:00:04    1263.2      0.00       0.0      48.7                          
+    0:00:04    1263.2      0.00       0.0      48.7                          
+    0:00:04     939.2      0.00       0.0       0.0                          
+    0:00:04     939.2      0.00       0.0       0.0                          
+    0:00:04     939.2      0.00       0.0       0.0                          
+    0:00:04     939.2      0.00       0.0       0.0                          
+    0:00:04     939.2      0.00       0.0       0.0                          
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:04     939.2      0.00       0.0       0.0                          
+    0:00:04     939.2      0.00       0.0       0.0                          
+    0:00:04     939.2      0.00       0.0       0.0                          
+
+
+  Beginning Area-Recovery Phase  (max_area 0)
+  -----------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:04     939.2      0.00       0.0       0.0                          
+    0:00:04     939.2      0.00       0.0       0.0                          
+    0:00:04     929.5      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     927.4      0.00       0.0       0.0                          
+    0:00:04     923.0      0.00       0.0       0.0                          
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+CPU Load: 66%, Ram Free: 16 GB, Swap Free: 31 GB, Work Disk Free: 5715 GB, Tmp Disk Free: 15 GB
+Information: Total number of MV cells in the design.
+----------------------------------------------------------------------------------------------------
+ MV Cells                                           Total Number                                   
+----------------------------------------------------------------------------------------------------
+ Level Shifter:                                     0                                             
+ Enable Level Shifter:                              0                                             
+ Isolation Cell:                                    0                                             
+ Retention Cell:                                    0                                             
+ Retention Clamp Cell:                              0                                             
+ Switch Cell:                                       0                                             
+ Always-On Cell:                                    0                                             
+ Repeater Cell:                                     0                                             
+
+----------------------------------------------------------------------------------------------------
+Unmapped MV Cells 
+----------------------------------------------------------------------------------------------------
+0 Isolation Cells are unmapped 
+0 Retention Clamp Cells are unmapped 
+----------------------------------------------------------------------------------------------------
+1
+optimize_netlist -area
+Information: Performing leakage power optimization. (PWR-850)
+CPU Load: 66%, Ram Free: 16 GB, Swap Free: 31 GB, Work Disk Free: 5715 GB, Tmp Disk Free: 15 GB
+Alib files are up-to-date.
+
+Information: There are 93 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+
+Loading db file '/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gplustc_ccs.db'
+Loaded alib file './alib-52/tcbn65gplustc_ccs.db.alib'
+
+  Updating timing information
+Information: The library cell 'TIEL' in the library 'tcbn65gplustc_ccs' is not characterized for internal power. (PWR-536)
+Information: The library cell 'TIEH' in the library 'tcbn65gplustc_ccs' is not characterized for internal power. (PWR-536)
+Information: The target library(s) contains cell(s), other than black boxes, that are not characterized for internal power. (PWR-24)
+
+
+  Beginning Area Optimization
+  -----------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:09     923.0      0.00       0.0       0.0                           6029.2139
+    0:00:10     635.4      0.00       0.0       0.0                           4055.1641
+Loading db file '/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gplustc_ccs.db'
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+CPU Load: 66%, Ram Free: 16 GB, Swap Free: 31 GB, Work Disk Free: 5715 GB, Tmp Disk Free: 15 GB
+Information: Total number of MV cells in the design.
+----------------------------------------------------------------------------------------------------
+ MV Cells                                           Total Number                                   
+----------------------------------------------------------------------------------------------------
+ Level Shifter:                                     0                                             
+ Enable Level Shifter:                              0                                             
+ Isolation Cell:                                    0                                             
+ Retention Cell:                                    0                                             
+ Retention Clamp Cell:                              0                                             
+ Switch Cell:                                       0                                             
+ Always-On Cell:                                    0                                             
+ Repeater Cell:                                     0                                             
+
+----------------------------------------------------------------------------------------------------
+Unmapped MV Cells 
+----------------------------------------------------------------------------------------------------
+0 Isolation Cells are unmapped 
+0 Retention Clamp Cells are unmapped 
+----------------------------------------------------------------------------------------------------
+1
+update_timing
+Information: Updating design information... (UID-85)
+1
+source -verbose "../common_scripts/namingrules.tcl"
+1
+
+Design          Type    Object                  New Name
+--------------------------------------------------------------------------------
+Warning: In the design abs_l0_no_w, net 'result[1]' is connecting multiple ports. (UCN-1)
+abs_l0_no_w     net     result[1]               result_1_
+oadm_fixed_div_specialized_0_18_18_7_3b net exponent_adjust[2] exponent_adjust_2_
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 cell mult_44/U7 mult_44_U7
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 cell mult_44/U6 mult_44_U6
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 cell mult_44/U5 mult_44_U5
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 cell mult_44/U4 mult_44_U4
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 cell mult_42/U7 mult_42_U7
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 cell mult_42/U6 mult_42_U6
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 cell mult_42/U5 mult_42_U5
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 cell mult_42/U4 mult_42_U4
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net plane_exact_28 plane_exact[27]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net y_product[3] y_mantissa[18]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net N17 x_mantissa[18]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net sub_0_root_sub_58/carry sub_0_root_sub_58_carry
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net sub_0_root_sub_58/carry[27] sub_0_root_sub_58_carry[27]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net sub_0_root_sub_58/carry[26] sub_0_root_sub_58_carry[26]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net sub_0_root_sub_58/carry[25] sub_0_root_sub_58_carry[25]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net sub_0_root_sub_58/carry[24] sub_0_root_sub_58_carry[24]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net sub_0_root_sub_58/carry[23] sub_0_root_sub_58_carry[23]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net sub_0_root_sub_58/carry[22] sub_0_root_sub_58_carry[22]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net sub_0_root_sub_58/carry[21] sub_0_root_sub_58_carry[21]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net sub_0_root_sub_58/carry[20] sub_0_root_sub_58_carry[20]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net sub_0_root_sub_58/carry[19] sub_0_root_sub_58_carry[19]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net sub_0_root_sub_58/carry[18] sub_0_root_sub_58_carry[18]
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net y_product[10] y_product_10_
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net y_product[8] y_product_8_
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net y_product[7] y_product_7_
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net y_product[6] y_product_6_
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net y_product[5] y_product_5_
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net y_product[4] y_product_4_
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net mult_44/n5 mult_44_n5
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net mult_44/n4 mult_44_n4
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net mult_44/n3 mult_44_n3
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net mult_42/n5 mult_42_n5
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net mult_42/n4 mult_42_n4
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net mult_42/n3 mult_42_n3
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net add_1_root_sub_58/carry[25] add_1_root_sub_58_carry_25_
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net n19 n190
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net n20 n200
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net n25 n250
+oadm_fixed_div_specialized_plane_LEVEL0_RESIDUAL_DROP18 net n26 n260
+fp32_normal_finite_wrapper net N18              y[30]
+fp32_normal_finite_wrapper net add_0_root_add_0_root_add_22_2/carry add_0_root_add_0_root_add_22_2_carry
+fp32_normal_finite_wrapper net add_0_root_add_0_root_add_22_2/carry[7] add_0_root_add_0_root_add_22_2_carry[7]
+fp32_normal_finite_wrapper net add_0_root_add_0_root_add_22_2/carry[6] add_0_root_add_0_root_add_22_2_carry[6]
+fp32_normal_finite_wrapper net add_0_root_add_0_root_add_22_2/carry[5] add_0_root_add_0_root_add_22_2_carry[5]
+fp32_normal_finite_wrapper net add_0_root_add_0_root_add_22_2/carry[4] add_0_root_add_0_root_add_22_2_carry[4]
+fp32_normal_finite_wrapper net add_0_root_add_0_root_add_22_2/carry[3] add_0_root_add_0_root_add_22_2_carry[3]
+fp32_normal_finite_wrapper net add_0_root_add_0_root_add_22_2/carry[2] add_0_root_add_0_root_add_22_2_carry[2]
+1
+1
+write -hierarchy -format verilog -output "${output_dir}/${top_level}.nl.v"
+Writing verilog file '/homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/dc/abs_l0_no_w/abs_l0_no_w.nl.v'.
+Warning: Verilog writer has added 84 nets to module oadm_fixed_div_specialized_0_18_18_7_3b using SYNOPSYS_UNCONNECTED_ as prefix.  Please use the change_names command to make the correct changes before invoking the verilog writer.  (VO-11)
+Warning: Verilog writer has added 10 nets to module oadm_fixed_l0_div_specialized using SYNOPSYS_UNCONNECTED_ as prefix.  Please use the change_names command to make the correct changes before invoking the verilog writer.  (VO-11)
+Warning: Verilog writer has added 10 nets to module abs_l0_no_w using SYNOPSYS_UNCONNECTED_ as prefix.  Please use the change_names command to make the correct changes before invoking the verilog writer.  (VO-11)
+Warning: Verilog 'assign' or 'tran' statements are written out. (VO-4)
+1
+write_sdf "${output_dir}/${top_level}.syn.sdf"
+Information: Annotated 'cell' delays are assumed to include load delay. (UID-282)
+Information: Writing timing information to file '/homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_reciprocal/dc/abs_l0_no_w/abs_l0_no_w.syn.sdf'. (WT-3)
+1
+write_sdc "${output_dir}/${top_level}.syn.sdc" -version 2.1
+1
+check_design > "${output_dir}/${top_level}.dc.rpt"
+report_area >> "${output_dir}/${top_level}.dc.rpt"
+report_area -hierarchy >> "${output_dir}/${top_level}.dc.rpt"
+report_power -verbose -hier -analysis_effort medium \
+    >> "${output_dir}/${top_level}.dc.rpt"
+report_constraint -all_violators -verbose \
+    >> "${output_dir}/${top_level}.dc.rpt"
+report_timing -delay max -path full -nworst 10 -max_paths 10 -nosplit \
+    > "${output_dir}/${top_level}.dc.critical_path.rpt"
+quit
+
+Memory usage for this session 1151 Mbytes.
+Memory usage for this session including child processes 1151 Mbytes.
+CPU usage for this session 30 seconds ( 0.01 hours ).
+Elapsed time for this session 34 seconds ( 0.01 hours ).
+
+Thank you...

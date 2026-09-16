@@ -1,0 +1,114 @@
+
+                                 PrimeTime (R)
+
+               Version U-2022.12-SP5 for linux64 - Jul 14, 2023 
+
+                    Copyright (c) 1988 - 2023 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+if {![info exists ::env(TOP_LEVEL)] || ![info exists ::env(DC_OUTPUT_DIR)] \
+        || ![info exists ::env(REPORT_DIR)]} {
+    puts "ERROR: TOP_LEVEL, DC_OUTPUT_DIR, and REPORT_DIR are required"
+    exit 2
+}
+set sh_enable_page_mode false
+false
+set power_enable_analysis true
+Information: Checked out license 'PrimePower' (PT-019)
+true
+set top_level $::env(TOP_LEVEL)
+absdm_l1_separate
+set dc_dir $::env(DC_OUTPUT_DIR)
+/homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_sharing/dc/absdm_l1_separate
+set report_dir $::env(REPORT_DIR)
+/homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_sharing/pt/absdm_l1_separate
+file mkdir $report_dir
+set search_path [list "." \
+    "/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a" \
+    "/tools/synopsys/syn/U-2022.12-SP7/libraries/syn"]
+. /courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a /tools/synopsys/syn/U-2022.12-SP7/libraries/syn
+set link_path [list "*" "tcbn65gplustc_ccs.db"]
+* tcbn65gplustc_ccs.db
+read_db [list "tcbn65gplustc_ccs.db"]
+Loading db file '/courses/ee6350/pdk2025/tcbn65gplus/TSMCHOME/digital/Front_End/timing_power_noise/CCS/tcbn65gplus_200a/tcbn65gplustc_ccs.db'
+1
+set svr_enable_vpp true
+true
+read_verilog "${dc_dir}/${top_level}.nl.v"
+1
+link_design $top_level
+
+INFO: No verilog pre-processor constructs found. Skipping pre-processing for file /homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_sharing/dc/absdm_l1_separate/absdm_l1_separate.nl.v
+Loading verilog file '/homes/user/stud/fall25/pd2827/ee6321/research-absorbed-reciprocal/experiments/absorbed_sharing/dc/absdm_l1_separate/absdm_l1_separate.nl.v'
+Linking design absdm_l1_separate...
+Information: Removing 11 unneeded designs..... (LNK-034)
+Information: 782 (95.83%) library cells are unused in library tcbn65gplustc_ccs..... (LNK-045)
+Information: total 782 library cells are unused (LNK-046)
+Design 'absdm_l1_separate' was successfully linked.
+Information: There are 569 leaf cells, ports, hiers and 1331 nets in the design (LNK-047)
+1
+read_sdc "${dc_dir}/${top_level}.syn.sdc"
+
+Reading SDC version 2.1...
+Warning: Creating virtual clock named 'vclk' with no sources. (UITE-121)
+1
+1
+update_timing
+Information: Using automatic max wire load selection group 'WireAreaForZero'. (ENV-003)
+Information: Using automatic min wire load selection group 'WireAreaForZero'. (ENV-003)
+Warning: Some timing arcs have been disabled for breaking timing loops or because of constant propagation. Use the 'report_disable_timing' command to get the list of these disabled timing arcs. (PTE-003)
+Information: Building multi voltage information for entire design. (MV-022)
+1
+report_units > "${report_dir}/${top_level}.pt.units.rpt"
+check_timing > "${report_dir}/${top_level}.pt.check_timing.rpt"
+report_timing -significant_digits 5 -delay_type max -nworst 10 \
+    -slack_lesser_than 1000.0 -path full \
+    > "${report_dir}/${top_level}.pt.max_delay.rpt"
+report_timing -significant_digits 5 -delay_type min -nworst 10 -path full \
+    > "${report_dir}/${top_level}.pt.min_delay.rpt"
+report_constraint -all_violators -max_delay \
+    > "${report_dir}/${top_level}.pt.max_delay.violations.rpt"
+report_constraint -all_violators -min_delay \
+    > "${report_dir}/${top_level}.pt.min_delay.violations.rpt"
+report_qor > "${report_dir}/${top_level}.pt.qor.rpt"
+report_reference > "${report_dir}/${top_level}.pt.reference.rpt"
+set activity_period [get_attribute [get_clocks vclk] period]
+10.000000
+set_switching_activity -static_probability 0.5 -toggle_rate 0.1 \
+    -period $activity_period [all_inputs]
+1
+update_power
+Information: Running switching activity propagation with 4 threads!
+Information: Running averaged power analysis... (PWR-601)
+Information: Running power calculation with 4 threads. (PWR-602)
+1
+report_power -significant_digits 5 \
+    > "${report_dir}/${top_level}.pt.power.rpt"
+report_power -hierarchy -significant_digits 5 \
+    > "${report_dir}/${top_level}.pt.power.hier.rpt"
+quit
+Information: Defining new variable 'activity_period'. (CMD-041)
+Information: Defining new variable 'dc_dir'. (CMD-041)
+Information: Defining new variable 'report_dir'. (CMD-041)
+Information: Defining new variable 'top_level'. (CMD-041)
+
+Timing updates: 1 (0 implicit, 1 explicit) (0 incremental, 1 full, 0 logical)
+Noise updates: 0 (0 implicit, 0 explicit) (0 incremental, 0 full)
+Maximum memory usage for this session: 4193.43 MB
+CPU usage for this session: 15 seconds 
+Elapsed time for this session: 15 seconds
+Diagnostics summary: 3 warnings, 14 informationals
+
+Thank you for using pt_shell!
