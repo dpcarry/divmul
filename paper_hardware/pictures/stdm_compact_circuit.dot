@@ -1,0 +1,24 @@
+digraph STDM {
+ graph [rankdir=LR, bgcolor="white", pad=0.10, nodesep=0.30, ranksep=0.38];
+ node [shape=box, style=filled, fillcolor="#eef3f5", color="#37434a",
+       fontname="Times-Roman", fontsize=15, margin="0.10,0.08"];
+ edge [color="#37434a", fontname="Times-Roman", fontsize=13, arrowsize=0.7];
+ x [label="x fraction", fillcolor="#dcecf7"];
+ y [label="y fraction", fillcolor="#dcecf7"];
+ u [label="u = fx[22-n:Dr]"];
+ v [label="v = fy[22-n:Dr]"];
+ sel [label="v XOR {b{m}}", fillcolor="#f9edce"];
+ lut [label="Cell / mode selection\nA, B, T'\nL0 MUL: 96, 96, 1632\nL0 DIV: 44, 44, 760", fillcolor="#dcecf7"];
+ p [label="A x u\nunsigned", fillcolor="#e4f1e5"];
+ q [label="B x selected v\nunsigned", fillcolor="#e4f1e5"];
+ add [label="T' + Au + Bvs", fillcolor="#f9edce"];
+ align [label="<< (Dr-S)"];
+ pack [label="Normalize\nFP32 packing", fillcolor="#dcecf7"];
+ out [shape=plaintext,style="",label="result"];
+ x -> u; y -> v; v -> sel;
+ x -> lut [label="index"];
+ y -> lut [label="index"];
+ u -> p; sel -> q;
+ lut -> p [label="A"]; lut -> q [label="B"]; lut -> add [label="T'"];
+ p -> add; q -> add; add -> align -> pack -> out;
+}

@@ -1,0 +1,18 @@
+digraph STDMStructure {
+  graph [rankdir=LR, bgcolor="white", pad=0.25, nodesep=0.3, ranksep=0.5,
+         labelloc=t, label="Selected-level shared FP32 organization",
+         fontsize=20, fontname="Times-Roman"];
+  node [shape=box, style="filled", color="#263238", fontcolor="#263238",
+        fontname="Times-Roman", fontsize=13, margin="0.15,0.11"];
+  edge [color="#263238", arrowsize=0.7, penwidth=1.2, fontname="Times-Roman", fontsize=10];
+  unpack [label="FP32\nunpack", fillcolor="#dceef8"];
+  fields [label="Cell index and\nretained fields", fillcolor="#edf0f2"];
+  table [label="Mode-specific\nA, B, T' table", fillcolor="#dceef8"];
+  products [label="Two unsigned\nproducts", fillcolor="#e4f2e8"];
+  adder [label="Shared\nadder", fillcolor="#fff1c9"];
+  norm [label="Normalize", fillcolor="#edf0f2"];
+  pack [label="FP32\npack", fillcolor="#dceef8"];
+  unpack -> fields -> table;
+  table -> products [label="reciprocal already absorbed"];
+  products -> adder -> norm -> pack;
+}

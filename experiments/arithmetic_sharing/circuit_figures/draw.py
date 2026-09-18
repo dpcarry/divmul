@@ -22,8 +22,8 @@ COEFFICIENTS = [[59], [83, 42], [203, 136, 97, 73],
 def draw(level):
     plt.rcParams.update({'font.family': 'DejaVu Serif', 'mathtext.fontset': 'dejavuserif',
                          'font.size': 12, 'pdf.fonttype': 42, 'svg.fonttype': 'none'})
-    fig, ax = plt.subplots(figsize=(18, 11))
-    ax.set(xlim=(0, 18), ylim=(0, 11))
+    fig, ax = plt.subplots(figsize=(18, 10.2))
+    ax.set(xlim=(0, 18), ylim=(.8, 11))
     ax.set_aspect('equal')
     ax.axis('off')
 
@@ -89,18 +89,17 @@ def draw(level):
         wire([(10.78,y),(11.55,y)])
         txt(11.68,y,rf'$P_{var}$',15,ha='left')
         wire([(10.5,y+.91),(10.5,y+.28)])
-        txt(10.5,y+1.04,rf'$K_{other}$',13)
+        midpoint_label = rf'$K_{other}=24$' if level == 0 else rf'$K_{other}$'
+        txt(10.5,y+1.04,midpoint_label,13)
 
     # Named K nets are the same signals at every labeled terminal below.
     if level:
         text=(rf'$i_x=x_m[22:{23-level}],\quad i_y=y_m[22:{23-level}]$'+'\n'+
               rf'$K_x={16+2**(3-level)}+{2**(4-level)}i_x$'+'\n'+
               rf'$K_y={16+2**(3-level)}+{2**(4-level)}i_y$')
-    else:
-        text=r'$K_x=K_y=24$'+'\n'+r'$k_x=k_y=1.5$'
-    box(12.5,8.75,4.8,1.48,text,INPUT,13)
-    txt(14.9,7.72,r'$K_x=16k_x,\quad K_y=16k_y$',12)
-    txt(14.9,7.28,r'$P_x=r_{x,\mathrm{sel}}K_y$'+',  '+r'$P_y=r_{y,\mathrm{sel}}K_x$',12)
+        box(12.5,8.75,4.8,1.48,text,INPUT,13)
+        txt(14.9,7.72,r'$K_x=16k_x,\quad K_y=16k_y$',12)
+        txt(14.9,7.28,r'$P_x=r_{x,\mathrm{sel}}K_y$'+',  '+r'$P_y=r_{y,\mathrm{sel}}K_x$',12)
     ax.plot([.35,17.65],[6.45,6.45],color='#bfc8ce',lw=.8)
 
     txt(.35,6.12,'(b) Shared plane and MUL compensation',13,ha='left')
@@ -128,7 +127,8 @@ def draw(level):
     op(7.8,4.55,r'$+$')
     wire([(8.08,4.55),(9.8,4.55)],arrow=False)
     txt(8.93,4.8,r'$W$',15)
-    txt(7.8,1.46,'29-bit plane',11)
+    if level:
+        txt(7.8,1.46,'29-bit plane',11)
 
     dot(9.8,4.55)
     wire([(9.8,4.55),(10.13,4.55)])
@@ -148,16 +148,13 @@ def draw(level):
     txt(17.05,4.47,r'$V$',14)
     txt(16.9,3.71,'to normalization',10)
     txt(16.9,3.45,'and FP32 packing',10)
-    txt(12.7,2.78,rf'DIV coefficient format: Q0.{cb}',12)
-    values=', '.join(str(v) for v in COEFFICIENTS[level])
-    txt(13.3,2.36,rf'$C=[{values}]$',11)
     if level:
+        txt(12.7,2.78,rf'DIV coefficient format: Q0.{cb}',12)
+        values=', '.join(str(v) for v in COEFFICIENTS[level])
+        txt(13.3,2.36,rf'$C=[{values}]$',11)
         txt(13.3,2.02,rf'$i_y=0,\ldots,{2**level-1}$',11)
-    txt(13.3,1.49,r'$W=A+(m?\!-B:B)+(K_xK_y\ll15)+(m?\!0:\beta)$',11)
+        txt(13.3,1.49,r'$W=A+(m?\!-B:B)+(K_xK_y\ll15)+(m?\!0:\beta)$',11)
 
-    ax.plot([.35,17.65],[.86,.86],color='#bfc8ce',lw=.8)
-    txt(.35,.5,'All arithmetic blocks are exact on the retained operands; shifts are fixed wiring.',11,ha='left')
-    txt(17.65,.5,'Named terminals denote connected nets. Fixed level; live operation mode.',10,ha='right')
     fig.subplots_adjust(left=.015,right=.985,bottom=.015,top=.985)
     stem=HERE/f'oadm_fixed_l{level}_circuit'
     for ext in ('pdf','svg','png'):
