@@ -37,4 +37,4 @@ ITERATIONS=200 SEEDS=2 TAPS=8 RESULT_DIR=smoke ./run.sh
 
 Both `OBJ_DIR` and `RESULT_DIR` may point to scratch storage when the home quota is limited.
 
-Generated results include per-seed metrics, an aggregate summary, the mean learning curve, source hashes, and a PDF plot. Convergence is the first point where the 100-sample moving-average NMSD drops below -20 dB. Steady-state output NMSE and NMSD are evaluated over the final 20% of each run. A seed is marked as diverged if NMSD becomes non-finite or exceeds 60 dB.
+Generated results include per-seed metrics, an aggregate summary, the mean learning curve, source hashes, and PDF/PNG plots. Convergence is the first point where the 100-sample moving-average NMSD drops below -20 dB. Steady-state output NMSE and NMSD are evaluated over the final 20% of each run. A seed is marked as diverged if NMSD becomes non-finite or exceeds 60 dB.

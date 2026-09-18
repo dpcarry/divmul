@@ -32,6 +32,7 @@ def main():
     plt.legend(ncol=2, frameon=False)
     plt.tight_layout()
     plt.savefig(result_dir / "learning_curve.pdf")
+    plt.savefig(result_dir / "learning_curve.png", dpi=180)
     plt.close()
 
     lines = [
