@@ -648,8 +648,51 @@ At L3, STDM reduces area, delay, power, and ADP by 92.5\%, 74.5\%,
 The measured benefit is strongest when one execution resource must support
 both operations without simultaneous issue. A design requiring independent
 DIV and MUL throughput would need separate resources or replicated units.
-The current evidence covers combinational hardware cost and arithmetic error.
-Application-level quality and activity-based energy remain to be evaluated.
+
+\subsection{NLMS System Identification}
+We next test whether the arithmetic error affects an iterative application.
+An NLMS adaptive filter~\cite{yao2024nlms} estimates an unknown coefficient vector
+$h$ from an input vector $x_n$ and desired response $d_n$.
+With the current estimate $w_n$, one update is
+\begin{align}
+\widehat d_n &= w_n^{T}x_n,
+& e_n &= d_n-\widehat d_n, \nonumber\\
+g_n &= \frac{\mu e_n}{\epsilon+\lVert x_n\rVert_2^2},
+& w_{n+1} &= w_n+g_nx_n .
+\label{eq:nlms}
+\end{align}
+The inner products and coefficient update use multiplication, while the
+normalization gain $g_n$ requires division. A 16-tap update therefore performs
+49 multiplications and one division.
+
+We use 20 independent system-identification runs of 5,000 updates, with
+$\mu=0.5$, $\epsilon=10^{-3}$, and additive Gaussian noise of standard
+deviation 0.01. Each run starts from zero coefficients. The exact and STDM
+runs use identical unknown filters, input samples, and noise. STDM evaluates
+every normal finite multiplication and division with the corresponding L0--L3
+RTL; additions remain exact FP32. In the application model, multiplication by
+zero and division with a zero numerator return zero. These cases lie outside
+the normal-finite wrapper used for PPA, account for 0.151\% of the operations,
+and occur almost entirely while filling the delay line. No other out-of-scope
+operand or nonnormal result occurs.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\columnwidth]{pictures/learning_curve.png}
+\caption{Mean NLMS learning curves over 20 runs. NMSD is
+$10\log_{10}(\lVert w_n-h\rVert_2^2/
+\lVert h\rVert_2^2)$. The dashed line marks the $-20$-dB
+convergence threshold.}
+\label{fig:nlms}
+\end{figure}
+
+All 20 runs converge at every level. Exact FP32 crosses the threshold after
+139.8 updates on average; the STDM means range from 139.1 to 141.7.
+L2 and L3 raise steady-state output NMSE by only 0.53 and 0.27~dB, or
+12.9\% and 6.4\% in mean-square error. L1 and L0 incur 3.59 and 13.54~dB,
+respectively, producing the level-dependent error floors in
+Fig.~\ref{fig:nlms}. L2--L3 therefore preserve the convergence behavior of
+the exact implementation.
 
 \clearpage
 \nobalance
