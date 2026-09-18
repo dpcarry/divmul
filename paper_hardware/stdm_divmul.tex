@@ -49,11 +49,13 @@ divider tangent plane at the same midpoint uses the same residual terms,
 with one sign change and a reciprocal-square scale. After absorbing this scale
 into the divider coefficients, both operations comprise two short products and a cell-selected constant.
 
-A direct implementation still needs signed products and a conditional
-subtraction. Exact recoding transfers the residual half-range into the constant
-and complements the short divisor field in DIV mode. The result uses two
-unsigned products and positive accumulation while preserving every retained
-integer code.
+Because the residuals are centered around zero, a direct implementation of
+this form would use signed multipliers and would subtract the $y$-residual
+product in DIV mode. STDM instead recodes the retained residuals as unsigned
+integers and adjusts the cell-selected constant to account for both the
+recoding offset and the DIV sign change. This exact transformation allows DIV
+and MUL to use the same two unsigned multipliers and one adder without changing
+the approximation.
 
 STDM comprises four accuracy levels, L0--L3. The level is fixed when the circuit
 is generated; an input selects the operation. We evaluate both standalone
@@ -64,15 +66,15 @@ The contributions are as follows:
   \setlength{\itemsep}{0pt}
   \setlength{\parskip}{0pt}
   \setlength{\parsep}{0pt}
-  \item We derive a common affine form that exposes the FP32 logic available
-  for sharing.
-  \item We absorb reciprocal-square scaling into divider coefficients and use
-  an exact unsigned recoding to remove signed products and the DIV subtraction.
-  \item We analyze partition, truncation, and coefficient error, and calibrate
-  coefficients using the complete packed FP32 result.
-  \item We compare identical-output shared and separate cores. At L1--L3,
-  sharing saves 17.2--19.0\% area and 31.6--42.4\% power; DIV-only results
-  quantify the cost against specialized dividers.
+  \item We derive a common piecewise tangent-plane formulation for approximate
+  FP32 division and multiplication, revealing the arithmetic shared by the two
+  operations.
+  \item We develop four STDM designs that map this relation to a shared
+  divider--multiplier datapath and provide distinct accuracy--cost tradeoffs.
+  \item We analyze the approximation error and evaluate STDM against
+  specialized dividers and matched separate DIV and MUL cores. At L1--L3,
+  sharing reduces area by 17.2--19.0\% and power by 31.6--42.4\% without
+  changing either operation's output.
 \end{itemize}
 
 \section{Related Work}
