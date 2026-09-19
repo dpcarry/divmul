@@ -94,9 +94,8 @@ approximations to improve the numerical result
 Among the works reviewed here, SIMDive is the closest approximate combined
 operator. It supports multiplication and division through shared
 Mitchell log-domain arithmetic~\cite{ebrahimi2020simdive}, but processes
-8--32-bit integers in SIMD FPGA lanes. STDM is a
-scalar FP32 ASIC design whose measured cost includes
-sign, exponent, normalization, and packing. Converting SIMDive into an FP32
+8--32-bit integers in SIMD FPGA lanes. In contrast, STDM is a
+scalar FP32 ASIC design. Therefore, arbitrarily converting SIMDive into an FP32
 unit would introduce an adapter not evaluated in the original paper and would
 change both its numerical behavior and hardware cost. We therefore discuss
 SIMDive as related work but do not use it as a PPA baseline.
@@ -107,13 +106,11 @@ signed-digit adders, a termination multiplier, and normalization stages in a
 single-precision fused unit~\cite{chen2004fused}; unlike STDM, its target is an
 exact floating-point result rather than a selectable approximation level. The
 DIVA FPU reuses a pipelined mantissa multiplier across Taylor-series divider
-iterations~\cite{kwon2004diva}, so its cost is tied to a sequential schedule
-rather than a one-pass combinational approximation. GRFPU similarly reuses
+iterations~\cite{kwon2004diva}, so its cost is tied to a sequential schedule. GRFPU similarly reuses
 multiplication hardware for iterative division and square root and supports
 both IEEE-754 single and double precision~\cite{gaislergrfpu}. Its formats,
 operation set, and multicycle interface differ from STDM. These differences
-prevent a controlled PPA comparison, so the exact designs are used only to
-place arithmetic sharing in context.
+prevent a fair PPA comparison with STDM.
 
 Reciprocal designs approximate $1/y$ and combine it with the dividend.
 SAADI-EC uses Taylor-series refinement, ILAFD combines reciprocal approximation
@@ -134,17 +131,16 @@ planes. That relation allows one datapath to serve both operations. The
 evaluation separates this architectural benefit from standalone divider
 efficiency.
 
-\section{Related Divider and Multiplier Planes}
-\subsection{Mantissa Partition and Tangent Planes}
+\section{Derivation and Shared Architecture}
 For a normal finite FP32 input, write
-$F_x=(-1)^{s_x}x2^{E_x}$, where $x\in[1,2)$~\cite{Ieee}.
-The result sign is $s_x\oplus s_y$. The exponent calculation uses
-$E_x+E_y$ for multiplication and $E_x-E_y$ for division, followed by
-normalization. We focus on the mantissa functions $xy$ and $x/y$.
+$F_x=(-1)^{s_x}x\,2^{E_x}$ with $x\in[1,2)$~\cite{Ieee}.
+MUL and DIV use the same sign XOR and differ in exponent addition or
+subtraction. We therefore focus on the mantissa functions $xy$ and $x/y$.
 
-Level $n$ divides each axis of $[1,2)\times[1,2)$ into $2^n$ equal
-intervals. The leading $n$ fraction bits identify indices $i_x,i_y$.
-Their cell midpoints are
+\subsection{Preliminaries: OAM}
+OAM partitions each axis of $[1,2)\times[1,2)$ into $2^n$ intervals at
+level $n$. The leading $n$ fraction bits select indices $i_x,i_y$, whose
+cell midpoint is
 \begin{equation}
 \begin{aligned}
 k_x&=1+(i_x+\tfrac12)2^{-n},\\
@@ -152,26 +148,28 @@ k_y&=1+(i_y+\tfrac12)2^{-n}.
 \end{aligned}
 \label{eq:midpoints}
 \end{equation}
-We omit the level superscript when the selected cell is clear.
-At L0, $k_x=k_y=3/2$. At L3 there are eight intervals per axis.
-All L0--L3 midpoints have denominator at most 16, so midpoint representation
-is exact.
+This midpoint minimizes the integral error of the local first-order product
+plane. With $r_x=x-k_x$ and $r_y=y-k_y$, OAM gives
+\begin{equation}
+\widehat m=-k_xk_y+k_yx+k_xy
+           =k_xk_y+k_yr_x+k_xr_y .
+\label{eq:mulplane}
+\end{equation}
+The residuals satisfy $|r_x|,|r_y|\leq2^{-(n+1)}$. At L0,
+$k_x=k_y=3/2$; at L3, each axis has eight intervals. Every L0--L3 midpoint
+has denominator at most 16 and is represented exactly.
 
-Define centered residuals $r_x=x-k_x$ and $r_y=y-k_y$.
-They satisfy $|r_x|,|r_y|\leq2^{-(n+1)}$.
-The first-order expansions at the midpoint give
-\begin{align}
-\widehat m&=k_xk_y+k_yr_x+k_xr_y,\label{eq:mulplane}\\
-\widehat d&=c(k_xk_y+k_yr_x-k_xr_y),
-\quad c=k_y^{-2}.\label{eq:divplane}
-\end{align}
-Equation~\eqref{eq:mulplane} is the local OAM product plane.
-Equation~\eqref{eq:divplane} follows from
-$f_x(k_x,k_y)=1/k_y$ and $f_y(k_x,k_y)=-k_x/k_y^2$.
-The two expressions have the same residual products and constant before
-division applies $c$.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth,trim=0 19pt 0 0,clip]{pictures/Figure 2.png}
+\caption{Mantissa partition at successive levels. The leading fraction bits
+select a cell and its midpoint.}
+\label{fig:partition}
+\end{figure}
 
-For completeness, expanding division in the original coordinates gives
+\subsection{Divider Tangent-Plane Equation Derivation}
+\subsubsection{Direct Derivation}
+The first-order expansion of $x/y$ at the same midpoint is
 \begin{equation}
 \begin{aligned}
 \widehat d
@@ -181,67 +179,52 @@ For completeness, expanding division in the original coordinates gives
 \end{aligned}
 \label{eq:directplane}
 \end{equation}
-The product plane in those coordinates is
-$\widehat m=-k_xk_y+k_yx+k_xy$.
-Thus both the constant and the $y$ term appear with different signs before
-centering. Substituting $x=k_x+r_x$ and $y=k_y+r_y$ collects the midpoint
-products into one positive constant. Only the residual $y$ term then changes
-sign. This is the reason for using centered coordinates in the shared circuit.
-Centering itself neither discards input bits nor changes the local plane.
+Substituting the centered coordinates and defining $c=k_y^{-2}$ gives
+\begin{equation}
+\widehat d=c(k_xk_y+k_yr_x-k_xr_y).
+\label{eq:divplane}
+\end{equation}
+Equations~\eqref{eq:mulplane} and~\eqref{eq:divplane} contain the same
+constant and residual products. DIV changes only the sign of the
+$y$-residual term before applying $c$. Centering introduces no approximation;
+it only exposes the arithmetic shared by the two planes.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth,trim=0 19pt 0 0,clip]{pictures/Figure 2.png}
-\caption{Mantissa partition at successive levels. The leading fraction bits
-select a cell; its midpoint determines both local planes.}
-\label{fig:partition}
-\end{figure}
-
-The same divider follows by combining a reciprocal tangent with the OAM
-plane. The reciprocal tangent at $k_y$ is
-$g(y)=2/k_y-y/k_y^2$. Substituting
-$\widehat m=-k_xk_y+k_yx+k_xy$ into $xg(y)$ gives
+\subsubsection{OAM-Based Equivalent Derivation}
+The reciprocal tangent at $k_y$ is
+$g(y)=2/k_y-y/k_y^2$. Replacing its product $xy$ by the OAM plane gives
 \begin{equation}
 \begin{aligned}
-xg(y)&=\frac{2x}{k_y}-\frac{xy}{k_y^2}\\
-&\approx\frac{2x}{k_y}-\frac{-k_xk_y+k_yx+k_xy}{k_y^2}\\
+xg(y)
+&=\frac{2x}{k_y}-\frac{xy}{k_y^2}\\
+&\approx\frac{2x}{k_y}
+-\frac{-k_xk_y+k_yx+k_xy}{k_y^2}\\
 &=\frac{k_xk_y+k_yx-k_xy}{k_y^2}.
 \end{aligned}
 \label{eq:oamlink}
 \end{equation}
-Replacing $x,y$ by their centered forms recovers
-Eq.~\eqref{eq:divplane}. Thus the connection is algebraic, rather than a
-similarity between two separately fitted coefficient tables.
+This is identical to Eq.~\eqref{eq:directplane}. The relation therefore
+follows algebraically from two expansions at the same midpoint, rather than
+from separately fitted DIV and MUL coefficient tables.
 
-\subsection{Direct Evaluation at a Selected Level}
-The partition in Fig.~\ref{fig:partition} can be evaluated recursively.
-If $P_i$ is the plane at level $i$, define
-$\Delta P_i=P_i-P_{i-1}$. Then
+\subsection{Architecture for Multi-Level Approximate Divider}
+The planes can be written recursively. If $P_i$ is the plane at level $i$ and
+$\Delta P_i=P_i-P_{i-1}$, then
 \begin{equation}
 P_n=P_0+\sum_{i=1}^{n}\Delta P_i.
 \label{eq:corrections}
 \end{equation}
-STDM instead decodes the final cell and evaluates $P_n$ once.
-Before precision reduction, the two forms are algebraically equivalent.
-Direct evaluation avoids intermediate correction generators and additions
-when only one level is required.
+STDM instead decodes the selected cell and evaluates $P_n$ once. The two
+forms are equivalent before precision reduction, but direct evaluation avoids
+intermediate correction generators and additions.
 
-The selected level controls the partition, residual width, and coefficient
-precision. It is an implementation parameter, not an additional input to the
-finished circuit. The operation bit remains live and selects the DIV or MUL
-coefficients for that level. This distinction matters when interpreting area:
-each reported unit contains one partition level and supports either operation.
+The level fixes the partition, residual width, and coefficient precision when
+the circuit is generated. It is not a runtime input. The operation bit remains
+live and selects DIV or MUL coefficients at that level, so each reported unit
+supports either operation but produces one result at a time.
 
-Centering also exposes why reduced precision can save hardware.
-The residual spans one cell width, rather than the full mantissa range.
-After low bits are removed, its independent width decreases with finer
-partitioning. The cost of its products can therefore fall even though more
-coefficient entries are needed. The coefficient table and product widths must
-be considered together; the number of cells alone does not determine area.
-
-The retained field can be derived directly from the FP32 fraction.
-Let $m_x=2^{23}x$ be the unsigned 24-bit mantissa integer and let
-$j_x$ contain its lower $23-n$ bits. Within a selected cell,
+Centered residuals span one cell rather than the full mantissa range. Let
+$m_x=2^{23}x$ be the unsigned 24-bit mantissa integer, and let $j_x$ contain
+its lower $23-n$ bits. Within a selected cell,
 \begin{equation}
 \begin{aligned}
 m_x&=2^{23}+i_x2^{23-n}+j_x,\\
@@ -249,10 +232,10 @@ R_x&=j_x-2^{22-n}.
 \end{aligned}
 \label{eq:localinteger}
 \end{equation}
-The midpoint offset is a power of two, so the centered integer requires only
-$23-n$ independent signed bits. This representation gives the same midpoint
-for every operand in the cell and avoids a general midpoint subtractor.
-The corresponding expressions for $y$ are identical.
+Thus $R_x$ has only $23-n$ independent signed bits and requires no general
+midpoint subtractor; $R_y$ is formed in the same way. Finer partitions reduce
+the product widths but require more coefficient entries, so both effects must
+be included in the hardware cost.
 
 \section{Shared Circuit Implementation}
 \subsection{Residual Precision and Coefficient Absorption}
